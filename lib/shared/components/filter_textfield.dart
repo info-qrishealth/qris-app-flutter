@@ -5,11 +5,12 @@ import 'package:get/get.dart';
 import '../../styles/app_colors.dart';
 
 class FilterTextField extends StatelessWidget {
-  final Function(String) onFieldSubmitted;
+  final Function(String)? onFieldSubmitted;
   final TextEditingController controller;
   final Function(String)? onChanged;
   final String? hintText;
   final Widget? suffixIcon;
+  final Function()? onTap;
 
   const FilterTextField(
       {super.key,
@@ -17,7 +18,8 @@ class FilterTextField extends StatelessWidget {
       required this.controller,
       required this.onChanged,
       required this.hintText,
-      required this.suffixIcon});
+      required this.suffixIcon,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class FilterTextField extends StatelessWidget {
         cursorColor: AppColors.primaryPink,
         autofocus: false,
         onChanged: onChanged,
+        onTap: onTap,
         style: textTheme.bodyLarge!.copyWith(color: AppColors.black),
         decoration: InputDecoration(
             contentPadding:

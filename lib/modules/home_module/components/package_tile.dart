@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/shared/components/feature_row.dart';
+import 'package:qris_health/shared/components/offered_price_container.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class PackageTile extends StatelessWidget {
@@ -38,28 +39,7 @@ class PackageTile extends StatelessWidget {
                         imagePath: 'assets/images/icons/home.png',
                         title: 'Home collection'),
                   ])),
-              Container(
-                  decoration: BoxDecoration(
-                      color: AppColors.primaryPink.withOpacity(0.06)),
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 7, horizontal: 8),
-                      child: RichText(
-                          text: TextSpan(children: [
-                        TextSpan(
-                            text: '₹ 1999',
-                            style: _textTheme.labelSmall!.copyWith(
-                                fontWeight: FontWeight.w400,
-                                decoration: TextDecoration.lineThrough,
-                                fontSize: 9,
-                                color: AppColors.primaryPink)),
-                        WidgetSpan(child: SizedBox(width: 7)),
-                        TextSpan(
-                            text: '₹1099',
-                            style: _textTheme.bodyLarge!.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.primaryBlue)),
-                      ])))),
+              OfferedPriceContainer(),
               Expanded(
                   child: Container(
                       width: double.infinity,

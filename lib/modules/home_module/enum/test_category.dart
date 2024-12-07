@@ -24,7 +24,7 @@ extension TestCategoryExtension on TestCategory {
         return 'assets/images/icons/test_categories_icon/health_score.png';
 
       case TestCategory.doctorConsultation:
-        return 'assets/images/icons/test_categories_icon/doctor.png';
+        return 'assets/images/icons/test_categories_icon/doctor_illustration.png';
 
       case TestCategory.mentalWellness:
         return 'assets/images/icons/test_categories_icon/mental_wellness.png';

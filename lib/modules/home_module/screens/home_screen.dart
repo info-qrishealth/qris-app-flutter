@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
@@ -6,6 +7,8 @@ import 'package:qris_health/modules/home_module/components/home_screen_app_bar.d
 import 'package:qris_health/modules/home_module/components/package_tile.dart';
 import 'package:qris_health/modules/home_module/components/test_and_scan_tile.dart';
 import 'package:qris_health/modules/home_module/enum/test_category.dart';
+import 'package:qris_health/modules/home_module/screens/search_package_screen.dart';
+import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
 import 'package:qris_health/shared/components/main_drawer.dart';
 import 'package:qris_health/shared/components/outlined_icon_button.dart';
@@ -40,9 +43,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     vertical: 16, horizontal: AppConstants.scaffoldPadding),
                 children: [
               FilterTextField(
-                  onFieldSubmitted: (value) {},
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => SearchPackageScreen()));
+                  },
+                  onFieldSubmitted: null,
                   controller: _searchController,
-                  onChanged: (value) {},
+                  onChanged: null,
                   hintText: 'Search for Blood tests / Packages....',
                   suffixIcon: null),
               SizedBox(height: 24),
@@ -82,6 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         return PackageTile();
                       })),
+              SizedBox(height: 16),
+              ContactUsContainer(),
               SizedBox(height: 16),
               _buildHeadingRow(
                   title: 'Popular Imaging Tests and Scans', onTap: () {}),
