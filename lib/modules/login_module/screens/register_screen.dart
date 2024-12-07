@@ -5,6 +5,7 @@ import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/login_module/components/privacy_policy_text.dart';
 import 'package:qris_health/shared/components/common_field_dropdown.dart';
 import 'package:qris_health/shared/components/common_textfield.dart';
+import 'package:qris_health/shared/components/gender_input_container_row.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/shared/utils/search_pattern.dart';
 import 'package:qris_health/styles/app_colors.dart';
@@ -172,25 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     onChanged: (value) {})),
                           ])),
                       SizedBox(height: 16),
-                      Text(' Gender',
-                          style: _textTheme.titleMedium!
-                              .copyWith(fontWeight: FontWeight.w400)),
-                      SizedBox(height: 12),
-                      Padding(
-                          padding: const EdgeInsets.only(left: 2),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                _buildSexContainer(
-                                    svgPath:
-                                        'assets/images/icons/gender/male_icon.svg'),
-                                _buildSexContainer(
-                                    svgPath:
-                                        'assets/images/icons/gender/female_icon.svg'),
-                                _buildSexContainer(
-                                    svgPath:
-                                        'assets/images/icons/gender/others_icon.svg'),
-                              ])),
+                      GenderInputContainerRow(),
                       SizedBox(height: 32),
                       ElevatedButton(
                           onPressed: () {
@@ -210,14 +193,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           secondaryText: ' Login Now'),
                       SizedBox(height: 16),
                     ]))));
-  }
-
-  Widget _buildSexContainer({required String svgPath}) {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 26, vertical: 12),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: Colors.black.withOpacity(0.09))),
-        child: SvgPicture.asset(svgPath));
   }
 }

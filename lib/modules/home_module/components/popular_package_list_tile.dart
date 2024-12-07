@@ -33,7 +33,8 @@ class PopularPackageListTile extends StatelessWidget {
                         title: '87 Parameters'),
                   ])),
           SizedBox(height: 2),
-          OfferedPriceContainer(),
+          OfferedPriceContainer(
+              padding: EdgeInsets.symmetric(vertical: 7, horizontal: 9)),
           IntrinsicHeight(
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

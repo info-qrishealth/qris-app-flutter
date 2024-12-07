@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import '../../styles/app_colors.dart';
 
 class OfferedPriceContainer extends StatelessWidget {
-  const OfferedPriceContainer({super.key});
+  final EdgeInsets? padding;
+  const OfferedPriceContainer({super.key, this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,8 @@ class OfferedPriceContainer extends StatelessWidget {
         decoration:
             BoxDecoration(color: AppColors.primaryPink.withOpacity(0.06)),
         child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 8),
+            padding: padding ??
+                const EdgeInsets.symmetric(vertical: 7, horizontal: 8),
             child: RichText(
                 text: TextSpan(children: [
               TextSpan(
