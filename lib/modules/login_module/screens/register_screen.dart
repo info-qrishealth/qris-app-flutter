@@ -1,0 +1,223 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/login_module/components/privacy_policy_text.dart';
+import 'package:qris_health/shared/components/common_field_dropdown.dart';
+import 'package:qris_health/shared/components/common_textfield.dart';
+import 'package:qris_health/shared/extensions/string_extension.dart';
+import 'package:qris_health/shared/utils/search_pattern.dart';
+import 'package:qris_health/styles/app_colors.dart';
+
+import '../components/create_account_text.dart';
+
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
+
+  final _textTheme = Get.textTheme;
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: SafeArea(
+            child: Form(
+                key: _formKey,
+                child: ListView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AppConstants.scaffoldPadding),
+                    children: [
+                      SizedBox(height: 20),
+                      Text('Create your account',
+                          style: _textTheme.headlineLarge!.copyWith(
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.textColor),
+                          textAlign: TextAlign.center),
+                      SizedBox(height: 10),
+                      Text(
+                          'Create Account to Access - Quick test booking, online reports, notifications, Qris Wallet and much more',
+                          style: _textTheme.bodyLarge!.copyWith(
+                              height: 1.3,
+                              color: AppColors.lightSubTextColor,
+                              fontWeight: FontWeight.w400),
+                          textAlign: TextAlign.center),
+                      SizedBox(height: 50),
+                      CommonFieldDropdown(
+                          labelText: null,
+                          items: List.generate(
+                              5,
+                              (index) => DropdownMenuItem(
+                                  value: index,
+                                  child: Text('Title ${index + 1}'))),
+                          selectedValue: null,
+                          onChanged: (value) {},
+                          headingText: 'Title'),
+                      SizedBox(height: 16),
+                      CommonTextField(
+                          validator: (name) {
+                            if (name.isNullOrEmpty) {
+                              return 'Please enter the name';
+                            }
+
+                            return null;
+                          },
+                          hintText: 'Enter your full name',
+                          controller: _nameController,
+                          textInputType: TextInputType.name,
+                          headingText: 'Full Name'),
+                      SizedBox(height: 16),
+                      CommonTextField(
+                          validator: (email) {
+                            if (email.isNullOrEmpty) {
+                              return 'Please enter your email address';
+                            } else if (!SearchPattern.isValidEmail(email)) {
+                              return 'Email address should contain @ and .';
+                            }
+
+                            return null;
+                          },
+                          hintText: 'Enter your email Id',
+                          controller: _emailController,
+                          textInputType: TextInputType.emailAddress,
+                          headingText: 'Email'),
+                      SizedBox(height: 16),
+                      CommonTextField(
+                          validator: (phone) {
+                            if (!SearchPattern.isValidPhoneNumber(phone)) {
+                              return 'Invalid phone number';
+                            }
+
+                            return null;
+                          },
+                          hintText: 'Enter your 10 digit mobile number',
+                          controller: _phoneNumberController,
+                          textInputType: TextInputType.phone,
+                          headingText: 'Mobile Number'),
+                      SizedBox(height: 16),
+                      Text(' Date of Birth',
+                          style: _textTheme.titleMedium!
+                              .copyWith(fontWeight: FontWeight.w400)),
+                      SizedBox(height: 12),
+                      InputDecorator(
+                          decoration: InputDecoration(),
+                          child: Row(children: [
+                            Expanded(
+                                child: DropdownButton(
+                                    underline: Container(),
+                                    icon: Icon(
+                                        Icons.keyboard_arrow_down_outlined,
+                                        size: 20,
+                                        color: AppColors.lightGrey),
+                                    hint: Text('Date',
+                                        style: _textTheme.bodyLarge!.copyWith(
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black45)),
+                                    items: List.generate(31, (index) {
+                                      final date = index + 1;
+
+                                      return DropdownMenuItem(
+                                          value: index,
+                                          child: Text(date.toString()));
+                                    }),
+                                    onChanged: (value) {})),
+                            Expanded(
+                                child: DropdownButton(
+                                    underline: Container(),
+                                    icon: Icon(
+                                        Icons.keyboard_arrow_down_outlined,
+                                        size: 20,
+                                        color: AppColors.lightGrey),
+                                    hint: Text('Month',
+                                        style: _textTheme.bodyLarge!.copyWith(
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black45)),
+                                    items: List.generate(31, (index) {
+                                      final date = index + 1;
+
+                                      return DropdownMenuItem(
+                                          value: index,
+                                          child: Text(date.toString()));
+                                    }),
+                                    onChanged: (value) {})),
+                            Expanded(
+                                child: DropdownButton(
+                                    underline: Container(),
+                                    icon: Icon(
+                                        Icons.keyboard_arrow_down_outlined,
+                                        size: 20,
+                                        color: AppColors.lightGrey),
+                                    hint: Text('Year',
+                                        style: _textTheme.bodyLarge!.copyWith(
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black45)),
+                                    items: List.generate(31, (index) {
+                                      final date = index + 1;
+
+                                      return DropdownMenuItem(
+                                          value: index,
+                                          child: Text(date.toString()));
+                                    }),
+                                    onChanged: (value) {})),
+                          ])),
+                      SizedBox(height: 16),
+                      Text(' Gender',
+                          style: _textTheme.titleMedium!
+                              .copyWith(fontWeight: FontWeight.w400)),
+                      SizedBox(height: 12),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                _buildSexContainer(
+                                    svgPath:
+                                        'assets/images/icons/gender/male_icon.svg'),
+                                _buildSexContainer(
+                                    svgPath:
+                                        'assets/images/icons/gender/female_icon.svg'),
+                                _buildSexContainer(
+                                    svgPath:
+                                        'assets/images/icons/gender/others_icon.svg'),
+                              ])),
+                      SizedBox(height: 32),
+                      ElevatedButton(
+                          onPressed: () {
+                            // todo:
+
+                            if (_formKey.currentState?.validate() == true) {}
+                          },
+                          child: Text('Create Account')),
+                      SizedBox(height: 28),
+                      PrivacyPolicyText(),
+                      SizedBox(height: 16),
+                      CreateAccountText(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          primaryText: 'Already have an account?',
+                          secondaryText: ' Login Now'),
+                      SizedBox(height: 16),
+                    ]))));
+  }
+
+  Widget _buildSexContainer({required String svgPath}) {
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 26, vertical: 12),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: Colors.black.withOpacity(0.09))),
+        child: SvgPicture.asset(svgPath));
+  }
+}

@@ -1,0 +1,74 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+
+import '../styles/app_colors.dart';
+import '../styles/app_styles.dart';
+import 'enums/snackbar_type.dart';
+
+class AppConstants {
+  static const String baseUrl = 'https://musclify-backend.onrender.com';
+  // 'http://192.168.1.34:8080';
+
+  static const ubuntuFontFamily = 'Ubuntu';
+  static const latoFontFamily = 'Lato';
+  static const metropolisFontFamily = 'Metropolis';
+  static const scaffoldPadding = 20.0;
+
+  static String getErrorMessage(String message) {
+    try {
+      final decodedMessage = json.decode(message);
+
+      if (decodedMessage.containsKey('error')) {
+        final errorMessage = decodedMessage['error'];
+
+        if (errorMessage == null) {
+          return message;
+        }
+
+        return errorMessage;
+      }
+
+      return message;
+    } catch (e) {
+      return message;
+    }
+  }
+
+  static void showSnackbar(
+      {required String text,
+      required SnackbarType type,
+      int? secondsDuration,
+      int? milliSecondDuration}) {
+    Get.showSnackbar(GetSnackBar(
+        messageText: Text('${type.name.capitalizeFirst!} - $text',
+            style: Get.textTheme.bodySmall!.copyWith(
+                fontWeight: FontWeight.w600,
+                color: type == SnackbarType.success
+                    ? AppColors.green
+                    : type == SnackbarType.warning
+                        ? AppColors.gold
+                        : AppColors.red)),
+        icon: SvgPicture.asset(type == SnackbarType.success
+            ? 'assets/images/icons/snackbar_icons/success.svg'
+            : type == SnackbarType.error
+                ? 'assets/images/icons/snackbar_icons/error.svg'
+                : 'assets/images/icons/snackbar_icons/warning.svg'),
+        snackStyle: SnackStyle.FLOATING,
+        duration: const Duration(seconds: 2),
+        snackPosition: SnackPosition.TOP,
+        animationDuration: const Duration(milliseconds: 200),
+        backgroundColor: type == SnackbarType.success
+            ? const Color(0xffDCFCE7)
+            : type == SnackbarType.warning
+                ? const Color(0xffFEF9C3)
+                : const Color(0xffFFDFDE),
+        boxShadows: AppStyles.darkCardShadow,
+        borderRadius: 10,
+        isDismissible: true,
+        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.only(left: 28, right: 28, top: 16)));
+  }
+}
