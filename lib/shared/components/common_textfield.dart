@@ -24,6 +24,7 @@ class CommonTextField extends StatefulWidget {
   final bool? readOnly;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final bool isRequired;
 
   const CommonTextField(
       {super.key,
@@ -45,7 +46,8 @@ class CommonTextField extends StatefulWidget {
       this.maxLines,
       this.prefixIcon,
       this.suffixIcon,
-      required this.headingText});
+      required this.headingText,
+      this.isRequired = false});
 
   @override
   State<CommonTextField> createState() => _CommonTextFieldState();
@@ -66,9 +68,15 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       if (widget.headingText != null)
-        Text(' ${widget.headingText!}',
-            style: textTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.w400, color: AppColors.textColor)),
+        RichText(
+            text: TextSpan(
+                style: textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.w400, color: AppColors.textColor),
+                children: [
+              TextSpan(text: ' ${widget.headingText!}'),
+              if (widget.isRequired)
+                TextSpan(text: ' *', style: TextStyle(color: AppColors.red)),
+            ])),
       if (widget.headingText != null) SizedBox(height: 12),
       TextFormField(
           readOnly: widget.readOnly ?? false,

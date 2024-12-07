@@ -6,7 +6,8 @@ import 'package:qris_health/styles/app_colors.dart';
 
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  const CommonAppBar({super.key, required this.title});
+  final List<Widget>? actions;
+  const CommonAppBar({super.key, required this.title, this.actions});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
             right: AppConstants.scaffoldPadding,
             top: 8),
         child: AppBar(
+            actions: actions,
             leadingWidth: 44,
             leading: OutlinedIconButton(
                 onTap: () {
