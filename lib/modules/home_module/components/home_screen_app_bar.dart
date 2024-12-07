@@ -15,7 +15,6 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Container(
             padding:
                 EdgeInsets.symmetric(horizontal: AppConstants.scaffoldPadding),
-            decoration: BoxDecoration(),
             child: Row(children: [
               InkWell(
                   onTap: () {
@@ -23,12 +22,15 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                   child:
                       SvgPicture.asset('assets/images/icons/drawer_icon.svg')),
+              SizedBox(width: 24),
               Expanded(
                   child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                     Text('Welcome, Khushi!',
                         style: _textTheme.titleLarge!.copyWith(
+                            color: AppColors.primaryBlue,
                             fontWeight: FontWeight.w700,
                             fontFamily: AppConstants.latoFontFamily)),
                     Row(children: [
@@ -42,8 +44,10 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ])),
               SvgPicture.asset(
                   'assets/images/icons/home_screen_icons/wallet_icon.svg'),
+              SizedBox(width: 10),
               SvgPicture.asset(
                   'assets/images/icons/home_screen_icons/cart_icon.svg'),
+              SizedBox(width: 10),
               SvgPicture.asset(
                   'assets/images/icons/home_screen_icons/notification_icon.svg'),
             ])));
