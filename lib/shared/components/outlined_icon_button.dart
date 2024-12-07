@@ -17,6 +17,7 @@ class OutlinedIconButton extends StatelessWidget {
     return GestureDetector(
         onTap: onTap,
         child: Container(
+            padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: backgroundColor,

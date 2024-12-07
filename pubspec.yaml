@@ -41,6 +41,8 @@ flutter:
     - assets/images/icons/gender/
     - assets/images/icons/home_screen_icons/
     - assets/images/icons/drawer_icons/
+    - assets/images/icons/test_categories_icon/
+    - assets/images/icons/accreditations/
 
   fonts:
     - family: Ubuntu

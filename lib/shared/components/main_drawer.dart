@@ -1,7 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/profile_module/screens/my_profile_screen.dart';
+import 'package:qris_health/modules/refer_and_earn_module/screens/coins_screen.dart';
+import 'package:qris_health/modules/refer_and_earn_module/screens/refer_and_earn_screen.dart';
+import 'package:qris_health/modules/refer_and_earn_module/screens/wallet_screen.dart';
+import 'package:qris_health/modules/screens/address_screen.dart';
+import 'package:qris_health/modules/screens/bookings_screen.dart';
+import 'package:qris_health/modules/screens/family_member_screen.dart';
+import 'package:qris_health/modules/screens/find_doctors_screen.dart';
+import 'package:qris_health/modules/screens/health_articles_screen.dart';
+import 'package:qris_health/modules/screens/mental_wellness_screen.dart';
+import 'package:qris_health/modules/screens/packages_screen.dart';
 
 import '../../styles/app_colors.dart';
 import 'common_divider.dart';
@@ -44,23 +56,38 @@ class MainDrawer extends StatelessWidget {
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/profile_icon.svg',
                 title: 'View Profile',
-                onTap: () {}),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => MyProfileScreen()));
+                }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/location_icon.svg',
                 title: 'Addresses',
-                onTap: () {}),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => AddressScreen()));
+                }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/family_icon.svg',
                 title: 'Family Members',
-                onTap: () {}),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => FamilyMemberScreen()));
+                }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/wallet_icon.svg',
                 title: 'Qris wallet',
-                onTap: () {}),
+                onTap: () {
+                  Navigator.of(context).push(
+                      CupertinoPageRoute(builder: (context) => WalletScreen()));
+                }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/coin_icon.svg',
                 title: 'Qris Coins',
-                onTap: () {}),
+                onTap: () {
+                  Navigator.of(context).push(
+                      CupertinoPageRoute(builder: (context) => CoinsScreen()));
+                }),
             CommonDivider(),
             SizedBox(height: 8),
             Align(
@@ -81,34 +108,54 @@ class MainDrawer extends StatelessWidget {
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/booking_icon.svg',
                 title: 'Booking / Reports',
-                onTap: () {}),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => BookingsScreen()));
+                }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/refer_icon.svg',
                 title: 'Refer & Earn',
-                onTap: () {}),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => ReferAndEarnScreen()));
+                }),
             _buildListTile(
                 svgPath:
                     'assets/images/icons/drawer_icons/mental_wellness_icon.svg',
                 title: 'Mental Wellness',
-                onTap: () {}),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => MentalWellnessScreen()));
+                }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/premium_icon.svg',
                 title: 'Popular Packages',
-                onTap: () {}),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => PackagesScreen()));
+                }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/doctor_icon.svg',
                 title: 'Find Doctors',
-                onTap: () {}),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => FindDoctorsScreen()));
+                }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/article_icon.svg',
                 title: 'Health Articles',
-                onTap: () {}),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => HealthArticlesScreen()));
+                }),
           ])),
           CommonDivider(),
           _buildListTile(
               svgPath: 'assets/images/icons/drawer_icons/logout_icon.svg',
               title: 'Logout',
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+              },
               fontFamily: AppConstants.metropolisFontFamily,
               color: AppColors.red)
         ])));

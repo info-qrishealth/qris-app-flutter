@@ -23,31 +23,28 @@ class FilterTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Get.textTheme;
 
-    return SizedBox(
-        height: 40,
-        child: TextFormField(
-            onFieldSubmitted: onFieldSubmitted,
-            controller: controller,
-            cursorColor: AppColors.primaryPink,
-            autofocus: false,
-            onChanged: onChanged,
-            style: textTheme.bodyLarge!.copyWith(color: AppColors.black),
-            decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(
-                    top: 20, bottom: 20, left: 16, right: 16),
-                isCollapsed: true,
-                hintText: hintText,
-                prefixIconConstraints:
-                    const BoxConstraints(maxHeight: 24, maxWidth: 70),
-                prefixIcon: Padding(
-                    padding: const EdgeInsets.only(left: 18, right: 18),
-                    child: SvgPicture.asset(
-                        'assets/images/icons/search_icon.svg',
-                        color: AppColors.lightSubTextColor)),
-                suffixIconConstraints: const BoxConstraints(maxWidth: 55),
-                suffixIcon: suffixIcon,
-                hintStyle: textTheme.bodyLarge!.copyWith(
-                    color: AppColors.lightSubTextColor,
-                    fontWeight: FontWeight.w400))));
+    return TextFormField(
+        onFieldSubmitted: onFieldSubmitted,
+        controller: controller,
+        cursorColor: AppColors.primaryPink,
+        autofocus: false,
+        onChanged: onChanged,
+        style: textTheme.bodyLarge!.copyWith(color: AppColors.black),
+        decoration: InputDecoration(
+            contentPadding:
+                const EdgeInsets.only(top: 12, bottom: 12, left: 16, right: 16),
+            isCollapsed: true,
+            hintText: hintText,
+            prefixIconConstraints:
+                const BoxConstraints(maxHeight: 24, maxWidth: 70),
+            prefixIcon: Padding(
+                padding: const EdgeInsets.only(left: 18, right: 18),
+                child: SvgPicture.asset('assets/images/icons/search_icon.svg',
+                    color: AppColors.lightSubTextColor)),
+            suffixIconConstraints: const BoxConstraints(maxWidth: 55),
+            suffixIcon: suffixIcon,
+            hintStyle: textTheme.bodyLarge!.copyWith(
+                color: AppColors.lightSubTextColor,
+                fontWeight: FontWeight.w400)));
   }
 }
