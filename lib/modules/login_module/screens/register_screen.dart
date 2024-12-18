@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/gender.dart';
 import 'package:qris_health/modules/login_module/components/privacy_policy_text.dart';
 import 'package:qris_health/shared/components/common_field_dropdown.dart';
 import 'package:qris_health/shared/components/common_textfield.dart';
+import 'package:qris_health/shared/components/dob_dropdown.dart';
 import 'package:qris_health/shared/components/gender_input_container_row.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/shared/utils/search_pattern.dart';
@@ -107,73 +108,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           textInputType: TextInputType.phone,
                           headingText: 'Mobile Number'),
                       SizedBox(height: 16),
-                      Text(' Date of Birth',
-                          style: _textTheme.titleMedium!
-                              .copyWith(fontWeight: FontWeight.w400)),
-                      SizedBox(height: 12),
-                      InputDecorator(
-                          decoration: InputDecoration(),
-                          child: Row(children: [
-                            Expanded(
-                                child: DropdownButton(
-                                    underline: Container(),
-                                    icon: Icon(
-                                        Icons.keyboard_arrow_down_outlined,
-                                        size: 20,
-                                        color: AppColors.lightGrey),
-                                    hint: Text('Date',
-                                        style: _textTheme.bodyLarge!.copyWith(
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black45)),
-                                    items: List.generate(31, (index) {
-                                      final date = index + 1;
-
-                                      return DropdownMenuItem(
-                                          value: index,
-                                          child: Text(date.toString()));
-                                    }),
-                                    onChanged: (value) {})),
-                            Expanded(
-                                child: DropdownButton(
-                                    underline: Container(),
-                                    icon: Icon(
-                                        Icons.keyboard_arrow_down_outlined,
-                                        size: 20,
-                                        color: AppColors.lightGrey),
-                                    hint: Text('Month',
-                                        style: _textTheme.bodyLarge!.copyWith(
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black45)),
-                                    items: List.generate(31, (index) {
-                                      final date = index + 1;
-
-                                      return DropdownMenuItem(
-                                          value: index,
-                                          child: Text(date.toString()));
-                                    }),
-                                    onChanged: (value) {})),
-                            Expanded(
-                                child: DropdownButton(
-                                    underline: Container(),
-                                    icon: Icon(
-                                        Icons.keyboard_arrow_down_outlined,
-                                        size: 20,
-                                        color: AppColors.lightGrey),
-                                    hint: Text('Year',
-                                        style: _textTheme.bodyLarge!.copyWith(
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black45)),
-                                    items: List.generate(31, (index) {
-                                      final date = index + 1;
-
-                                      return DropdownMenuItem(
-                                          value: index,
-                                          child: Text(date.toString()));
-                                    }),
-                                    onChanged: (value) {})),
-                          ])),
+                      DobDropdown(),
                       SizedBox(height: 16),
-                      GenderInputContainerRow(),
+                      GenderInputContainerRow(
+                          onTap: (selectedGender) {}, gender: Gender.MALE),
                       SizedBox(height: 32),
                       ElevatedButton(
                           onPressed: () {

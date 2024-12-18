@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../constants/app_constants.dart';
 import '../../styles/app_colors.dart';
 
 class CommonFieldDropdown<T> extends StatelessWidget {
@@ -15,6 +14,7 @@ class CommonFieldDropdown<T> extends StatelessWidget {
   final double? menuWidth;
   final String? Function(T?)? validator;
   final String? headingText;
+  final bool isRequired;
 
   const CommonFieldDropdown(
       {super.key,
@@ -27,7 +27,8 @@ class CommonFieldDropdown<T> extends StatelessWidget {
       this.isExpanded,
       this.menuWidth,
       this.validator,
-      required this.headingText});
+      required this.headingText,
+      this.isRequired = false});
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +36,15 @@ class CommonFieldDropdown<T> extends StatelessWidget {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       if (headingText != null)
-        Text(' ${headingText!}',
-            style: textTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.w400, color: AppColors.textColor)),
+        RichText(
+            text: TextSpan(
+                style: textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.w400, color: AppColors.textColor),
+                children: [
+              TextSpan(text: ' ${headingText!}'),
+              if (isRequired)
+                TextSpan(text: ' *', style: TextStyle(color: AppColors.red)),
+            ])),
       if (headingText != null) SizedBox(height: 12),
       FormField<T>(
           validator: validator,

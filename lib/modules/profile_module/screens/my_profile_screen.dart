@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/gender.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_textfield.dart';
 import 'package:qris_health/shared/components/gender_input_container_row.dart';
@@ -61,7 +62,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   textInputType: TextInputType.emailAddress,
                   headingText: 'Email'),
               SizedBox(height: 16),
-              GenderInputContainerRow(),
+              GenderInputContainerRow(onTap: (gender) {}, gender: Gender.MALE),
               SizedBox(height: 16),
               CommonTextField(
                   hintText: 'Enter your body weight',

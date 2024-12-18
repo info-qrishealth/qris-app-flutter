@@ -40,7 +40,7 @@ class ContactUsContainer extends StatelessWidget {
                       svgPath: 'assets/images/icons/call_icon.svg'),
                   SizedBox(width: 6),
                   _buildButton(
-                      title: 'Chat with us',
+                      title: 'Chat Now',
                       onTap: () {},
                       svgPath: 'assets/images/icons/whatsapp_icon.svg'),
                 ])

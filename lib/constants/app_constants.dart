@@ -16,6 +16,8 @@ class AppConstants {
   static const latoFontFamily = 'Lato';
   static const metropolisFontFamily = 'Metropolis';
   static const scaffoldPadding = 20.0;
+  static var bottomSheetConstraints =
+      BoxConstraints(maxHeight: Get.height * 0.85);
 
   static String getErrorMessage(String message) {
     try {

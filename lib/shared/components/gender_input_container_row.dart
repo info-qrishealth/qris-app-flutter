@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/constants/enums/gender.dart';
+
+import '../../styles/app_colors.dart';
 
 class GenderInputContainerRow extends StatefulWidget {
-  const GenderInputContainerRow({super.key});
+  final Function(Gender) onTap;
+  final Gender? gender;
+  final bool isRequired;
+
+  const GenderInputContainerRow(
+      {super.key,
+      required this.onTap,
+      this.isRequired = false,
+      required this.gender});
 
   @override
   State<GenderInputContainerRow> createState() =>
@@ -13,31 +24,39 @@ class GenderInputContainerRow extends StatefulWidget {
 class _GenderInputContainerRowState extends State<GenderInputContainerRow> {
   @override
   Widget build(BuildContext context) {
+    final textTheme = Get.textTheme;
+
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Text(' Gender',
-          style:
-              Get.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w400)),
+      RichText(
+          text: TextSpan(
+              style: textTheme.titleMedium!.copyWith(
+                  fontWeight: FontWeight.w400, color: AppColors.textColor),
+              children: [
+            TextSpan(text: ' Gender'),
+            if (widget.isRequired)
+              TextSpan(text: ' *', style: TextStyle(color: AppColors.red)),
+          ])),
       SizedBox(height: 12),
       Padding(
           padding: const EdgeInsets.only(left: 2),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            _buildSexContainer(
-                svgPath: 'assets/images/icons/gender/male_icon.svg'),
-            _buildSexContainer(
-                svgPath: 'assets/images/icons/gender/female_icon.svg'),
-            _buildSexContainer(
-                svgPath: 'assets/images/icons/gender/others_icon.svg'),
-          ])),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: Gender.values
+                  .map((gender) => _buildSexContainer(gender: gender))
+                  .toList())),
     ]);
   }
 
-  Widget _buildSexContainer({required String svgPath}) {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 26, vertical: 12),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: Colors.black.withOpacity(0.09))),
-        child: SvgPicture.asset(svgPath));
+  Widget _buildSexContainer({required Gender gender}) {
+    return GestureDetector(
+        onTap: () {
+          widget.onTap(gender);
+        },
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 26, vertical: 12),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: Colors.black.withOpacity(0.09))),
+            child: SvgPicture.asset(gender.imagePath)));
   }
 }

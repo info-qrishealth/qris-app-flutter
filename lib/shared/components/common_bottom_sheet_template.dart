@@ -5,7 +5,9 @@ import 'ios_handle.dart';
 
 class CommonBottomSheetTemplate extends StatelessWidget {
   final Widget child;
-  const CommonBottomSheetTemplate({super.key, required this.child});
+  final bool isExtendedWidget;
+  const CommonBottomSheetTemplate(
+      {super.key, required this.child, this.isExtendedWidget = true});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +18,12 @@ class CommonBottomSheetTemplate extends StatelessWidget {
             bottom: MediaQuery.of(context).viewInsets.bottom),
         child: SafeArea(
             child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
               const SizedBox(height: 12),
               const IosHandle(),
-              Expanded(child: child)
+              if (isExtendedWidget) Expanded(child: child) else child
             ])));
   }
 }

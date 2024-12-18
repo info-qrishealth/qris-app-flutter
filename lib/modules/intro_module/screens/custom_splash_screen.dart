@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qris_health/modules/intro_module/screens/onboarding_screen.dart';
-import 'package:qris_health/modules/login_module/screens/login_phone_number_screen.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../constants/enums/snackbar_type.dart';
