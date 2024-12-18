@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import '../../../styles/app_colors.dart';
 
 class WalletEntryListTile extends StatelessWidget {
-  const WalletEntryListTile({super.key});
+  final String title;
+  const WalletEntryListTile({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class WalletEntryListTile extends StatelessWidget {
       Expanded(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Text('Wallet Amount Paid To Order',
+        Text(title,
             style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w400)),
         SizedBox(height: 5),
         Text('Aug 16, 2023 at 05:16 pm',

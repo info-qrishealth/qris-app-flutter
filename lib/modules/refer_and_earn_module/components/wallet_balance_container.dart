@@ -3,7 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class WalletBalanceContainer extends StatelessWidget {
-  const WalletBalanceContainer({super.key});
+  final String title;
+  final String value;
+  final String svgPath;
+  const WalletBalanceContainer(
+      {super.key,
+      required this.title,
+      required this.value,
+      required this.svgPath});
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +29,13 @@ class WalletBalanceContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                  'assets/images/icons/drawer_icons/wallet_icon.svg',
-                  color: Colors.white,
-                  height: 24),
+              SvgPicture.asset(svgPath, color: Colors.white, height: 24),
               SizedBox(height: 12),
-              Text('Total Balance',
+              Text(title,
                   style: textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.w400, color: Colors.white)),
               SizedBox(height: 14),
-              Text('₹4500',
+              Text(value,
                   style: textTheme.headlineLarge!.copyWith(
                       fontWeight: FontWeight.w400, color: Colors.white))
             ]));

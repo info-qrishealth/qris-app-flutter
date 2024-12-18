@@ -29,7 +29,11 @@ class _WalletScreenState extends State<WalletScreen> {
               Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: AppConstants.scaffoldPadding),
-                  child: WalletBalanceContainer()),
+                  child: WalletBalanceContainer(
+                      svgPath:
+                          'assets/images/icons/drawer_icons/wallet_icon.svg',
+                      title: 'Total Balance',
+                      value: '₹4500')),
               SizedBox(height: 32),
               Expanded(
                   child: ListView.separated(
@@ -39,7 +43,8 @@ class _WalletScreenState extends State<WalletScreen> {
                           right: AppConstants.scaffoldPadding,
                           bottom: 32),
                       itemBuilder: (context, index) {
-                        return WalletEntryListTile();
+                        return WalletEntryListTile(
+                            title: 'Wallet Amount Paid To Order');
                       },
                       separatorBuilder: (context, index) {
                         return SizedBox(height: 16);
