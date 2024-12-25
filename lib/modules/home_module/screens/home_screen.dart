@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
 import 'package:qris_health/modules/home_module/components/category_container.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_app_bar.dart';
 import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
@@ -93,7 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       shrinkWrap: true,
                       separatorBuilder: (context, index) => SizedBox(width: 8),
                       itemBuilder: (context, index) {
-                        return PackageTileHorizontal(onBookNowTap: () {});
+                        return PackageTileHorizontal(onBookNowTap: () {
+                          Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => CartScreen()));
+                        });
                       })),
               SizedBox(height: 16),
               ContactUsContainer(),

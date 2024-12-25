@@ -75,7 +75,12 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                     horizontal: AppConstants.scaffoldPadding),
                 children: [
               SizedBox(height: 16),
-              PackageListTile(onSeeDetailsTap: null, onBookNowTap: () {}),
+              PackageListTile(
+                  onSeeDetailsTap: null,
+                  onBookNowTap: () {
+                    Navigator.of(context).push(
+                        CupertinoPageRoute(builder: (context) => CartScreen()));
+                  }),
               SizedBox(height: 18),
               DottedBorder(
                   strokeWidth: 0.7,
@@ -220,7 +225,10 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                   child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        return PackageTileHorizontal(onBookNowTap: () {});
+                        return PackageTileHorizontal(onBookNowTap: () {
+                          Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => CartScreen()));
+                        });
                       },
                       separatorBuilder: (context, index) {
                         return SizedBox(width: 8);

@@ -1,11 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/constants/enums/popular_package_type.dart';
 import 'package:qris_health/shared/components/discount_coupon_container.dart';
 import 'package:qris_health/styles/app_colors.dart';
+
+import '../../screens/blood_test_detail_screen.dart';
 
 class PopularPackageScreen extends StatefulWidget {
   const PopularPackageScreen({super.key});
@@ -80,8 +84,14 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                     return PackageListTile(
                         description:
                             'Included : Liver Test, Kidney Test, Blood glucose fasting, Lipid profile, Thyroid Profile, HBA1C, Urine Test....',
-                        onSeeDetailsTap: () {},
-                        onBookNowTap: () {});
+                        onSeeDetailsTap: () {
+                          Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => BloodTestDetailScreen()));
+                        },
+                        onBookNowTap: () {
+                          Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => CartScreen()));
+                        });
                   },
                   separatorBuilder: (context, index) {
                     return SizedBox(height: 15);

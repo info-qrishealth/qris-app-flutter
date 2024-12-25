@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/cart_module/components/step_indicator/step_indicator.dart';
 import 'package:qris_health/modules/cart_module/screens/tabs/bill_summary_tab.dart';
@@ -17,7 +16,6 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final _pageController = PageController();
-  final _textTheme = Get.textTheme;
   int _selectedPage = 0;
 
   @override

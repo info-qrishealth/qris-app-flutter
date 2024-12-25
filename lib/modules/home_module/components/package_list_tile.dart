@@ -20,6 +20,7 @@ class PackageListTile extends StatelessWidget {
       required this.onSeeDetailsTap,
       required this.onBookNowTap,
       this.suffix});
+
   final _textTheme = Get.textTheme;
 
   @override

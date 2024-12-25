@@ -1,11 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
+import 'package:qris_health/modules/screens/blood_test_detail_screen.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
 
 import '../../../shared/components/common_app_bar.dart';
+import '../../cart_module/screens/cart_screen.dart';
 
 class SearchPackageScreen extends StatefulWidget {
   const SearchPackageScreen({super.key});
@@ -54,9 +57,14 @@ class _SearchPackageScreenState extends State<SearchPackageScreen> {
                                 return SizedBox(height: 10);
                               },
                               separatorBuilder: (context, index) {
-                                return PackageListTile(
-                                    onSeeDetailsTap: () {},
-                                    onBookNowTap: () {});
+                                return PackageListTile(onSeeDetailsTap: () {
+                                  Navigator.of(context).push(CupertinoPageRoute(
+                                      builder: (context) =>
+                                          BloodTestDetailScreen()));
+                                }, onBookNowTap: () {
+                                  Navigator.of(context).push(CupertinoPageRoute(
+                                      builder: (context) => CartScreen()));
+                                });
                               },
                               itemCount: 10)),
                     ]))));
