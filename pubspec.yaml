@@ -44,6 +44,7 @@ flutter:
     - assets/images/icons/test_categories_icon/
     - assets/images/icons/accreditations/
     - assets/images/placeholders/
+    - assets/images/icons/popular_packages_type/
 
   fonts:
     - family: Ubuntu

@@ -6,7 +6,8 @@ import 'package:qris_health/shared/components/offered_price_container.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class PopularPackageListTile extends StatelessWidget {
-  PopularPackageListTile({super.key});
+  final String? description;
+  PopularPackageListTile({super.key, this.description});
   final _textTheme = Get.textTheme;
 
   @override
@@ -31,6 +32,12 @@ class PopularPackageListTile extends StatelessWidget {
                     FeatureRow(
                         imagePath: 'assets/images/icons/test_tube.png',
                         title: '87 Parameters'),
+                    if (description != null)
+                      Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: Text(description!,
+                              style: _textTheme.labelSmall!.copyWith(
+                                  fontWeight: FontWeight.w400, fontSize: 10))),
                   ])),
           SizedBox(height: 2),
           OfferedPriceContainer(

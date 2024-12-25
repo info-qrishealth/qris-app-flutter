@@ -8,6 +8,7 @@ import 'package:qris_health/modules/home_module/components/home_screen_app_bar.d
 import 'package:qris_health/modules/home_module/components/package_tile.dart';
 import 'package:qris_health/modules/home_module/components/test_and_scan_tile.dart';
 import 'package:qris_health/modules/home_module/enum/test_category.dart';
+import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/home_module/screens/search_package_screen.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
@@ -78,7 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
               CashbackContainer(),
               SizedBox(height: 18),
               _buildHeadingRow(
-                  title: 'Popular blood test packages', onTap: () {}),
+                  title: 'Popular blood test packages',
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => PopularPackageScreen()));
+                  }),
               SizedBox(height: 12),
               SizedBox(
                   height: 145,
@@ -94,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ContactUsContainer(),
               SizedBox(height: 16),
               _buildHeadingRow(
-                  title: 'Popular Imaging Tests and Scans', onTap: () {}),
+                  title: 'Popular Imaging Tests and Scans', onTap: null),
               SizedBox(height: 12),
               SizedBox(
                   height: 115,
@@ -136,16 +141,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ])));
   }
 
-  Widget _buildHeadingRow({required String title, required Function() onTap}) {
+  Widget _buildHeadingRow({required String title, required Function()? onTap}) {
     return Row(children: [
       Expanded(
           child: Text(title,
               style: _textTheme.titleMedium!
                   .copyWith(fontWeight: FontWeight.w700))),
-      OutlinedIconButton(
-          onTap: onTap,
-          icon: Icon(Icons.arrow_forward_ios_outlined,
-              color: AppColors.primaryBlue, size: 16)),
+      if (onTap != null)
+        OutlinedIconButton(
+            onTap: onTap,
+            icon: Icon(Icons.arrow_forward_ios_outlined,
+                color: AppColors.primaryBlue, size: 16)),
     ]);
   }
 
