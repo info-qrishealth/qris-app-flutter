@@ -44,7 +44,9 @@ class _CartScreenState extends State<CartScreen> {
                             SelectPatientTab(onContinue: () {
                               _animateToPage(pageIndex: 1);
                             }),
-                            SelectAddressTab(),
+                            SelectAddressTab(onContinue: () {
+                              _animateToPage(pageIndex: 2);
+                            }),
                             TimeSlotTab(),
                             BillSummaryTab()
                           ])),

@@ -12,12 +12,14 @@ class PackageListTile extends StatelessWidget {
   final String? description;
   final Function()? onSeeDetailsTap;
   final Function()? onBookNowTap;
+  final Widget? actions;
 
   PackageListTile(
       {super.key,
       this.description,
       required this.onSeeDetailsTap,
-      required this.onBookNowTap});
+      required this.onBookNowTap,
+      this.actions});
   final _textTheme = Get.textTheme;
 
   @override
