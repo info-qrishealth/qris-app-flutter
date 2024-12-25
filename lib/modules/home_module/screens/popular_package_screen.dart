@@ -37,30 +37,30 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                     final isSelected = _popularPackageType == package;
 
                     return GestureDetector(
-                      onTap: () {
-                        _popularPackageType = package;
-                        setState(() {});
-                      },
-                      child: Column(children: [
-                        Expanded(
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? Color(0x14B23C97)
-                                        : Colors.white,
-                                    border: Border.all(
-                                        color: isSelected
-                                            ? AppColors.primaryPink
-                                            : Colors.black.withOpacity(0.09)),
-                                    borderRadius: BorderRadius.circular(17)),
-                                padding: EdgeInsets.all(14),
-                                child: Image.asset(package.assetPath))),
-                        SizedBox(height: 4),
-                        Text(package.formattedName,
-                            style: _textTheme.bodySmall!
-                                .copyWith(fontWeight: FontWeight.w500))
-                      ]),
-                    );
+                        onTap: () {
+                          _popularPackageType = package;
+                          setState(() {});
+                        },
+                        child: Column(children: [
+                          Expanded(
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? Color(0x14B23C97)
+                                          : Colors.white,
+                                      border: Border.all(
+                                          width: 0.9,
+                                          color: isSelected
+                                              ? AppColors.primaryPink
+                                              : Colors.black.withOpacity(0.09)),
+                                      borderRadius: BorderRadius.circular(17)),
+                                  padding: EdgeInsets.all(14),
+                                  child: Image.asset(package.assetPath))),
+                          SizedBox(height: 4),
+                          Text(package.formattedName,
+                              style: _textTheme.bodySmall!
+                                  .copyWith(fontWeight: FontWeight.w500))
+                        ]));
                   },
                   separatorBuilder: (BuildContext context, int index) {
                     return SizedBox(width: 18);
