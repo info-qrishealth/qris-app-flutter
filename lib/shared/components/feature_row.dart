@@ -1,23 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../styles/app_colors.dart';
 
 class FeatureRow extends StatelessWidget {
-  final String imagePath;
+  final String? svgPath;
+  final String? imagePath;
   final String title;
-  const FeatureRow({super.key, required this.imagePath, required this.title});
+  final Color? fontColor;
+  const FeatureRow(
+      {super.key,
+      this.imagePath,
+      required this.title,
+      this.svgPath,
+      this.fontColor});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Get.textTheme;
 
     return Row(children: [
-      Image.asset(imagePath, height: 10, color: AppColors.primaryBlue),
+      if (imagePath != null)
+        Image.asset(imagePath!, height: 12, color: AppColors.primaryBlue)
+      else if (svgPath != null)
+        SvgPicture.asset(svgPath!, height: 12, color: AppColors.primaryBlue),
       SizedBox(width: 4),
       Text(title,
           style: textTheme.labelSmall!.copyWith(
-              fontWeight: FontWeight.w400, color: AppColors.primaryPink))
+              fontWeight: FontWeight.w400,
+              color: fontColor ?? AppColors.primaryPink))
     ]);
   }
 }

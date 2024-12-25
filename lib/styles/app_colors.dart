@@ -11,4 +11,6 @@ class AppColors {
   static const lightSubTextColor = Color(0xFF707B81);
   static const textColor = Color(0xFF343434);
   static const lightGrey = Color(0xFF777777);
+  static Color borderColor = Colors.black.withOpacity(0.09);
+  static const goldenColor = Color(0xFFC49F0C);
 }

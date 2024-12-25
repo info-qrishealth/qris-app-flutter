@@ -12,14 +12,14 @@ class PackageListTile extends StatelessWidget {
   final String? description;
   final Function()? onSeeDetailsTap;
   final Function()? onBookNowTap;
-  final Widget? actions;
+  final Widget? suffix;
 
   PackageListTile(
       {super.key,
       this.description,
       required this.onSeeDetailsTap,
       required this.onBookNowTap,
-      this.actions});
+      this.suffix});
   final _textTheme = Get.textTheme;
 
   @override
@@ -53,7 +53,8 @@ class PackageListTile extends StatelessWidget {
                   ])),
           SizedBox(height: 2),
           OfferedPriceContainer(
-              padding: EdgeInsets.symmetric(vertical: 7, horizontal: 9)),
+              padding: EdgeInsets.symmetric(vertical: 7, horizontal: 9),
+              suffix: suffix),
           IntrinsicHeight(
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
