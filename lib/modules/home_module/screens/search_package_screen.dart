@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
-import 'package:qris_health/modules/home_module/components/popular_package_list_tile.dart';
+import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
 
@@ -54,7 +54,9 @@ class _SearchPackageScreenState extends State<SearchPackageScreen> {
                                 return SizedBox(height: 10);
                               },
                               separatorBuilder: (context, index) {
-                                return PopularPackageListTile();
+                                return PackageListTile(
+                                    onSeeDetailsTap: () {},
+                                    onBookNowTap: () {});
                               },
                               itemCount: 10)),
                     ]))));

@@ -14,6 +14,7 @@ import 'package:qris_health/modules/screens/find_doctors_screen.dart';
 import 'package:qris_health/modules/screens/health_articles_screen.dart';
 import 'package:qris_health/modules/screens/mental_wellness_screen.dart';
 import 'package:qris_health/modules/screens/packages_screen.dart';
+import 'package:qris_health/shared/components/underline_text.dart';
 
 import '../../styles/app_colors.dart';
 import 'common_divider.dart';
@@ -95,15 +96,12 @@ class MainDrawer extends StatelessWidget {
                 child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 28),
                     child: UnconstrainedBox(
-                        child: Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: AppColors.primaryBlue))),
-                            child: Text('Others',
-                                style: _textTheme.titleMedium!.copyWith(
-                                    color: AppColors.primaryBlue,
-                                    fontWeight: FontWeight.w500)))))),
+                        child: UnderlineText(
+                            text: 'Others',
+                            underlineColor: AppColors.primaryBlue,
+                            style: _textTheme.titleMedium!.copyWith(
+                                color: AppColors.primaryBlue,
+                                fontWeight: FontWeight.w500))))),
             SizedBox(height: 8),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/booking_icon.svg',

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/home_module/components/category_container.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_app_bar.dart';
-import 'package:qris_health/modules/home_module/components/package_tile.dart';
+import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
 import 'package:qris_health/modules/home_module/components/test_and_scan_tile.dart';
 import 'package:qris_health/modules/home_module/enum/test_category.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';

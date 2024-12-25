@@ -5,7 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/home_module/components/cashback_container.dart';
-import 'package:qris_health/modules/home_module/components/package_tile.dart';
+import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
+import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/discount_coupon_container.dart';
@@ -74,9 +75,7 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                     horizontal: AppConstants.scaffoldPadding),
                 children: [
               SizedBox(height: 16),
-              SizedBox(
-                  height: 150,
-                  child: PackageTileHorizontal(onBookNowTap: () {})),
+              PackageListTile(onSeeDetailsTap: null, onBookNowTap: () {}),
               SizedBox(height: 18),
               DottedBorder(
                   strokeWidth: 0.7,

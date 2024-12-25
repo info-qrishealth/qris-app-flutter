@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
-import 'package:qris_health/modules/home_module/components/popular_package_list_tile.dart';
+import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/constants/enums/popular_package_type.dart';
 import 'package:qris_health/shared/components/discount_coupon_container.dart';
@@ -77,9 +77,11 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                       right: AppConstants.scaffoldPadding,
                       bottom: 16),
                   itemBuilder: (context, index) {
-                    return PopularPackageListTile(
+                    return PackageListTile(
                         description:
-                            'Included : Liver Test, Kidney Test, Blood glucose fasting, Lipid profile, Thyroid Profile, HBA1C, Urine Test....');
+                            'Included : Liver Test, Kidney Test, Blood glucose fasting, Lipid profile, Thyroid Profile, HBA1C, Urine Test....',
+                        onSeeDetailsTap: () {},
+                        onBookNowTap: () {});
                   },
                   separatorBuilder: (context, index) {
                     return SizedBox(height: 15);

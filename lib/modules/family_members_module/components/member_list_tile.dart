@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/shared/components/underline_text.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class MemberListTile extends StatelessWidget {
@@ -132,13 +133,10 @@ class MemberListTile extends StatelessWidget {
   }
 
   Widget _buildUnderlineText({required String text}) {
-    return Container(
-        padding: EdgeInsets.only(bottom: 1),
-        decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(color: AppColors.primaryPink, width: 0.5))),
-        child: Text(text,
-            style: _textTheme.labelSmall!.copyWith(
-                color: AppColors.primaryPink, fontWeight: FontWeight.w400)));
+    return UnderlineText(
+        text: text,
+        underlineColor: AppColors.primaryPink,
+        style: _textTheme.labelSmall!.copyWith(
+            color: AppColors.primaryPink, fontWeight: FontWeight.w400));
   }
 }

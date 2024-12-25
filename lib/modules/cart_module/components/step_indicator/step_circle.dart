@@ -23,11 +23,14 @@ class StepCircle extends StatelessWidget {
               decoration: BoxDecoration(
                   color: isSelected ? AppColors.primaryBlue : Color(0x0C411E75),
                   shape: BoxShape.circle),
-              child: Text('${step + 1}',
-                  style: textTheme.bodySmall!.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color:
-                          isSelected ? Colors.white : AppColors.primaryBlue))),
+              child: selectedStep > step
+                  ? Icon(Icons.done, color: Colors.white)
+                  : Text('${step + 1}',
+                      style: textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: isSelected
+                              ? Colors.white
+                              : AppColors.primaryBlue))),
           Positioned(
               top: 45,
               child: Text(

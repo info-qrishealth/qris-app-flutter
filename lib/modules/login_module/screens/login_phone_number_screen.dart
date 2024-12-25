@@ -6,6 +6,7 @@ import 'package:qris_health/modules/login_module/components/privacy_policy_text.
 import 'package:qris_health/modules/login_module/screens/login_username_and_password_screen.dart';
 import 'package:qris_health/modules/login_module/screens/otp_screen.dart';
 import 'package:qris_health/shared/components/common_textfield.dart';
+import 'package:qris_health/shared/components/underline_text.dart';
 import 'package:qris_health/shared/components/welcome_header_column.dart';
 import 'package:qris_health/shared/utils/search_pattern.dart';
 import 'package:qris_health/styles/app_colors.dart';
@@ -93,18 +94,8 @@ class _LoginPhoneNumberScreenState extends State<LoginPhoneNumberScreen> {
                                 LoginUsernameAndPasswordScreen()));
                       },
                       child: UnconstrainedBox(
-                          child: Container(
-                              padding: EdgeInsets.only(bottom: 0.5),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: AppColors.textColor,
-                                          width: 0.5))),
-                              child: Text('Login with User Id & Password',
-                                  textAlign: TextAlign.center,
-                                  style: _textTheme.bodyLarge!.copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.textColor))))),
+                          child: UnderlineText(
+                              text: 'Login with User Id & Password'))),
                 ]))));
   }
 }
