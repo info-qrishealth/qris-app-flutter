@@ -4,6 +4,7 @@ import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/home_module/components/popular_package_list_tile.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/constants/enums/popular_package_type.dart';
+import 'package:qris_health/shared/components/discount_coupon_container.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class PopularPackageScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomNavigationBar: DiscountCouponContainer(),
         appBar: CommonAppBar(title: _popularPackageType.formattedName),
         body: SafeArea(
             child: Column(children: [
