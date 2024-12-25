@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/shared/components/feature_row.dart';
 import 'package:qris_health/shared/components/offered_price_container.dart';
 import 'package:qris_health/styles/app_colors.dart';
+
+import '../../screens/blood_test_detail_screen.dart';
 
 class PopularPackageListTile extends StatelessWidget {
   final String? description;
@@ -48,7 +51,10 @@ class PopularPackageListTile extends StatelessWidget {
                   children: [
                 Expanded(
                     child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => BloodTestDetailScreen()));
+                        },
                         child: Container(
                             padding: EdgeInsets.symmetric(vertical: 10),
                             alignment: Alignment.center,
