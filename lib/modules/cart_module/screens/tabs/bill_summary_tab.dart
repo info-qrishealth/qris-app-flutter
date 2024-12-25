@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/shared/components/feature_row.dart';
@@ -8,6 +9,7 @@ import 'package:qris_health/shared/components/heading_text.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../../constants/enums/payment_mode.dart';
+import '../../components/coupons_bottom_sheet.dart';
 
 class BillSummaryTab extends StatefulWidget {
   const BillSummaryTab({super.key});
@@ -62,7 +64,13 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                 ])),
         SizedBox(height: 12),
         GestureDetector(
-            onTap: () {},
+            onTap: () {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  constraints: AppConstants.bottomSheetConstraints,
+                  context: context,
+                  builder: (context) => CouponsBottomSheet());
+            },
             child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
                 decoration: BoxDecoration(
