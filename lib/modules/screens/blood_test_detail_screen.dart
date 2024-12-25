@@ -1,4 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,8 @@ import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/discount_coupon_container.dart';
 import 'package:qris_health/shared/components/faq_list_tile.dart';
 import 'package:qris_health/styles/app_colors.dart';
+
+import '../cart_module/screens/cart_screen.dart';
 
 class BloodTestDetailScreen extends StatefulWidget {
   const BloodTestDetailScreen({super.key});
@@ -52,7 +55,10 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                 SizedBox(
                     height: 50,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => CartScreen()));
+                        },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),
                         child: Text('  Book Now  ',
@@ -68,7 +74,9 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                     horizontal: AppConstants.scaffoldPadding),
                 children: [
               SizedBox(height: 16),
-              SizedBox(height: 150, child: PackageTileHorizontal()),
+              SizedBox(
+                  height: 150,
+                  child: PackageTileHorizontal(onBookNowTap: () {})),
               SizedBox(height: 18),
               DottedBorder(
                   strokeWidth: 0.7,
@@ -213,7 +221,7 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                   child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        return PackageTileHorizontal();
+                        return PackageTileHorizontal(onBookNowTap: () {});
                       },
                       separatorBuilder: (context, index) {
                         return SizedBox(width: 8);

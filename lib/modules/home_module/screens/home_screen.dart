@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       shrinkWrap: true,
                       separatorBuilder: (context, index) => SizedBox(width: 8),
                       itemBuilder: (context, index) {
-                        return PackageTileHorizontal();
+                        return PackageTileHorizontal(onBookNowTap: () {});
                       })),
               SizedBox(height: 16),
               ContactUsContainer(),
