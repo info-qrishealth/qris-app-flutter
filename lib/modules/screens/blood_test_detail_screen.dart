@@ -11,6 +11,7 @@ import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/discount_coupon_container.dart';
 import 'package:qris_health/shared/components/faq_list_tile.dart';
+import 'package:qris_health/shared/components/info_row.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../cart_module/screens/cart_screen.dart';
@@ -94,11 +95,11 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                           color: AppColors.primaryPink.withOpacity(0.11)),
                       child: Row(children: [
                         Expanded(
-                            child: _buildInfoRow(
+                            child: InfoRow(
                                 svgPath: 'assets/images/icons/food_icon.svg',
                                 title: 'Fasting Time : ',
                                 description: ' 10-12 hours')),
-                        _buildInfoRow(
+                        InfoRow(
                             svgPath: 'assets/images/icons/clock_icon.svg',
                             title: 'Report Time : ',
                             description: ' 24 hours'),
@@ -236,26 +237,6 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                       itemCount: 10)),
               SizedBox(height: 26),
             ])));
-  }
-
-  Widget _buildInfoRow(
-      {required String svgPath,
-      required String title,
-      required String description}) {
-    return Row(children: [
-      SvgPicture.asset(svgPath, height: 16),
-      SizedBox(width: 4),
-      Text.rich(TextSpan(children: [
-        TextSpan(
-            text: title,
-            style: _textTheme.bodySmall!.copyWith(
-                color: AppColors.primaryPink, fontWeight: FontWeight.w400)),
-        TextSpan(
-            text: description,
-            style: TextStyle(
-                color: AppColors.primaryPink, fontWeight: FontWeight.w700)),
-      ])),
-    ]);
   }
 
   Widget _buildExpansionTile({required String title}) {

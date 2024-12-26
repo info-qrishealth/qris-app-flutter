@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
+import 'package:qris_health/shared/components/billing_amount_row.dart';
 import 'package:qris_health/shared/components/feature_row.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
 import 'package:qris_health/styles/app_colors.dart';
@@ -185,11 +186,11 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                 children: [
                   HeadingText(text: 'Bill Summary'),
                   SizedBox(height: 16),
-                  _buildTextRow(title: 'Package added', value: '₹1099'),
+                  SummaryInfoRow(title: 'Package added', value: '₹1099'),
                   SizedBox(height: 4),
-                  _buildTextRow(title: 'Hard copy charges', value: '₹99'),
+                  SummaryInfoRow(title: 'Hard copy charges', value: '₹99'),
                   SizedBox(height: 4),
-                  _buildTextRow(
+                  SummaryInfoRow(
                       title: 'Sample collection charges ', value: '₹99'),
                   SizedBox(height: 2),
                   Text('(applicable when order below ₹499)',
@@ -197,7 +198,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                           fontWeight: FontWeight.w300,
                           color: AppColors.primaryBlue)),
                   SizedBox(height: 4),
-                  _buildTextRow(
+                  SummaryInfoRow(
                       title: 'Yay! Coupon applied',
                       value: '-₹99',
                       color: AppColors.green),
@@ -319,21 +320,6 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
               ElevatedButton.styleFrom(backgroundColor: AppColors.primaryBlue),
           child: Text('Pay ₹1198/-')),
       SizedBox(height: 16),
-    ]);
-  }
-
-  Widget _buildTextRow(
-      {required String title, required String value, Color? color}) {
-    return Row(children: [
-      Expanded(
-          child: Text(title,
-              style: _textTheme.bodySmall!.copyWith(
-                  fontWeight: FontWeight.w400,
-                  color: color ?? AppColors.textColor))),
-      Text(value,
-          style: _textTheme.bodySmall!.copyWith(
-              fontWeight: FontWeight.w700,
-              color: color ?? AppColors.lightSubTextColor))
     ]);
   }
 

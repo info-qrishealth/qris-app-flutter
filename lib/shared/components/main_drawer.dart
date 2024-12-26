@@ -8,7 +8,7 @@ import 'package:qris_health/modules/refer_and_earn_module/screens/coins_screen.d
 import 'package:qris_health/modules/refer_and_earn_module/screens/refer_and_earn_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/screens/wallet_screen.dart';
 import 'package:qris_health/modules/address_module/screens/address_screen.dart';
-import 'package:qris_health/modules/screens/bookings_screen.dart';
+import 'package:qris_health/modules/booking_module/screens/bookings_screen.dart';
 import 'package:qris_health/modules/family_members_module/screens/family_member_screen.dart';
 import 'package:qris_health/modules/screens/find_doctors_screen.dart';
 import 'package:qris_health/modules/screens/health_articles_screen.dart';
