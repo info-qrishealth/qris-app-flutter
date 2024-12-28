@@ -5,7 +5,12 @@ import 'package:qris_health/styles/app_colors.dart';
 class StepCircle extends StatelessWidget {
   final int selectedStep;
   final int step;
-  const StepCircle({super.key, required this.step, required this.selectedStep});
+  final String title;
+  const StepCircle(
+      {super.key,
+      required this.step,
+      required this.selectedStep,
+      required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +38,7 @@ class StepCircle extends StatelessWidget {
                               : AppColors.primaryBlue))),
           Positioned(
               top: 45,
-              child: Text(
-                  step == 0
-                      ? 'Select Patient'
-                      : step == 1
-                          ? 'Select Address'
-                          : step == 2
-                              ? 'Time Slot'
-                              : 'Bill Summary',
+              child: Text(title,
                   style: Get.textTheme.bodySmall!.copyWith(
                       fontWeight: FontWeight.w400,
                       color: AppColors.primaryBlue)))

@@ -113,4 +113,64 @@ class AppConstants {
     'UTTARAKHAND',
     'WEST BENGAL',
   ];
+
+  static List<String> bpOptions = [
+    '90-130 / 60-90 mmHg (Normal)',
+    '130-140 / 90-100 mmHg',
+    '140-150 / 100-110 mmHg',
+    '150-160 / 110-120 mmHg',
+    '>160 / >120 mmHg'
+  ];
+
+  static List<String> pulseOptions = [
+    '60-80 beats/minute',
+    '81-90 beats/minute',
+    '91-100 beats/minute',
+    '101-110 beats/minute',
+    '>110 / < 60'
+  ];
+
+  static List<String> sleepOptions = [
+    'Sleep well for 7-8 hours daily',
+    'Snoring at Night',
+    'Snoring & Frequent wake up in middle of sleep',
+    'Choking, coughing & breathing difficulty during sleep',
+    'Falling asleep during the day while working/driving etc.'
+  ];
+
+  static List<String> dietOptions = [
+    'No fruit or vegetables each day',
+    '1-2 servings of fruit or vegetables per day',
+    '3-4 servings of fruit or vegetables per day',
+    '5+ servings of fruit or vegetables per day',
+  ];
+
+  static List<String> waterOptions = [
+    '8 or more glasses',
+    '5-7 glasses',
+    '3-5 glasses',
+    'Fewer than 3 glasses',
+  ];
+
+  static List<String> alcoholOptions = [
+    'I Don’t drink',
+    '2-3 drinks',
+    '4-5 drinks',
+    '6 or more drinks',
+  ];
+
+  static List<String> cigarettesOptions = [
+    'I Don’t smoke',
+    '2-3 cigarettes',
+    '4-5 cigarettes',
+    '6 or more cigarettes',
+  ];
+
+  static List<String> exerciseOptions = [
+    'No Exercise',
+    'Less than 30 minutes a day',
+    '30-45 minutes a day',
+    '45 minutes to 1 hour a day',
+    'More than 1 ½ hours per day',
+  ];
 }

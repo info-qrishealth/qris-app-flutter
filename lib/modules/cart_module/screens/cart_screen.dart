@@ -32,7 +32,7 @@ class _CartScreenState extends State<CartScreen> {
                       SizedBox(height: 24),
                       Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: StepIndicator(_selectedPage)),
+                          child: CartStepIndicator(_selectedPage)),
                       SizedBox(height: 50),
                       Expanded(
                           child: PageView(
