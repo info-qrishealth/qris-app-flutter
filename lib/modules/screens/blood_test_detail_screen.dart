@@ -275,9 +275,11 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
         child: Row(children: [
           SvgPicture.asset(assetPath),
           SizedBox(width: 8),
-          Text(title,
-              style: _textTheme.bodySmall!.copyWith(
-                  color: AppColors.primaryPink, fontWeight: FontWeight.w400))
+          Expanded(
+              child: Text(title,
+                  style: _textTheme.bodySmall!.copyWith(
+                      color: AppColors.primaryPink,
+                      fontWeight: FontWeight.w400)))
         ]));
   }
 }

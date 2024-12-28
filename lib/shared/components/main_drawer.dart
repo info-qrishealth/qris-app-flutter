@@ -12,7 +12,7 @@ import 'package:qris_health/modules/booking_module/screens/bookings_screen.dart'
 import 'package:qris_health/modules/family_members_module/screens/family_member_screen.dart';
 import 'package:qris_health/modules/screens/find_doctors_screen.dart';
 import 'package:qris_health/modules/screens/health_articles_screen.dart';
-import 'package:qris_health/modules/screens/mental_wellness_screen.dart';
+import 'package:qris_health/modules/health_module/screens/mental_wellness_screen.dart';
 import 'package:qris_health/modules/screens/packages_screen.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
 

@@ -12,8 +12,7 @@ class DiscountCouponContainer extends StatelessWidget {
     return Container(
         padding: EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(color: Color(0xFF03B07A)),
-        child: SafeArea(
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           SvgPicture.asset('assets/images/icons/coupon_icon.svg'),
           SizedBox(width: 8),
           Text.rich(
@@ -40,6 +39,6 @@ class DiscountCouponContainer extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.w800))
                   ]),
               textAlign: TextAlign.center)
-        ])));
+        ]));
   }
 }

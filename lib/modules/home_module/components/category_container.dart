@@ -8,7 +8,7 @@ import 'package:qris_health/modules/health_module/screens/women_health_screen.da
 import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
 import 'package:qris_health/modules/home_module/enum/test_category.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
-import 'package:qris_health/modules/screens/mental_wellness_screen.dart';
+import 'package:qris_health/modules/health_module/screens/mental_wellness_screen.dart';
 import 'package:qris_health/styles/app_colors.dart';
 import 'package:qris_health/styles/app_styles.dart';
 

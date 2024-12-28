@@ -7,7 +7,7 @@ class AppColors {
   static const red = Color(0xFFFF726D);
   static const green = Color(0xFF48BD48);
   static const gold = Color(0xFFDDBA5A);
-  static const lightText = Color(0xFF474747);
+  static const lightText = Color(0xFF484848);
   static const lightSubTextColor = Color(0xFF707B81);
   static const textColor = Color(0xFF343434);
   static const lightGrey = Color(0xFF777777);

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/health_module/components/why_choose_package_container.dart';
 import 'package:qris_health/modules/health_module/screens/men_health_screen.dart';
+import 'package:qris_health/modules/health_module/screens/mental_wellness_details_screen.dart';
+import 'package:qris_health/modules/health_module/screens/women_health_screen.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
@@ -43,7 +45,8 @@ class _MentalWellnessScreenState extends State<MentalWellnessScreen> {
                         backgroundColor: Color(0xFFECCAFF),
                         onTap: () {
                           Navigator.of(context).push(CupertinoPageRoute(
-                              builder: (context) => MentalWellnessScreen()));
+                              builder: (context) =>
+                                  MentalWellnessDetailsScreen()));
                         })),
                 SizedBox(width: 8),
                 Expanded(
@@ -61,7 +64,10 @@ class _MentalWellnessScreenState extends State<MentalWellnessScreen> {
                         title: 'Women Health',
                         imagePath: 'assets/images/placeholders/woman.png',
                         backgroundColor: Color(0xFFFACCF2),
-                        onTap: () {})),
+                        onTap: () {
+                          Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => WomenHealthScreen()));
+                        })),
               ]),
               SizedBox(height: 20),
               WhyChoosePackageContainer(),

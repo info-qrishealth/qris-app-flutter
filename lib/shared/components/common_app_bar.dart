@@ -20,6 +20,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
             top: 8),
         child: AppBar(
             actions: actions,
+            centerTitle: false,
             leadingWidth: 44,
             leading: OutlinedIconButton(
                 onTap: () {

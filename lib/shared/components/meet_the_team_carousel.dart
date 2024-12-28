@@ -18,7 +18,9 @@ class _MeetTheTeamCarouselState extends State<MeetTheTeamCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+    return SafeArea(
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       HeadingText(text: 'Meet the Team'),
       SizedBox(height: 16),
       FlutterCarousel.builder(
@@ -27,7 +29,7 @@ class _MeetTheTeamCarouselState extends State<MeetTheTeamCarousel> {
                 index: index, selectedIndex: _selectedIndex);
           },
           options: FlutterCarouselOptions(
-              aspectRatio: 1.4,
+              aspectRatio: 1.25,
               initialPage: 1,
               controller: _pageController,
               enlargeCenterPage: true,
@@ -57,7 +59,7 @@ class _MeetTheTeamCarouselState extends State<MeetTheTeamCarousel> {
                     setState(() {});
                   }),
       ]),
-    ]);
+    ]));
   }
 
   Widget _buildArrowButton(
