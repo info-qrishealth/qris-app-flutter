@@ -10,6 +10,8 @@ import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
+import '../../../shared/components/meet_the_team_carousel.dart';
+
 class MenHealthScreen extends StatefulWidget {
   const MenHealthScreen({super.key});
 
@@ -18,8 +20,6 @@ class MenHealthScreen extends StatefulWidget {
 }
 
 class _MenHealthScreenState extends State<MenHealthScreen> {
-  final _pageController = FlutterCarouselController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,48 +59,8 @@ class _MenHealthScreenState extends State<MenHealthScreen> {
               SizedBox(height: 20),
               WhyChoosePackageContainer(),
               SizedBox(height: 20),
-              HeadingText(text: 'Meet the Team'),
-              SizedBox(height: 16),
-              FlutterCarousel(
-                  items: [
-                    DoctorCarouselCard(),
-                    DoctorCarouselCard(),
-                    DoctorCarouselCard(),
-                  ],
-                  options: FlutterCarouselOptions(
-                      aspectRatio: 1.4,
-                      initialPage: 1,
-                      controller: _pageController,
-                      enlargeCenterPage: true,
-                      showIndicator: false,
-                      enlargeFactor: 0.2,
-                      viewportFraction: 0.75)),
-              SizedBox(height: 12),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                _buildArrowButton(
-                    icon: Icons.arrow_back_ios_new,
-                    onTap: () {
-                      _pageController.previousPage();
-                    }),
-                SizedBox(width: 8),
-                _buildArrowButton(
-                    icon: Icons.arrow_forward_ios,
-                    onTap: () {
-                      _pageController.nextPage();
-                    }),
-              ]),
+              MeetTheTeamCarousel(),
               SizedBox(height: 16),
             ])));
-  }
-
-  Widget _buildArrowButton(
-      {required IconData icon, required Function() onTap}) {
-    return GestureDetector(
-        onTap: onTap,
-        child: Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle, color: AppColors.primaryPink),
-            child: Icon(icon, color: Colors.white, size: 12)));
   }
 }

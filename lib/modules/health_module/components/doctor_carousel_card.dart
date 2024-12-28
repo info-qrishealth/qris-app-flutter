@@ -3,7 +3,10 @@ import 'package:get/get.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class DoctorCarouselCard extends StatelessWidget {
-  const DoctorCarouselCard({super.key});
+  final int index;
+  final int selectedIndex;
+  const DoctorCarouselCard(
+      {super.key, required this.index, required this.selectedIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +15,9 @@ class DoctorCarouselCard extends StatelessWidget {
     return Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-            color: AppColors.primaryBlue,
+            color: index == selectedIndex
+                ? AppColors.primaryBlue
+                : AppColors.primaryBlue.withOpacity(0.5),
             borderRadius: BorderRadius.circular(10)),
         child: Column(
             mainAxisSize: MainAxisSize.min,
