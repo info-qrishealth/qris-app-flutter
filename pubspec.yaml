@@ -23,6 +23,7 @@ dependencies:
   modal_progress_hud_nsn: ^0.5.1
   pin_code_fields: ^8.0.1
   dotted_border: ^2.0.0+3
+  flutter_carousel_widget: ^3.1.0
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +49,8 @@ flutter:
     - assets/images/icons/popular_packages_type/
     - assets/images/icons/test_benefit_icons/
     - assets/images/icons/health_score_icons/
+    - assets/images/icons/health_problem_icons/
+    - assets/images/icons/package_icons/
 
   fonts:
     - family: Ubuntu

@@ -18,6 +18,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Qris Health',
         theme: AppStyles.theme(context),
-        home: HealthScoreIntroScreen());
+        home: HomeScreen());
   }
 }
