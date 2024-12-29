@@ -29,6 +29,11 @@ class _MeetTheTeamCarouselState extends State<MeetTheTeamCarousel> {
                 index: index, selectedIndex: _selectedIndex);
           },
           options: FlutterCarouselOptions(
+              onPageChanged: (index, _) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
               aspectRatio: 1.25,
               initialPage: 1,
               controller: _pageController,
@@ -45,8 +50,6 @@ class _MeetTheTeamCarouselState extends State<MeetTheTeamCarousel> {
                 ? null
                 : () {
                     _pageController.previousPage();
-                    _selectedIndex--;
-                    setState(() {});
                   }),
         SizedBox(width: 8),
         _buildArrowButton(
@@ -55,8 +58,6 @@ class _MeetTheTeamCarouselState extends State<MeetTheTeamCarousel> {
                 ? null
                 : () {
                     _pageController.nextPage();
-                    _selectedIndex++;
-                    setState(() {});
                   }),
       ]),
     ]));

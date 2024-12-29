@@ -20,6 +20,7 @@ class _FaqListTileState extends State<FaqListTile> {
     final textTheme = Get.textTheme;
 
     return ExpansionTile(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         minTileHeight: 50,
         onExpansionChanged: (isExpanded) {
           _isExpanded = isExpanded;
