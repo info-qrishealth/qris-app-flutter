@@ -46,7 +46,7 @@ class WhatItIncludesContainer extends StatelessWidget {
             },
             separatorBuilder: (context, index) {
               return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: DottedLine(lineThickness: 0.8));
             },
             itemCount: testInfos.length));

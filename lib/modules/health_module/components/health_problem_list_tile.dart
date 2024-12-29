@@ -21,35 +21,37 @@ class HealthProblemListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Get.textTheme;
 
-    return Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        decoration: BoxDecoration(
-            gradient: gradient, borderRadius: BorderRadius.circular(9)),
-        child: Row(children: [
-          Image.asset(imagePath, height: 40),
-          SizedBox(width: 16),
-          Expanded(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                Text(title,
-                    style: textTheme.bodyLarge!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontFamily: AppConstants.ubuntuFontFamily)),
-                SizedBox(height: 6),
-                Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                  UnderlineText(
-                      text: 'View Package',
-                      style: textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.primaryPink)),
-                  SizedBox(width: 2),
-                  Padding(
-                      padding: const EdgeInsets.only(bottom: 1),
-                      child: Icon(Icons.arrow_forward_ios,
-                          color: AppColors.primaryPink, size: 10))
-                ])
-              ])),
-        ]));
+    return GestureDetector(
+        onTap: onTap,
+        child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            decoration: BoxDecoration(
+                gradient: gradient, borderRadius: BorderRadius.circular(9)),
+            child: Row(children: [
+              Image.asset(imagePath, height: 40),
+              SizedBox(width: 16),
+              Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    Text(title,
+                        style: textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontFamily: AppConstants.ubuntuFontFamily)),
+                    SizedBox(height: 6),
+                    Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                      UnderlineText(
+                          text: 'View Package',
+                          style: textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.primaryPink)),
+                      SizedBox(width: 2),
+                      Padding(
+                          padding: const EdgeInsets.only(bottom: 1),
+                          child: Icon(Icons.arrow_forward_ios,
+                              color: AppColors.primaryPink, size: 10))
+                    ])
+                  ])),
+            ])));
   }
 }

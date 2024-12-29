@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/health_module/components/doctor_carousel_card.dart';
 import 'package:qris_health/modules/health_module/components/health_problem_list_tile.dart';
 import 'package:qris_health/modules/health_module/components/why_choose_package_container.dart';
+import 'package:qris_health/modules/health_module/screens/male_infertility_screen.dart';
+import 'package:qris_health/modules/health_module/screens/male_performance_screen.dart';
 import 'package:qris_health/shared/components/common_action_app_bar_button.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
@@ -39,7 +42,10 @@ class _MenHealthScreenState extends State<MenHealthScreen> {
                   title: 'Male Infertility',
                   imagePath:
                       'assets/images/icons/health_problem_icons/male_infertility_icon.png',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => MaleInfertilityScreen()));
+                  },
                   gradient: LinearGradient(
                       begin: Alignment(1.00, 0.00),
                       end: Alignment(-1, 0),
@@ -49,7 +55,10 @@ class _MenHealthScreenState extends State<MenHealthScreen> {
                   title: 'Men’s Performance',
                   imagePath:
                       'assets/images/icons/health_problem_icons/men_performance_icon.png',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => MalePerformanceScreen()));
+                  },
                   gradient: LinearGradient(
                       begin: Alignment(1.00, 0.00),
                       end: Alignment(-1, 0),
