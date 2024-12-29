@@ -32,11 +32,12 @@ class _MaleInfertilityScreenState extends State<MaleInfertilityScreen> {
     return Scaffold(
         bottomNavigationBar: MentalWellnessBottomNavigationBar(),
         appBar: CommonAppBar(title: 'Details'),
-        body: ListView(
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.symmetric(
-                vertical: 16, horizontal: AppConstants.scaffoldPadding),
-            children: [
+        body: SafeArea(
+            child: ListView(
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.symmetric(
+                    vertical: 16, horizontal: AppConstants.scaffoldPadding),
+                children: [
               ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: Image.asset(
@@ -151,7 +152,7 @@ class _MaleInfertilityScreenState extends State<MaleInfertilityScreen> {
                                 'Yes, any addiction- Smoking/Alcohol etc repatively effect not only sperm counts but also sperm mobility , morphology etc.');
                       },
                       itemCount: 3)),
-            ]));
+            ])));
   }
 
   Widget _buildTile({required String imagePath, required String title}) {
