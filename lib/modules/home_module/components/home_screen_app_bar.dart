@@ -1,8 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
+import 'package:qris_health/modules/refer_and_earn_module/screens/wallet_screen.dart';
 import 'package:qris_health/styles/app_colors.dart';
+
+import '../../notification_module/screens/notification_screen.dart';
 
 class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -42,14 +47,29 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                               color: AppColors.lightSubTextColor)),
                     ])
                   ])),
-              SvgPicture.asset(
-                  'assets/images/icons/home_screen_icons/wallet_icon.svg'),
+              InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => WalletScreen()));
+                  },
+                  child: SvgPicture.asset(
+                      'assets/images/icons/home_screen_icons/wallet_icon.svg')),
               SizedBox(width: 10),
-              SvgPicture.asset(
-                  'assets/images/icons/home_screen_icons/cart_icon.svg'),
+              InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        CupertinoPageRoute(builder: (context) => CartScreen()));
+                  },
+                  child: SvgPicture.asset(
+                      'assets/images/icons/home_screen_icons/cart_icon.svg')),
               SizedBox(width: 10),
-              SvgPicture.asset(
-                  'assets/images/icons/home_screen_icons/notification_icon.svg'),
+              InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => NotificationScreen()));
+                  },
+                  child: SvgPicture.asset(
+                      'assets/images/icons/home_screen_icons/notification_icon.svg')),
             ])));
   }
 
