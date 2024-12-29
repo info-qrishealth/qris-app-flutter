@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/shared/components/mini_tile_container.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../shared/components/bullet_point.dart';
@@ -11,7 +12,7 @@ import '../../../shared/components/heading_text.dart';
 import '../../../shared/components/how_it_works_container.dart';
 import '../../../shared/components/meet_the_team_carousel.dart';
 import '../../../shared/components/what_it_includes_container.dart';
-import '../../../shared/models/blood_test_info_model.dart';
+import '../../../shared/models/title_and_description_model.dart';
 import '../../../styles/app_colors.dart';
 import '../../health_score_module/components/health_score_list_tile.dart';
 import '../../home_module/components/cashback_container.dart';
@@ -51,27 +52,27 @@ class _FemaleMenopauseScreenState extends State<FemaleMenopauseScreen> {
                       color: AppColors.primaryPink)),
               SizedBox(height: 8),
               WhatItIncludesContainer(testInfos: [
-                BloodTestInfoModel(
+                TitleAndDescriptionModel(
                     title: 'Blood Tests (7 Parameters) :-',
                     description:
                         'Thyroid Profile, FSH - Follicle Stimulating Hormone, Prolactin, LH-Luteinizing Harmone',
                     imagePath: ''),
-                BloodTestInfoModel(
+                TitleAndDescriptionModel(
                     title: 'Hormone imbalance treatment :-',
                     description:
                         'Hormone imbalance treatment by Gynaecologist which include both Hormone replacement therapy & Non Hormone therapy',
                     imagePath: ''),
-                BloodTestInfoModel(
+                TitleAndDescriptionModel(
                     title: 'Ultrasound :-',
                     description:
                         'Get your ultrasound done as per your symptoms',
                     imagePath: ''),
-                BloodTestInfoModel(
+                TitleAndDescriptionModel(
                     title: 'Diet Consultation :-',
                     description:
                         'Get your customized diet plan for healthy lifestyle',
                     imagePath: ''),
-                BloodTestInfoModel(
+                TitleAndDescriptionModel(
                     title: 'Psychiatrist Consultation :-',
                     description:
                         'One-on-one expert advice tailored to your needs',
@@ -82,32 +83,24 @@ class _FemaleMenopauseScreenState extends State<FemaleMenopauseScreen> {
               SizedBox(height: 16),
               HeadingText(text: 'What can we help you with?'),
               SizedBox(height: 13),
-              DottedBorder(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                  borderType: BorderType.RRect,
-                  radius: Radius.circular(15),
-                  color: AppColors.borderColor,
-                  child: Column(children: [
-                    _buildTile(
-                        imagePath:
-                            'assets/images/icons/mental_wellness_icons/mood_change_icon.png',
-                        title: 'Mood Changes'),
-                    SizedBox(height: 12),
-                    _buildTile(
-                        imagePath:
-                            'assets/images/icons/mental_wellness_icons/hormone_imbalance_icon.png',
-                        title: 'To diagnose hormone change'),
-                    SizedBox(height: 12),
-                    _buildTile(
-                        imagePath:
-                            'assets/images/icons/mental_wellness_icons/low_dose_icon.png',
-                        title: 'Low dose Medication'),
-                    SizedBox(height: 12),
-                    _buildTile(
-                        imagePath:
-                            'assets/images/icons/mental_wellness_icons/depression_icon.png',
-                        title: 'Overcome Depression'),
-                  ])),
+              MiniTileContainer(titles: [
+                TitleAndDescriptionModel(
+                    title: 'Mood Changes',
+                    imagePath:
+                        'assets/images/icons/mental_wellness_icons/mood_change_icon.png'),
+                TitleAndDescriptionModel(
+                    title: 'To diagnose hormone change',
+                    imagePath:
+                        'assets/images/icons/mental_wellness_icons/hormone_imbalance_icon.png'),
+                TitleAndDescriptionModel(
+                    title: 'Low dose Medication',
+                    imagePath:
+                        'assets/images/icons/mental_wellness_icons/low_dose_icon.png'),
+                TitleAndDescriptionModel(
+                    title: 'Overcome Depression',
+                    imagePath:
+                        'assets/images/icons/mental_wellness_icons/depression_icon.png'),
+              ]),
               SizedBox(height: 18),
               HeadingText(text: 'Description'),
               SizedBox(height: 12),
@@ -162,14 +155,5 @@ class _FemaleMenopauseScreenState extends State<FemaleMenopauseScreen> {
                       },
                       itemCount: 3)),
             ])));
-  }
-
-  Widget _buildTile({required String imagePath, required String title}) {
-    return HealthScoreListTile(
-        imagePath: imagePath,
-        title: title,
-        imageSize: 24,
-        style: _textTheme.bodySmall!
-            .copyWith(fontWeight: FontWeight.w500, letterSpacing: 0.1));
   }
 }

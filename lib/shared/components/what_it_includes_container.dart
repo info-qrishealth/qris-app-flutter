@@ -1,12 +1,12 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:qris_health/shared/models/blood_test_info_model.dart';
+import 'package:qris_health/shared/models/title_and_description_model.dart';
 
 import '../../styles/app_colors.dart';
 
 class WhatItIncludesContainer extends StatelessWidget {
-  final List<BloodTestInfoModel> testInfos;
+  final List<TitleAndDescriptionModel> testInfos;
   const WhatItIncludesContainer({super.key, required this.testInfos});
 
   @override

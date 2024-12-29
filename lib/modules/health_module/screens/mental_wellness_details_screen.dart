@@ -13,8 +13,9 @@ import 'package:qris_health/shared/components/faq_list_tile.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
 import 'package:qris_health/shared/components/how_it_works_container.dart';
 import 'package:qris_health/shared/components/meet_the_team_carousel.dart';
+import 'package:qris_health/shared/components/mini_tile_container.dart';
 import 'package:qris_health/shared/components/what_it_includes_container.dart';
-import 'package:qris_health/shared/models/blood_test_info_model.dart';
+import 'package:qris_health/shared/models/title_and_description_model.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../shared/screens/questionaire_screen.dart';
@@ -52,12 +53,12 @@ class _MentalWellnessDetailsScreenState
                       color: AppColors.primaryPink)),
               SizedBox(height: 10),
               WhatItIncludesContainer(testInfos: [
-                BloodTestInfoModel(
+                TitleAndDescriptionModel(
                     title: 'Blood Tests (89 Parameters) :-',
                     description:
                         'Vitamin B12, Vitamin D, CBC, HBA1C, Iron Studies, KFT, LFT, Lipid Profile, Thyroid Profile, Urine Routine and Microscopy, Blood Glucose Fasting',
                     imagePath: ''),
-                BloodTestInfoModel(
+                TitleAndDescriptionModel(
                     title: 'Psychologist Consultation :-',
                     description:
                         'One-on-one expert advice tailored to your mental wellness needs',
@@ -68,48 +69,24 @@ class _MentalWellnessDetailsScreenState
               SizedBox(height: 18),
               HeadingText(text: 'What can we help you with?'),
               SizedBox(height: 12),
-              DottedBorder(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                  borderType: BorderType.RRect,
-                  radius: Radius.circular(15),
-                  color: AppColors.borderColor,
-                  child: Column(children: [
-                    HealthScoreListTile(
-                        imagePath:
-                            'assets/images/icons/mental_wellness_icons/neuroligical_icon.png',
-                        title: 'Neurological well being',
-                        imageSize: 24,
-                        style: _textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.lightText)),
-                    SizedBox(height: 12),
-                    HealthScoreListTile(
-                        imagePath:
-                            'assets/images/icons/mental_wellness_icons/holistic_wellness_icon.png',
-                        title: 'Holistic wellness',
-                        imageSize: 24,
-                        style: _textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.lightText)),
-                    SizedBox(height: 12),
-                    HealthScoreListTile(
-                        imagePath:
-                            'assets/images/icons/mental_wellness_icons/depression_icon.png',
-                        title: 'Overcome Depression',
-                        imageSize: 24,
-                        style: _textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.lightText)),
-                    SizedBox(height: 12),
-                    HealthScoreListTile(
-                        imagePath:
-                            'assets/images/icons/mental_wellness_icons/expert_icon.png',
-                        title: 'Expert psychologist',
-                        imageSize: 24,
-                        style: _textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.lightText)),
-                  ])),
+              MiniTileContainer(titles: [
+                TitleAndDescriptionModel(
+                    title: 'Neurological well being',
+                    imagePath:
+                        'assets/images/icons/mental_wellness_icons/neuroligical_icon.png'),
+                TitleAndDescriptionModel(
+                    title: 'Holistic wellness',
+                    imagePath:
+                        'assets/images/icons/mental_wellness_icons/holistic_wellness_icon.png'),
+                TitleAndDescriptionModel(
+                    title: 'Overcome Depression',
+                    imagePath:
+                        'assets/images/icons/mental_wellness_icons/depression_icon.png'),
+                TitleAndDescriptionModel(
+                    title: 'Expert psychologist',
+                    imagePath:
+                        'assets/images/icons/mental_wellness_icons/expert_icon.png'),
+              ]),
               SizedBox(height: 18),
               HeadingText(text: 'Description'),
               SizedBox(height: 12),
