@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
-import 'package:qris_health/modules/home_module/components/category_container.dart';
+import 'package:qris_health/modules/home_module/components/home_screen_category_container.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_app_bar.dart';
 import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
 import 'package:qris_health/modules/home_module/components/test_and_scan_tile.dart';
@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Expanded(
                     child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: CategoryContainer(testCategory: category)));
+                        child: HomeScreenCategoryContainer(testCategory: category)));
               })),
               SizedBox(height: 50),
               Row(
@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Expanded(
                     child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: CategoryContainer(testCategory: category)));
+                        child: HomeScreenCategoryContainer(testCategory: category)));
               })),
               SizedBox(height: 45),
               CashbackContainer(),

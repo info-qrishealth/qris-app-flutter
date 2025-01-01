@@ -5,7 +5,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.4
+  sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
   flutter:
@@ -53,6 +53,10 @@ flutter:
     - assets/images/icons/health_problem_icons/
     - assets/images/icons/package_icons/
     - assets/images/icons/mental_wellness_icons/
+    - assets/images/images/
+    - assets/images/icons/all_scan_icon/
+    - assets/images/icons/why_choose_us_icons/
+    - assets/images/icons/how_to_book_icons/
 
   fonts:
     - family: Ubuntu

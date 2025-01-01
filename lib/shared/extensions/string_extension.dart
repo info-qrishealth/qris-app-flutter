@@ -9,4 +9,16 @@ extension StringExtension on String? {
   }
 
   bool get isNullOrEmpty => this == null || this!.isEmpty;
+
+  String? getEllipticText({required int charactersAfterTrim}) {
+    if (this == null) {
+      return null;
+    }
+
+    if (this!.length <= charactersAfterTrim) {
+      return this;
+    } else {
+      return '${this!.substring(0, charactersAfterTrim)}...';
+    }
+  }
 }

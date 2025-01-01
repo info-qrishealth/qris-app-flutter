@@ -5,7 +5,7 @@ import 'package:qris_health/styles/app_colors.dart';
 class HealthScoreInfoTile extends StatelessWidget {
   final String imagePath;
   final String title;
-  final String description;
+  final String? description;
   final TextStyle? titleStyle;
   final Color? titleColor;
   final double? imagePadding;
@@ -40,11 +40,12 @@ class HealthScoreInfoTile extends StatelessWidget {
                 textTheme.bodySmall!.copyWith(
                     fontWeight: FontWeight.w600,
                     color: titleColor ?? AppColors.primaryPink)),
-        SizedBox(height: 2),
-        Text(description,
-            style: textTheme.bodySmall!.copyWith(
-                fontWeight: FontWeight.w400,
-                color: AppColors.lightSubTextColor)),
+        if (description != null) SizedBox(height: 2),
+        if (description != null)
+          Text(description!,
+              style: textTheme.bodySmall!.copyWith(
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.lightSubTextColor)),
       ]))
     ]);
   }
