@@ -1,0 +1,2 @@
+/Users/kesab/StudioProjects/qris_health/android/app/.cxx/Debug/2k3h6u3o/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/kesab/StudioProjects/qris_health/android/app/.cxx/Debug/2k3h6u3o/armeabi-v7a/CMakeFiles/rebuild_cache.dir

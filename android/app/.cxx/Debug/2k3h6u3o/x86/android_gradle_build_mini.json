@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/kesab/Downloads/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/kesab/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/kesab/StudioProjects/qris_health/android/app/.cxx/Debug/2k3h6u3o/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/kesab/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/kesab/StudioProjects/qris_health/android/app/.cxx/Debug/2k3h6u3o/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
