@@ -29,9 +29,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints:
   freezed: ^2.5.7
-  build_runner: ^2.4.13
+  build_runner: ^2.4.10
   json_serializable: ^6.9.0
 
 flutter:
@@ -57,6 +57,7 @@ flutter:
     - assets/images/icons/all_scan_icon/
     - assets/images/icons/why_choose_us_icons/
     - assets/images/icons/how_to_book_icons/
+    - assets/images/illustrations/subscan_illustrations/
 
   fonts:
     - family: Ubuntu
