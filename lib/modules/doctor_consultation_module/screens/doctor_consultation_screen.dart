@@ -36,9 +36,14 @@ class _DoctorConsultationScreenState extends State<DoctorConsultationScreen> {
                     horizontal: AppConstants.scaffoldPadding, vertical: 16),
                 children: [
               FilterTextField(
-                  onFieldSubmitted: (value) {},
+                  readOnly: true,
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => FindDoctorScreen()));
+                  },
+                  onFieldSubmitted: null,
                   controller: _searchController,
-                  onChanged: (value) {},
+                  onChanged: null,
                   hintText: 'Search for doctor consultation...',
                   suffixIcon: null),
               SizedBox(height: 20),

@@ -11,6 +11,7 @@ class FilterTextField extends StatelessWidget {
   final String? hintText;
   final Widget? suffixIcon;
   final Function()? onTap;
+  final bool readOnly;
 
   const FilterTextField(
       {super.key,
@@ -19,13 +20,15 @@ class FilterTextField extends StatelessWidget {
       required this.onChanged,
       required this.hintText,
       required this.suffixIcon,
-      this.onTap});
+      this.onTap,
+      this.readOnly = false});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Get.textTheme;
 
     return TextFormField(
+        readOnly: readOnly,
         onFieldSubmitted: onFieldSubmitted,
         controller: controller,
         cursorColor: AppColors.primaryPink,

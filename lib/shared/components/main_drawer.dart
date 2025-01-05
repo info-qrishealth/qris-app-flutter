@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/profile_module/screens/my_profile_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/screens/coins_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/screens/refer_and_earn_screen.dart';
@@ -130,7 +131,7 @@ class MainDrawer extends StatelessWidget {
                 title: 'Popular Packages',
                 onTap: () {
                   Navigator.of(context).push(CupertinoPageRoute(
-                      builder: (context) => PackagesScreen()));
+                      builder: (context) => PopularPackageScreen()));
                 }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/doctor_icon.svg',

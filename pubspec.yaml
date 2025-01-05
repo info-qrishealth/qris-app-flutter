@@ -59,6 +59,8 @@ flutter:
     - assets/images/icons/why_choose_us_icons/
     - assets/images/icons/how_to_book_icons/
     - assets/images/illustrations/subscan_illustrations/
+    - assets/images/icons/doctor_specialist_type_icons/
+    - assets/images/icons/social_media_icons/
 
   fonts:
     - family: Ubuntu
