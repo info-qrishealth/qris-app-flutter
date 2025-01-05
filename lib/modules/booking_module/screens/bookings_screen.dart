@@ -17,16 +17,24 @@ class _BookingsScreenState extends State<BookingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CommonAppBar(title: 'Bookings/Reports'),
-        body: Column(children: [
+        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           SizedBox(height: 16),
-          Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppConstants.scaffoldPadding),
-              child: Row(children: [
-                CommonFilledChip(isSelected: true, title: 'All'),
-                SizedBox(width: 8),
-                CommonFilledChip(isSelected: false, title: 'Select Member'),
-              ])),
+          SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppConstants.scaffoldPadding),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CommonFilledChip(isSelected: true, title: 'All'),
+                        SizedBox(width: 8),
+                        CommonFilledChip(
+                            isSelected: false, title: 'Puneet Bajaj'),
+                        SizedBox(width: 8),
+                        CommonFilledChip(
+                            isSelected: false, title: 'Deepika Rathore'),
+                      ]))),
           SizedBox(height: 18),
           Expanded(
               child: ListView.separated(
