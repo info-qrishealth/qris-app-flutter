@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:qris_health/shared/components/navigation_row.dart';
 
 import '../../modules/health_module/components/doctor_carousel_card.dart';
 import '../../styles/app_colors.dart';
@@ -43,23 +44,17 @@ class _MeetTheTeamCarouselState extends State<MeetTheTeamCarousel> {
               viewportFraction: 0.75),
           itemCount: 3),
       SizedBox(height: 12),
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        _buildArrowButton(
-            icon: Icons.arrow_back_ios_new,
-            onTap: _selectedIndex == 0
-                ? null
-                : () {
-                    _pageController.previousPage();
-                  }),
-        SizedBox(width: 8),
-        _buildArrowButton(
-            icon: Icons.arrow_forward_ios,
-            onTap: _selectedIndex == 2
-                ? null
-                : () {
-                    _pageController.nextPage();
-                  }),
-      ]),
+      NavigationRow(
+          onPreviousTap: _selectedIndex == 0
+              ? null
+              : () {
+                  _pageController.previousPage();
+                },
+          onNextTap: _selectedIndex == 2
+              ? null
+              : () {
+                  _pageController.nextPage();
+                }),
     ]));
   }
 

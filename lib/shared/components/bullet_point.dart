@@ -10,12 +10,14 @@ class BulletPoint extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Get.textTheme;
 
-    return Row(children: [
-      Container(
-          height: 4,
-          width: 4,
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, color: AppColors.black)),
+    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: Container(
+              height: 4,
+              width: 4,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle, color: AppColors.black))),
       SizedBox(width: 8),
       Expanded(
           child: Text(text,

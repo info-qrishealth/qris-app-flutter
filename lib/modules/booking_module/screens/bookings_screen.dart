@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
-import 'package:qris_health/shared/components/common_chip.dart';
+import 'package:qris_health/shared/components/common_filled_chip.dart';
 
 import '../components/booking_list_tile.dart';
 
@@ -23,9 +23,9 @@ class _BookingsScreenState extends State<BookingsScreen> {
               padding: const EdgeInsets.symmetric(
                   horizontal: AppConstants.scaffoldPadding),
               child: Row(children: [
-                CommonChip(isSelected: true, title: 'All'),
+                CommonFilledChip(isSelected: true, title: 'All'),
                 SizedBox(width: 8),
-                CommonChip(isSelected: false, title: 'Select Member'),
+                CommonFilledChip(isSelected: false, title: 'Select Member'),
               ])),
           SizedBox(height: 18),
           Expanded(

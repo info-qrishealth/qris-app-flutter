@@ -14,6 +14,8 @@ import 'package:qris_health/shared/components/request_callback_dialog.dart';
 import 'package:qris_health/shared/components/why_choose_us_container.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
+import '../../../shared/components/double_tick_row.dart';
+
 class SubscanInfoScreen extends StatefulWidget {
   final SubScanType subScanType;
   const SubscanInfoScreen({super.key, required this.subScanType});
@@ -99,15 +101,8 @@ class _SubscanInfoScreenState extends State<SubscanInfoScreen> {
               SizedBox(height: 20),
               HeadingText(text: _subscanModel.whyToChooseTitle),
               SizedBox(height: 12),
-              ..._subscanModel.whyToChoose.map((choose) => Row(children: [
-                    Image.asset('assets/images/icons/double_tick_icon.png',
-                        height: 24),
-                    SizedBox(width: 10),
-                    Text(choose,
-                        style: _textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.primaryPink)),
-                  ])),
+              ..._subscanModel.whyToChoose
+                  .map((choose) => DoubleTickRow(text: choose)),
               SizedBox(height: 20),
               HeadingText(text: _subscanModel.thirdHeading),
               SizedBox(height: 10),

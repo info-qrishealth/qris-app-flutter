@@ -10,7 +10,7 @@ import 'package:qris_health/modules/refer_and_earn_module/screens/wallet_screen.
 import 'package:qris_health/modules/address_module/screens/address_screen.dart';
 import 'package:qris_health/modules/booking_module/screens/bookings_screen.dart';
 import 'package:qris_health/modules/family_members_module/screens/family_member_screen.dart';
-import 'package:qris_health/modules/screens/find_doctors_screen.dart';
+import 'package:qris_health/modules/doctor_consultation_module/screens/doctor_consultation_screen.dart';
 import 'package:qris_health/modules/screens/health_articles_screen.dart';
 import 'package:qris_health/modules/health_module/screens/mental_wellness_screen.dart';
 import 'package:qris_health/modules/screens/packages_screen.dart';
@@ -137,7 +137,7 @@ class MainDrawer extends StatelessWidget {
                 title: 'Find Doctors',
                 onTap: () {
                   Navigator.of(context).push(CupertinoPageRoute(
-                      builder: (context) => FindDoctorsScreen()));
+                      builder: (context) => DoctorConsultationScreen()));
                 }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/article_icon.svg',

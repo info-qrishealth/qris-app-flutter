@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-class CommonChip extends StatelessWidget {
-  const CommonChip({super.key, required this.isSelected, required this.title});
+class CommonFilledChip extends StatelessWidget {
+  const CommonFilledChip({super.key, required this.isSelected, required this.title});
 
   final bool isSelected;
   final String title;

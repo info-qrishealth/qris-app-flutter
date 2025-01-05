@@ -25,6 +25,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   flutter_carousel_widget: ^3.1.0
   dotted_line: ^3.2.3
+  fancy_search_dropdown: ^0.0.1
 
 dev_dependencies:
   flutter_test:
