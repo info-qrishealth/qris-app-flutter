@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/specialist_type.dart';
 import 'package:qris_health/modules/doctor_consultation_module/components/doctor_list_tile.dart';
+import 'package:qris_health/modules/doctor_consultation_module/components/specialist_category_container.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_outlined_chip.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
@@ -15,6 +17,7 @@ class DoctorsListScreen extends StatefulWidget {
 }
 
 class _DoctorsListScreenState extends State<DoctorsListScreen> {
+  final _scrollController = ScrollController();
   String? _place;
   final _places = [
     'Rohini',
@@ -90,12 +93,35 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                           child:
                               HeadingText(text: 'Other Specialists in Rohini')),
                       NavigationRow(
-                          onPreviousTap: () {},
-                          onNextTap: () {},
+                          onPreviousTap: () async {
+                            await _scrollController.animateTo(
+                                _scrollController.position.pixels - 100,
+                                duration: Duration(milliseconds: 200),
+                                curve: Curves.easeIn);
+                          },
+                          onNextTap: () async {
+                            await _scrollController.animateTo(
+                                _scrollController.position.pixels + 100,
+                                duration: Duration(milliseconds: 200),
+                                curve: Curves.easeIn);
+                          },
                           activeColor: AppColors.primaryBlue),
                     ]),
                     SizedBox(height: 12),
+                    SizedBox(
+                        height: 79,
+                        child: ListView(
+                            controller: _scrollController,
+                            physics: BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            children: SpecialistType.values
+                                .map((specialist) => Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: SpecialistCategoryContainer(
+                                        specialistType: specialist)))
+                                .toList()))
                   ])),
+              SizedBox(height: 16),
             ])));
   }
 }

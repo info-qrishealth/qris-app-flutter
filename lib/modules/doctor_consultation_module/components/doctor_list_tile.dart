@@ -25,13 +25,29 @@ class DoctorListTile extends StatelessWidget {
             child:
                 Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Column(children: [
-            ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                    'assets/images/placeholders/doctor_placeholder_2.png',
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover)),
+            Stack(clipBehavior: Clip.none, children: [
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                      'assets/images/placeholders/doctor_placeholder_2.png',
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.cover)),
+              Positioned(
+                  left: -5,
+                  bottom: 6,
+                  child: Stack(alignment: Alignment.center, children: [
+                    SvgPicture.asset('assets/images/icons/experience_strip.svg',
+                        height: 16),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 1.5),
+                        child: Text('20+ year experience',
+                            style: TextStyle(
+                                fontSize: 8.19,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600)))
+                  ])),
+            ]),
             SizedBox(height: 4),
             Text('Orthopedic',
                 style: _textTheme.bodyMedium!.copyWith(

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
 import 'package:qris_health/modules/home_module/screens/home_screen.dart';
-import 'package:qris_health/modules/intro_module/screens/custom_splash_screen.dart';
 import 'package:qris_health/styles/app_styles.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
 
