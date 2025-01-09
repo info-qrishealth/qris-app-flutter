@@ -26,11 +26,12 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CommonAppBar(title: 'Article'),
-        body: ListView(
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.symmetric(
-                horizontal: AppConstants.scaffoldPadding, vertical: 16),
-            children: [
+        body: SafeArea(
+            child: ListView(
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.symmetric(
+                    horizontal: AppConstants.scaffoldPadding, vertical: 16),
+                children: [
               HeadingText(
                   text:
                       'Protect Your Vital Organs: Get a Liver and Kidney Function Test in Delhi'),
@@ -91,6 +92,6 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen> {
                       },
                       itemCount: 10)),
               SizedBox(height: 16),
-            ]));
+            ])));
   }
 }
