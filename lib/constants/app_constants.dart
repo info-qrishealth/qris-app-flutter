@@ -18,6 +18,7 @@ class AppConstants {
   static const scaffoldPadding = 20.0;
   static var bottomSheetConstraints =
       BoxConstraints(maxHeight: Get.height * 0.85);
+  static const imageBaseUrl = 'https://qrishealth.com/cms/uploads';
 
   static String getErrorMessage(String message) {
     try {
