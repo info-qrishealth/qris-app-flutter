@@ -21,4 +21,33 @@ extension StringExtension on String? {
       return '${this!.substring(0, charactersAfterTrim)}...';
     }
   }
+
+  DateTime? get toDateTime {
+    final intTime = int.tryParse(this!);
+
+    if (intTime == null) {
+      return null;
+    }
+
+    return DateTime.fromMillisecondsSinceEpoch(intTime * 1000);
+  }
+
+  String get clean {
+    String cleanedString = this!
+        .replaceAll(RegExp(r'&lt;/?p&gt;'), '')
+        .replaceAll(RegExp(r'&lt;br\s*/?&gt;'), '')
+        .replaceAll(RegExp(r'&lt;/?'), '')
+        .replaceAll(RegExp(r'&gt;'), '')
+        .replaceAll(RegExp(r'&amp;#39;'), "'");
+
+    return cleanedString;
+  }
+
+  String get htmlString {
+    return this!
+        .replaceAll('&lt;', '<')
+        .replaceAll('&gt;', '>')
+        .replaceAll('&quot;', '"')
+        .replaceAll('&amp;', '&');
+  }
 }

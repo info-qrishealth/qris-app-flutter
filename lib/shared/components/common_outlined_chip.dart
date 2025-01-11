@@ -6,27 +6,30 @@ import '../../styles/app_colors.dart';
 class CommonOutlinedChip extends StatelessWidget {
   final bool isSelected;
   final String title;
+  final Function()? onTap;
   const CommonOutlinedChip(
-      {super.key, required this.isSelected, required this.title});
+      {super.key, required this.isSelected, required this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        decoration: BoxDecoration(
-            border: Border.all(
+    return GestureDetector(
+        onTap: onTap,
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: isSelected
+                        ? AppColors.primaryPink
+                        : Colors.black.withOpacity(0.09)),
                 color: isSelected
-                    ? AppColors.primaryPink
-                    : Colors.black.withOpacity(0.09)),
-            color: isSelected
-                ? AppColors.primaryPink.withOpacity(0.06)
-                : Colors.black.withOpacity(0.04),
-            borderRadius: BorderRadius.circular(16)),
-        child: Text(title,
-            style: Get.textTheme.bodySmall!.copyWith(
-                fontWeight: FontWeight.w500,
-                color: isSelected
-                    ? AppColors.primaryPink
-                    : AppColors.lightSubTextColor)));
+                    ? AppColors.primaryPink.withOpacity(0.2)
+                    : Colors.black.withOpacity(0.04),
+                borderRadius: BorderRadius.circular(16)),
+            child: Text(title,
+                style: Get.textTheme.bodySmall!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: isSelected
+                        ? AppColors.primaryPink
+                        : AppColors.lightSubTextColor))));
   }
 }
