@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qris_health/constants/app_constants.dart';
 
@@ -11,7 +12,14 @@ class CommonNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.network('${AppConstants.imageBaseUrl}/$name',
-        height: height, fit: fit, width: width);
+    return CachedNetworkImage(
+        imageUrl: '${AppConstants.imageBaseUrl}/$name',
+        placeholder: (context, _) {
+          return Image.asset('assets/images/logos/full_logo.png');
+        },
+
+        height: height,
+        fit: fit,
+        width: width);
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/shared/components/feature_row.dart';
 import 'package:qris_health/shared/components/offered_price_container.dart';
 import 'package:qris_health/styles/app_colors.dart';
@@ -14,12 +15,15 @@ class PackageListTile extends StatelessWidget {
   final Function()? onBookNowTap;
   final Widget? suffix;
 
+  final TestPackageModel? testPackage;
+
   PackageListTile(
       {super.key,
       this.description,
       required this.onSeeDetailsTap,
       required this.onBookNowTap,
-      this.suffix});
+      this.suffix,
+      this.testPackage});
 
   final _textTheme = Get.textTheme;
 
@@ -36,7 +40,7 @@ class PackageListTile extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text('Full Body advance checkup',
+                    Text('${testPackage?.title}',
                         style: _textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.w500,
                             color: AppColors.primaryBlue,
@@ -44,18 +48,20 @@ class PackageListTile extends StatelessWidget {
                     SizedBox(height: 4),
                     FeatureRow(
                         imagePath: 'assets/images/icons/test_tube.png',
-                        title: '87 Parameters'),
-                    if (description != null)
+                        title: '${testPackage?.parameters ?? 0} Parameters'),
+                    if (testPackage?.description != null)
                       Padding(
                           padding: const EdgeInsets.only(top: 6),
-                          child: Text(description!,
+                          child: Text('${testPackage?.metaDesc}',
                               style: _textTheme.labelSmall!.copyWith(
                                   fontWeight: FontWeight.w400, fontSize: 10))),
                   ])),
           SizedBox(height: 2),
           OfferedPriceContainer(
               padding: EdgeInsets.symmetric(vertical: 7, horizontal: 9),
-              suffix: suffix),
+              suffix: suffix,
+              mrp: testPackage?.specialPrice,
+              offeredPrice: testPackage?.price),
           IntrinsicHeight(
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -65,7 +71,8 @@ class PackageListTile extends StatelessWidget {
                       child: InkWell(
                           onTap: () {
                             Navigator.of(context).push(CupertinoPageRoute(
-                                builder: (context) => BloodTestDetailScreen()));
+                                builder: (context) => BloodTestDetailScreen(
+                                    testPackage: testPackage)));
                           },
                           child: Container(
                               padding: EdgeInsets.symmetric(vertical: 10),

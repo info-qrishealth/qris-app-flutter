@@ -1,23 +1,28 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/home_module/components/cashback_container.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
+import 'package:qris_health/shared/components/common_html_text.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/discount_coupon_container.dart';
 import 'package:qris_health/shared/components/faq_list_tile.dart';
 import 'package:qris_health/shared/components/info_row.dart';
+import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../cart_module/screens/cart_screen.dart';
 
 class BloodTestDetailScreen extends StatefulWidget {
-  const BloodTestDetailScreen({super.key});
+  final TestPackageModel? testPackage;
+  const BloodTestDetailScreen({super.key, this.testPackage});
 
   @override
   State<BloodTestDetailScreen> createState() => _BloodTestDetailScreenState();
@@ -25,6 +30,7 @@ class BloodTestDetailScreen extends StatefulWidget {
 
 class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
   final _textTheme = Get.textTheme;
+  bool _showMoreText = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +49,14 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                         children: [
                       Padding(
                           padding: const EdgeInsets.only(bottom: 1),
-                          child: Text('₹ 1999',
+                          child: Text(
+                              '₹ ${widget.testPackage?.specialPrice?.toInt()}',
                               style: _textTheme.titleLarge!.copyWith(
                                   fontWeight: FontWeight.w400,
                                   color: Colors.white,
                                   decoration: TextDecoration.lineThrough))),
                       SizedBox(width: 18),
-                      Text('₹ 1099 *',
+                      Text('₹ ${widget.testPackage?.basePrice} *',
                           style: _textTheme.headlineLarge!.copyWith(
                               fontWeight: FontWeight.w500,
                               color: Colors.white)),
@@ -77,6 +84,7 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                 children: [
               SizedBox(height: 16),
               PackageListTile(
+                  testPackage: widget.testPackage,
                   onSeeDetailsTap: null,
                   onBookNowTap: () {
                     Navigator.of(context).push(
@@ -98,7 +106,8 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                             child: InfoRow(
                                 svgPath: 'assets/images/icons/food_icon.svg',
                                 title: 'Fasting Time : ',
-                                description: ' 10-12 hours')),
+                                description:
+                                    '${widget.testPackage?.fastingTime}')),
                         InfoRow(
                             svgPath: 'assets/images/icons/clock_icon.svg',
                             title: 'Report Time : ',
@@ -111,28 +120,45 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                   style: _textTheme.titleMedium!
                       .copyWith(fontWeight: FontWeight.w700)),
               SizedBox(height: 8),
-              Container(
-                  padding: EdgeInsets.all(9),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black.withOpacity(0.09)),
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            'A full body check-up is a series of tests that are done to detect any health issues that you may have. It can be done on an individual or a group of people. It is usually done with vitamin d and b12 in Delhi office or he ..... ',
-                            style: _textTheme.bodySmall!.copyWith(
-                                fontWeight: FontWeight.w400, height: 1.2)),
-                        SizedBox(height: 12),
-                        Text('Read More',
-                            style: _textTheme.bodySmall!.copyWith(
-                                color: AppColors.primaryPink,
-                                fontWeight: FontWeight.w400)),
-                      ])),
+              AnimatedSize(
+                  duration: Duration(milliseconds: 200),
+                  child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _showMoreText = !_showMoreText;
+                        });
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.black.withOpacity(0.09)),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CommonHtmlText(
+                                    text:
+                                        '${_showMoreText ? widget.testPackage!.description : widget.testPackage?.description.getEllipticText(charactersAfterTrim: 250)}',
+                                    pStyle: Style(
+                                        color: AppColors.textColor,
+                                        fontSize: FontSize.small,
+                                        fontWeight: FontWeight.w400)),
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 12, left: 9),
+                                    child: Text(
+                                        _showMoreText
+                                            ? 'Read Less'
+                                            : 'Read More',
+                                        style: _textTheme.bodySmall!.copyWith(
+                                            color: AppColors.primaryPink,
+                                            fontWeight: FontWeight.w400))),
+                              ])))),
               SizedBox(height: 18),
               ContactUsContainer(),
               SizedBox(height: 18),
-              Text('Parameters Included - 89',
+              Text(
+                  'Parameters Included - ${widget.testPackage?.customParameterCount}',
                   style: _textTheme.titleMedium!
                       .copyWith(fontWeight: FontWeight.w700)),
               SizedBox(height: 8),

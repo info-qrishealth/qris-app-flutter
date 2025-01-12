@@ -48,6 +48,8 @@ extension StringExtension on String? {
         .replaceAll('&lt;', '<')
         .replaceAll('&gt;', '>')
         .replaceAll('&quot;', '"')
-        .replaceAll('&amp;', '&');
+        .replaceAll('&amp;', '&')
+        .replaceAll('in _LOC_', '')
+        .replaceAll('_LOC_', '');
   }
 }

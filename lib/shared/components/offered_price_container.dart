@@ -7,8 +7,15 @@ class OfferedPriceContainer extends StatelessWidget {
   final EdgeInsets? padding;
   final Widget? suffix;
   final Widget? customWidget;
+  final int? mrp;
+  final int? offeredPrice;
   const OfferedPriceContainer(
-      {super.key, this.padding, this.suffix, this.customWidget});
+      {super.key,
+      this.padding,
+      this.suffix,
+      this.customWidget,
+      this.mrp,
+      this.offeredPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +32,7 @@ class OfferedPriceContainer extends StatelessWidget {
                   RichText(
                       text: TextSpan(children: [
                     TextSpan(
-                        text: '₹ 1999',
+                        text: '₹ $mrp',
                         style: textTheme.labelSmall!.copyWith(
                             fontWeight: FontWeight.w400,
                             decoration: TextDecoration.lineThrough,
@@ -33,7 +40,7 @@ class OfferedPriceContainer extends StatelessWidget {
                             color: AppColors.primaryPink)),
                     WidgetSpan(child: SizedBox(width: 7)),
                     TextSpan(
-                        text: '₹1099',
+                        text: '₹$offeredPrice',
                         style: textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.w700,
                             color: AppColors.primaryBlue)),

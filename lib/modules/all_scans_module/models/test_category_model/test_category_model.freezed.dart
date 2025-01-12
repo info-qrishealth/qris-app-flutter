@@ -21,20 +21,35 @@ TestCategoryModel _$TestCategoryModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TestCategoryModel {
   int get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'title')
   String get title => throw _privateConstructorUsedError;
+  @JsonKey(name: 'heading')
   String get heading => throw _privateConstructorUsedError;
+  @JsonKey(name: 'short_desc')
   String get shortDesc => throw _privateConstructorUsedError;
+  @JsonKey(name: 'description')
   String get description => throw _privateConstructorUsedError;
+  @JsonKey(name: 'header_description')
   String get headerDescription => throw _privateConstructorUsedError;
+  @JsonKey(name: 'faq')
   String get faq => throw _privateConstructorUsedError;
+  @JsonKey(name: 'pic')
   String get pic => throw _privateConstructorUsedError;
+  @JsonKey(name: 'dis_order')
   String get disOrder => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
   String get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'test_by_habits')
   String get testByHabits => throw _privateConstructorUsedError;
+  @JsonKey(name: 'meta_title')
   String get metaTitle => throw _privateConstructorUsedError;
+  @JsonKey(name: 'meta_key')
   String get metaKey => throw _privateConstructorUsedError;
+  @JsonKey(name: 'meta_desc')
   String get metaDesc => throw _privateConstructorUsedError;
+  @JsonKey(name: 'canonical')
   String get canonical => throw _privateConstructorUsedError;
+  @JsonKey(name: 'slug')
   String get slug => throw _privateConstructorUsedError;
 
   /// Serializes this TestCategoryModel to a JSON map.
@@ -55,21 +70,21 @@ abstract class $TestCategoryModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String title,
-      String heading,
-      String shortDesc,
-      String description,
-      String headerDescription,
-      String faq,
-      String pic,
-      String disOrder,
-      String status,
-      String testByHabits,
-      String metaTitle,
-      String metaKey,
-      String metaDesc,
-      String canonical,
-      String slug});
+      @JsonKey(name: 'title') String title,
+      @JsonKey(name: 'heading') String heading,
+      @JsonKey(name: 'short_desc') String shortDesc,
+      @JsonKey(name: 'description') String description,
+      @JsonKey(name: 'header_description') String headerDescription,
+      @JsonKey(name: 'faq') String faq,
+      @JsonKey(name: 'pic') String pic,
+      @JsonKey(name: 'dis_order') String disOrder,
+      @JsonKey(name: 'status') String status,
+      @JsonKey(name: 'test_by_habits') String testByHabits,
+      @JsonKey(name: 'meta_title') String metaTitle,
+      @JsonKey(name: 'meta_key') String metaKey,
+      @JsonKey(name: 'meta_desc') String metaDesc,
+      @JsonKey(name: 'canonical') String canonical,
+      @JsonKey(name: 'slug') String slug});
 }
 
 /// @nodoc
@@ -183,21 +198,21 @@ abstract class _$$TestCategoryModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      String title,
-      String heading,
-      String shortDesc,
-      String description,
-      String headerDescription,
-      String faq,
-      String pic,
-      String disOrder,
-      String status,
-      String testByHabits,
-      String metaTitle,
-      String metaKey,
-      String metaDesc,
-      String canonical,
-      String slug});
+      @JsonKey(name: 'title') String title,
+      @JsonKey(name: 'heading') String heading,
+      @JsonKey(name: 'short_desc') String shortDesc,
+      @JsonKey(name: 'description') String description,
+      @JsonKey(name: 'header_description') String headerDescription,
+      @JsonKey(name: 'faq') String faq,
+      @JsonKey(name: 'pic') String pic,
+      @JsonKey(name: 'dis_order') String disOrder,
+      @JsonKey(name: 'status') String status,
+      @JsonKey(name: 'test_by_habits') String testByHabits,
+      @JsonKey(name: 'meta_title') String metaTitle,
+      @JsonKey(name: 'meta_key') String metaKey,
+      @JsonKey(name: 'meta_desc') String metaDesc,
+      @JsonKey(name: 'canonical') String canonical,
+      @JsonKey(name: 'slug') String slug});
 }
 
 /// @nodoc
@@ -304,21 +319,21 @@ class __$$TestCategoryModelImplCopyWithImpl<$Res>
 class _$TestCategoryModelImpl implements _TestCategoryModel {
   const _$TestCategoryModelImpl(
       {required this.id,
-      required this.title,
-      required this.heading,
-      required this.shortDesc,
-      required this.description,
-      required this.headerDescription,
-      required this.faq,
-      required this.pic,
-      required this.disOrder,
-      required this.status,
-      required this.testByHabits,
-      required this.metaTitle,
-      required this.metaKey,
-      required this.metaDesc,
-      required this.canonical,
-      required this.slug});
+      @JsonKey(name: 'title') required this.title,
+      @JsonKey(name: 'heading') required this.heading,
+      @JsonKey(name: 'short_desc') required this.shortDesc,
+      @JsonKey(name: 'description') required this.description,
+      @JsonKey(name: 'header_description') required this.headerDescription,
+      @JsonKey(name: 'faq') required this.faq,
+      @JsonKey(name: 'pic') required this.pic,
+      @JsonKey(name: 'dis_order') required this.disOrder,
+      @JsonKey(name: 'status') required this.status,
+      @JsonKey(name: 'test_by_habits') required this.testByHabits,
+      @JsonKey(name: 'meta_title') required this.metaTitle,
+      @JsonKey(name: 'meta_key') required this.metaKey,
+      @JsonKey(name: 'meta_desc') required this.metaDesc,
+      @JsonKey(name: 'canonical') required this.canonical,
+      @JsonKey(name: 'slug') required this.slug});
 
   factory _$TestCategoryModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TestCategoryModelImplFromJson(json);
@@ -326,34 +341,49 @@ class _$TestCategoryModelImpl implements _TestCategoryModel {
   @override
   final int id;
   @override
+  @JsonKey(name: 'title')
   final String title;
   @override
+  @JsonKey(name: 'heading')
   final String heading;
   @override
+  @JsonKey(name: 'short_desc')
   final String shortDesc;
   @override
+  @JsonKey(name: 'description')
   final String description;
   @override
+  @JsonKey(name: 'header_description')
   final String headerDescription;
   @override
+  @JsonKey(name: 'faq')
   final String faq;
   @override
+  @JsonKey(name: 'pic')
   final String pic;
   @override
+  @JsonKey(name: 'dis_order')
   final String disOrder;
   @override
+  @JsonKey(name: 'status')
   final String status;
   @override
+  @JsonKey(name: 'test_by_habits')
   final String testByHabits;
   @override
+  @JsonKey(name: 'meta_title')
   final String metaTitle;
   @override
+  @JsonKey(name: 'meta_key')
   final String metaKey;
   @override
+  @JsonKey(name: 'meta_desc')
   final String metaDesc;
   @override
+  @JsonKey(name: 'canonical')
   final String canonical;
   @override
+  @JsonKey(name: 'slug')
   final String slug;
 
   @override
@@ -432,22 +462,24 @@ class _$TestCategoryModelImpl implements _TestCategoryModel {
 
 abstract class _TestCategoryModel implements TestCategoryModel {
   const factory _TestCategoryModel(
-      {required final int id,
-      required final String title,
-      required final String heading,
-      required final String shortDesc,
-      required final String description,
-      required final String headerDescription,
-      required final String faq,
-      required final String pic,
-      required final String disOrder,
-      required final String status,
-      required final String testByHabits,
-      required final String metaTitle,
-      required final String metaKey,
-      required final String metaDesc,
-      required final String canonical,
-      required final String slug}) = _$TestCategoryModelImpl;
+          {required final int id,
+          @JsonKey(name: 'title') required final String title,
+          @JsonKey(name: 'heading') required final String heading,
+          @JsonKey(name: 'short_desc') required final String shortDesc,
+          @JsonKey(name: 'description') required final String description,
+          @JsonKey(name: 'header_description')
+          required final String headerDescription,
+          @JsonKey(name: 'faq') required final String faq,
+          @JsonKey(name: 'pic') required final String pic,
+          @JsonKey(name: 'dis_order') required final String disOrder,
+          @JsonKey(name: 'status') required final String status,
+          @JsonKey(name: 'test_by_habits') required final String testByHabits,
+          @JsonKey(name: 'meta_title') required final String metaTitle,
+          @JsonKey(name: 'meta_key') required final String metaKey,
+          @JsonKey(name: 'meta_desc') required final String metaDesc,
+          @JsonKey(name: 'canonical') required final String canonical,
+          @JsonKey(name: 'slug') required final String slug}) =
+      _$TestCategoryModelImpl;
 
   factory _TestCategoryModel.fromJson(Map<String, dynamic> json) =
       _$TestCategoryModelImpl.fromJson;
@@ -455,34 +487,49 @@ abstract class _TestCategoryModel implements TestCategoryModel {
   @override
   int get id;
   @override
+  @JsonKey(name: 'title')
   String get title;
   @override
+  @JsonKey(name: 'heading')
   String get heading;
   @override
+  @JsonKey(name: 'short_desc')
   String get shortDesc;
   @override
+  @JsonKey(name: 'description')
   String get description;
   @override
+  @JsonKey(name: 'header_description')
   String get headerDescription;
   @override
+  @JsonKey(name: 'faq')
   String get faq;
   @override
+  @JsonKey(name: 'pic')
   String get pic;
   @override
+  @JsonKey(name: 'dis_order')
   String get disOrder;
   @override
+  @JsonKey(name: 'status')
   String get status;
   @override
+  @JsonKey(name: 'test_by_habits')
   String get testByHabits;
   @override
+  @JsonKey(name: 'meta_title')
   String get metaTitle;
   @override
+  @JsonKey(name: 'meta_key')
   String get metaKey;
   @override
+  @JsonKey(name: 'meta_desc')
   String get metaDesc;
   @override
+  @JsonKey(name: 'canonical')
   String get canonical;
   @override
+  @JsonKey(name: 'slug')
   String get slug;
 
   /// Create a copy of TestCategoryModel
