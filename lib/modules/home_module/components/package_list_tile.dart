@@ -48,7 +48,8 @@ class PackageListTile extends StatelessWidget {
                     SizedBox(height: 4),
                     FeatureRow(
                         imagePath: 'assets/images/icons/test_tube.png',
-                        title: '${testPackage?.parameters ?? 0} Parameters'),
+                        title:
+                            '${testPackage?.customParameterCount ?? 0} Parameters'),
                     if (testPackage?.description != null)
                       Padding(
                           padding: const EdgeInsets.only(top: 6),

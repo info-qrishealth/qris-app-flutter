@@ -14,10 +14,12 @@ class CommonNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
         imageUrl: '${AppConstants.imageBaseUrl}/$name',
+        errorWidget: (context, _, _1) {
+          return Image.asset('assets/images/logos/full_logo.png');
+        },
         placeholder: (context, _) {
           return Image.asset('assets/images/logos/full_logo.png');
         },
-
         height: height,
         fit: fit,
         width: width);
