@@ -70,4 +70,19 @@ class TestService {
       rethrow;
     }
   }
+
+  static Future<List<TestPackageModel>> getTestsByTestIds(
+      {required List<int> testIds}) async {
+    final url = '${AppConstants.baseUrl}/tests';
+
+    try {
+      final response = await Wrapper.post(url, json.encode(testIds));
+
+      return (json.decode(response)['body'] as List)
+          .map((element) => TestPackageModel.fromJson(element))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

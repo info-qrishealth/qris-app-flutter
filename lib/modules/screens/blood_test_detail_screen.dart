@@ -19,6 +19,7 @@ import 'package:qris_health/shared/components/discount_coupon_container.dart';
 import 'package:qris_health/shared/components/faq_list_tile.dart';
 import 'package:qris_health/shared/components/info_row.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
+import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../cart_module/screens/cart_screen.dart';
@@ -31,11 +32,13 @@ class BloodTestDetailScreen extends StatefulWidget {
   State<BloodTestDetailScreen> createState() => _BloodTestDetailScreenState();
 }
 
-class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
+class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
+    with GeneralHelperMixin {
   final _textTheme = Get.textTheme;
   bool _showMoreText = false;
   TestPackageModel? _testPackageModel;
   late Future<List<Faq>> _faqFuture;
+  List<TestPackageModel> _relatedTests = [];
 
   @override
   void initState() {
@@ -140,7 +143,9 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                                         svgPath:
                                             'assets/images/icons/clock_icon.svg',
                                         title: 'Report Time : ',
-                                        description: ' 24 hours'),
+                                        description:
+                                            _testPackageModel?.productH3 ??
+                                                'N/A'),
                                   ]))),
                           SizedBox(height: 18),
                           CashbackContainer(),
@@ -291,21 +296,39 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen> {
                           SizedBox(height: 8),
                           SizedBox(
                               height: 150,
-                              child: ListView.separated(
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    return PackageTileHorizontal(
-                                        onBookNowTap: () {
-                                      Navigator.of(context).push(
-                                          CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  CartScreen()));
-                                    });
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return SizedBox(width: 8);
-                                  },
-                                  itemCount: 10)),
+                              child: FutureBuilder<List<TestPackageModel>>(
+                                  future: TestService.getTestsByTestIds(
+                                      testIds: getIntsFromString(
+                                          string:
+                                              _testPackageModel!.relatedPro)),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return Container();
+                                    }
+
+                                    if (_relatedTests.isEmpty) {
+                                      _relatedTests = snapshot.data ?? [];
+                                    }
+
+                                    return ListView.separated(
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          final test = _relatedTests[index];
+
+                                          return PackageTileHorizontal(
+                                              testPackageModel: test,
+                                              onBookNowTap: () {
+                                                Navigator.of(context).push(
+                                                    CupertinoPageRoute(
+                                                        builder: (context) =>
+                                                            CartScreen()));
+                                              });
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return SizedBox(width: 8);
+                                        },
+                                        itemCount: _relatedTests.length);
+                                  })),
                           SizedBox(height: 26),
                         ]);
                   }

@@ -9,12 +9,14 @@ class FeatureRow extends StatelessWidget {
   final String? imagePath;
   final String title;
   final Color? fontColor;
+  final Color? imageColor;
   const FeatureRow(
       {super.key,
       this.imagePath,
       required this.title,
       this.svgPath,
-      this.fontColor});
+      this.fontColor,
+      this.imageColor});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +24,11 @@ class FeatureRow extends StatelessWidget {
 
     return Row(children: [
       if (imagePath != null)
-        Image.asset(imagePath!, height: 12, color: AppColors.primaryBlue)
+        Image.asset(imagePath!,
+            height: 12, color: imageColor ?? AppColors.primaryBlue)
       else if (svgPath != null)
-        SvgPicture.asset(svgPath!, height: 12, color: AppColors.primaryBlue),
+        SvgPicture.asset(svgPath!,
+            height: 12, color: imageColor ?? AppColors.primaryBlue),
       SizedBox(width: 4),
       Text(title,
           style: textTheme.labelSmall!.copyWith(
