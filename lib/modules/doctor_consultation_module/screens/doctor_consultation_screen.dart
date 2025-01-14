@@ -1,15 +1,23 @@
+import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
+import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
+import 'package:qris_health/modules/health_article_module/cubits/health_articles_cubit/health_article_cubit.dart';
 import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
+import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
+import 'package:qris_health/modules/screens/blood_test_detail_screen.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/double_tick_row.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
+import '../../health_article_module/components/health_article_list_tile_horizontal.dart';
 import 'find_doctor_screen.dart';
 
 class DoctorConsultationScreen extends StatefulWidget {
@@ -23,6 +31,18 @@ class DoctorConsultationScreen extends StatefulWidget {
 class _DoctorConsultationScreenState extends State<DoctorConsultationScreen> {
   final _searchController = TextEditingController();
   final _textTheme = Get.textTheme;
+  late Future<List<TestPackageModel>> _popularPackageFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _popularPackageFuture = TestService.getMiniPopularTests();
+    final healthArticleCubit = BlocProvider.of<HealthArticleCubit>(context);
+
+    if (healthArticleCubit.state is! HealthArticleLoaded) {
+      healthArticleCubit.getAllArticles();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,24 +135,58 @@ class _DoctorConsultationScreenState extends State<DoctorConsultationScreen> {
                             fontWeight: FontWeight.w400, height: 1.22),
                         textAlign: TextAlign.center),
                     SizedBox(height: 15),
-                    ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return PackageListTile(
-                              onSeeDetailsTap: () {}, onBookNowTap: () {});
-                        },
-                        separatorBuilder: (context, index) {
-                          return SizedBox(height: 8);
-                        },
-                        itemCount: 3),
+                    AnimatedSize(
+                        duration: Duration(milliseconds: 200),
+                        child: FutureBuilder<List<TestPackageModel>>(
+                            future: _popularPackageFuture,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                final packages =
+                                    snapshot.data!.reversed.toList();
+
+                                return ListView.separated(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      final testPackage = packages[index];
+
+                                      return PackageListTile(
+                                          testPackage: testPackage,
+                                          onSeeDetailsTap: () {
+                                            Navigator.of(context).push(
+                                                CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        BloodTestDetailScreen(
+                                                            testId: testPackage
+                                                                .id)));
+                                          },
+                                          onBookNowTap: () {});
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return SizedBox(height: 8);
+                                    },
+                                    itemCount: packages.length > 3
+                                        ? 3
+                                        : packages.length);
+                              }
+
+                              return FadeShimmer(
+                                  radius: 16,
+                                  width: double.infinity,
+                                  height: Get.height * 0.5,
+                                  fadeTheme: FadeTheme.light);
+                            })),
                     SizedBox(height: 14),
                     SizedBox(
                         height: 38,
                         child: OutlinedButton(
                             style: OutlinedButton.styleFrom(
                                 side: BorderSide(color: AppColors.primaryBlue)),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(CupertinoPageRoute(
+                                  builder: (context) =>
+                                      PopularPackageScreen()));
+                            },
                             child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
@@ -186,8 +240,33 @@ class _DoctorConsultationScreenState extends State<DoctorConsultationScreen> {
               SizedBox(height: 32),
               Image.asset(
                   'assets/images/illustrations/health_score_section_illustration.png'),
-              SizedBox(height: 24),
+              SizedBox(height: 28),
               HeadingText(text: 'Recent Articles'),
+              SizedBox(height: 16),
+              SizedBox(
+                  height: 260,
+                  child: BlocBuilder<HealthArticleCubit, HealthArticleState>(
+                      builder: (context, state) {
+                    if (state is HealthArticleLoaded) {
+                      final articles =
+                          BlocProvider.of<HealthArticleCubit>(context)
+                              .getRecentArticles();
+                      return ListView.separated(
+                          shrinkWrap: true,
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return HealthArticleListTileHorizontal(
+                                healthArticle: articles[index]);
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(width: 8);
+                          },
+                          itemCount: articles.length);
+                    }
+
+                    return CircularProgressIndicator.adaptive();
+                  })),
             ])));
   }
 }
