@@ -99,6 +99,9 @@ mixin _$TestPackageModel {
   String? get rpDescription => throw _privateConstructorUsedError;
   @JsonKey(name: 'review_count')
   String? get reviewCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'included_packages')
+  List<IncludedPackage> get includedPackages =>
+      throw _privateConstructorUsedError;
   @JsonKey(name: 'rating')
   String? get rating => throw _privateConstructorUsedError;
 
@@ -159,6 +162,8 @@ abstract class $TestPackageModelCopyWith<$Res> {
       @JsonKey(name: 'scan_type') String? scanType,
       @JsonKey(name: 'r_p_description') String? rpDescription,
       @JsonKey(name: 'review_count') String? reviewCount,
+      @JsonKey(name: 'included_packages')
+      List<IncludedPackage> includedPackages,
       @JsonKey(name: 'rating') String? rating});
 }
 
@@ -217,6 +222,7 @@ class _$TestPackageModelCopyWithImpl<$Res, $Val extends TestPackageModel>
     Object? scanType = freezed,
     Object? rpDescription = freezed,
     Object? reviewCount = freezed,
+    Object? includedPackages = null,
     Object? rating = freezed,
   }) {
     return _then(_value.copyWith(
@@ -380,6 +386,10 @@ class _$TestPackageModelCopyWithImpl<$Res, $Val extends TestPackageModel>
           ? _value.reviewCount
           : reviewCount // ignore: cast_nullable_to_non_nullable
               as String?,
+      includedPackages: null == includedPackages
+          ? _value.includedPackages
+          : includedPackages // ignore: cast_nullable_to_non_nullable
+              as List<IncludedPackage>,
       rating: freezed == rating
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
@@ -437,6 +447,8 @@ abstract class _$$TestPackageModelImplCopyWith<$Res>
       @JsonKey(name: 'scan_type') String? scanType,
       @JsonKey(name: 'r_p_description') String? rpDescription,
       @JsonKey(name: 'review_count') String? reviewCount,
+      @JsonKey(name: 'included_packages')
+      List<IncludedPackage> includedPackages,
       @JsonKey(name: 'rating') String? rating});
 }
 
@@ -493,6 +505,7 @@ class __$$TestPackageModelImplCopyWithImpl<$Res>
     Object? scanType = freezed,
     Object? rpDescription = freezed,
     Object? reviewCount = freezed,
+    Object? includedPackages = null,
     Object? rating = freezed,
   }) {
     return _then(_$TestPackageModelImpl(
@@ -656,6 +669,10 @@ class __$$TestPackageModelImplCopyWithImpl<$Res>
           ? _value.reviewCount
           : reviewCount // ignore: cast_nullable_to_non_nullable
               as String?,
+      includedPackages: null == includedPackages
+          ? _value._includedPackages
+          : includedPackages // ignore: cast_nullable_to_non_nullable
+              as List<IncludedPackage>,
       rating: freezed == rating
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
@@ -709,7 +726,10 @@ class _$TestPackageModelImpl implements _TestPackageModel {
       @JsonKey(name: 'scan_type') required this.scanType,
       @JsonKey(name: 'r_p_description') required this.rpDescription,
       @JsonKey(name: 'review_count') required this.reviewCount,
-      @JsonKey(name: 'rating') required this.rating});
+      @JsonKey(name: 'included_packages')
+      final List<IncludedPackage> includedPackages = const [],
+      @JsonKey(name: 'rating') required this.rating})
+      : _includedPackages = includedPackages;
 
   factory _$TestPackageModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TestPackageModelImplFromJson(json);
@@ -833,13 +853,23 @@ class _$TestPackageModelImpl implements _TestPackageModel {
   @override
   @JsonKey(name: 'review_count')
   final String? reviewCount;
+  final List<IncludedPackage> _includedPackages;
+  @override
+  @JsonKey(name: 'included_packages')
+  List<IncludedPackage> get includedPackages {
+    if (_includedPackages is EqualUnmodifiableListView)
+      return _includedPackages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_includedPackages);
+  }
+
   @override
   @JsonKey(name: 'rating')
   final String? rating;
 
   @override
   String toString() {
-    return 'TestPackageModel(id: $id, bookingTestId: $bookingTestId, parent: $parent, type: $type, package: $package, test: $test, title: $title, productH1: $productH1, parameters: $parameters, productH3: $productH3, shortDesc: $shortDesc, description: $description, demoVideo: $demoVideo, courseType: $courseType, price: $price, specialPrice: $specialPrice, discount: $discount, disallowed: $disallowed, popular: $popular, relatedPro: $relatedPro, riskArea: $riskArea, fastingTime: $fastingTime, pic: $pic, basePrice: $basePrice, customParameterCount: $customParameterCount, questions: $questions, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, canonical: $canonical, slug: $slug, sampleType: $sampleType, tubeType: $tubeType, wellness: $wellness, teamIds: $teamIds, status: $status, disOrder: $disOrder, scanType: $scanType, rpDescription: $rpDescription, reviewCount: $reviewCount, rating: $rating)';
+    return 'TestPackageModel(id: $id, bookingTestId: $bookingTestId, parent: $parent, type: $type, package: $package, test: $test, title: $title, productH1: $productH1, parameters: $parameters, productH3: $productH3, shortDesc: $shortDesc, description: $description, demoVideo: $demoVideo, courseType: $courseType, price: $price, specialPrice: $specialPrice, discount: $discount, disallowed: $disallowed, popular: $popular, relatedPro: $relatedPro, riskArea: $riskArea, fastingTime: $fastingTime, pic: $pic, basePrice: $basePrice, customParameterCount: $customParameterCount, questions: $questions, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, canonical: $canonical, slug: $slug, sampleType: $sampleType, tubeType: $tubeType, wellness: $wellness, teamIds: $teamIds, status: $status, disOrder: $disOrder, scanType: $scanType, rpDescription: $rpDescription, reviewCount: $reviewCount, includedPackages: $includedPackages, rating: $rating)';
   }
 
   @override
@@ -914,6 +944,8 @@ class _$TestPackageModelImpl implements _TestPackageModel {
                 other.rpDescription == rpDescription) &&
             (identical(other.reviewCount, reviewCount) ||
                 other.reviewCount == reviewCount) &&
+            const DeepCollectionEquality()
+                .equals(other._includedPackages, _includedPackages) &&
             (identical(other.rating, rating) || other.rating == rating));
   }
 
@@ -961,6 +993,7 @@ class _$TestPackageModelImpl implements _TestPackageModel {
         scanType,
         rpDescription,
         reviewCount,
+        const DeepCollectionEquality().hash(_includedPackages),
         rating
       ]);
 
@@ -1024,6 +1057,8 @@ abstract class _TestPackageModel implements TestPackageModel {
       @JsonKey(name: 'scan_type') required final String? scanType,
       @JsonKey(name: 'r_p_description') required final String? rpDescription,
       @JsonKey(name: 'review_count') required final String? reviewCount,
+      @JsonKey(name: 'included_packages')
+      final List<IncludedPackage> includedPackages,
       @JsonKey(name: 'rating')
       required final String? rating}) = _$TestPackageModelImpl;
 
@@ -1150,6 +1185,9 @@ abstract class _TestPackageModel implements TestPackageModel {
   @JsonKey(name: 'review_count')
   String? get reviewCount;
   @override
+  @JsonKey(name: 'included_packages')
+  List<IncludedPackage> get includedPackages;
+  @override
   @JsonKey(name: 'rating')
   String? get rating;
 
@@ -1158,5 +1196,215 @@ abstract class _TestPackageModel implements TestPackageModel {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TestPackageModelImplCopyWith<_$TestPackageModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+IncludedPackage _$IncludedPackageFromJson(Map<String, dynamic> json) {
+  return _IncludedPackage.fromJson(json);
+}
+
+/// @nodoc
+mixin _$IncludedPackage {
+  String? get title => throw _privateConstructorUsedError;
+  @JsonKey(name: 'custom_parameter_count')
+  int get customParameterCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'test_names')
+  List<String> get testNames => throw _privateConstructorUsedError;
+
+  /// Serializes this IncludedPackage to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of IncludedPackage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $IncludedPackageCopyWith<IncludedPackage> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $IncludedPackageCopyWith<$Res> {
+  factory $IncludedPackageCopyWith(
+          IncludedPackage value, $Res Function(IncludedPackage) then) =
+      _$IncludedPackageCopyWithImpl<$Res, IncludedPackage>;
+  @useResult
+  $Res call(
+      {String? title,
+      @JsonKey(name: 'custom_parameter_count') int customParameterCount,
+      @JsonKey(name: 'test_names') List<String> testNames});
+}
+
+/// @nodoc
+class _$IncludedPackageCopyWithImpl<$Res, $Val extends IncludedPackage>
+    implements $IncludedPackageCopyWith<$Res> {
+  _$IncludedPackageCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of IncludedPackage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? title = freezed,
+    Object? customParameterCount = null,
+    Object? testNames = null,
+  }) {
+    return _then(_value.copyWith(
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customParameterCount: null == customParameterCount
+          ? _value.customParameterCount
+          : customParameterCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      testNames: null == testNames
+          ? _value.testNames
+          : testNames // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$IncludedPackageImplCopyWith<$Res>
+    implements $IncludedPackageCopyWith<$Res> {
+  factory _$$IncludedPackageImplCopyWith(_$IncludedPackageImpl value,
+          $Res Function(_$IncludedPackageImpl) then) =
+      __$$IncludedPackageImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String? title,
+      @JsonKey(name: 'custom_parameter_count') int customParameterCount,
+      @JsonKey(name: 'test_names') List<String> testNames});
+}
+
+/// @nodoc
+class __$$IncludedPackageImplCopyWithImpl<$Res>
+    extends _$IncludedPackageCopyWithImpl<$Res, _$IncludedPackageImpl>
+    implements _$$IncludedPackageImplCopyWith<$Res> {
+  __$$IncludedPackageImplCopyWithImpl(
+      _$IncludedPackageImpl _value, $Res Function(_$IncludedPackageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of IncludedPackage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? title = freezed,
+    Object? customParameterCount = null,
+    Object? testNames = null,
+  }) {
+    return _then(_$IncludedPackageImpl(
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customParameterCount: null == customParameterCount
+          ? _value.customParameterCount
+          : customParameterCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      testNames: null == testNames
+          ? _value._testNames
+          : testNames // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$IncludedPackageImpl implements _IncludedPackage {
+  const _$IncludedPackageImpl(
+      {this.title,
+      @JsonKey(name: 'custom_parameter_count') this.customParameterCount = 0,
+      @JsonKey(name: 'test_names') final List<String> testNames = const []})
+      : _testNames = testNames;
+
+  factory _$IncludedPackageImpl.fromJson(Map<String, dynamic> json) =>
+      _$$IncludedPackageImplFromJson(json);
+
+  @override
+  final String? title;
+  @override
+  @JsonKey(name: 'custom_parameter_count')
+  final int customParameterCount;
+  final List<String> _testNames;
+  @override
+  @JsonKey(name: 'test_names')
+  List<String> get testNames {
+    if (_testNames is EqualUnmodifiableListView) return _testNames;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_testNames);
+  }
+
+  @override
+  String toString() {
+    return 'IncludedPackage(title: $title, customParameterCount: $customParameterCount, testNames: $testNames)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$IncludedPackageImpl &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.customParameterCount, customParameterCount) ||
+                other.customParameterCount == customParameterCount) &&
+            const DeepCollectionEquality()
+                .equals(other._testNames, _testNames));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, title, customParameterCount,
+      const DeepCollectionEquality().hash(_testNames));
+
+  /// Create a copy of IncludedPackage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$IncludedPackageImplCopyWith<_$IncludedPackageImpl> get copyWith =>
+      __$$IncludedPackageImplCopyWithImpl<_$IncludedPackageImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$IncludedPackageImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _IncludedPackage implements IncludedPackage {
+  const factory _IncludedPackage(
+      {final String? title,
+      @JsonKey(name: 'custom_parameter_count') final int customParameterCount,
+      @JsonKey(name: 'test_names')
+      final List<String> testNames}) = _$IncludedPackageImpl;
+
+  factory _IncludedPackage.fromJson(Map<String, dynamic> json) =
+      _$IncludedPackageImpl.fromJson;
+
+  @override
+  String? get title;
+  @override
+  @JsonKey(name: 'custom_parameter_count')
+  int get customParameterCount;
+  @override
+  @JsonKey(name: 'test_names')
+  List<String> get testNames;
+
+  /// Create a copy of IncludedPackage
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$IncludedPackageImplCopyWith<_$IncludedPackageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

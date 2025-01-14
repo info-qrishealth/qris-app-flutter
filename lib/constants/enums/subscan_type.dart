@@ -146,15 +146,15 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other CT Scans',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question: 'Is it safe to perform an abdomen CT scan?',
                   answer:
                       'Yes, ofcourse abdominal ct scan in Delhi is safe because this procedure involves minimal amount of radiation and the scanners are put in limit for the same. However, pregnant women or kidney patients should consult the doctor or take supervision before the scan.'),
-              Faq(
+              HardcodedFaq(
                   question: 'What can we diagnose with this test?',
                   answer:
                       'An abdominal CT Scan ensures that we get diagnosis results for various conditions such as, abdominal pain, kidney stones, tumors, liver issues,etc.'),
-              Faq(
+              HardcodedFaq(
                   question: 'Are the contrast materials used in the scan safe?',
                   answer:
                       'Well, the contrast materials used in the scan are safe but some individuals may suffer from allergic issues or more serious issues. It is necessary to inform cect abdomen in Delhi before conducting your scan test.')
@@ -199,17 +199,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other CT Scans',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'What is the need of the hour for CT bone imaging in Delhi?',
                   answer:
                       'The CT bone imaging in Delhi has a crucial part in the diagnosis and evaluation of multiple issues which are bone related. The process involved detailing the bone images, which helps in giving the accurate assessment for things like bone infections fractures, and various other degenerative conditions'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Are all age groups suitable for CT scan joints in Delhi ?',
                   answer:
                       'Yes, CT scan joints in Delhi are suitable for all types of age groups which includes adults, children and elderly people and the ct scan price in Delhi is available at affordable rates. It can provide proper insights into the joint conditions of an individual which aids in early detection and diagnosis of the problem.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Why is CT scan limbs in Delhi for joints an important diagnostic way?',
                   answer:
@@ -257,16 +257,16 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other CT Scans',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'Is the chest CT scan the same as a coronary CT or angiogram?',
                   answer:
                       'No, a chest CT scan in Delhi is a broad image study that captures the images of the chest region, including the lungs and hearts. CT coronary angiogram or CT angiogram is a specialized test that focuses on getting visuals of blood vessels around the heart area and assessing the abnormalities and blockages.'),
-              Faq(
+              HardcodedFaq(
                   question: 'Is the chest CT scan considered to be safe?',
                   answer:
                       'Yes, a chest CT scan is considered to be safe. All the risks associated with the radiation do not outweigh the benefits of a chest CT scan. The modern CT scan is designed to minimize the radiation dose and use the right technologies to maintain image quality. In terms of ct scan price near me in Delhi, it is affordable.'),
-              Faq(
+              HardcodedFaq(
                   question: 'How should one prepare for a chest CT scan?',
                   answer:
                       'Usually, one is not required to prepare for the chest CT scan. But during the scan, there are chances experts will ask you to remove things like metal objects, any jewelry, or clothes that have metal that could interfere with the scans.')
@@ -306,16 +306,16 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other CT Scans',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'What is the importance of neck and head scan in Delhi?',
                   answer:
                       'A neck and head ct scan centers near me in Delhi has a huge importance in allowing healthcare experts to evaluate multiple neck and head conditions. The scan is used for detecting issues like head injuries, brain tumors, sinus infections, neck masses and various other diseases across.'),
-              Faq(
+              HardcodedFaq(
                   question: 'What is the cost of CT scan neck in Delhi?',
                   answer:
                       'The cost of CT scan neck in Delhi can be known with the help of the experts at QRIS Health. You can speak to the professionals and book an appointment.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'What are the associated risks with CT scan neck in Delhi?',
                   answer:
@@ -369,17 +369,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other CT Scans',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'What conditions can CT Scan PNS and CT Scan Sinus detect?',
                   answer:
                       'The CT Scan PNS and CT Scan Sinus are very valuable in diagnosing nasal polyps, sinus tumors, sinus cysts and other abnormalities in the nasal passages. The scans help in identifying the root cause of the chronic congestions and various other recurring sinus infections.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Are the CT Scan Sinus and CT Scan PNS safe and affordable?',
                   answer:
                       'Yes, the CT Scan Sinus and CT Scan PNS are very safe and the nose CT scan price in delhi is also affordable. The radiation amount used during the process is very minimal and the benefits of the right diagnosis outweighs all the possible risks. There is a possibility that patients can experience a little discomfort especially when lying down during the process.'),
-              Faq(
+              HardcodedFaq(
                   question: 'How should one prepare for a CT Scan Sinus?',
                   answer:
                       'When it comes to preparation, there are no special requirements. A few things to keep in mind are that patients should avoid wearing any kind of metal objects such as jewelry and priorly inform the experts about the medical implants they have.')
@@ -433,17 +433,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other CT Scans',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'Is CT Angiography considered to be painless and safe?',
                   answer:
                       'CT Angiography is safe and is performed by the experts. During the process, there is an exposure for radiation ionizing from X-rays and the use of contrast dye. The exposure radiation is less, and it is important that individuals with kidney issues or pregnant women should let the experts know about it.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'How should an individual prepare for CT Angiogram?',
                   answer:
                       'Before getting a CT Angiogram, the individuals should let experts know in case of past medical problems, allergies or ongoing medications. Specially in case of the history of diabetes or kidney problems, this should be clearly stated. Also make sure to inquire about heart ct scan cost in Delhi.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'What should be the expectations after the CT Angiography?',
                   answer:
@@ -482,15 +482,15 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Ultrasound',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question: 'Is the process of abdominal ultrasound painful?',
                   answer:
                       'No, the abdominal ultrasound is considered to be very painless. This process involves the use of sound waves, which eliminates the need for any needles or any radiation exposure.'),
-              Faq(
+              HardcodedFaq(
                   question: 'What is the purpose of abdominal ultrasound ?',
                   answer:
                       'USG abdomen in Delhi is done for assessing and diagnosing the various medical conditions which affect the abdominal organs. The ultrasound helps in identification of issues like liver diseases, kidney stones, gallbladder, abdominal masses, pancreatitis and various other conditions.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'What is the duration of abdominal ultrasound in Delhi?',
                   answer:
@@ -549,17 +549,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Ultrasound',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'When should one undergo the scan in pregnancy in Delhi?',
                   answer:
                       'During the first and second trimesters, it is essential to have a minimum of 2 pregnancy tests. The very first test is done around the 8th week for confirming the pregnancy and determining the due date. The second test is performed around week 22nd, to assess the organs of the baby and spot any abnormalities.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Is the ultrasound considered safe for both baby and mother?',
                   answer:
                       'Yes, pregnancy ultrasound is considered safe for the baby and mother. The ultrasound makes use of the waves for creating the images and eliminates all risks for radiations which are associated with X-Rays.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'What is the information which one can get via the pregnancy ultrasound?',
                   answer:
@@ -594,17 +594,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Ultrasound',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'Are chest ultrasound in Delhi considered to be painful?',
                   answer:
                       'No, the breast and chest scan in Delhi process is considered to be painless as it makes use of the sound waves for creating images, without exposure to the radiation. Patients can experience a little discomfort due to the pressure applied via the transducer during this process.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'What is the duration of the chest and breast ultrasound?',
                   answer:
                       'The duration of the breast and chest ultrasound takes about 30 minutes, and this duration does depend on the examination complexity also. The ultrasound centre near me is also very easily available.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Does breast ultrasound have the ability to detect breast cancer?',
                   answer:
@@ -636,15 +636,15 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Ultrasound',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question: 'Is FNAC test in Delhi ultrasound painful?',
                   answer:
                       'The procedure can sometimes cause some discomfort similar to any kind of needle prick. The process is quite quick, and local anesthesia is used for minimizing the discomfort.'),
-              Faq(
+              HardcodedFaq(
                   question: 'What does the FNAC ultrasound diagnose?',
                   answer:
                       'The diagnosis of the FNAC ultrasound covers a wide range of conditions which includes cysts, abscesses, tumors and various other growths of abnormal tissues. The ultrasound is used for evaluating thyroid, breast lumps, lymph, nodes etc.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Is it safe to get FNAC ultrasound during pregnancy?',
                   answer:
@@ -684,17 +684,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Color Doppler Ultrasound',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'What all issues can be diagnosed via Abdominal Color Doppler Ultrasound in Delhi?',
                   answer:
                       'The Abdominal Color Doppler Ultrasound in Delhi, can diagnose multiple issues such as renal artery stenosis, abdominal aortic aneurysms, gallbladder disorders, liver cirrhosis etc.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Are there any risks associated with Color Doppler Ultrasound?',
                   answer:
                       'The Color Doppler Ultrasound does not have any risks involved and is very safe as it does not involve any kind of radiation.'),
-              Faq(
+              HardcodedFaq(
                   question: 'What is the duration of the ultrasound process?',
                   answer:
                       "The ultrasound duration varies between 40-60 minutes, & it depends on the examination's complexity & patients' condition.")
@@ -725,17 +725,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Color Doppler Ultrasound',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'Can there be any risks associated with doppler test in pregnancy in Delhi considered for the baby?',
                   answer:
                       'Yes, doppler scan in pregnancy in Delhi is safe for both baby and the mother and there are no risks involved. The ultrasound makes use of harmless sound waves which create detailed images without any exposure to the radiation.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Does the process of Pregnancy Color Doppler Ultrasound cause pain?',
                   answer:
                       'The color doppler test in pregnancy in Delhi is safe and painless. The gel application or the transducer application causes a little discomfort.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'For the scan, is full bladder considered necessary?',
                   answer:
@@ -777,17 +777,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Color Doppler Ultrasound',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'Who are the right individuals that should go for the venous doppler test in Delhi?',
                   answer:
                       'Every individual apart from the following who face these issues can go for limb colour doppler ultrasound - swelling, leg pain, cramping etc.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'What are the benefits for arterial doppler test in Delhi?',
                   answer:
                       'There are multiple benefits of getting a vascular doppler test in Delhi such as the early detection of diseases such as blood clots, artery disease or other vascular abnormalities that provide timely information to prevent complications related to limb related.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'What are the preparations required before taking the test?',
                   answer:
@@ -814,17 +814,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Color Doppler Ultrasound',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'Individuals suffering from what issues should not go for the Carotid doppler process?',
                   answer:
                       'Although there are no risks involved with the carotid doppler test in Delhi process, all the individuals who go through the issues like hypertension, high cholesterol, diabetes etc should connect with the experts before taking the call.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'For how long does the Carotid doppler process last?',
                   answer:
                       "The doppler test for heart in Delhi process takes about 40-45 mins, but the duration also depends on the individual's complexity."),
-              Faq(
+              HardcodedFaq(
                   question:
                       'What are the risks which are associated with Carotid Doppler?',
                   answer:
@@ -865,17 +865,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other MRI',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'Is the MRI brain scan in Delhi considered to be safe?',
                   answer:
                       'Yes, totally. The head, brain and neck MRI is a non-invasive technique which is painless and does not use radiation.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Which kind of diseases can be detected by the MRI scans in the body?',
                   answer:
                       'A brain MRI with contrast in Delhi can detect various kinds of neurological conditions such as cranial nerve disorders, vascular abnormalities etc.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'What are the side effects which are associated with MRI scans?',
                   answer:
@@ -929,16 +929,16 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other MRI',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'What are the different types of conditions which are detected via MRI cervical spine in Delhi?',
                   answer:
                       'The MRI knee in Delhi scan can easily detect multiple musculoskeletal conditions such as spinal stenosis, ligament tears, joint inflammation etc.'),
-              Faq(
+              HardcodedFaq(
                   question: 'Is the MRI scan considered to be noisy?',
                   answer:
                       'Yes, the MRI scan is considered to be noisy as the machine produces the knocking loud and buzzing sound during the scan process.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Are pregnant women allowed to undergo the joint and spine MRI scan?',
                   answer:
@@ -985,16 +985,16 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other MRI',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'What are the kinds of conditions which are detected in the pelvis and abdomen by MRI scan?',
                   answer:
                       'The pelvic and MRI scans can easily evaluate and detect conditions such as cysts, inflammatory diseases, abnormalities, organ enlargements etc.'),
-              Faq(
+              HardcodedFaq(
                   question: 'Are MRI scans considered to be uncomfortable?',
                   answer:
                       'Scan pelvis in Delhi is not uncomfortable but it is indeed a painless process. But inside the MRI machine, sometimes individuals can feel claustrophobic.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Are there any restrictions on the age for MRI scans?',
                   answer:
@@ -1023,17 +1023,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other MRI',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'Why do experts recommend the full body MRI scan and what is full body MRI scan cost in Delhi?',
                   answer:
                       'A full body MRI scan is recommended by the expert when there is a need for imaging the body parts. The images are used for thorough evaluation in cases of severe issues like cancer which can assess the overall organ.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Is the procedure of MRI scan considered to be safe?',
                   answer:
                       'Yes, the full body MRI scan is considered safe as there is no involvement of radiation which is used in CT scans or X-Rays.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'What are the preparations required for the full body MRI scan?',
                   answer:
@@ -1066,17 +1066,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Radiology Tests',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'Is there any discomfort included in the 2d echo test in Delhi?',
                   answer:
                       'The echo test is non-invasive and painless as it is totally needless.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Who are the individuals who can undergo the echo test for heart in Delhi?',
                   answer:
                       'The individuals with symptoms such as palpitations, chest pain, breath shortness, heart disease issues should consult the expert before undergoing the test.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Can echo tests help with diagnosis of heart valve issues?',
                   answer:
@@ -1132,15 +1132,15 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Radiology Tests',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question: 'What is EEG’s test purpose?',
                   answer:
                       'The main purpose for EEG procedure in Delhi is for assessing brain functioning and also detects the irregularity presence in the brain electrical activity. The test helps with diagnosis of seizures, epilepsy, sleep disorders and various other neurological conditions.'),
-              Faq(
+              HardcodedFaq(
                   question: 'Is the EEG test considered to be painful?',
                   answer:
                       'The EEG in Delhi is considered to be totally painless. The electrodes get placed on the surface of the scalp, and there is no discomfort or penetration in the procedure. It is considered very safe for all age groups including children and elderly people.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'What is the duration of the EEG test, and when can individuals get the result?',
                   answer:
@@ -1177,15 +1177,15 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Radiology Tests',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question: 'Why is Dexa scan for bone health important?',
                   answer:
                       'The dexa scan is known to be essential as it helps in assessing the overall bone health and also diagnosis conditions such as osteoporosis. Each and every detection of any low bone density allows timely treatment of the problem and at the same time minimizes the risks which are associated with fractures.'),
-              Faq(
+              HardcodedFaq(
                   question: 'Is Dexa scan painless and safe?',
                   answer:
                       'Yes, dexa scan is considered to be super safe, as it makes use of the low X-ray doses, which minimizes the radiation exposures. It is known to be a very painless process and requires no needles.'),
-              Faq(
+              HardcodedFaq(
                   question: 'Is it easy to find a dexa scan near me in Delhi?',
                   answer:
                       'Yes, finding a dexa scan near me in Delhi is very easy. It is essential to consult the expert before taking any steps further.')
@@ -1220,16 +1220,16 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Radiology Tests',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'What is known to be the duration of the PFT in Delhi?',
                   answer:
                       'The PFT duration does depend on various factors. Overall on average, the test takes 30 minutes to complete.'),
-              Faq(
+              HardcodedFaq(
                   question: 'What does the PFT test indicate?',
                   answer:
                       'The results of the PFT test can provide crucial information about respiratory or lung functions. Some abnormal results which indicate conditions such as chronic bronchitis, lung disease, asthma or lung functions etc.'),
-              Faq(
+              HardcodedFaq(
                   question: 'Is PFT considered to be painful?',
                   answer:
                       'PFT is a non-invasive test and is also painless. The process of the test is supposed to be very easy and comfortable, which includes no needles.'),
@@ -1258,15 +1258,15 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Radiology Tests',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question: 'What is ECG full form?',
                   answer:
                       'ECG stands for Electrocardiogram. It is known to be a diagnostic test which records all the electrical activity of the heart for evaluating the function and detects the cardiac abnormalities.'),
-              Faq(
+              HardcodedFaq(
                   question: 'Is the ECG test considered to be very painful?',
                   answer:
                       'No, the ECG test is not painful at all, rather it is a painless process and requires no needles. The process is very safe for individuals of all kinds of age groups, and has minimal or no side effects at all.'),
-              Faq(
+              HardcodedFaq(
                   question: 'What does the general ECG report indicate?',
                   answer:
                       'The normal ECG report, indicates the regular heart rhythm. This shows that electrical signals which get transmitted properly and there are no abnormalities in the heart conditions.')
@@ -1295,17 +1295,17 @@ extension SubscanTypeExtension on SubScanType {
             ],
             thirdHeading: 'Other Radiology Tests',
             faqs: [
-              Faq(
+              HardcodedFaq(
                   question:
                       'Can Holter test in Delhi be suitable for all kinds of age?',
                   answer:
                       'Yes, the holtest test is considered suitable for all kinds of age groups such as elderly and children. The painless process can be performed safely on patients with various heart conditions. The holter test cost in Delhi is also very affordable.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'How should the individual prepare for holter test?',
                   answer:
                       'The individual is not required to do any preparation before the holter test. However, the individual is required to wear loose fitting clothes to allow easy placement of electrodes placed on the chest.'),
-              Faq(
+              HardcodedFaq(
                   question:
                       'Can an individual take a shower when wearing the holter monitor?',
                   answer:

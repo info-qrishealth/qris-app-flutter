@@ -60,7 +60,7 @@ class _SearchPackageScreenState extends State<SearchPackageScreen> {
                                 return PackageListTile(onSeeDetailsTap: () {
                                   Navigator.of(context).push(CupertinoPageRoute(
                                       builder: (context) =>
-                                          BloodTestDetailScreen()));
+                                          BloodTestDetailScreen(testId: 0)));
                                 }, onBookNowTap: () {
                                   Navigator.of(context).push(CupertinoPageRoute(
                                       builder: (context) => CartScreen()));

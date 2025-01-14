@@ -17,7 +17,7 @@ class PackageTileHorizontal extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           Navigator.of(context).push(CupertinoPageRoute(
-              builder: (context) => BloodTestDetailScreen()));
+              builder: (context) => BloodTestDetailScreen(testId: 0)));
         },
         child: Container(
             width: 152,

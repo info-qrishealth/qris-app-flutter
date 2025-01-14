@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/modules/all_scans_module/models/faq/faq.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class FaqListTile extends StatefulWidget {
-  final String question;
-  final String answer;
-  const FaqListTile({super.key, required this.question, required this.answer});
+  final String? question;
+  final String? answer;
+  final Faq? faq;
+  const FaqListTile({super.key, this.question, this.answer, this.faq});
 
   @override
   State<FaqListTile> createState() => _FaqListTileState();
@@ -27,7 +29,7 @@ class _FaqListTileState extends State<FaqListTile> {
           setState(() {});
         },
         tilePadding: EdgeInsets.symmetric(horizontal: 9),
-        title: Text(widget.question,
+        title: Text('${widget.faq?.question}',
             style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w500)),
         childrenPadding: EdgeInsets.symmetric(horizontal: 9),
         trailing: SvgPicture.asset(
@@ -37,7 +39,7 @@ class _FaqListTileState extends State<FaqListTile> {
             color: AppColors.primaryPink,
             height: _isExpanded ? 20 : 24),
         children: [
-          Text(widget.answer,
+          Text('${widget.faq?.answer}',
               style: textTheme.bodySmall!.copyWith(
                   fontWeight: FontWeight.w400,
                   color: AppColors.lightSubTextColor)),

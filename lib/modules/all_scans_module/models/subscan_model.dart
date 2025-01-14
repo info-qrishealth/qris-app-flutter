@@ -9,7 +9,7 @@ class SubscanModel {
   final String whyToChooseTitle;
   final List<String> whyToChoose;
   final String thirdHeading;
-  final List<Faq> faqs;
+  final List<HardcodedFaq> faqs;
 
   SubscanModel({
     required this.appBarTitle,
@@ -26,13 +26,13 @@ class SubscanModel {
   });
 }
 
-class Faq {
+class HardcodedFaq {
   final String question;
   final String answer;
 
-  Faq({required this.question, required this.answer});
+  HardcodedFaq({required this.question, required this.answer});
 
-  factory Faq.fromJson(Map<String, dynamic> json) => Faq(
+  factory HardcodedFaq.fromJson(Map<String, dynamic> json) => HardcodedFaq(
         question: json["question"],
         answer: json["answer"],
       );

@@ -26,7 +26,7 @@ class PopularPackageScreen extends StatefulWidget {
 
 class _PopularPackageScreenState extends State<PopularPackageScreen> {
   final _textTheme = Get.textTheme;
-  TestCategoryModel? _selectedTestType;
+  TestCategoryModel? _selectedTestCategory;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: DiscountCouponContainer(),
-        appBar: CommonAppBar(title: _selectedTestType?.title ?? 'Popular'),
+        appBar: CommonAppBar(title: _selectedTestCategory?.title ?? 'Popular'),
         body:
             SafeArea(child: BlocBuilder<TestsCategoryCubit, TestsCategoryState>(
           builder: (context, state) {
@@ -56,18 +56,18 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                       SizedBox(width: AppConstants.scaffoldPadding),
                       GestureDetector(
                           onTap: () {
-                            _selectedTestType = null;
+                            _selectedTestCategory = null;
                             setState(() {});
                           },
                           child: Column(children: [
                             Container(
                                 decoration: BoxDecoration(
-                                    color: _selectedTestType == null
+                                    color: _selectedTestCategory == null
                                         ? Color(0x14B23C97)
                                         : Colors.white,
                                     border: Border.all(
                                         width: 0.9,
-                                        color: _selectedTestType == null
+                                        color: _selectedTestCategory == null
                                             ? AppColors.primaryPink
                                             : Colors.black.withOpacity(0.09)),
                                     borderRadius: BorderRadius.circular(17)),
@@ -82,18 +82,27 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                     .copyWith(fontWeight: FontWeight.w500))
                           ])),
                       SizedBox(width: 18),
-                      ...state.categories.map((category) => Padding(
-                          padding: const EdgeInsets.only(right: 18),
-                          child: _buildCategoryContainer(
-                              testCategoryModel: category))),
+                      ...state.categories.map((category) => GestureDetector(
+                          onTap: () async {
+                            setState(() {
+                              _selectedTestCategory = category;
+                            });
+                          },
+                          child: Padding(
+                              padding: const EdgeInsets.only(right: 18),
+                              child: _buildCategoryContainer(
+                                  testCategoryModel: category)))),
                     ])),
                 SizedBox(height: 28),
                 Expanded(
                     child: FutureBuilder<List<TestPackageModel>>(
-                        future: TestService.getPopularTests(),
+                        future: _selectedTestCategory == null
+                            ? TestService.getMiniPopularTests()
+                            : TestService.getPackagesByCategory(
+                                categoryId: _selectedTestCategory!.id),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            final tests = snapshot.data!;
+                            final tests = snapshot.data!.reversed.toList();
 
                             return ListView.separated(
                                 physics: BouncingScrollPhysics(),
@@ -102,15 +111,17 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                     right: AppConstants.scaffoldPadding,
                                     bottom: 16),
                                 itemBuilder: (context, index) {
+                                  final test = tests[index];
                                   return PackageListTile(
-                                      testPackage: tests[index],
+                                      testPackage: test,
                                       description:
                                           'Included : Liver Test, Kidney Test, Blood glucose fasting, Lipid profile, Thyroid Profile, HBA1C, Urine Test....',
                                       onSeeDetailsTap: () {
                                         Navigator.of(context).push(
                                             CupertinoPageRoute(
                                                 builder: (context) =>
-                                                    BloodTestDetailScreen()));
+                                                    BloodTestDetailScreen(
+                                                        testId: test.id)));
                                       },
                                       onBookNowTap: () {
                                         Navigator.of(context).push(
@@ -122,7 +133,7 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                 separatorBuilder: (context, index) {
                                   return SizedBox(height: 15);
                                 },
-                                itemCount: 10);
+                                itemCount: tests.length);
                           }
 
                           return ListView(
@@ -143,11 +154,11 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
 
   Widget _buildCategoryContainer(
       {required TestCategoryModel testCategoryModel}) {
-    final isSelected = testCategoryModel.id == _selectedTestType?.id;
+    final isSelected = testCategoryModel.id == _selectedTestCategory?.id;
 
     return GestureDetector(
         onTap: () {
-          _selectedTestType = testCategoryModel;
+          _selectedTestCategory = testCategoryModel;
           setState(() {});
         },
         child: Column(children: [

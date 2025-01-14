@@ -47,8 +47,25 @@ class TestPackageModel with _$TestPackageModel {
       @JsonKey(name: 'scan_type') required String? scanType,
       @JsonKey(name: 'r_p_description') required String? rpDescription,
       @JsonKey(name: 'review_count') required String? reviewCount,
+      @JsonKey(name: 'included_packages')
+      @Default([])
+      List<IncludedPackage> includedPackages,
       @JsonKey(name: 'rating') required String? rating}) = _TestPackageModel;
 
   factory TestPackageModel.fromJson(Map<String, dynamic> json) =>
       _$TestPackageModelFromJson(json);
+}
+
+@freezed
+class IncludedPackage with _$IncludedPackage {
+  const factory IncludedPackage(
+          {String? title,
+          @JsonKey(name: 'custom_parameter_count')
+          @Default(0)
+          int customParameterCount,
+          @JsonKey(name: 'test_names') @Default([]) List<String> testNames}) =
+      _IncludedPackage;
+
+  factory IncludedPackage.fromJson(Map<String, dynamic> json) =>
+      _$IncludedPackageFromJson(json);
 }

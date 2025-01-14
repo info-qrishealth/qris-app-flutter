@@ -5,6 +5,8 @@ import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/shared/components/feature_row.dart';
 import 'package:qris_health/shared/components/offered_price_container.dart';
+import 'package:qris_health/shared/extensions/list_extension.dart';
+import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../screens/blood_test_detail_screen.dart';
@@ -50,10 +52,12 @@ class PackageListTile extends StatelessWidget {
                         imagePath: 'assets/images/icons/test_tube.png',
                         title:
                             '${testPackage?.customParameterCount ?? 0} Parameters'),
-                    if (testPackage?.description != null)
+                    if (testPackage != null &&
+                        !testPackage!.includedPackages.isNullOrEmpty)
                       Padding(
                           padding: const EdgeInsets.only(top: 6),
-                          child: Text('${testPackage?.metaDesc}',
+                          child: Text(
+                              'Included : ${testPackage?.includedPackages.map((element) => element.title).join(', ').htmlString}',
                               style: _textTheme.labelSmall!.copyWith(
                                   fontWeight: FontWeight.w400, fontSize: 10))),
                   ])),
@@ -73,7 +77,7 @@ class PackageListTile extends StatelessWidget {
                           onTap: () {
                             Navigator.of(context).push(CupertinoPageRoute(
                                 builder: (context) => BloodTestDetailScreen(
-                                    testPackage: testPackage)));
+                                    testId: testPackage!.id)));
                           },
                           child: Container(
                               padding: EdgeInsets.symmetric(vertical: 10),

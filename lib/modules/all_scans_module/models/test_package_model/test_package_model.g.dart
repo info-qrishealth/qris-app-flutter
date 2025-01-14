@@ -49,6 +49,10 @@ _$TestPackageModelImpl _$$TestPackageModelImplFromJson(
       scanType: json['scan_type'] as String?,
       rpDescription: json['r_p_description'] as String?,
       reviewCount: json['review_count'] as String?,
+      includedPackages: (json['included_packages'] as List<dynamic>?)
+              ?.map((e) => IncludedPackage.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       rating: json['rating'] as String?,
     );
 
@@ -95,5 +99,26 @@ Map<String, dynamic> _$$TestPackageModelImplToJson(
       'scan_type': instance.scanType,
       'r_p_description': instance.rpDescription,
       'review_count': instance.reviewCount,
+      'included_packages': instance.includedPackages,
       'rating': instance.rating,
+    };
+
+_$IncludedPackageImpl _$$IncludedPackageImplFromJson(
+        Map<String, dynamic> json) =>
+    _$IncludedPackageImpl(
+      title: json['title'] as String?,
+      customParameterCount:
+          (json['custom_parameter_count'] as num?)?.toInt() ?? 0,
+      testNames: (json['test_names'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$$IncludedPackageImplToJson(
+        _$IncludedPackageImpl instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+      'custom_parameter_count': instance.customParameterCount,
+      'test_names': instance.testNames,
     };
