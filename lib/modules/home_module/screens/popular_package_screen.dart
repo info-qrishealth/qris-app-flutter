@@ -10,6 +10,7 @@ import 'package:qris_health/modules/all_scans_module/services/test_service.dart'
 import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
+import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/components/common_network_image.dart';
 import 'package:qris_health/shared/components/discount_coupon_container.dart';
 import 'package:qris_health/shared/components/shimmer_tile.dart';
@@ -101,6 +102,11 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                             : TestService.getPackagesByCategory(
                                 categoryId: _selectedTestCategory!.id),
                         builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CommonListviewShimmer();
+                          }
+                          
                           if (snapshot.hasData) {
                             final tests = snapshot.data!.reversed.toList();
 
@@ -114,8 +120,6 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                   final test = tests[index];
                                   return PackageListTile(
                                       testPackage: test,
-                                      description:
-                                          'Included : Liver Test, Kidney Test, Blood glucose fasting, Lipid profile, Thyroid Profile, HBA1C, Urine Test....',
                                       onSeeDetailsTap: () {
                                         Navigator.of(context).push(
                                             CupertinoPageRoute(
@@ -136,10 +140,7 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                 itemCount: tests.length);
                           }
 
-                          return ListView(
-                              children: List.generate(8, (index) {
-                            return ShimmerTile();
-                          }));
+                          return CommonListviewShimmer();
                         })),
               ]);
             } else {

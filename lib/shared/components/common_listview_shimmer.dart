@@ -8,6 +8,7 @@ class CommonListviewShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+        physics: BouncingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: AppConstants.scaffoldPadding),
         shrinkWrap: true,
         children: List.generate(8, (index) => ShimmerTile()));
