@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/doctor_consultation_module/models/doctor/doctor.dart';
+import 'package:qris_health/modules/doctor_consultation_module/models/doctor_category/doctor_category.dart';
 import 'package:qris_health/modules/doctor_consultation_module/screens/doctor_info_screen.dart';
 import 'package:qris_health/shared/components/common_divider.dart';
 import 'package:qris_health/shared/components/common_network_image.dart';
@@ -14,7 +15,9 @@ import '../../../shared/components/rating_container.dart';
 
 class DoctorListTile extends StatelessWidget {
   final Doctor doctor;
-  DoctorListTile({super.key, required this.doctor});
+  final DoctorCategory doctorCategory;
+  DoctorListTile(
+      {super.key, required this.doctor, required this.doctorCategory});
   final _textTheme = Get.textTheme;
 
   @override
@@ -25,7 +28,7 @@ class DoctorListTile extends StatelessWidget {
             border: Border.all(color: AppColors.borderColor, width: 0.85),
             borderRadius: BorderRadius.circular(14)),
         child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Container(
+          SizedBox(
               width: 100,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -168,7 +171,9 @@ class DoctorListTile extends StatelessWidget {
                                                 CupertinoPageRoute(
                                                     builder: (context) =>
                                                         DoctorInfoScreen(
-                                                            doctor: doctor)));
+                                                            doctor: doctor,
+                                                            selectedCategory:
+                                                                doctorCategory)));
                                           },
                                           child: Text('View Profile',
                                               style: _textTheme.bodyLarge!

@@ -79,4 +79,19 @@ class DoctorService {
       rethrow;
     }
   }
+
+  static Future<List<Doctor>> getDoctorsByCategory(
+      {required int categoryId}) async {
+    final url = '${AppConstants.baseUrl}/doctors/category/$categoryId';
+
+    try {
+      final response = await Wrapper.get(url);
+
+      return (json.decode(response)['body'] as List)
+          .map((element) => Doctor.fromJson(element))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

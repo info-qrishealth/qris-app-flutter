@@ -136,7 +136,9 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
                                     return DoctorListTile(
-                                        doctor: _doctors[index]);
+                                        doctor: _doctors[index],
+                                        doctorCategory:
+                                            widget.selectedCategory);
                                   },
                                   separatorBuilder: (context, index) {
                                     if (index == 1) {

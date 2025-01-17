@@ -26,6 +26,7 @@ class _SelectLocationDialogState extends State<SelectLocationDialog> {
   void initState() {
     super.initState();
     _selectedLocation = widget.selectedLocation;
+    widget.doctorLocations.sort((a, b) => a.title!.compareTo(b.title!));
   }
 
   @override

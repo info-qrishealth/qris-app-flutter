@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/doctor_consultation_module/components/doctor_list_tile.dart';
 import 'package:qris_health/modules/doctor_consultation_module/models/doctor/doctor.dart';
+import 'package:qris_health/modules/doctor_consultation_module/models/doctor_category/doctor_category.dart';
 import 'package:qris_health/modules/doctor_consultation_module/models/doctor_education/doctor_education.dart';
 import 'package:qris_health/modules/doctor_consultation_module/services/doctor_service.dart';
 import 'package:qris_health/shared/components/bullet_point.dart';
@@ -16,8 +17,10 @@ import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class DoctorInfoScreen extends StatefulWidget {
+  final DoctorCategory selectedCategory;
   final Doctor doctor;
-  const DoctorInfoScreen({super.key, required this.doctor});
+  const DoctorInfoScreen(
+      {super.key, required this.doctor, required this.selectedCategory});
 
   @override
   State<DoctorInfoScreen> createState() => _DoctorInfoScreenState();
@@ -26,6 +29,14 @@ class DoctorInfoScreen extends StatefulWidget {
 class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
   final _textTheme = Get.textTheme;
   List<DoctorEducation>? _educations;
+  late Future<List<Doctor>> _doctorFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _doctorFuture = DoctorService.getDoctorsByCategory(
+        categoryId: widget.selectedCategory.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -232,18 +243,29 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                                       '${education.education}${education.college.isNullOrEmpty ? '' : ', ${education.college}'}'))
                               .toList())),
               SizedBox(height: 24),
-              HeadingText(text: 'Other Dentists'),
+              HeadingText(text: 'Other ${widget.selectedCategory.title}'),
               SizedBox(height: 10),
-              ListView.separated(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return DoctorListTile(doctor: Doctor(id: 1));
-                  },
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: 10);
-                  },
-                  itemCount: 3)
+              FutureBuilder<List<Doctor>>(
+                  future: _doctorFuture,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Container();
+                    final doctors = snapshot.data!;
+
+                    return ListView.separated(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final doctor = doctors[index];
+
+                          return DoctorListTile(
+                              doctor: doctor,
+                              doctorCategory: widget.selectedCategory);
+                        },
+                        separatorBuilder: (context, index) {
+                          return SizedBox(height: 10);
+                        },
+                        itemCount: doctors.length > 5 ? 5 : doctors.length);
+                  }),
             ])));
   }
 }
