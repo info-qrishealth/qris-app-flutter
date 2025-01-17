@@ -1,0 +1,78 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'doctor.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$DoctorImpl _$$DoctorImplFromJson(Map<String, dynamic> json) => _$DoctorImpl(
+      id: (json['id'] as num).toInt(),
+      docName: json['doc_name'] as String?,
+      shortBio: json['short_bio'] as String?,
+      description: json['description'] as String?,
+      docSpeciality: json['doc_speciality'] as String?,
+      pic: json['pic'] as String?,
+      category: json['category'] as String?,
+      docEmail: json['doc_email'] as String?,
+      docExperience: json['doc_experience'] as String?,
+      docPhone: json['doc_phone'] as String?,
+      doctorDob: json['doctor_dob'] as String?,
+      docAddress: json['doc_address'] as String?,
+      docStates: (json['doc_states'] as num?)?.toInt(),
+      docAreas: (json['doc_areas'] as num?)?.toInt(),
+      gender: json['gender'] as String?,
+      rating: json['rating'] as String?,
+      review: json['review'] as String?,
+      fees: json['fees'] as String?,
+      education: json['education'] as String?,
+      passingYear: json['passing_year'] as String?,
+      trusted: json['trusted'] as String?,
+      verified: json['verified'] as String?,
+      slug: json['slug'] as String?,
+      metaTitle: json['meta_title'] as String?,
+      metaKey: json['meta_key'] as String?,
+      metaDesc: json['meta_desc'] as String?,
+      disOrder: (json['dis_order'] as num?)?.toInt(),
+      uploadedOn: json['uploaded_on'] as String?,
+      status: json['status'] as String?,
+      mobVerified: json['mob_verified'] as String?,
+      emailVerified: json['email_verified'] as String?,
+      otp: json['otp'] as String?,
+    );
+
+Map<String, dynamic> _$$DoctorImplToJson(_$DoctorImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'doc_name': instance.docName,
+      'short_bio': instance.shortBio,
+      'description': instance.description,
+      'doc_speciality': instance.docSpeciality,
+      'pic': instance.pic,
+      'category': instance.category,
+      'doc_email': instance.docEmail,
+      'doc_experience': instance.docExperience,
+      'doc_phone': instance.docPhone,
+      'doctor_dob': instance.doctorDob,
+      'doc_address': instance.docAddress,
+      'doc_states': instance.docStates,
+      'doc_areas': instance.docAreas,
+      'gender': instance.gender,
+      'rating': instance.rating,
+      'review': instance.review,
+      'fees': instance.fees,
+      'education': instance.education,
+      'passing_year': instance.passingYear,
+      'trusted': instance.trusted,
+      'verified': instance.verified,
+      'slug': instance.slug,
+      'meta_title': instance.metaTitle,
+      'meta_key': instance.metaKey,
+      'meta_desc': instance.metaDesc,
+      'dis_order': instance.disOrder,
+      'uploaded_on': instance.uploadedOn,
+      'status': instance.status,
+      'mob_verified': instance.mobVerified,
+      'email_verified': instance.emailVerified,
+      'otp': instance.otp,
+    };

@@ -5,7 +5,8 @@ import '../../constants/app_constants.dart';
 import '../../styles/app_colors.dart';
 
 class RatingContainer extends StatelessWidget {
-  const RatingContainer({super.key});
+  final String ratings;
+  const RatingContainer({super.key, required this.ratings});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class RatingContainer extends StatelessWidget {
         child: Row(children: [
           SvgPicture.asset('assets/images/icons/star_icon.svg'),
           SizedBox(width: 4),
-          Text('4.9',
+          Text(ratings,
               style: TextStyle(
                   fontSize: 10,
                   color: Colors.white,

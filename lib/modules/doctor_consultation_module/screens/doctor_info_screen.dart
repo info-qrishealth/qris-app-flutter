@@ -1,22 +1,36 @@
+import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/doctor_consultation_module/components/doctor_list_tile.dart';
+import 'package:qris_health/modules/doctor_consultation_module/models/doctor/doctor.dart';
+import 'package:qris_health/modules/doctor_consultation_module/models/doctor_education/doctor_education.dart';
+import 'package:qris_health/modules/doctor_consultation_module/services/doctor_service.dart';
 import 'package:qris_health/shared/components/bullet_point.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_divider.dart';
+import 'package:qris_health/shared/components/common_network_image.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
 import 'package:qris_health/shared/components/rating_container.dart';
+import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-class DoctorInfoScreen extends StatelessWidget {
-  DoctorInfoScreen({super.key});
+class DoctorInfoScreen extends StatefulWidget {
+  final Doctor doctor;
+  const DoctorInfoScreen({super.key, required this.doctor});
+
+  @override
+  State<DoctorInfoScreen> createState() => _DoctorInfoScreenState();
+}
+
+class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
   final _textTheme = Get.textTheme;
+  List<DoctorEducation>? _educations;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CommonAppBar(title: 'Dr. Praveen Shukla'),
+        appBar: CommonAppBar(title: '${widget.doctor.docName}'),
         body: SafeArea(
             child: ListView(
                 padding: EdgeInsets.symmetric(
@@ -34,80 +48,108 @@ class DoctorInfoScreen extends StatelessWidget {
                       children: [
                         Stack(alignment: Alignment.bottomCenter, children: [
                           ClipOval(
-                              child: Image.asset(
-                                  'assets/images/placeholders/doctor_placeholder_2.png',
+                              child: CommonNetworkImage(
+                                  name: '${widget.doctor.pic}',
+                                  placeholderPath:
+                                      'assets/images/placeholders/doctor_placeholder_2.png',
                                   fit: BoxFit.cover,
                                   height: 140,
                                   width: 140)),
-                          Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                  color: AppColors.primaryBlue,
-                                  borderRadius: BorderRadius.circular(100)),
-                              child: Text('Most Trusted',
-                                  style: _textTheme.labelSmall!.copyWith(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white))),
+                          if (widget.doctor.trusted == '1')
+                            Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(
+                                    color: AppColors.primaryBlue,
+                                    borderRadius: BorderRadius.circular(100)),
+                                child: Text('Most Trusted',
+                                    style: _textTheme.labelSmall!.copyWith(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white))),
                         ]),
                         SizedBox(height: 6),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('Dr. Praveen Shukla',
+                              Text('${widget.doctor.docName}',
                                   style: _textTheme.headlineSmall!.copyWith(
                                       color: Colors.black.withOpacity(0.6),
                                       fontWeight: FontWeight.w700)),
                               SizedBox(width: 10),
-                              Image.asset(
-                                  'assets/images/icons/verified_icon_2.png',
-                                  height: 24),
+                              if (widget.doctor.verified == '1')
+                                Image.asset(
+                                    'assets/images/icons/verified_icon_2.png',
+                                    height: 24),
                             ]),
                         SizedBox(height: 6),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('Orthopedic',
-                                  style: _textTheme.bodyLarge!.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.black60)),
+                              Flexible(
+                                  child: Text(
+                                      widget.doctor.docSpeciality
+                                              ?.split('|')
+                                              .firstOrNull
+                                              ?.split('/')
+                                              .firstOrNull ??
+                                          '',
+                                      style: _textTheme.bodyLarge!.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.black60))),
                               SizedBox(width: 8),
-                              RatingContainer(),
+                              RatingContainer(
+                                  ratings:
+                                      '${double.tryParse('${widget.doctor.rating}')?.toStringAsFixed(1) ?? 0}'),
                             ]),
                         SizedBox(height: 4),
-                        Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Text('MS in Orthopedics',
-                                  style: _textTheme.bodySmall!.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(0.6))),
-                              SizedBox(width: 8),
-                              Text('|',
-                                  style: _textTheme.titleMedium!.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(0.5))),
-                              SizedBox(width: 8),
-                              Text('MBBS',
-                                  style: _textTheme.bodySmall!.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(0.6))),
-                            ]),
+                        FutureBuilder<List<DoctorEducation>>(
+                            future: DoctorService.getDoctorEducation(
+                                widget.doctor.id),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                if (_educations == null) {
+                                  _educations = snapshot.data!;
+
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    setState(() {});
+                                  });
+                                }
+
+                                return Text(
+                                    _educations!
+                                        .map((education) => education)
+                                        .join(', '),
+                                    style: _textTheme.bodySmall!.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black.withOpacity(0.6)));
+                              } else if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return FadeShimmer(
+                                    radius: 4,
+                                    width: 50,
+                                    height: 10,
+                                    fadeTheme: FadeTheme.light);
+                              }
+
+                              return Container();
+                            }),
                         SizedBox(height: 8),
                         Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: CommonDivider(height: 1)),
                         SizedBox(height: 8),
                         Text(
-                            'Orthopedy Sports Medicine, Orthopedic Surgery, Total Femur Replacement, Neck and Spine BiopsyOrthopedy Sports Medicine, Orthopedic Surgery, Total Femur Replacement, Neck and Spine Biopsy',
+                            '${widget.doctor.docSpeciality?.replaceAll('|', ' | ')}',
                             style: _textTheme.bodyLarge!.copyWith(
                                 color: AppColors.lightText,
                                 fontWeight: FontWeight.w400,
                                 height: 1.22),
                             textAlign: TextAlign.center),
                         SizedBox(height: 10),
-                        Text('22 years of experience',
+                        Text(
+                            '${widget.doctor.docExperience?.split(' ').firstOrNull ?? 'N/A'} years of experience',
                             style: _textTheme.bodyLarge!
                                 .copyWith(fontWeight: FontWeight.w700)),
                         SizedBox(height: 12),
@@ -124,7 +166,7 @@ class DoctorInfoScreen extends StatelessWidget {
                                           fontWeight: FontWeight.w600,
                                           color: AppColors.primaryPink)),
                                   SizedBox(width: 12),
-                                  Text('₹800/-',
+                                  Text('₹${widget.doctor.fees}/-',
                                       style: _textTheme.titleLarge!.copyWith(
                                           fontWeight: FontWeight.w800,
                                           fontFamily:
@@ -146,7 +188,7 @@ class DoctorInfoScreen extends StatelessWidget {
                             color: AppColors.textColor,
                             fontWeight: FontWeight.w500)),
                     TextSpan(
-                        text: ' 9999999999\n',
+                        text: ' ${widget.doctor.docPhone?.trim()}\n',
                         style: _textTheme.bodySmall!.copyWith(
                             color: AppColors.lightText,
                             fontWeight: FontWeight.w400)),
@@ -156,8 +198,7 @@ class DoctorInfoScreen extends StatelessWidget {
                             color: AppColors.textColor,
                             fontWeight: FontWeight.w500)),
                     TextSpan(
-                        text:
-                            ' D-13, Pocket-5, Near RK Hospital, Ganesh Nagar, New Delhi-110092 ',
+                        text: widget.doctor.docAddress ?? 'N/A',
                         style: _textTheme.bodySmall!.copyWith(
                             color: AppColors.lightText,
                             fontWeight: FontWeight.w400))
@@ -170,8 +211,7 @@ class DoctorInfoScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(9),
                       border: Border.all(color: AppColors.borderColor)),
-                  child: Text(
-                      'Dr. Praveen Shukla is a top specialist at Max Hospital at India. He has achieved several awards and recognition for is contribution and service in his own field. He is available for private consultation.',
+                  child: Text('${widget.doctor.description}',
                       style: _textTheme.bodySmall!.copyWith(
                           fontWeight: FontWeight.w400,
                           color: AppColors.lightText))),
@@ -183,15 +223,14 @@ class DoctorInfoScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(9),
                       border: Border.all(color: AppColors.borderColor)),
-                  child: Column(children: [
-                    BulletPoint(
-                        text:
-                            'MBBS, University College of Medical Sciences & GTB Hospital, New delhi-1987'),
-                    SizedBox(height: 2),
-                    BulletPoint(
-                        text:
-                            'MS in Orthopedics, RNT Medical College, Udaipur, 1993')
-                  ])),
+                  child: Column(
+                      children: _educations == null
+                          ? []
+                          : _educations!
+                              .map((education) => BulletPoint(
+                                  text:
+                                      '${education.education}${education.college.isNullOrEmpty ? '' : ', ${education.college}'}'))
+                              .toList())),
               SizedBox(height: 24),
               HeadingText(text: 'Other Dentists'),
               SizedBox(height: 10),
@@ -199,7 +238,7 @@ class DoctorInfoScreen extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return DoctorListTile();
+                    return DoctorListTile(doctor: Doctor(id: 1));
                   },
                   separatorBuilder: (context, index) {
                     return SizedBox(height: 10);

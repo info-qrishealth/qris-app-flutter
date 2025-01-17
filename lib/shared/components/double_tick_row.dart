@@ -12,9 +12,10 @@ class DoubleTickRow extends StatelessWidget {
     return Row(children: [
       Image.asset('assets/images/icons/double_tick_icon.png', height: 24),
       SizedBox(width: 10),
-      Text(text,
-          style: Get.textTheme.bodySmall!.copyWith(
-              fontWeight: FontWeight.w500, color: AppColors.primaryPink)),
+      Expanded(
+          child: Text(text,
+              style: Get.textTheme.bodySmall!.copyWith(
+                  fontWeight: FontWeight.w500, color: AppColors.primaryPink))),
     ]);
   }
 }
