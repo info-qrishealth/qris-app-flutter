@@ -9,11 +9,12 @@ import 'package:qris_health/modules/doctor_consultation_module/screens/doctor_in
 import 'package:qris_health/shared/components/common_divider.dart';
 import 'package:qris_health/shared/components/common_network_image.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
+import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../shared/components/rating_container.dart';
 
-class DoctorListTile extends StatelessWidget {
+class DoctorListTile extends StatelessWidget with GeneralHelperMixin {
   final Doctor doctor;
   final DoctorCategory doctorCategory;
   DoctorListTile(
@@ -152,15 +153,20 @@ class DoctorListTile extends StatelessWidget {
                             child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                              Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppColors.primaryBlue
-                                          .withOpacity(0.3)),
-                                  child: Image.asset(
-                                      'assets/images/icons/call_icon.png',
-                                      height: 20)),
+                              GestureDetector(
+                                  onTap: () async {
+                                    await openDialPad(
+                                        phoneNumber: '${doctor.docPhone}');
+                                  },
+                                  child: Container(
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColors.primaryBlue
+                                              .withOpacity(0.3)),
+                                      child: Image.asset(
+                                          'assets/images/icons/call_icon.png',
+                                          height: 20))),
                               SizedBox(width: 8),
                               Expanded(
                                   child: SizedBox(
