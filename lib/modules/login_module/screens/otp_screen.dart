@@ -6,15 +6,21 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:qris_health/constants/app_constants.dart';
-import 'package:qris_health/modules/home_module/screens/home_screen.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/login_module/components/privacy_policy_text.dart';
+import 'package:qris_health/modules/login_module/models/user/user.dart';
+import 'package:qris_health/modules/login_module/services/otp_service.dart';
+import 'package:qris_health/modules/users_module/services/user_service.dart';
 import 'package:qris_health/shared/components/welcome_header_column.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../components/create_account_text.dart';
+import '../models/otp/otp.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+  final User? userToAdd;
+  final Otp otp;
+  const OtpScreen({super.key, required this.userToAdd, required this.otp});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -24,10 +30,13 @@ class _OtpScreenState extends State<OtpScreen> {
   final _textTheme = Get.textTheme;
   final _otpController = TextEditingController();
   int _seconds = 59;
+  late Otp _otp;
 
   @override
   void initState() {
     super.initState();
+    _otp = widget.otp;
+
     Timer.periodic(const Duration(seconds: 1), (_) {
       if (_seconds > 0) {
         _seconds--;
@@ -60,7 +69,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       fontWeight: FontWeight.w700)),
               SizedBox(height: 8),
               Row(children: [
-                Text('OTP sent on +91 8900678345',
+                Text('OTP sent on +91 ${_otp.phoneNumber}',
                     style: _textTheme.bodyLarge!.copyWith(
                         fontWeight: FontWeight.w400,
                         color: AppColors.lightText)),
@@ -101,16 +110,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   }),
               SizedBox(height: 21),
               ElevatedButton(
-                  onPressed: _otpController.text.length == 4
-                      ? () {
-                          // todo:
-
-                          Navigator.of(context).pushAndRemoveUntil(
-                              CupertinoPageRoute(
-                                  builder: (context) => HomeScreen()),
-                              (_) => false);
-                        }
-                      : null,
+                  onPressed: _otpController.text.length == 4 ? _login : null,
                   child: Text('Login')),
               SizedBox(height: 21),
               PrivacyPolicyText(),
@@ -132,9 +132,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 .copyWith(fontWeight: FontWeight.w400)),
                         WidgetSpan(
                             child: GestureDetector(
-                                onTap: () {
-                                  // todo:
-                                },
+                                onTap: _resendOtp,
                                 child: Text("Resend SMS",
                                     style: _textTheme.bodyLarge!.copyWith(
                                         color: _seconds > 0
@@ -149,5 +147,32 @@ class _OtpScreenState extends State<OtpScreen> {
                         color: AppColors.red, fontWeight: FontWeight.w400),
                     textAlign: TextAlign.center),
             ])));
+  }
+
+  Future<void> _resendOtp() async {
+    try {
+      _otp = await OtpService.sendOtp(phoneNumber: _otp.phoneNumber!);
+    } catch (e) {
+      AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    }
+  }
+
+  Future<void> _login() async {
+    try {
+      _otp = _otp.copyWith.call(token: int.tryParse(_otpController.text));
+      await OtpService.verifyOtp(otp: _otp);
+
+      if (widget.userToAdd != null) {
+        final createdUser =
+            await UserService.createUser(user: widget.userToAdd!);
+
+        print(createdUser);
+      } else {}
+
+      // Navigator.of(context).pushAndRemoveUntil(
+      //     CupertinoPageRoute(builder: (context) => HomeScreen()), (_) => false);
+    } catch (e) {
+      AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    }
   }
 }

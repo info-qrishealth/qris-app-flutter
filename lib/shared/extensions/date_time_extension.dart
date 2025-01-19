@@ -142,4 +142,13 @@ extension DateTimeExtension on DateTime? {
       return '${DateFormat.yMMMd().format(this!.toLocal())} (${DateTime.now().difference(this!.toLocal()).inDays} days ago) at ${DateFormat.jm().format(this!.toLocal())}';
     }
   }
+
+  String? get toTimestampForServer {
+    if (this == null) {
+      return null;
+    }
+
+    int unixTimestamp = this!.millisecondsSinceEpoch ~/ 1000;
+    return unixTimestamp.toString();
+  }
 }

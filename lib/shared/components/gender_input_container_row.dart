@@ -7,14 +7,14 @@ import '../../styles/app_colors.dart';
 
 class GenderInputContainerRow extends StatefulWidget {
   final Function(Gender) onTap;
-  final Gender? gender;
+  final Gender? selectedGender;
   final bool isRequired;
 
   const GenderInputContainerRow(
       {super.key,
       required this.onTap,
       this.isRequired = false,
-      required this.gender});
+      required this.selectedGender});
 
   @override
   State<GenderInputContainerRow> createState() =>
@@ -48,6 +48,8 @@ class _GenderInputContainerRowState extends State<GenderInputContainerRow> {
   }
 
   Widget _buildSexContainer({required Gender gender}) {
+    final isSelected = widget.selectedGender == gender;
+
     return GestureDetector(
         onTap: () {
           widget.onTap(gender);
@@ -55,8 +57,15 @@ class _GenderInputContainerRowState extends State<GenderInputContainerRow> {
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 26, vertical: 12),
             decoration: BoxDecoration(
+                color: isSelected
+                    ? AppColors.primaryBlue.withOpacity(0.1)
+                    : Colors.white,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: Colors.black.withOpacity(0.09))),
+                border: Border.all(
+                    width: 0.6,
+                    color: isSelected
+                        ? AppColors.primaryBlue
+                        : AppColors.borderColor)),
             child: SvgPicture.asset(gender.imagePath)));
   }
 }

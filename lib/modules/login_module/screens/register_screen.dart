@@ -1,12 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/gender.dart';
+import 'package:qris_health/constants/enums/married_title.dart';
+import 'package:qris_health/constants/enums/month.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/login_module/components/privacy_policy_text.dart';
+import 'package:qris_health/modules/login_module/models/user/user.dart';
+import 'package:qris_health/modules/login_module/screens/otp_screen.dart';
+import 'package:qris_health/modules/login_module/services/otp_service.dart';
 import 'package:qris_health/shared/components/common_field_dropdown.dart';
 import 'package:qris_health/shared/components/common_textfield.dart';
 import 'package:qris_health/shared/components/dob_dropdown.dart';
 import 'package:qris_health/shared/components/gender_input_container_row.dart';
+import 'package:qris_health/shared/extensions/date_time_extension.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/shared/utils/search_pattern.dart';
 import 'package:qris_health/styles/app_colors.dart';
@@ -27,6 +35,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final _textTheme = Get.textTheme;
   final _formKey = GlobalKey<FormState>();
+
+  MarriedTitle? _selectedTitle;
+  Gender? _selectedGender;
+
+  int? _day;
+  Month? _month;
+  int? _year;
+
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +75,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       SizedBox(height: 50),
                       CommonFieldDropdown(
                           labelText: null,
-                          items: List.generate(
-                              5,
-                              (index) => DropdownMenuItem(
-                                  value: index,
-                                  child: Text('Title ${index + 1}'))),
-                          selectedValue: null,
-                          onChanged: (value) {},
+                          items: MarriedTitle.values
+                              .map((title) => DropdownMenuItem(
+                                  value: title,
+                                  child: Text(title.name.formattedEnumName!)))
+                              .toList(),
+                          selectedValue: _selectedTitle,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedTitle = value;
+                            });
+                          },
                           headingText: 'Title'),
                       SizedBox(height: 16),
                       CommonTextField(
@@ -108,17 +129,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           textInputType: TextInputType.phone,
                           headingText: 'Mobile Number'),
                       SizedBox(height: 16),
-                      DobDropdown(),
+                      DobDropdown(
+                          selectedDay: _day,
+                          selectedMonth: _month,
+                          selectedYear: _year,
+                          getSelectedDay: (days) {
+                            setState(() {
+                              _day = days;
+                            });
+                          },
+                          getSelectedMonth: (month) {
+                            setState(() {
+                              _month = month;
+                            });
+                          },
+                          getSelectedYear: (year) {
+                            setState(() {
+                              _year = year;
+                            });
+                          }),
                       SizedBox(height: 16),
                       GenderInputContainerRow(
-                          onTap: (selectedGender) {}, gender: Gender.MALE),
+                          onTap: (selectedGender) {
+                            setState(() {
+                              _selectedGender = selectedGender;
+                            });
+                          },
+                          selectedGender: _selectedGender),
                       SizedBox(height: 32),
                       ElevatedButton(
-                          onPressed: () {
-                            // todo:
-
-                            if (_formKey.currentState?.validate() == true) {}
-                          },
+                          onPressed: _loading ? null : _sendOtp,
                           child: Text('Create Account')),
                       SizedBox(height: 28),
                       PrivacyPolicyText(),
@@ -131,5 +171,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           secondaryText: ' Login Now'),
                       SizedBox(height: 16),
                     ]))));
+  }
+
+  Future<void> _sendOtp() async {
+    try {
+      setState(() {
+        _loading = true;
+      });
+
+      if (_selectedTitle == null) {
+        return AppConstants.showSnackbar(
+            text: 'Please enter your title first', type: SnackbarType.warning);
+      }
+
+      if (_day == null || _month == null || _year == null) {
+        return AppConstants.showSnackbar(
+            text: 'Please enter DOB first', type: SnackbarType.warning);
+      }
+
+      if (_selectedGender == null) {
+        return AppConstants.showSnackbar(
+            text: 'Please enter your gender first', type: SnackbarType.warning);
+      }
+
+      if (_formKey.currentState?.validate() == true) {
+        final isUserAlreadyExists = await OtpService.isUserExists(
+            phoneNumber: _phoneNumberController.text);
+
+        if (isUserAlreadyExists) {
+          return AppConstants.showSnackbar(
+              text:
+                  'User already exists. Please try to login instead of creating an account',
+              type: SnackbarType.error);
+        }
+
+        final userToCreate = User(
+            title: _selectedTitle!.number,
+            name: _nameController.text,
+            phone: _phoneNumberController.text,
+            userId: _emailController.text,
+            email: _emailController.text,
+            dob: DateTime(_year!, _month!.number, _day!).toConvertedTimeString!,
+            gender: _selectedGender!.index.toString());
+
+        final otp =
+            await OtpService.sendOtp(phoneNumber: _phoneNumberController.text);
+
+        Navigator.of(context).push(CupertinoPageRoute(
+            builder: (context) =>
+                OtpScreen(userToAdd: userToCreate, otp: otp)));
+      }
+    } catch (e) {
+      AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    } finally {
+      setState(() {
+        _loading = false;
+      });
+    }
   }
 }

@@ -62,7 +62,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   textInputType: TextInputType.emailAddress,
                   headingText: 'Email'),
               SizedBox(height: 16),
-              GenderInputContainerRow(onTap: (gender) {}, gender: Gender.MALE),
+              GenderInputContainerRow(onTap: (gender) {}, selectedGender: Gender.MALE),
               SizedBox(height: 16),
               CommonTextField(
                   hintText: 'Enter your body weight',

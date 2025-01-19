@@ -7,7 +7,22 @@ import '../../styles/app_colors.dart';
 
 class DobDropdown extends StatefulWidget {
   final bool isRequired;
-  const DobDropdown({super.key, this.isRequired = false});
+  final int? selectedDay;
+  final Month? selectedMonth;
+  final int? selectedYear;
+  final Function(int) getSelectedDay;
+  final Function(Month) getSelectedMonth;
+  final Function(int) getSelectedYear;
+
+  const DobDropdown(
+      {super.key,
+      this.isRequired = false,
+      required this.getSelectedDay,
+      required this.getSelectedMonth,
+      required this.getSelectedYear,
+      this.selectedDay,
+      this.selectedMonth,
+      this.selectedYear});
 
   @override
   State<DobDropdown> createState() => _DobDropdownState();
@@ -36,6 +51,7 @@ class _DobDropdownState extends State<DobDropdown> {
           child: Row(children: [
             Expanded(
                 child: DropdownButton(
+                    value: widget.selectedDay,
                     underline: Container(),
                     icon: Icon(Icons.keyboard_arrow_down_outlined,
                         size: 20, color: AppColors.lightSubTextColor),
@@ -49,11 +65,14 @@ class _DobDropdownState extends State<DobDropdown> {
                       return DropdownMenuItem(
                           value: index, child: Text(date.toString()));
                     }),
-                    onChanged: (value) {})),
+                    onChanged: (value) {
+                      widget.getSelectedDay(value!);
+                    })),
             Expanded(
                 child: Align(
                     alignment: Alignment.center,
                     child: DropdownButton<Month>(
+                        value: widget.selectedMonth,
                         underline: Container(),
                         icon: Icon(Icons.keyboard_arrow_down_outlined,
                             size: 20, color: AppColors.lightGrey),
@@ -66,11 +85,14 @@ class _DobDropdownState extends State<DobDropdown> {
                                 value: month,
                                 child: Text(month.name.formattedEnumName!)))
                             .toList(),
-                        onChanged: (value) {}))),
+                        onChanged: (value) {
+                          widget.getSelectedMonth(value!);
+                        }))),
             Expanded(
                 child: Align(
                     alignment: Alignment.centerRight,
                     child: DropdownButton<int>(
+                        value: widget.selectedYear,
                         underline: Container(),
                         icon: Icon(Icons.keyboard_arrow_down_outlined,
                             size: 20, color: AppColors.lightGrey),
@@ -85,7 +107,9 @@ class _DobDropdownState extends State<DobDropdown> {
                           return DropdownMenuItem<int>(
                               value: date, child: Text(date.toString()));
                         }),
-                        onChanged: (value) {}))),
+                        onChanged: (value) {
+                          widget.getSelectedYear(value!);
+                        }))),
           ])),
     ]);
   }

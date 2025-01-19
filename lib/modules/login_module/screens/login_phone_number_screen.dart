@@ -72,10 +72,10 @@ class _LoginPhoneNumberScreenState extends State<LoginPhoneNumberScreen> {
                   SizedBox(height: 21),
                   ElevatedButton(
                       onPressed: () {
-                        if (_formKey.currentState?.validate() == true) {
-                          Navigator.of(context).push(CupertinoPageRoute(
-                              builder: (context) => OtpScreen()));
-                        }
+                        // if (_formKey.currentState?.validate() == true) {
+                        //   Navigator.of(context).push(CupertinoPageRoute(
+                        //       builder: (context) => OtpScreen()));
+                        // }
                       },
                       child: Text('Get OTP')),
                   SizedBox(height: 21),

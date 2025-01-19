@@ -72,11 +72,15 @@ class _AddFamilyMemberBottomSheetState
                     isRequired: true,
                     hintText: 'Enter your full Name'),
                 SizedBox(height: 18),
-                DobDropdown(isRequired: true),
+                DobDropdown(
+                    isRequired: true,
+                    getSelectedDay: (day) {},
+                    getSelectedMonth: (month) {},
+                    getSelectedYear: (year) {}),
                 SizedBox(height: 18),
                 GenderInputContainerRow(
                     onTap: (selectedGender) {},
-                    gender: Gender.MALE,
+                    selectedGender: Gender.MALE,
                     isRequired: true),
                 SizedBox(height: 18),
                 CommonTextField(
