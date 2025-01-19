@@ -6,6 +6,7 @@ import 'package:qris_health/modules/all_scans_module/cubits/tests_category_cubit
 import 'package:qris_health/modules/health_article_module/cubits/health_article_category_cubit/health_article_category_cubit.dart';
 import 'package:qris_health/modules/health_article_module/cubits/health_articles_cubit/health_article_cubit.dart';
 import 'package:qris_health/modules/intro_module/screens/custom_splash_screen.dart';
+import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/styles/app_styles.dart';
 
 Future<void> main() async {
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => HealthArticleCubit()),
           BlocProvider(create: (context) => HealthArticleCategoryCubit()),
           BlocProvider(create: (context) => TestsCategoryCubit()),
+          BlocProvider(create: (context) => UserCubit()),
         ],
         child: GetMaterialApp(
             debugShowCheckedModeBanner: false,

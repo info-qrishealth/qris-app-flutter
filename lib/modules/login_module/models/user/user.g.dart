@@ -16,11 +16,8 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       password: json['password'] as String?,
       dob: json['dob'] as String,
       gender: json['gender'] as String,
-      regOn: json['reg_on'] as String?,
       referralCode: json['referral_code'] as String?,
       referCode: json['refer_code'] as String?,
-      firstTxn: json['first_txn'] as String?,
-      status: (json['status'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -34,9 +31,6 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'password': instance.password,
       'dob': instance.dob,
       'gender': instance.gender,
-      'reg_on': instance.regOn,
       'referral_code': instance.referralCode,
       'refer_code': instance.referCode,
-      'first_txn': instance.firstTxn,
-      'status': instance.status,
     };

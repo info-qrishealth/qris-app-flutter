@@ -8,6 +8,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/login_module/components/privacy_policy_text.dart';
+import 'package:qris_health/modules/login_module/mixins/login_helper_mixin.dart';
 import 'package:qris_health/modules/login_module/models/user/user.dart';
 import 'package:qris_health/modules/login_module/services/otp_service.dart';
 import 'package:qris_health/modules/users_module/services/user_service.dart';
@@ -26,11 +27,12 @@ class OtpScreen extends StatefulWidget {
   State<OtpScreen> createState() => _OtpScreenState();
 }
 
-class _OtpScreenState extends State<OtpScreen> {
+class _OtpScreenState extends State<OtpScreen> with LoginHelperMixin {
   final _textTheme = Get.textTheme;
   final _otpController = TextEditingController();
   int _seconds = 59;
   late Otp _otp;
+  bool _loading = false;
 
   @override
   void initState() {
@@ -110,7 +112,11 @@ class _OtpScreenState extends State<OtpScreen> {
                   }),
               SizedBox(height: 21),
               ElevatedButton(
-                  onPressed: _otpController.text.length == 4 ? _login : null,
+                  onPressed: _otpController.text.length == 4
+                      ? _loading
+                          ? null
+                          : _login
+                      : null,
                   child: Text('Login')),
               SizedBox(height: 21),
               PrivacyPolicyText(),
@@ -159,20 +165,20 @@ class _OtpScreenState extends State<OtpScreen> {
 
   Future<void> _login() async {
     try {
+      setState(() {
+        _loading = true;
+      });
+
       _otp = _otp.copyWith.call(token: int.tryParse(_otpController.text));
       await OtpService.verifyOtp(otp: _otp);
-
-      if (widget.userToAdd != null) {
-        final createdUser =
-            await UserService.createUser(user: widget.userToAdd!);
-
-        print(createdUser);
-      } else {}
-
-      // Navigator.of(context).pushAndRemoveUntil(
-      //     CupertinoPageRoute(builder: (context) => HomeScreen()), (_) => false);
+      final createdUser = await UserService.createUser(user: widget.userToAdd!);
+      await operationsForLogin(context: context, user: createdUser);
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    } finally {
+      setState(() {
+        _loading = false;
+      });
     }
   }
 }

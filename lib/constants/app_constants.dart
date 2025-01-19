@@ -52,11 +52,11 @@ class AppConstants {
                     : type == SnackbarType.warning
                         ? AppColors.gold
                         : AppColors.red)),
-        icon: SvgPicture.asset(type == SnackbarType.success
-            ? 'assets/images/icons/snackbar_icons/success.svg'
-            : type == SnackbarType.error
-                ? 'assets/images/icons/snackbar_icons/error.svg'
-                : 'assets/images/icons/snackbar_icons/warning.svg'),
+        // icon: SvgPicture.asset(type == SnackbarType.success
+        //     ? 'assets/images/icons/snackbar_icons/success.svg'
+        //     : type == SnackbarType.error
+        //         ? 'assets/images/icons/snackbar_icons/error.svg'
+        //         : 'assets/images/icons/snackbar_icons/warning.svg'),
         snackStyle: SnackStyle.FLOATING,
         duration: const Duration(seconds: 2),
         snackPosition: SnackPosition.TOP,

@@ -63,7 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Expanded(
                     child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: HomeScreenCategoryContainer(testCategory: category)));
+                        child: HomeScreenCategoryContainer(
+                            testCategory: category)));
               })),
               SizedBox(height: 50),
               Row(
@@ -74,7 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Expanded(
                     child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: HomeScreenCategoryContainer(testCategory: category)));
+                        child: HomeScreenCategoryContainer(
+                            testCategory: category)));
               })),
               SizedBox(height: 45),
               CashbackContainer(),

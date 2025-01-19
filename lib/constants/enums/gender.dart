@@ -1,6 +1,10 @@
 enum Gender { MALE, FEMALE, OTHERS }
 
 extension GenderExtension on Gender {
+  int get number {
+    return index + 1;
+  }
+
   String get imagePath {
     switch (this) {
       case Gender.MALE:
