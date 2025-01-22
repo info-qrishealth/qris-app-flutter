@@ -158,6 +158,8 @@ class _OtpScreenState extends State<OtpScreen> with LoginHelperMixin {
   Future<void> _resendOtp() async {
     try {
       _otp = await OtpService.sendOtp(phoneNumber: _otp.phoneNumber!);
+      _seconds = 59;
+      setState(() {});
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     }
@@ -170,9 +172,16 @@ class _OtpScreenState extends State<OtpScreen> with LoginHelperMixin {
       });
 
       _otp = _otp.copyWith.call(token: int.tryParse(_otpController.text));
-      await OtpService.verifyOtp(otp: _otp);
-      final createdUser = await UserService.createUser(user: widget.userToAdd!);
-      await operationsForLogin(context: context, user: createdUser);
+      User user;
+
+      if (widget.userToAdd != null) {
+        await OtpService.verifyOtp(otp: _otp);
+        user = await UserService.createUser(user: widget.userToAdd!);
+      } else {
+        user = await UserService.loginWithOtp(otp: _otp);
+      }
+
+      await operationsForLogin(context: context, user: user);
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     } finally {

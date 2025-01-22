@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/home_module/screens/home_screen.dart';
 import 'package:qris_health/modules/login_module/components/privacy_policy_text.dart';
+import 'package:qris_health/modules/login_module/mixins/login_helper_mixin.dart';
+import 'package:qris_health/modules/users_module/services/user_service.dart';
 import 'package:qris_health/shared/components/common_textfield.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
 import 'package:qris_health/shared/components/welcome_header_column.dart';
@@ -21,7 +24,7 @@ class LoginUsernameAndPasswordScreen extends StatefulWidget {
 }
 
 class _LoginUsernameAndPasswordScreenState
-    extends State<LoginUsernameAndPasswordScreen> {
+    extends State<LoginUsernameAndPasswordScreen> with LoginHelperMixin {
   final _userIdController = TextEditingController();
   final _passwordController = TextEditingController();
   final _textTheme = Get.textTheme;
@@ -74,12 +77,22 @@ class _LoginUsernameAndPasswordScreenState
                   ])),
               SizedBox(height: 18),
               ElevatedButton(
-                  onPressed: () {
-                    // todo:
+                  onPressed: () async {
+                    try {
+                      if (_formKey.currentState?.validate() == true) {
+                        final user =
+                            await UserService.loginWithUserIdAndPassword(
+                                userId: _userIdController.text,
+                                password: _passwordController.text);
 
-                    if (_formKey.currentState?.validate() == true) {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                          builder: (context) => HomeScreen()));
+                        await operationsForLogin(context: context, user: user);
+
+                        Navigator.of(context).push(CupertinoPageRoute(
+                            builder: (context) => HomeScreen()));
+                      }
+                    } catch (e) {
+                      AppConstants.showSnackbar(
+                          text: e.toString(), type: SnackbarType.error);
                     }
                   },
                   child: Text('Login')),

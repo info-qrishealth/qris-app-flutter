@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/login_module/components/privacy_policy_text.dart';
 import 'package:qris_health/modules/login_module/screens/login_username_and_password_screen.dart';
 import 'package:qris_health/modules/login_module/screens/otp_screen.dart';
+import 'package:qris_health/modules/login_module/services/otp_service.dart';
 import 'package:qris_health/shared/components/common_textfield.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
 import 'package:qris_health/shared/components/welcome_header_column.dart';
@@ -24,6 +26,7 @@ class _LoginPhoneNumberScreenState extends State<LoginPhoneNumberScreen> {
   final _phoneNumberController = TextEditingController();
   final _textTheme = Get.textTheme;
   final _formKey = GlobalKey<FormState>();
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +74,28 @@ class _LoginPhoneNumberScreenState extends State<LoginPhoneNumberScreen> {
                           headingText: 'Registered Mobile Number')),
                   SizedBox(height: 21),
                   ElevatedButton(
-                      onPressed: () {
-                        // if (_formKey.currentState?.validate() == true) {
-                        //   Navigator.of(context).push(CupertinoPageRoute(
-                        //       builder: (context) => OtpScreen()));
-                        // }
+                      onPressed: () async {
+                        try {
+                          if (_formKey.currentState?.validate() == true) {
+                            setState(() {
+                              _loading = true;
+                            });
+
+                            final otp = await OtpService.sendOtp(
+                                phoneNumber: _phoneNumberController.text);
+
+                            Navigator.of(context).push(CupertinoPageRoute(
+                                builder: (context) =>
+                                    OtpScreen(userToAdd: null, otp: otp)));
+                          }
+                        } catch (e) {
+                          AppConstants.showSnackbar(
+                              text: e.toString(), type: SnackbarType.error);
+                        } finally {
+                          setState(() {
+                            _loading = false;
+                          });
+                        }
                       },
                       child: Text('Get OTP')),
                   SizedBox(height: 21),
