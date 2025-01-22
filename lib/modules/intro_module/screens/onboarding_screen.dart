@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/login_module/screens/login_phone_number_screen.dart';
 import 'package:qris_health/styles/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../constants/pref_constants.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -51,9 +54,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           textAlign: TextAlign.center),
                       Spacer(),
                       ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(CupertinoPageRoute(
-                                builder: (context) => LoginPhoneNumberScreen()));
+                          onPressed: () async {
+                            try {
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.setBool(
+                                  PrefConstants.isOpeningForTheFirstTime,
+                                  false);
+
+                              Navigator.of(context).push(CupertinoPageRoute(
+                                  builder: (context) =>
+                                      LoginPhoneNumberScreen()));
+                            } catch (e) {
+                              AppConstants.showSnackbar(
+                                  text: e.toString(), type: SnackbarType.error);
+                            }
                           },
                           child: Text('Get Started')),
                       SizedBox(height: 16),

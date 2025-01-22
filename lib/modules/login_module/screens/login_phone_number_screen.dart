@@ -74,29 +74,32 @@ class _LoginPhoneNumberScreenState extends State<LoginPhoneNumberScreen> {
                           headingText: 'Registered Mobile Number')),
                   SizedBox(height: 21),
                   ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          if (_formKey.currentState?.validate() == true) {
-                            setState(() {
-                              _loading = true;
-                            });
+                      onPressed: _loading
+                          ? null
+                          : () async {
+                              try {
+                                if (_formKey.currentState?.validate() == true) {
+                                  setState(() {
+                                    _loading = true;
+                                  });
 
-                            final otp = await OtpService.sendOtp(
-                                phoneNumber: _phoneNumberController.text);
+                                  final otp = await OtpService.sendOtp(
+                                      phoneNumber: _phoneNumberController.text);
 
-                            Navigator.of(context).push(CupertinoPageRoute(
-                                builder: (context) =>
-                                    OtpScreen(userToAdd: null, otp: otp)));
-                          }
-                        } catch (e) {
-                          AppConstants.showSnackbar(
-                              text: e.toString(), type: SnackbarType.error);
-                        } finally {
-                          setState(() {
-                            _loading = false;
-                          });
-                        }
-                      },
+                                  Navigator.of(context).push(CupertinoPageRoute(
+                                      builder: (context) => OtpScreen(
+                                          userToAdd: null, otp: otp)));
+                                }
+                              } catch (e) {
+                                AppConstants.showSnackbar(
+                                    text: e.toString(),
+                                    type: SnackbarType.error);
+                              } finally {
+                                setState(() {
+                                  _loading = false;
+                                });
+                              }
+                            },
                       child: Text('Get OTP')),
                   SizedBox(height: 21),
                   PrivacyPolicyText(),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
 
 import '../../login_module/models/otp/otp.dart';
 import '../../login_module/models/user/user.dart';
@@ -80,4 +81,15 @@ class UserService {
       rethrow;
     }
   }
-}
+
+  static Future<User> getUserByPhoneNumber(
+      {required String phoneNumber}) async {
+    final url = '${AppConstants.baseUrl}/users/$phoneNumber';
+
+    try {
+      final response = await Wrapper.get(url);
+      return User.fromJson(json.decode(response)['body']);
+    } catch (e) {
+      rethrow;
+    }
+  }}

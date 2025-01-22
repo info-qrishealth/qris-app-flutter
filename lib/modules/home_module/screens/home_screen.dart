@@ -1,5 +1,7 @@
+import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
@@ -9,6 +11,7 @@ import 'package:qris_health/modules/home_module/components/home_screen_app_bar.d
 import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
 import 'package:qris_health/modules/home_module/components/test_and_scan_tile.dart';
 import 'package:qris_health/modules/home_module/enum/test_category.dart';
+import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/home_module/screens/search_package_screen.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
@@ -88,19 +91,35 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context) => PopularPackageScreen()));
                   }),
               SizedBox(height: 12),
-              SizedBox(
-                  height: 145,
-                  child: ListView.separated(
-                      itemCount: 10,
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) => SizedBox(width: 8),
-                      itemBuilder: (context, index) {
-                        return PackageTileHorizontal(onBookNowTap: () {
-                          Navigator.of(context).push(CupertinoPageRoute(
-                              builder: (context) => CartScreen()));
-                        });
-                      })),
+              BlocBuilder<PopularPackagesCubit, PopularPackagesState>(
+                  builder: (context, state) {
+                if (state is PopularPackagesLoaded) {
+                  final packages = state.popularPackages;
+
+                  return SizedBox(
+                      height: 145,
+                      child: ListView.separated(
+                          itemCount: packages.length,
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          separatorBuilder: (context, index) =>
+                              SizedBox(width: 8),
+                          itemBuilder: (context, index) {
+                            return PackageTileHorizontal(
+                                testPackageModel: packages[index],
+                                onBookNowTap: () {
+                                  Navigator.of(context).push(CupertinoPageRoute(
+                                      builder: (context) => CartScreen()));
+                                });
+                          }));
+                }
+
+                return FadeShimmer(
+                    width: double.infinity,
+                    height: 145,
+                    fadeTheme: FadeTheme.light,
+                    radius: 16);
+              }),
               SizedBox(height: 16),
               ContactUsContainer(),
               SizedBox(height: 16),

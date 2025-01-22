@@ -35,47 +35,52 @@ class PackageTileHorizontal extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 8),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('${testPackageModel?.title}',
-                                style: _textTheme.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: AppConstants.ubuntuFontFamily,
-                                    color: AppColors.primaryBlue)),
-                            SizedBox(height: 6),
-                            FeatureRow(
-                                imagePath: 'assets/images/icons/test_tube.png',
-                                title:
-                                    '${testPackageModel?.customParameterCount} Parameters'),
-                            SizedBox(height: 2),
-                            FeatureRow(
-                                imagePath: 'assets/images/icons/home.png',
-                                title: 'Home collection'),
-                          ])),
+                  Expanded(
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 8),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('${testPackageModel?.title}',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: _textTheme.bodySmall!.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily:
+                                            AppConstants.ubuntuFontFamily,
+                                        color: AppColors.primaryBlue)),
+                                SizedBox(height: 6),
+                                FeatureRow(
+                                    imagePath:
+                                        'assets/images/icons/test_tube.png',
+                                    title:
+                                        '${testPackageModel?.customParameterCount} Parameters'),
+                                SizedBox(height: 2),
+                                FeatureRow(
+                                    imagePath: 'assets/images/icons/home.png',
+                                    title: 'Home collection'),
+                              ]))),
                   OfferedPriceContainer(
                       mrp: testPackageModel?.specialPrice,
                       offeredPrice: testPackageModel?.price),
                   if (onBookNowTap != null)
-                    Expanded(
-                        child: InkWell(
-                            onTap: onBookNowTap,
-                            child: Container(
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: AppColors.primaryPink,
-                                    borderRadius: BorderRadius.only(
-                                        bottomRight: Radius.circular(10),
-                                        bottomLeft: Radius.circular(10))),
-                                child: Text('Book Now',
-                                    textAlign: TextAlign.center,
-                                    style: _textTheme.bodySmall!.copyWith(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700)))))
+                    InkWell(
+                        onTap: onBookNowTap,
+                        child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: AppColors.primaryPink,
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
+                            child: Text('Book Now',
+                                textAlign: TextAlign.center,
+                                style: _textTheme.bodySmall!.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700))))
                 ])));
   }
 }

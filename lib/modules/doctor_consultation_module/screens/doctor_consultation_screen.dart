@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
-import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
-import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/modules/health_article_module/cubits/health_articles_cubit/health_article_cubit.dart';
 import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
+import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/screens/blood_test_detail_screen.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
@@ -31,12 +30,10 @@ class DoctorConsultationScreen extends StatefulWidget {
 class _DoctorConsultationScreenState extends State<DoctorConsultationScreen> {
   final _searchController = TextEditingController();
   final _textTheme = Get.textTheme;
-  late Future<List<TestPackageModel>> _popularPackageFuture;
 
   @override
   void initState() {
     super.initState();
-    _popularPackageFuture = TestService.getMiniPopularTests();
     final healthArticleCubit = BlocProvider.of<HealthArticleCubit>(context);
 
     if (healthArticleCubit.state is! HealthArticleLoaded) {
@@ -137,45 +134,42 @@ class _DoctorConsultationScreenState extends State<DoctorConsultationScreen> {
                     SizedBox(height: 15),
                     AnimatedSize(
                         duration: Duration(milliseconds: 200),
-                        child: FutureBuilder<List<TestPackageModel>>(
-                            future: _popularPackageFuture,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                final packages =
-                                    snapshot.data!.reversed.toList();
+                        child: BlocBuilder<PopularPackagesCubit,
+                            PopularPackagesState>(builder: (context, state) {
+                          if (state is PopularPackagesLoaded) {
+                            return ListView.separated(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  final testPackage =
+                                      state.popularPackages[index];
 
-                                return ListView.separated(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      final testPackage = packages[index];
-
-                                      return PackageListTile(
-                                          testPackage: testPackage,
-                                          onSeeDetailsTap: () {
-                                            Navigator.of(context).push(
-                                                CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        BloodTestDetailScreen(
-                                                            testId: testPackage
-                                                                .id)));
-                                          },
-                                          onBookNowTap: () {});
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      return SizedBox(height: 8);
-                                    },
-                                    itemCount: packages.length > 3
-                                        ? 3
-                                        : packages.length);
-                              }
-
-                              return FadeShimmer(
-                                  radius: 16,
-                                  width: double.infinity,
-                                  height: Get.height * 0.5,
-                                  fadeTheme: FadeTheme.light);
-                            })),
+                                  return PackageListTile(
+                                      testPackage: testPackage,
+                                      onSeeDetailsTap: () {
+                                        Navigator.of(context).push(
+                                            CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    BloodTestDetailScreen(
+                                                        testId:
+                                                            testPackage.id)));
+                                      },
+                                      onBookNowTap: () {});
+                                },
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(height: 8);
+                                },
+                                itemCount: state.popularPackages.length > 3
+                                    ? 3
+                                    : state.popularPackages.length);
+                          } else {
+                            return FadeShimmer(
+                                radius: 16,
+                                width: double.infinity,
+                                height: Get.height * 0.5,
+                                fadeTheme: FadeTheme.light);
+                          }
+                        })),
                     SizedBox(height: 14),
                     SizedBox(
                         height: 38,
