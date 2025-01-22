@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
@@ -15,6 +16,7 @@ import 'package:qris_health/modules/doctor_consultation_module/screens/doctor_co
 import 'package:qris_health/modules/health_article_module/screens/health_articles_screen.dart';
 import 'package:qris_health/modules/health_module/screens/mental_wellness_screen.dart';
 import 'package:qris_health/modules/screens/packages_screen.dart';
+import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
 
 import '../../styles/app_colors.dart';
@@ -22,6 +24,7 @@ import 'common_divider.dart';
 
 class MainDrawer extends StatelessWidget {
   final _textTheme = Get.textTheme;
+
   MainDrawer({super.key});
 
   @override
@@ -38,21 +41,23 @@ class MainDrawer extends StatelessWidget {
           Expanded(
               child: ListView(children: [
             SizedBox(height: GetPlatform.isIOS ? 32 : 38),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text('Khushi Jain',
-                          style: _textTheme.titleLarge!.copyWith(
-                              color: AppColors.primaryBlue,
-                              fontWeight: FontWeight.w700)),
-                      const SizedBox(height: 6),
-                      Text('8287397488',
-                          style: _textTheme.bodyLarge!.copyWith(
-                              color: AppColors.primaryPink,
-                              fontWeight: FontWeight.w400)),
-                    ])),
+            BlocBuilder<UserCubit, UserState>(builder: (context, state) {
+              return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text('${state.user.name}',
+                            style: _textTheme.titleLarge!.copyWith(
+                                color: AppColors.primaryBlue,
+                                fontWeight: FontWeight.w700)),
+                        const SizedBox(height: 6),
+                        Text('${state.user.phone}',
+                            style: _textTheme.bodyLarge!.copyWith(
+                                color: AppColors.primaryPink,
+                                fontWeight: FontWeight.w400)),
+                      ]));
+            }),
             const SizedBox(height: 16),
             const CommonDivider(),
             _buildListTile(
