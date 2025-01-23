@@ -21,6 +21,7 @@ mixin LoginHelperMixin {
       await prefs.setString(
           PrefConstants.authToken, ApiParams.getInstance()!.authorization!);
       await prefs.setString(PrefConstants.phoneNumber, user.phone!);
+      ApiParams.getInstance()!.userId = user.id;
 
       Navigator.of(context)
           .push(CupertinoPageRoute(builder: (context) => HomeScreen()));

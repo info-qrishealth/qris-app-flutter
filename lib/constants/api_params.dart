@@ -10,4 +10,5 @@ class ApiParams {
 
   String? authorization;
   String? phoneNumber;
+  int? userId;
 }

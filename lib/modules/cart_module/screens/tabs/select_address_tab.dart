@@ -81,7 +81,8 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                     context: context,
                     constraints: AppConstants.bottomSheetConstraints,
                     isScrollControlled: true,
-                    builder: (context) => AddAddressBottomSheet());
+                    builder: (context) => AddAddressBottomSheet(
+                        onAddressAdded: (addedAddress) {}));
               },
               child: UnderlineText(
                   text: '+ Add New Address',
@@ -95,7 +96,7 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              return AddressListTile();
+              return AddressListTile(address: null, onDeleteTap: () {});
             },
             separatorBuilder: (context, index) {
               return SizedBox(height: 8);
