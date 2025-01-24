@@ -3,29 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
+import 'package:qris_health/modules/login_module/screens/login_phone_number_screen.dart';
+import 'package:qris_health/modules/patients_module/screens/patients_screen.dart';
 import 'package:qris_health/modules/profile_module/screens/my_profile_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/screens/coins_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/screens/refer_and_earn_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/screens/wallet_screen.dart';
 import 'package:qris_health/modules/address_module/screens/address_screen.dart';
 import 'package:qris_health/modules/booking_module/screens/bookings_screen.dart';
-import 'package:qris_health/modules/family_members_module/screens/family_member_screen.dart';
 import 'package:qris_health/modules/doctor_consultation_module/screens/doctor_consultation_screen.dart';
 import 'package:qris_health/modules/health_article_module/screens/health_articles_screen.dart';
 import 'package:qris_health/modules/health_module/screens/mental_wellness_screen.dart';
-import 'package:qris_health/modules/screens/packages_screen.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../styles/app_colors.dart';
 import 'common_divider.dart';
 
-class MainDrawer extends StatelessWidget {
-  final _textTheme = Get.textTheme;
+class MainDrawer extends StatefulWidget {
+  const MainDrawer({super.key});
 
-  MainDrawer({super.key});
+  @override
+  State<MainDrawer> createState() => _MainDrawerState();
+}
+
+class _MainDrawerState extends State<MainDrawer> {
+  final _textTheme = Get.textTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +87,7 @@ class MainDrawer extends StatelessWidget {
                 title: 'Family Members',
                 onTap: () {
                   Navigator.of(context).push(CupertinoPageRoute(
-                      builder: (context) => FamilyMemberScreen()));
+                      builder: (context) => PatientsScreen()));
                 }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/wallet_icon.svg',
@@ -157,9 +165,7 @@ class MainDrawer extends StatelessWidget {
           _buildListTile(
               svgPath: 'assets/images/icons/drawer_icons/logout_icon.svg',
               title: 'Logout',
-              onTap: () {
-                Navigator.of(context).pop();
-              },
+              onTap: _logout,
               fontFamily: AppConstants.metropolisFontFamily,
               color: AppColors.red)
         ])));
@@ -184,5 +190,20 @@ class MainDrawer extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       fontFamily: fontFamily ?? AppConstants.latoFontFamily)),
             ])));
+  }
+
+  Future<void> _logout() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.clear();
+      ApiParams.getInstance()!.userId = null;
+      ApiParams.getInstance()!.authorization = null;
+      ApiParams.getInstance()!.phoneNumber = null;
+      Navigator.of(context).pushAndRemoveUntil(
+          CupertinoPageRoute(builder: (context) => LoginPhoneNumberScreen()),
+          (route) => false);
+    } catch (e) {
+      AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    }
   }
 }

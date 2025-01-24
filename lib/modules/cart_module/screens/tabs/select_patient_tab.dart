@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:qris_health/constants/app_constants.dart';
-import 'package:qris_health/modules/family_members_module/components/add_family_member_bottom_sheet.dart';
 import 'package:qris_health/modules/health_score_module/components/select_patient_view.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
-import 'package:qris_health/shared/components/underline_text.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../../shared/components/heading_text.dart';
-import '../../components/patient_list_tile.dart';
 
 class SelectPatientTab extends StatefulWidget {
   final Function() onContinue;

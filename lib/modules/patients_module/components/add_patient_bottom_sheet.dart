@@ -11,16 +11,14 @@ import 'package:qris_health/shared/components/gender_input_container_row.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-class AddFamilyMemberBottomSheet extends StatefulWidget {
-  const AddFamilyMemberBottomSheet({super.key});
+class AddPatientListTile extends StatefulWidget {
+  const AddPatientListTile({super.key});
 
   @override
-  State<AddFamilyMemberBottomSheet> createState() =>
-      _AddFamilyMemberBottomSheetState();
+  State<AddPatientListTile> createState() => _AddPatientListTileState();
 }
 
-class _AddFamilyMemberBottomSheetState
-    extends State<AddFamilyMemberBottomSheet> {
+class _AddPatientListTileState extends State<AddPatientListTile> {
   final _nameController = TextEditingController();
   final _weightController = TextEditingController();
   final _heightController = TextEditingController();

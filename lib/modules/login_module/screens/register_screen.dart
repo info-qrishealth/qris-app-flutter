@@ -211,7 +211,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             phone: _phoneNumberController.text,
             userId: _emailController.text,
             email: _emailController.text,
-            dob: DateTime(_year!, _month!.number, _day!).toConvertedTimeString!,
+            dob: DateTime(_year!, _month!.number, _day!).toTimestampForServer!,
             gender: _selectedGender!.number.toString());
 
         final otp =

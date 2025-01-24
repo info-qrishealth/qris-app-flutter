@@ -6,7 +6,7 @@ import '../../../shared/components/heading_text.dart';
 import '../../../shared/components/underline_text.dart';
 import '../../../styles/app_colors.dart';
 import '../../cart_module/components/patient_list_tile.dart';
-import '../../family_members_module/components/add_family_member_bottom_sheet.dart';
+import '../../patients_module/components/add_patient_bottom_sheet.dart';
 
 class SelectPatientView extends StatelessWidget {
   const SelectPatientView({super.key});
@@ -22,7 +22,7 @@ class SelectPatientView extends StatelessWidget {
                   constraints: AppConstants.bottomSheetConstraints,
                   isScrollControlled: true,
                   context: context,
-                  builder: (context) => AddFamilyMemberBottomSheet());
+                  builder: (context) => AddPatientListTile());
             },
             child: UnderlineText(
                 text: '+ Add New Patient',

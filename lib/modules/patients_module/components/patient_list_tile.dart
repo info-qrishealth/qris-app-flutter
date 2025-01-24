@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
+import 'package:qris_health/shared/extensions/string_extension.dart';
+import 'package:qris_health/shared/utils/enum_utils.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-class MemberListTile extends StatelessWidget {
+class PatientListTile extends StatelessWidget {
+  final Patient? patient;
   final int index;
-  MemberListTile({super.key, required this.index});
+  PatientListTile({super.key, required this.index, this.patient});
   final _textTheme = Get.textTheme;
 
   @override
@@ -34,7 +38,7 @@ class MemberListTile extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                           Row(children: [
-                            Text('Puneet Bajaj',
+                            Text('${patient?.name}',
                                 style: _textTheme.titleMedium!
                                     .copyWith(fontWeight: FontWeight.w600)),
                             SizedBox(width: 10),
@@ -42,7 +46,12 @@ class MemberListTile extends StatelessWidget {
                           ]),
                           SizedBox(height: 4),
                           Row(children: [
-                            Text('Male',
+                            Text(
+                                EnumUtils.getGenderFromNumberString(
+                                            number: patient?.gender)
+                                        ?.name
+                                        .capitalizeFirst ??
+                                    'N/A',
                                 style: _textTheme.bodySmall!.copyWith(
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.lightSubTextColor)),
@@ -55,7 +64,12 @@ class MemberListTile extends StatelessWidget {
                                     color: AppColors.black,
                                     shape: BoxShape.circle)),
                             SizedBox(width: 8),
-                            Text('37Y 5M 10D',
+                            Text(
+                                patient?.dob == null
+                                    ? 'DOB N/A'
+                                    : _formatDateDifference(
+                                        patient!.dob.toDateTime!,
+                                        DateTime.now()),
                                 style: _textTheme.bodySmall!.copyWith(
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.lightSubTextColor)),
@@ -138,5 +152,29 @@ class MemberListTile extends StatelessWidget {
         underlineColor: AppColors.primaryPink,
         style: _textTheme.labelSmall!.copyWith(
             color: AppColors.primaryPink, fontWeight: FontWeight.w400));
+  }
+
+  String _formatDateDifference(DateTime from, DateTime to) {
+    if (from.isAfter(to)) {
+      DateTime temp = from;
+      from = to;
+      to = temp;
+    }
+
+    int years = to.year - from.year;
+    int months = to.month - from.month;
+    int days = to.day - from.day;
+
+    if (days < 0) {
+      final previousMonth = DateTime(to.year, to.month - 1, from.day);
+      days = to.difference(previousMonth).inDays;
+      months -= 1;
+    }
+    if (months < 0) {
+      months += 12;
+      years -= 1;
+    }
+
+    return '${years}Y ${months}M ${days}D';
   }
 }

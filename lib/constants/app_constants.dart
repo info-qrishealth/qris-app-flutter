@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../styles/app_colors.dart';
@@ -9,7 +8,7 @@ import '../styles/app_styles.dart';
 import 'enums/snackbar_type.dart';
 
 class AppConstants {
-  static const String baseUrl = 'http://192.168.1.36:8080';
+  static const String baseUrl = 'http://192.168.1.19:8080';
   static const ubuntuFontFamily = 'Ubuntu';
   static const latoFontFamily = 'Lato';
   static const metropolisFontFamily = 'Metropolis';
