@@ -92,15 +92,15 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
                                     value: title,
                                     child: Text(title.name.formattedEnumName!)))
                                 .toList(),
-                            selectedValue:
-                                EnumUtils.getMarriedStatusNumberFromString(
-                                    number: _patient.title.toString()),
+                            selectedValue: _patient.title == null
+                                ? null
+                                : MarriedTitle.values[_patient.title! - 1],
                             hintText: 'Select your title',
                             isRequired: true,
                             onChanged: (selectedTitle) {
                               setState(() {
                                 _patient = _patient.copyWith
-                                    .call(title: selectedTitle?.index);
+                                    .call(title: selectedTitle!.number);
                               });
                             },
                             headingText: 'Title'),
