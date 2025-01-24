@@ -22,7 +22,9 @@ class SelectPatientView extends StatelessWidget {
                   constraints: AppConstants.bottomSheetConstraints,
                   isScrollControlled: true,
                   context: context,
-                  builder: (context) => AddPatientListTile());
+                  builder: (context) => AddPatientBottomSheet(
+                      getAddedPatient: (addedPatient) {},
+                      getUpdatedPatient: (updatedPatient) {}));
             },
             child: UnderlineText(
                 text: '+ Add New Patient',

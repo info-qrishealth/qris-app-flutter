@@ -27,7 +27,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
   void initState() {
     super.initState();
     _patientsFuture = PatientService.getPatientsOfUser(
-        userId: ApiParams.getInstance()!.authorization!);
+        userId: ApiParams.getInstance()!.userId!.toString());
   }
 
   @override
@@ -42,7 +42,17 @@ class _PatientsScreenState extends State<PatientsScreen> {
                     constraints: AppConstants.bottomSheetConstraints,
                     context: context,
                     builder: (context) {
-                      return AddPatientListTile();
+                      return AddPatientBottomSheet(getAddedPatient: (patient) {
+                        _patients = [..._patients ?? [], patient];
+                        setState(() {});
+                      }, getUpdatedPatient: (patient) {
+                        final index = _patients
+                            ?.indexWhere((element) => patient.id == element.id);
+                        if (index != -1 && index != null) {
+                          _patients![index] = patient;
+                          setState(() {});
+                        }
+                      });
                     });
               })
         ]),
@@ -51,7 +61,9 @@ class _PatientsScreenState extends State<PatientsScreen> {
                 future: _patientsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    _patients ??= snapshot.data!;
+                    _patients ??= snapshot.data!
+                        .where((element) => element.status == '1')
+                        .toList();
 
                     return ListView.separated(
                         physics: BouncingScrollPhysics(),
@@ -59,28 +71,13 @@ class _PatientsScreenState extends State<PatientsScreen> {
                             horizontal: AppConstants.scaffoldPadding,
                             vertical: 24),
                         itemBuilder: (context, index) {
-                          if (index == 0) {
-                            return BlocBuilder<UserCubit, UserState>(
-                                builder: (context, state) {
-                              final user = state.user;
-
-                              return PatientListTile(
-                                  index: 0,
-                                  patient: Patient(
-                                      title: user.title,
-                                      name: user.name,
-                                      gender: user.gender,
-                                      dob: user.dob));
-                            });
-                          } else {
-                            return PatientListTile(
-                                index: index, patient: _patients![index]);
-                          }
+                          return PatientListTile(
+                              index: index, patient: _patients![index]);
                         },
                         separatorBuilder: (context, index) {
                           return SizedBox(height: 18);
                         },
-                        itemCount: _patients!.length + 1);
+                        itemCount: _patients!.length);
                   }
 
                   return CommonListviewShimmer();

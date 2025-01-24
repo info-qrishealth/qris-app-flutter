@@ -1,21 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/constants/enums/gender.dart';
+import 'package:qris_health/modules/patients_module/components/add_patient_bottom_sheet.dart';
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
-import 'package:qris_health/shared/utils/enum_utils.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-class PatientListTile extends StatelessWidget {
+import '../../../constants/app_constants.dart';
+
+class PatientListTile extends StatefulWidget {
   final Patient? patient;
   final int index;
-  PatientListTile({super.key, required this.index, this.patient});
+  const PatientListTile({super.key, required this.index, this.patient});
+
+  @override
+  State<PatientListTile> createState() => _PatientListTileState();
+}
+
+class _PatientListTileState extends State<PatientListTile> {
   final _textTheme = Get.textTheme;
+  Patient? _patient;
+
+  @override
+  void initState() {
+    super.initState();
+    _patient = widget.patient;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final shouldShow = index % 2 == 0;
+    double? bmi;
+    if (_patient?.weight != null && _patient?.height != null) {
+      bmi = _calculateBMI(
+          _patient!.height!.toDouble(), _patient!.weight!.toDouble());
+    }
+
+    final gender = _patient?.gender == '0'
+        ? Gender.OTHERS
+        : _patient?.gender == '1'
+            ? Gender.FEMALE
+            : Gender.MALE;
 
     return Container(
         decoration: BoxDecoration(
@@ -30,7 +56,9 @@ class PatientListTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                     Image.asset(
-                        'assets/images/placeholders/male_placeholder.png',
+                        gender == Gender.MALE
+                            ? 'assets/images/placeholders/male_placeholder.png'
+                            : 'assets/images/placeholders/female_placeholder.png',
                         height: 35),
                     SizedBox(width: 12),
                     Expanded(
@@ -38,20 +66,15 @@ class PatientListTile extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                           Row(children: [
-                            Text('${patient?.name}',
+                            Text('${widget.patient?.name}',
                                 style: _textTheme.titleMedium!
                                     .copyWith(fontWeight: FontWeight.w600)),
                             SizedBox(width: 10),
-                            if (index == 0) _buildSelfChip(),
+                            if (_patient?.self == '1') _buildSelfChip(),
                           ]),
                           SizedBox(height: 4),
                           Row(children: [
-                            Text(
-                                EnumUtils.getGenderFromNumberString(
-                                            number: patient?.gender)
-                                        ?.name
-                                        .capitalizeFirst ??
-                                    'N/A',
+                            Text(gender.name.formattedEnumName ?? 'N/A',
                                 style: _textTheme.bodySmall!.copyWith(
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.lightSubTextColor)),
@@ -65,10 +88,10 @@ class PatientListTile extends StatelessWidget {
                                     shape: BoxShape.circle)),
                             SizedBox(width: 8),
                             Text(
-                                patient?.dob == null
+                                widget.patient?.dob == null
                                     ? 'DOB N/A'
                                     : _formatDateDifference(
-                                        patient!.dob.toDateTime!,
+                                        widget.patient!.dob.toDateTime!,
                                         DateTime.now()),
                                 style: _textTheme.bodySmall!.copyWith(
                                     fontWeight: FontWeight.w400,
@@ -78,7 +101,23 @@ class PatientListTile extends StatelessWidget {
                     VerticalDivider(
                         color: Colors.black.withOpacity(0.7), width: 1),
                     SizedBox(width: 8),
-                    SvgPicture.asset('assets/images/icons/edit_icon.svg'),
+                    InkWell(
+                        onTap: () async {
+                          await showModalBottomSheet(
+                              isScrollControlled: true,
+                              constraints: AppConstants.bottomSheetConstraints,
+                              context: context,
+                              builder: (context) => AddPatientBottomSheet(
+                                  patient: _patient,
+                                  getAddedPatient: null,
+                                  getUpdatedPatient: (patient) {
+                                    setState(() {
+                                      _patient = patient;
+                                    });
+                                  }));
+                        },
+                        child: SvgPicture.asset(
+                            'assets/images/icons/edit_icon.svg')),
                   ]))),
           Row(children: [
             Expanded(
@@ -86,21 +125,22 @@ class PatientListTile extends StatelessWidget {
                     borderRadius:
                         BorderRadius.only(bottomLeft: Radius.circular(12)),
                     title: 'BMI',
-                    customDescription: shouldShow
+                    customDescription: bmi == null
                         ? _buildUnderlineText(text: 'Know your BMI')
                         : null,
-                    value: shouldShow ? 'NA' : '24.9',
-                    descriptionText: shouldShow ? null : '(Healthy Weight)')),
+                    value: bmi == null ? 'NA' : bmi.toStringAsFixed(1),
+                    descriptionText:
+                        bmi == null ? null : '(${_getBmiText(bmi: bmi)})')),
             Expanded(
                 child: _buildInfoContainer(
                     borderRadius:
                         BorderRadius.only(bottomRight: Radius.circular(12)),
                     title: 'Health Score',
-                    value: shouldShow ? 'NA' : '85',
-                    customDescription: shouldShow
+                    value: true ? 'NA' : '85',
+                    customDescription: true
                         ? _buildUnderlineText(text: 'Know your health score')
                         : null,
-                    descriptionText: shouldShow ? null : '(Excellent)')),
+                    descriptionText: true ? null : '(Excellent)')),
           ]),
         ]));
   }
@@ -176,5 +216,22 @@ class PatientListTile extends StatelessWidget {
     }
 
     return '${years}Y ${months}M ${days}D';
+  }
+
+  double _calculateBMI(double heightInCm, double weightInKg) {
+    double heightInMeters = heightInCm / 100;
+    return weightInKg / (heightInMeters * heightInMeters);
+  }
+
+  String _getBmiText({required double bmi}) {
+    if (bmi < 18.5) {
+      return 'Under Weight';
+    } else if (bmi > 18.5 && bmi < 24.9) {
+      return 'Normal Weight';
+    } else if (bmi > 24.9 && bmi < 29.9) {
+      return 'Overweight';
+    } else {
+      return 'Obesity';
+    }
   }
 }

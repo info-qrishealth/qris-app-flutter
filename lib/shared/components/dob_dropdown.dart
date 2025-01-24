@@ -63,7 +63,7 @@ class _DobDropdownState extends State<DobDropdown> {
                       final date = index + 1;
 
                       return DropdownMenuItem(
-                          value: index, child: Text(date.toString()));
+                          value: index + 1, child: Text(date.toString()));
                     }),
                     onChanged: (value) {
                       widget.getSelectedDay(value!);

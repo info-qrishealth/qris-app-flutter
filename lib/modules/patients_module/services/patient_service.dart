@@ -18,4 +18,27 @@ class PatientService {
       rethrow;
     }
   }
+
+  static Future<Patient> addNewPatientForUser(
+      {required String userId, required Patient patient}) async {
+    final url = '${AppConstants.baseUrl}/patient/$userId';
+
+    try {
+      final response = await Wrapper.post(url, json.encode(patient.toJson()));
+      return Patient.fromJson(json.decode(response)['body']);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<Patient> updatePatient(Patient patient) async {
+    final url = '${AppConstants.baseUrl}/patient/${patient.userId}';
+
+    try {
+      final response = await Wrapper.put(url, json.encode(patient.toJson()));
+      return Patient.fromJson(json.decode(response)['body']);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

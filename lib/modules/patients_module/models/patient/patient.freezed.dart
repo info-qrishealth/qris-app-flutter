@@ -31,12 +31,10 @@ mixin _$Patient {
   String? get userId => throw _privateConstructorUsedError;
   String? get doctorId => throw _privateConstructorUsedError;
   String? get self => throw _privateConstructorUsedError;
-  String? get regOn => throw _privateConstructorUsedError;
   String? get state => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
   String? get zip => throw _privateConstructorUsedError;
   String? get timeSlot => throw _privateConstructorUsedError;
-  String? get date => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
   String? get disOrder => throw _privateConstructorUsedError;
   String? get paymentStatus => throw _privateConstructorUsedError;
@@ -45,7 +43,6 @@ mixin _$Patient {
   String? get paymentMode => throw _privateConstructorUsedError;
   String? get totalAmount => throw _privateConstructorUsedError;
   String? get discount => throw _privateConstructorUsedError;
-  int? get orderTime => throw _privateConstructorUsedError;
   String? get oVStatus => throw _privateConstructorUsedError;
   int? get height => throw _privateConstructorUsedError;
   int? get weight => throw _privateConstructorUsedError;
@@ -76,12 +73,10 @@ abstract class $PatientCopyWith<$Res> {
       String? userId,
       String? doctorId,
       String? self,
-      String? regOn,
       String? state,
       String? address,
       String? zip,
       String? timeSlot,
-      String? date,
       String? status,
       String? disOrder,
       String? paymentStatus,
@@ -90,7 +85,6 @@ abstract class $PatientCopyWith<$Res> {
       String? paymentMode,
       String? totalAmount,
       String? discount,
-      int? orderTime,
       String? oVStatus,
       int? height,
       int? weight});
@@ -122,12 +116,10 @@ class _$PatientCopyWithImpl<$Res, $Val extends Patient>
     Object? userId = freezed,
     Object? doctorId = freezed,
     Object? self = freezed,
-    Object? regOn = freezed,
     Object? state = freezed,
     Object? address = freezed,
     Object? zip = freezed,
     Object? timeSlot = freezed,
-    Object? date = freezed,
     Object? status = freezed,
     Object? disOrder = freezed,
     Object? paymentStatus = freezed,
@@ -136,7 +128,6 @@ class _$PatientCopyWithImpl<$Res, $Val extends Patient>
     Object? paymentMode = freezed,
     Object? totalAmount = freezed,
     Object? discount = freezed,
-    Object? orderTime = freezed,
     Object? oVStatus = freezed,
     Object? height = freezed,
     Object? weight = freezed,
@@ -186,10 +177,6 @@ class _$PatientCopyWithImpl<$Res, $Val extends Patient>
           ? _value.self
           : self // ignore: cast_nullable_to_non_nullable
               as String?,
-      regOn: freezed == regOn
-          ? _value.regOn
-          : regOn // ignore: cast_nullable_to_non_nullable
-              as String?,
       state: freezed == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
@@ -205,10 +192,6 @@ class _$PatientCopyWithImpl<$Res, $Val extends Patient>
       timeSlot: freezed == timeSlot
           ? _value.timeSlot
           : timeSlot // ignore: cast_nullable_to_non_nullable
-              as String?,
-      date: freezed == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
               as String?,
       status: freezed == status
           ? _value.status
@@ -242,10 +225,6 @@ class _$PatientCopyWithImpl<$Res, $Val extends Patient>
           ? _value.discount
           : discount // ignore: cast_nullable_to_non_nullable
               as String?,
-      orderTime: freezed == orderTime
-          ? _value.orderTime
-          : orderTime // ignore: cast_nullable_to_non_nullable
-              as int?,
       oVStatus: freezed == oVStatus
           ? _value.oVStatus
           : oVStatus // ignore: cast_nullable_to_non_nullable
@@ -281,12 +260,10 @@ abstract class _$$PatientImplCopyWith<$Res> implements $PatientCopyWith<$Res> {
       String? userId,
       String? doctorId,
       String? self,
-      String? regOn,
       String? state,
       String? address,
       String? zip,
       String? timeSlot,
-      String? date,
       String? status,
       String? disOrder,
       String? paymentStatus,
@@ -295,7 +272,6 @@ abstract class _$$PatientImplCopyWith<$Res> implements $PatientCopyWith<$Res> {
       String? paymentMode,
       String? totalAmount,
       String? discount,
-      int? orderTime,
       String? oVStatus,
       int? height,
       int? weight});
@@ -325,12 +301,10 @@ class __$$PatientImplCopyWithImpl<$Res>
     Object? userId = freezed,
     Object? doctorId = freezed,
     Object? self = freezed,
-    Object? regOn = freezed,
     Object? state = freezed,
     Object? address = freezed,
     Object? zip = freezed,
     Object? timeSlot = freezed,
-    Object? date = freezed,
     Object? status = freezed,
     Object? disOrder = freezed,
     Object? paymentStatus = freezed,
@@ -339,7 +313,6 @@ class __$$PatientImplCopyWithImpl<$Res>
     Object? paymentMode = freezed,
     Object? totalAmount = freezed,
     Object? discount = freezed,
-    Object? orderTime = freezed,
     Object? oVStatus = freezed,
     Object? height = freezed,
     Object? weight = freezed,
@@ -389,10 +362,6 @@ class __$$PatientImplCopyWithImpl<$Res>
           ? _value.self
           : self // ignore: cast_nullable_to_non_nullable
               as String?,
-      regOn: freezed == regOn
-          ? _value.regOn
-          : regOn // ignore: cast_nullable_to_non_nullable
-              as String?,
       state: freezed == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
@@ -408,10 +377,6 @@ class __$$PatientImplCopyWithImpl<$Res>
       timeSlot: freezed == timeSlot
           ? _value.timeSlot
           : timeSlot // ignore: cast_nullable_to_non_nullable
-              as String?,
-      date: freezed == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
               as String?,
       status: freezed == status
           ? _value.status
@@ -445,10 +410,6 @@ class __$$PatientImplCopyWithImpl<$Res>
           ? _value.discount
           : discount // ignore: cast_nullable_to_non_nullable
               as String?,
-      orderTime: freezed == orderTime
-          ? _value.orderTime
-          : orderTime // ignore: cast_nullable_to_non_nullable
-              as int?,
       oVStatus: freezed == oVStatus
           ? _value.oVStatus
           : oVStatus // ignore: cast_nullable_to_non_nullable
@@ -481,12 +442,10 @@ class _$PatientImpl implements _Patient {
       this.userId,
       this.doctorId,
       this.self,
-      this.regOn,
       this.state,
       this.address,
       this.zip,
       this.timeSlot,
-      this.date,
       this.status,
       this.disOrder,
       this.paymentStatus,
@@ -495,7 +454,6 @@ class _$PatientImpl implements _Patient {
       this.paymentMode,
       this.totalAmount,
       this.discount,
-      this.orderTime,
       this.oVStatus,
       this.height,
       this.weight});
@@ -526,8 +484,6 @@ class _$PatientImpl implements _Patient {
   @override
   final String? self;
   @override
-  final String? regOn;
-  @override
   final String? state;
   @override
   final String? address;
@@ -535,8 +491,6 @@ class _$PatientImpl implements _Patient {
   final String? zip;
   @override
   final String? timeSlot;
-  @override
-  final String? date;
   @override
   final String? status;
   @override
@@ -554,8 +508,6 @@ class _$PatientImpl implements _Patient {
   @override
   final String? discount;
   @override
-  final int? orderTime;
-  @override
   final String? oVStatus;
   @override
   final int? height;
@@ -564,7 +516,7 @@ class _$PatientImpl implements _Patient {
 
   @override
   String toString() {
-    return 'Patient(id: $id, title: $title, name: $name, email: $email, mobile: $mobile, gender: $gender, dob: $dob, time: $time, userId: $userId, doctorId: $doctorId, self: $self, regOn: $regOn, state: $state, address: $address, zip: $zip, timeSlot: $timeSlot, date: $date, status: $status, disOrder: $disOrder, paymentStatus: $paymentStatus, orderId: $orderId, txnId: $txnId, paymentMode: $paymentMode, totalAmount: $totalAmount, discount: $discount, orderTime: $orderTime, oVStatus: $oVStatus, height: $height, weight: $weight)';
+    return 'Patient(id: $id, title: $title, name: $name, email: $email, mobile: $mobile, gender: $gender, dob: $dob, time: $time, userId: $userId, doctorId: $doctorId, self: $self, state: $state, address: $address, zip: $zip, timeSlot: $timeSlot, status: $status, disOrder: $disOrder, paymentStatus: $paymentStatus, orderId: $orderId, txnId: $txnId, paymentMode: $paymentMode, totalAmount: $totalAmount, discount: $discount, oVStatus: $oVStatus, height: $height, weight: $weight)';
   }
 
   @override
@@ -584,13 +536,11 @@ class _$PatientImpl implements _Patient {
             (identical(other.doctorId, doctorId) ||
                 other.doctorId == doctorId) &&
             (identical(other.self, self) || other.self == self) &&
-            (identical(other.regOn, regOn) || other.regOn == regOn) &&
             (identical(other.state, state) || other.state == state) &&
             (identical(other.address, address) || other.address == address) &&
             (identical(other.zip, zip) || other.zip == zip) &&
             (identical(other.timeSlot, timeSlot) ||
                 other.timeSlot == timeSlot) &&
-            (identical(other.date, date) || other.date == date) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.disOrder, disOrder) ||
                 other.disOrder == disOrder) &&
@@ -604,8 +554,6 @@ class _$PatientImpl implements _Patient {
                 other.totalAmount == totalAmount) &&
             (identical(other.discount, discount) ||
                 other.discount == discount) &&
-            (identical(other.orderTime, orderTime) ||
-                other.orderTime == orderTime) &&
             (identical(other.oVStatus, oVStatus) ||
                 other.oVStatus == oVStatus) &&
             (identical(other.height, height) || other.height == height) &&
@@ -627,12 +575,10 @@ class _$PatientImpl implements _Patient {
         userId,
         doctorId,
         self,
-        regOn,
         state,
         address,
         zip,
         timeSlot,
-        date,
         status,
         disOrder,
         paymentStatus,
@@ -641,7 +587,6 @@ class _$PatientImpl implements _Patient {
         paymentMode,
         totalAmount,
         discount,
-        orderTime,
         oVStatus,
         height,
         weight
@@ -676,12 +621,10 @@ abstract class _Patient implements Patient {
       final String? userId,
       final String? doctorId,
       final String? self,
-      final String? regOn,
       final String? state,
       final String? address,
       final String? zip,
       final String? timeSlot,
-      final String? date,
       final String? status,
       final String? disOrder,
       final String? paymentStatus,
@@ -690,7 +633,6 @@ abstract class _Patient implements Patient {
       final String? paymentMode,
       final String? totalAmount,
       final String? discount,
-      final int? orderTime,
       final String? oVStatus,
       final int? height,
       final int? weight}) = _$PatientImpl;
@@ -720,8 +662,6 @@ abstract class _Patient implements Patient {
   @override
   String? get self;
   @override
-  String? get regOn;
-  @override
   String? get state;
   @override
   String? get address;
@@ -729,8 +669,6 @@ abstract class _Patient implements Patient {
   String? get zip;
   @override
   String? get timeSlot;
-  @override
-  String? get date;
   @override
   String? get status;
   @override
@@ -747,8 +685,6 @@ abstract class _Patient implements Patient {
   String? get totalAmount;
   @override
   String? get discount;
-  @override
-  int? get orderTime;
   @override
   String? get oVStatus;
   @override
