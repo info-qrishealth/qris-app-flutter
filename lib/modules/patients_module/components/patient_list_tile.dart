@@ -66,7 +66,7 @@ class _PatientListTileState extends State<PatientListTile> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                           Row(children: [
-                            Text('${widget.patient?.name}',
+                            Text('${_patient?.name}',
                                 style: _textTheme.titleMedium!
                                     .copyWith(fontWeight: FontWeight.w600)),
                             SizedBox(width: 10),
@@ -88,10 +88,10 @@ class _PatientListTileState extends State<PatientListTile> {
                                     shape: BoxShape.circle)),
                             SizedBox(width: 8),
                             Text(
-                                widget.patient?.dob == null
+                                _patient?.dob == null
                                     ? 'DOB N/A'
                                     : _formatDateDifference(
-                                        widget.patient!.dob.toDateTime!,
+                                        _patient!.dob.toDateTime!,
                                         DateTime.now()),
                                 style: _textTheme.bodySmall!.copyWith(
                                     fontWeight: FontWeight.w400,
