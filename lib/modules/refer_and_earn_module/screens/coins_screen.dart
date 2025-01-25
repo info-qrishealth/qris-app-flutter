@@ -10,7 +10,7 @@ import 'package:qris_health/shared/components/no_item_found_container.dart';
 import '../../../constants/app_constants.dart';
 import '../../../shared/components/common_app_bar.dart';
 import '../components/wallet_balance_container.dart';
-import '../components/wallet_entry_list_tile.dart';
+import '../components/qris_coin_list_tile.dart';
 
 class CoinsScreen extends StatefulWidget {
   const CoinsScreen({super.key});
@@ -75,7 +75,7 @@ class _CoinsScreenState extends State<CoinsScreen> {
                                         right: AppConstants.scaffoldPadding,
                                         bottom: 32),
                                     itemBuilder: (context, index) {
-                                      return WalletEntryListTile(
+                                      return QrisCoinListTile(
                                           coinEntry: coinsEntries[index]);
                                     },
                                     separatorBuilder: (context, index) {

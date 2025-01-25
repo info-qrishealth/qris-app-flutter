@@ -8,9 +8,9 @@ import 'package:qris_health/shared/extensions/string_extension.dart';
 
 import '../../../styles/app_colors.dart';
 
-class WalletEntryListTile extends StatelessWidget {
+class QrisCoinListTile extends StatelessWidget {
   final QrisCoin coinEntry;
-  const WalletEntryListTile({super.key, required this.coinEntry});
+  const QrisCoinListTile({super.key, required this.coinEntry});
 
   @override
   Widget build(BuildContext context) {
