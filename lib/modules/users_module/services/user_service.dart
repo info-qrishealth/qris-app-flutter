@@ -92,4 +92,16 @@ class UserService {
     } catch (e) {
       rethrow;
     }
-  }}
+  }
+
+  static Future<User> updateUser({required User user}) async {
+    final url = '${AppConstants.baseUrl}/users/${user.id}';
+
+    try {
+      final response = await Wrapper.put(url, json.encode(user.toJson()));
+      return User.fromJson(json.decode(response)['body']);
+    } catch (e) {
+      rethrow;
+    }
+  }
+}

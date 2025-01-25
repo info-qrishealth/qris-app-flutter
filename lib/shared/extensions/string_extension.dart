@@ -52,4 +52,12 @@ extension StringExtension on String? {
         .replaceAll('in _LOC_', '')
         .replaceAll('_LOC_', '');
   }
+
+  String? get returnNullIfStringIsEmptyOrNull {
+    if (this == null || this!.isEmpty) {
+      return null;
+    }
+
+    return this!;
+  }
 }
