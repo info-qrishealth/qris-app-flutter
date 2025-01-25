@@ -151,11 +151,13 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
                                             : '1');
                               });
                             },
-                            selectedGender: _patient.gender == '0'
-                                ? Gender.OTHERS
-                                : _patient.gender == '1'
-                                    ? Gender.FEMALE
-                                    : Gender.MALE,
+                            selectedGender: _patient.gender == null
+                                ? null
+                                : _patient.gender == '0'
+                                    ? Gender.OTHERS
+                                    : _patient.gender == '1'
+                                        ? Gender.FEMALE
+                                        : Gender.MALE,
                             isRequired: true),
                         SizedBox(height: 18),
                         CommonTextField(
