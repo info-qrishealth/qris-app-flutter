@@ -84,7 +84,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     separatorBuilder: (context, index) {
                                       return SizedBox(height: 16);
                                     },
-                                    itemCount: 32)),
+                                    itemCount: walletEntries.length)),
                       ]);
                 })));
   }
