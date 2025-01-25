@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onFieldSubmitted: null,
                   controller: _searchController,
                   onChanged: null,
+                  readOnly: true,
                   hintText: 'Search for Blood tests / Packages....',
                   suffixIcon: null),
               SizedBox(height: 24),
