@@ -38,4 +38,19 @@ class HealthArticleService {
       rethrow;
     }
   }
+
+  static Future<List<HealthArticle>> getArticlesByArticleIds(
+      {required List<int> testIds}) async {
+    final url = '${AppConstants.baseUrl}/articles';
+
+    try {
+      final response = await Wrapper.post(url, json.encode(testIds));
+
+      return (json.decode(response)['body'] as List)
+          .map((element) => HealthArticle.fromJson(element))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

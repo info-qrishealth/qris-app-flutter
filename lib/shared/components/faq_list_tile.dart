@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/modules/all_scans_module/models/faq/faq.dart';
+import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class FaqListTile extends StatefulWidget {
@@ -29,7 +30,7 @@ class _FaqListTileState extends State<FaqListTile> {
           setState(() {});
         },
         tilePadding: EdgeInsets.symmetric(horizontal: 9),
-        title: Text('${widget.faq?.question}',
+        title: Text('${widget.faq?.question.clean}',
             style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w500)),
         childrenPadding: EdgeInsets.symmetric(horizontal: 9),
         trailing: SvgPicture.asset(
@@ -39,7 +40,7 @@ class _FaqListTileState extends State<FaqListTile> {
             color: AppColors.primaryPink,
             height: _isExpanded ? 20 : 24),
         children: [
-          Text('${widget.faq?.answer}',
+          Text('${widget.faq?.answer.clean}',
               style: textTheme.bodySmall!.copyWith(
                   fontWeight: FontWeight.w400,
                   color: AppColors.lightSubTextColor)),
