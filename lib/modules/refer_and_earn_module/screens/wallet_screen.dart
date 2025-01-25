@@ -43,8 +43,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           right: AppConstants.scaffoldPadding,
                           bottom: 32),
                       itemBuilder: (context, index) {
-                        return WalletEntryListTile(
-                            title: 'Wallet Amount Paid To Order');
+                        return Container();
+
+                        // return WalletEntryListTile(coinEntry: ,);
                       },
                       separatorBuilder: (context, index) {
                         return SizedBox(height: 16);

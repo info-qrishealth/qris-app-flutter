@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:qris_health/constants/enums/transaction_type.dart';
+import 'package:qris_health/modules/refer_and_earn_module/models/qris_coin/qris_coin.dart';
+import 'package:qris_health/shared/extensions/string_extension.dart';
 
 import '../../../styles/app_colors.dart';
 
 class WalletEntryListTile extends StatelessWidget {
-  final String title;
-  const WalletEntryListTile({super.key, required this.title});
+  final QrisCoin coinEntry;
+  const WalletEntryListTile({super.key, required this.coinEntry});
 
   @override
   Widget build(BuildContext context) {
@@ -17,22 +21,37 @@ class WalletEntryListTile extends StatelessWidget {
           padding: EdgeInsets.all(9),
           decoration: BoxDecoration(
               shape: BoxShape.circle, color: AppColors.primaryBlue),
-          child: SvgPicture.asset('assets/images/icons/minus_icon.svg')),
+          child: SvgPicture.asset(coinEntry.txnType == TransactionType.debit
+              ? 'assets/images/icons/minus_icon.svg'
+              : 'assets/images/icons/plus_icon.svg')),
       SizedBox(width: 9),
       Expanded(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Text(title,
+        Text(
+            coinEntry.remark.isEmpty
+                ? '${coinEntry.txnType.name.formattedEnumName}'
+                : coinEntry.remark,
             style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w400)),
         SizedBox(height: 5),
-        Text('Aug 16, 2023 at 05:16 pm',
+        Text(
+            coinEntry.dated.toDateTime != null
+                ? DateFormat()
+                    .add_yMMMEd()
+                    .add_jm()
+                    .format(coinEntry.dated.toDateTime!)
+                : 'Date N/A',
             style: textTheme.bodySmall!.copyWith(
                 fontWeight: FontWeight.w300,
                 color: AppColors.lightSubTextColor))
       ])),
-      Text('₹ 40',
-          style: textTheme.bodyLarge!
-              .copyWith(fontWeight: FontWeight.w600, color: AppColors.green))
+      SizedBox(width: 16),
+      Text('₹ ${coinEntry.coins.toInt()}',
+          style: textTheme.bodyLarge!.copyWith(
+              fontWeight: FontWeight.w600,
+              color: coinEntry.txnType == TransactionType.credit
+                  ? AppColors.green
+                  : AppColors.red))
     ]);
   }
 }
