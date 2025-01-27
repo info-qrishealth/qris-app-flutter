@@ -8,13 +8,13 @@ import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/login_module/screens/login_phone_number_screen.dart';
+import 'package:qris_health/modules/orders_modele/screens/orders_screen.dart';
 import 'package:qris_health/modules/patients_module/screens/patients_screen.dart';
 import 'package:qris_health/modules/profile_module/screens/my_profile_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/screens/coins_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/screens/refer_and_earn_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/screens/wallet_screen.dart';
 import 'package:qris_health/modules/address_module/screens/address_screen.dart';
-import 'package:qris_health/modules/booking_module/screens/bookings_screen.dart';
 import 'package:qris_health/modules/doctor_consultation_module/screens/doctor_consultation_screen.dart';
 import 'package:qris_health/modules/health_article_module/screens/health_articles_screen.dart';
 import 'package:qris_health/modules/health_module/screens/mental_wellness_screen.dart';
@@ -121,8 +121,8 @@ class _MainDrawerState extends State<MainDrawer> {
                 svgPath: 'assets/images/icons/drawer_icons/booking_icon.svg',
                 title: 'Booking / Reports',
                 onTap: () {
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: (context) => BookingsScreen()));
+                  Navigator.of(context).push(
+                      CupertinoPageRoute(builder: (context) => OrdersScreen()));
                 }),
             _buildListTile(
                 svgPath: 'assets/images/icons/drawer_icons/refer_icon.svg',

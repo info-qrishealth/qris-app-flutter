@@ -23,8 +23,8 @@ mixin LoginHelperMixin {
       await prefs.setString(PrefConstants.phoneNumber, user.phone!);
       ApiParams.getInstance()!.userId = user.id;
 
-      Navigator.of(context)
-          .push(CupertinoPageRoute(builder: (context) => HomeScreen()));
+      Navigator.of(context).pushAndRemoveUntil(
+          CupertinoPageRoute(builder: (context) => HomeScreen()), (_) => false);
     } catch (e) {
       rethrow;
     }

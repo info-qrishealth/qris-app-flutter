@@ -87,8 +87,10 @@ class _LoginUsernameAndPasswordScreenState
 
                         await operationsForLogin(context: context, user: user);
 
-                        Navigator.of(context).push(CupertinoPageRoute(
-                            builder: (context) => HomeScreen()));
+                        Navigator.of(context).pushAndRemoveUntil(
+                            CupertinoPageRoute(
+                                builder: (context) => HomeScreen()),
+                            (route) => false);
                       }
                     } catch (e) {
                       AppConstants.showSnackbar(

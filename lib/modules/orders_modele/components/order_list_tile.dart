@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
+import 'package:qris_health/modules/orders_modele/models/order.dart';
 import 'package:qris_health/shared/components/billing_amount_row.dart';
 import 'package:qris_health/shared/components/common_divider.dart';
 import 'package:qris_health/shared/components/feature_row.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-class BookingListTile extends StatelessWidget {
-  BookingListTile({super.key});
+class OrderListTile extends StatelessWidget {
+  final Order order;
+  OrderListTile({super.key, required this.order});
   final _textTheme = Get.textTheme;
 
   @override
