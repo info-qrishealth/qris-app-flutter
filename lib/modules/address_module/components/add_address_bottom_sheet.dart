@@ -38,100 +38,104 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
     return CommonBottomSheetTemplate(
         child: Form(
       key: _formKey,
-      child: ListView(physics: BouncingScrollPhysics(), children: [
-        SizedBox(height: 16),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text('Add Address',
-              style: _textTheme.headlineLarge!
-                  .copyWith(fontWeight: FontWeight.w700)),
-          CommonCrossIcon(),
-        ]),
-        SizedBox(height: 18),
-        CommonTextField(
-            hintText: 'Enter your house number',
-            validator: (houseNumber) {
-              if (houseNumber.isNullOrEmpty) {
-                return 'This is a required field';
-              }
+      child: ListView(
+          physics: BouncingScrollPhysics(),
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          children: [
+            SizedBox(height: 16),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text('Add Address',
+                  style: _textTheme.headlineLarge!
+                      .copyWith(fontWeight: FontWeight.w700)),
+              CommonCrossIcon(),
+            ]),
+            SizedBox(height: 18),
+            CommonTextField(
+                hintText: 'Enter your house number',
+                validator: (houseNumber) {
+                  if (houseNumber.isNullOrEmpty) {
+                    return 'This is a required field';
+                  }
 
-              return null;
-            },
-            controller: _houseNumberController,
-            textInputType: TextInputType.text,
-            headingText: 'Flat/House no',
-            autoFocus: true,
-            isRequired: true),
-        SizedBox(height: 16),
-        CommonTextField(
-            validator: (address) {
-              if (address.isNullOrEmpty) {
-                return 'This is a required field';
-              }
+                  return null;
+                },
+                controller: _houseNumberController,
+                textInputType: TextInputType.text,
+                headingText: 'Flat/House no',
+                autoFocus: true,
+                isRequired: true),
+            SizedBox(height: 16),
+            CommonTextField(
+                validator: (address) {
+                  if (address.isNullOrEmpty) {
+                    return 'This is a required field';
+                  }
 
-              return null;
-            },
-            hintText: 'Enter your complete address',
-            controller: _addressLine1Controller,
-            textInputType: TextInputType.streetAddress,
-            headingText: 'Address Line 1',
-            isRequired: true),
-        SizedBox(height: 16),
-        CommonTextField(
-            hintText: 'Enter your complete address',
-            controller: _addressLine2Controller,
-            textInputType: TextInputType.streetAddress,
-            headingText: 'Address Line 2'),
-        SizedBox(height: 16),
-        CommonTextField(
-            hintText: 'Provide your landmark',
-            controller: _landmarkController,
-            textInputType: TextInputType.streetAddress,
-            isRequired: true,
-            validator: (landmark) {
-              if (landmark.isNullOrEmpty) {
-                return 'This is a required field';
-              }
+                  return null;
+                },
+                hintText: 'Enter your complete address',
+                controller: _addressLine1Controller,
+                textInputType: TextInputType.streetAddress,
+                headingText: 'Address Line 1',
+                isRequired: true),
+            SizedBox(height: 16),
+            CommonTextField(
+                hintText: 'Enter your complete address',
+                controller: _addressLine2Controller,
+                textInputType: TextInputType.streetAddress,
+                headingText: 'Address Line 2'),
+            SizedBox(height: 16),
+            CommonTextField(
+                hintText: 'Provide your landmark',
+                controller: _landmarkController,
+                textInputType: TextInputType.streetAddress,
+                isRequired: true,
+                validator: (landmark) {
+                  if (landmark.isNullOrEmpty) {
+                    return 'This is a required field';
+                  }
 
-              return null;
-            },
-            headingText: 'Landmark'),
-        SizedBox(height: 16),
-        CommonTextField(
-            hintText: 'Enter your pincode',
-            controller: _pincodeController,
-            isRequired: true,
-            validator: (pincode) {
-              if (pincode?.length != 6) {
-                return 'Invalid pincode';
-              }
+                  return null;
+                },
+                headingText: 'Landmark'),
+            SizedBox(height: 16),
+            CommonTextField(
+                hintText: 'Enter your pincode',
+                controller: _pincodeController,
+                isRequired: true,
+                maxLength: 6,
+                validator: (pincode) {
+                  if (pincode?.length != 6) {
+                    return 'Invalid pincode';
+                  }
 
-              return null;
-            },
-            textInputType: TextInputType.streetAddress,
-            headingText: 'Pincode'),
-        SizedBox(height: 16),
-        CommonFieldDropdown(
-            isRequired: true,
-            labelText: null,
-            items: AppConstants.stateList
-                .map((state) => DropdownMenuItem(
-                    value: state, child: Text(state.capitalizeFirst!)))
-                .toList(),
-            selectedValue: _selectedState,
-            onChanged: (value) {
-              setState(() {
-                _selectedState = value;
-              });
-            },
-            headingText: 'State'),
-        SizedBox(height: 16),
-        ElevatedButton(
-            onPressed: _loading ? null : _addAddress,
-            style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryBlue),
-            child: Text('Save Address')),
-        SizedBox(height: 16),
-      ]),
+                  return null;
+                },
+                textInputType: TextInputType.number,
+                headingText: 'Pincode'),
+            SizedBox(height: 16),
+            CommonFieldDropdown(
+                isRequired: true,
+                labelText: null,
+                items: AppConstants.stateList
+                    .map((state) => DropdownMenuItem(
+                        value: state, child: Text(state.capitalizeFirst!)))
+                    .toList(),
+                selectedValue: _selectedState,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedState = value;
+                  });
+                },
+                headingText: 'State'),
+            SizedBox(height: 16),
+            ElevatedButton(
+                onPressed: _loading ? null : _addAddress,
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryBlue),
+                child: Text('Save Address')),
+            SizedBox(height: 16),
+          ]),
     ));
   }
 
