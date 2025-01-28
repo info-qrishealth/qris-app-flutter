@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/enums/gender.dart';
+import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
 import 'package:qris_health/modules/patients_module/components/add_patient_bottom_sheet.dart';
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
@@ -31,8 +33,17 @@ class _PatientListTileState extends State<PatientListTile> {
 
   @override
   Widget build(BuildContext context) {
+    final dob = _patient?.dob?.toDateTime;
+    bool isUnderAge = false;
+
+    if (dob != null) {
+      final ageInYears = DateTime.now().difference(dob).inDays / 365.25;
+      isUnderAge = ageInYears < 16;
+    }
+
     double? bmi;
-    if (_patient?.weight != null && _patient?.height != null) {
+
+    if (!isUnderAge && _patient?.weight != null && _patient?.height != null) {
       bmi = _calculateBMI(
           _patient!.height!.toDouble(), _patient!.weight!.toDouble());
     }
@@ -119,29 +130,60 @@ class _PatientListTileState extends State<PatientListTile> {
                         child: SvgPicture.asset(
                             'assets/images/icons/edit_icon.svg')),
                   ]))),
-          Row(children: [
-            Expanded(
-                child: _buildInfoContainer(
-                    borderRadius:
-                        BorderRadius.only(bottomLeft: Radius.circular(12)),
-                    title: 'BMI',
-                    customDescription: bmi == null
-                        ? _buildUnderlineText(text: 'Know your BMI')
-                        : null,
-                    value: bmi == null ? 'NA' : bmi.toStringAsFixed(1),
-                    descriptionText:
-                        bmi == null ? null : '(${_getBmiText(bmi: bmi)})')),
-            Expanded(
-                child: _buildInfoContainer(
-                    borderRadius:
-                        BorderRadius.only(bottomRight: Radius.circular(12)),
-                    title: 'Health Score',
-                    value: true ? 'NA' : '85',
-                    customDescription: true
-                        ? _buildUnderlineText(text: 'Know your health score')
-                        : null,
-                    descriptionText: true ? null : '(Excellent)')),
-          ]),
+          IntrinsicHeight(
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                Expanded(
+                    child: _buildInfoContainer(
+                        borderRadius:
+                            BorderRadius.only(bottomLeft: Radius.circular(12)),
+                        title: 'BMI',
+                        customDescription: isUnderAge
+                            ? null
+                            : bmi == null
+                                ? _buildUnderlineText(text: 'Know your BMI')
+                                : null,
+                        value: bmi == null || isUnderAge
+                            ? 'NA'
+                            : bmi.toStringAsFixed(1),
+                        descriptionText: isUnderAge
+                            ? '(Underage to calculate BMI)'
+                            : bmi == null
+                                ? null
+                                : '(${_getBmiText(bmi: bmi)})',
+                        onTap: () {
+                          if (!isUnderAge) {
+                            Navigator.of(context).push(CupertinoPageRoute(
+                                builder: (context) =>
+                                    HealthScoreIntroScreen()));
+                          }
+                        })),
+                Expanded(
+                    child: _buildInfoContainer(
+                        borderRadius:
+                            BorderRadius.only(bottomRight: Radius.circular(12)),
+                        title: 'Health Score',
+                        value: true ? 'NA' : '85',
+                        customDescription: isUnderAge
+                            ? null
+                            : true
+                                ? _buildUnderlineText(
+                                    text: 'Know your health score')
+                                : null,
+                        descriptionText: isUnderAge
+                            ? '(Underage for health score)'
+                            : true
+                                ? null
+                                : '(Excellent)',
+                        onTap: () {
+                          if (!isUnderAge) {
+                            Navigator.of(context).push(CupertinoPageRoute(
+                                builder: (context) =>
+                                    HealthScoreIntroScreen()));
+                          }
+                        })),
+              ])),
         ]));
   }
 
@@ -159,31 +201,37 @@ class _PatientListTileState extends State<PatientListTile> {
       {required String title,
       required String value,
       required String? descriptionText,
+      required Function() onTap,
       Widget? customDescription,
       BorderRadius? borderRadius}) {
-    return Container(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        decoration: BoxDecoration(
-            color: AppColors.primaryPink.withOpacity(0.12),
-            borderRadius: borderRadius),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          RichText(
-              text: TextSpan(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+              color: AppColors.primaryPink.withOpacity(0.12),
+              borderRadius: borderRadius),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            RichText(
+                text: TextSpan(
+                    style: _textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.primaryBlue),
+                    children: [
+                  TextSpan(text: '$title - '),
+                  TextSpan(
+                      text: value,
+                      style: TextStyle(fontWeight: FontWeight.w800)),
+                ])),
+            SizedBox(height: 2),
+            if (descriptionText != null)
+              Text(descriptionText,
                   style: _textTheme.bodySmall!.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.primaryBlue),
-                  children: [
-                TextSpan(text: '$title - '),
-                TextSpan(
-                    text: value, style: TextStyle(fontWeight: FontWeight.w800)),
-              ])),
-          SizedBox(height: 2),
-          if (descriptionText != null)
-            Text(descriptionText,
-                style: _textTheme.bodySmall!
-                    .copyWith(color: AppColors.primaryBlue.withOpacity(0.65))),
-          if (customDescription != null) customDescription
-        ]));
+                      color: AppColors.primaryBlue.withOpacity(0.65))),
+            if (customDescription != null) customDescription
+          ])),
+    );
   }
 
   Widget _buildUnderlineText({required String text}) {
