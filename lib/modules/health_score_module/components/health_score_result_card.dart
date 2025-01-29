@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/health_score_status_enum.dart';
+import 'package:qris_health/modules/health_score_module/models/health_score_res_model/health_score_res_model.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
+import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-class HealthScoreResultCard extends StatelessWidget {
-  HealthScoreResultCard({super.key});
+class HealthScoreResultCard extends StatelessWidget with GeneralHelperMixin {
+  final HealthScoreResModel healthScoreResModel;
+  HealthScoreResultCard({super.key, required this.healthScoreResModel});
+
   final _textTheme = Get.textTheme;
 
   @override
@@ -38,12 +43,12 @@ class HealthScoreResultCard extends StatelessWidget {
                         _buildHeightWeightCard(
                             title: 'Height',
                             color: AppColors.primaryPink.withOpacity(0.4),
-                            value: '170 cm'),
+                            value: '${healthScoreResModel.height} cm'),
                         SizedBox(height: 4),
                         _buildHeightWeightCard(
                             title: 'Weight',
                             color: AppColors.primaryBlue.withOpacity(0.24),
-                            value: '72 kg'),
+                            value: '${healthScoreResModel.weight} kg'),
                       ]),
                       SizedBox(width: 6),
                       Expanded(
@@ -58,7 +63,7 @@ class HealthScoreResultCard extends StatelessWidget {
                                     style: _textTheme.labelSmall!.copyWith(
                                         color: Colors.white, fontSize: 10)),
                                 Spacer(),
-                                Text('24.9',
+                                Text('${healthScoreResModel.bmi}',
                                     style: _textTheme.headlineSmall!.copyWith(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w400,
@@ -70,7 +75,12 @@ class HealthScoreResultCard extends StatelessWidget {
                                     decoration: BoxDecoration(
                                         color: Color(0xFFABFE78),
                                         borderRadius: BorderRadius.circular(8)),
-                                    child: Text('Healthy Weight',
+                                    child: Text(
+                                        healthScoreResModel.bmi == null
+                                            ? 'N/A'
+                                            : getBmiText(
+                                                bmi: double.tryParse(
+                                                    healthScoreResModel.bmi!)!),
                                         style: _textTheme.labelSmall!.copyWith(
                                             fontSize: 9,
                                             color: AppColors.black,
@@ -91,21 +101,22 @@ class HealthScoreResultCard extends StatelessWidget {
                     padding: EdgeInsets.all(24),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(width: 6, color: Color(0xFFABFE78))),
+                        border: Border.all(
+                            width: 6, color: getColor() ?? Colors.green)),
                     child: Column(children: [
-                      Text('85',
+                      Text('${healthScoreResModel.healthScore}',
                           style: _textTheme.bodyMedium!
                               .copyWith(fontWeight: FontWeight.w700)),
                       SizedBox(height: 4),
                       Container(
                           padding: EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                              color: Color(0xFFABFE78),
+                              color: getColor(),
                               borderRadius: BorderRadius.circular(6)),
-                          child: Text('Excellent',
+                          child: Text('${healthScoreResModel.scoreStatus}',
                               style: _textTheme.labelSmall!.copyWith(
                                   color: AppColors.black,
-                                  fontSize: 9,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.w400)))
                     ]))
               ])
@@ -136,5 +147,15 @@ class HealthScoreResultCard extends StatelessWidget {
                     fontSize: 10))
           ])
         ]));
+  }
+
+  Color? getColor() {
+    return healthScoreResModel.scoreStatus == HealthScoreStatusEnum.Poor.name
+        ? HealthScoreStatusEnum.Poor.color
+        : healthScoreResModel.scoreStatus == HealthScoreStatusEnum.Average.name
+            ? HealthScoreStatusEnum.Average.color
+            : healthScoreResModel.scoreStatus == HealthScoreStatusEnum.Good.name
+                ? HealthScoreStatusEnum.Good.color
+                : HealthScoreStatusEnum.Excellent.color;
   }
 }

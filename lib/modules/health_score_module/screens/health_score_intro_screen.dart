@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/health_score_module/components/health_score_list_tile.dart';
 import 'package:qris_health/modules/health_score_module/components/heath_score_info_tile.dart';
 import 'package:qris_health/modules/health_score_module/screens/health_score_screen.dart';
@@ -27,9 +28,14 @@ class _HealthScoreIntroScreenState extends State<HealthScoreIntroScreen> {
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryBlue),
-                onPressed: () {
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: (context) => HealthScoreScreen()));
+                onPressed: () async {
+                  try {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => HealthScoreScreen()));
+                  } catch (e) {
+                    AppConstants.showSnackbar(
+                        text: e.toString(), type: SnackbarType.error);
+                  }
                 },
                 child: Text('Start Assessment'))),
         appBar: CommonAppBar(title: 'Health Score'),

@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/health_score_module/models/health_score_question_model/health_score_question_model.dart';
+import 'package:qris_health/modules/health_score_module/utils/health_score_questions_util.dart';
 import 'package:qris_health/shared/components/common_field_dropdown.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class LifestyleHabitTab extends StatefulWidget {
-  final Function() onNext;
-  const LifestyleHabitTab({super.key, required this.onNext});
+  final Function(
+      HealthScoreQuestionModel dietOption,
+      HealthScoreQuestionModel waterOption,
+      HealthScoreQuestionModel alcholOption,
+      HealthScoreQuestionModel ciggerateOption,
+      HealthScoreQuestionModel exerciseOption) onSubmit;
+  const LifestyleHabitTab({super.key, required this.onSubmit});
 
   @override
   State<LifestyleHabitTab> createState() => _LifestyleHabitTabState();
 }
 
 class _LifestyleHabitTabState extends State<LifestyleHabitTab> {
-  String? _dietOption;
-  String? _waterOption;
-  String? _alcoholOption;
-  String? _cigaretteOption;
-  String? _exerciseOption;
+  HealthScoreQuestionModel? _dietOption;
+  HealthScoreQuestionModel? _waterOption;
+  HealthScoreQuestionModel? _alcoholOption;
+  HealthScoreQuestionModel? _cigaretteOption;
+  HealthScoreQuestionModel? _exerciseOption;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +31,9 @@ class _LifestyleHabitTabState extends State<LifestyleHabitTab> {
           child: ListView(children: [
         CommonFieldDropdown(
             labelText: null,
-            items: AppConstants.dietOptions
-                .map((diet) => DropdownMenuItem(value: diet, child: Text(diet)))
+            items: HealthScoreQuestionsUtil.fruitVegScores
+                .map((diet) =>
+                    DropdownMenuItem(value: diet, child: Text(diet.option)))
                 .toList(),
             selectedValue: _dietOption,
             onChanged: (diet) {
@@ -38,9 +45,9 @@ class _LifestyleHabitTabState extends State<LifestyleHabitTab> {
         SizedBox(height: 16),
         CommonFieldDropdown(
             labelText: null,
-            items: AppConstants.waterOptions
+            items: HealthScoreQuestionsUtil.waterIntakeScores
                 .map((water) =>
-                    DropdownMenuItem(value: water, child: Text(water)))
+                    DropdownMenuItem(value: water, child: Text(water.option)))
                 .toList(),
             selectedValue: _waterOption,
             onChanged: (diet) {
@@ -52,9 +59,9 @@ class _LifestyleHabitTabState extends State<LifestyleHabitTab> {
         SizedBox(height: 16),
         CommonFieldDropdown(
             labelText: null,
-            items: AppConstants.alcoholOptions
-                .map((alcohol) =>
-                    DropdownMenuItem(value: alcohol, child: Text(alcohol)))
+            items: HealthScoreQuestionsUtil.alcoholConsumptionScores
+                .map((alcohol) => DropdownMenuItem(
+                    value: alcohol, child: Text(alcohol.option)))
                 .toList(),
             selectedValue: _alcoholOption,
             onChanged: (alcohol) {
@@ -66,9 +73,9 @@ class _LifestyleHabitTabState extends State<LifestyleHabitTab> {
         SizedBox(height: 16),
         CommonFieldDropdown(
             labelText: null,
-            items: AppConstants.cigarettesOptions
-                .map((cigarette) =>
-                    DropdownMenuItem(value: cigarette, child: Text(cigarette)))
+            items: HealthScoreQuestionsUtil.smokingScores
+                .map((cigarette) => DropdownMenuItem(
+                    value: cigarette, child: Text(cigarette.option)))
                 .toList(),
             selectedValue: _cigaretteOption,
             onChanged: (cigarette) {
@@ -80,9 +87,9 @@ class _LifestyleHabitTabState extends State<LifestyleHabitTab> {
         SizedBox(height: 16),
         CommonFieldDropdown(
             labelText: null,
-            items: AppConstants.exerciseOptions
-                .map((exercise) =>
-                    DropdownMenuItem(value: exercise, child: Text(exercise)))
+            items: HealthScoreQuestionsUtil.exerciseScores
+                .map((exercise) => DropdownMenuItem(
+                    value: exercise, child: Text(exercise.option)))
                 .toList(),
             selectedValue: _exerciseOption,
             onChanged: (exercise) {
@@ -98,7 +105,14 @@ class _LifestyleHabitTabState extends State<LifestyleHabitTab> {
           child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryBlue),
-              onPressed: widget.onNext,
+              onPressed: _alcoholOption == null ||
+                      _cigaretteOption == null ||
+                      _dietOption == null ||
+                      _exerciseOption == null ||
+                      _waterOption == null
+                  ? null
+                  : () => widget.onSubmit(_dietOption!, _waterOption!,
+                      _alcoholOption!, _cigaretteOption!, _exerciseOption!),
               child: Text('Submit')))
     ]);
   }

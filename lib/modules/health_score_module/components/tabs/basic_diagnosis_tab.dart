@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/health_score_module/models/health_score_question_model/health_score_question_model.dart';
+import 'package:qris_health/modules/health_score_module/utils/health_score_questions_util.dart';
 import 'package:qris_health/shared/components/common_field_dropdown.dart';
-import 'package:qris_health/shared/components/common_textfield.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class BasicDiagnosisTab extends StatefulWidget {
-  final Function() onNext;
+  final Function(HealthScoreQuestionModel bp, HealthScoreQuestionModel pulse,
+      HealthScoreQuestionModel sleep) onNext;
+
   const BasicDiagnosisTab({super.key, required this.onNext});
 
   @override
@@ -13,19 +15,19 @@ class BasicDiagnosisTab extends StatefulWidget {
 }
 
 class _BasicDiagnosisTabState extends State<BasicDiagnosisTab> {
-  String? _bp;
-  String? _pulseOption;
-  String? _sleepPattern;
+  HealthScoreQuestionModel? _bp;
+  HealthScoreQuestionModel? _pulseOption;
+  HealthScoreQuestionModel? _sleepPattern;
 
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      CommonFieldDropdown(
+      CommonFieldDropdown<HealthScoreQuestionModel>(
           labelText: null,
           hintText: 'Select your Blood pressure',
-          items: AppConstants.bpOptions
+          items: HealthScoreQuestionsUtil.bloodPressureScores
               .map((option) =>
-                  DropdownMenuItem(value: option, child: Text(option)))
+                  DropdownMenuItem(value: option, child: Text(option.option)))
               .toList(),
           selectedValue: _bp,
           onChanged: (bp) {
@@ -39,10 +41,11 @@ class _BasicDiagnosisTabState extends State<BasicDiagnosisTab> {
       CommonFieldDropdown(
           labelText: null,
           hintText: 'Select your Pulse rate',
-          items: AppConstants.pulseOptions
+          items: HealthScoreQuestionsUtil.heartRateScores
               .map((option) =>
-                  DropdownMenuItem(value: option, child: Text(option)))
+                  DropdownMenuItem(value: option, child: Text(option.option)))
               .toList(),
+          isExpanded: true,
           selectedValue: _pulseOption,
           onChanged: (pulse) {
             setState(() {
@@ -55,9 +58,10 @@ class _BasicDiagnosisTabState extends State<BasicDiagnosisTab> {
       CommonFieldDropdown(
           labelText: null,
           hintText: 'Select your Sleep pattern',
-          items: AppConstants.pulseOptions
+          isExpanded: true,
+          items: HealthScoreQuestionsUtil.sleepScores
               .map((option) =>
-                  DropdownMenuItem(value: option, child: Text(option)))
+                  DropdownMenuItem(value: option, child: Text(option.option)))
               .toList(),
           selectedValue: _sleepPattern,
           onChanged: (sleepPattern) {
@@ -73,7 +77,11 @@ class _BasicDiagnosisTabState extends State<BasicDiagnosisTab> {
           child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryBlue),
-              onPressed: widget.onNext,
+              onPressed: _bp == null ||
+                      _pulseOption == null ||
+                      _sleepPattern == null
+                  ? null
+                  : () => widget.onNext(_bp!, _sleepPattern!, _pulseOption!),
               child: Text('Next')))
     ]);
   }

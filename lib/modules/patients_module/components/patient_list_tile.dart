@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/enums/gender.dart';
 import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
 import 'package:qris_health/modules/patients_module/components/add_patient_bottom_sheet.dart';
+import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
+import 'package:qris_health/modules/patients_module/extensions/patient_extension.dart';
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
+import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../constants/app_constants.dart';
@@ -21,7 +25,8 @@ class PatientListTile extends StatefulWidget {
   State<PatientListTile> createState() => _PatientListTileState();
 }
 
-class _PatientListTileState extends State<PatientListTile> {
+class _PatientListTileState extends State<PatientListTile>
+    with GeneralHelperMixin {
   final _textTheme = Get.textTheme;
   Patient? _patient;
 
@@ -33,26 +38,15 @@ class _PatientListTileState extends State<PatientListTile> {
 
   @override
   Widget build(BuildContext context) {
-    final dob = _patient?.dob?.toDateTime;
-    bool isUnderAge = false;
-
-    if (dob != null) {
-      final ageInYears = DateTime.now().difference(dob).inDays / 365.25;
-      isUnderAge = ageInYears < 16;
-    }
-
     double? bmi;
 
+    final isUnderAge = _patient.isUnderAge;
+
     if (!isUnderAge && _patient?.weight != null && _patient?.height != null) {
-      bmi = _calculateBMI(
-          _patient!.height!.toDouble(), _patient!.weight!.toDouble());
+      bmi = _patient.bmi;
     }
 
-    final gender = _patient?.gender == '0'
-        ? Gender.OTHERS
-        : _patient?.gender == '1'
-            ? Gender.FEMALE
-            : Gender.MALE;
+    final gender = _patient?.genderEnum;
 
     return Container(
         decoration: BoxDecoration(
@@ -85,7 +79,7 @@ class _PatientListTileState extends State<PatientListTile> {
                           ]),
                           SizedBox(height: 4),
                           Row(children: [
-                            Text(gender.name.formattedEnumName ?? 'N/A',
+                            Text(gender?.name.formattedEnumName ?? 'N/A',
                                 style: _textTheme.bodySmall!.copyWith(
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.lightSubTextColor)),
@@ -101,9 +95,10 @@ class _PatientListTileState extends State<PatientListTile> {
                             Text(
                                 _patient?.dob == null
                                     ? 'DOB N/A'
-                                    : _formatDateDifference(
-                                        _patient!.dob.toDateTime!,
-                                        DateTime.now()),
+                                    : BlocProvider.of<PatientsCubit>(context)
+                                            .getFormattedAgeOfPatient(
+                                                patientId: _patient?.id) ??
+                                        'N/A',
                                 style: _textTheme.bodySmall!.copyWith(
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.lightSubTextColor)),
@@ -151,7 +146,7 @@ class _PatientListTileState extends State<PatientListTile> {
                             ? '(Underage to calculate BMI)'
                             : bmi == null
                                 ? null
-                                : '(${_getBmiText(bmi: bmi)})',
+                                : '(${getBmiText(bmi: bmi)})',
                         onTap: () {
                           if (!isUnderAge) {
                             Navigator.of(context).push(CupertinoPageRoute(
@@ -240,46 +235,5 @@ class _PatientListTileState extends State<PatientListTile> {
         underlineColor: AppColors.primaryPink,
         style: _textTheme.labelSmall!.copyWith(
             color: AppColors.primaryPink, fontWeight: FontWeight.w400));
-  }
-
-  String _formatDateDifference(DateTime from, DateTime to) {
-    if (from.isAfter(to)) {
-      DateTime temp = from;
-      from = to;
-      to = temp;
-    }
-
-    int years = to.year - from.year;
-    int months = to.month - from.month;
-    int days = to.day - from.day;
-
-    if (days < 0) {
-      final previousMonth = DateTime(to.year, to.month - 1, from.day);
-      days = to.difference(previousMonth).inDays;
-      months -= 1;
-    }
-    if (months < 0) {
-      months += 12;
-      years -= 1;
-    }
-
-    return '${years}Y ${months}M ${days}D';
-  }
-
-  double _calculateBMI(double heightInCm, double weightInKg) {
-    double heightInMeters = heightInCm / 100;
-    return weightInKg / (heightInMeters * heightInMeters);
-  }
-
-  String _getBmiText({required double bmi}) {
-    if (bmi < 18.5) {
-      return 'Under Weight';
-    } else if (bmi > 18.5 && bmi < 24.9) {
-      return 'Normal Weight';
-    } else if (bmi > 24.9 && bmi < 29.9) {
-      return 'Overweight';
-    } else {
-      return 'Obesity';
-    }
   }
 }

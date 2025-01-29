@@ -30,7 +30,7 @@ class _SelectPatientTabState extends State<SelectPatientTab> {
             description:
                 'Included : Liver Test, Kidney Test, Blood glucose fasting, Lipid profile, Thyroid Profile, HBA1C, Urine Test....'),
         SizedBox(height: 32),
-        SelectPatientView(),
+        SelectPatientView(getSelectedPatient: (patient) {}),
       ])),
       ElevatedButton(
           onPressed: widget.onContinue,
