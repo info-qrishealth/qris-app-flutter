@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/enums/gender.dart';
+import 'package:qris_health/modules/health_score_module/models/health_score_res_model/health_score_res_model.dart';
 import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
+import 'package:qris_health/modules/health_score_module/services/health_score_service.dart';
 import 'package:qris_health/modules/patients_module/components/add_patient_bottom_sheet.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
 import 'package:qris_health/modules/patients_module/extensions/patient_extension.dart';
@@ -29,10 +31,13 @@ class _PatientListTileState extends State<PatientListTile>
     with GeneralHelperMixin {
   final _textTheme = Get.textTheme;
   Patient? _patient;
+  late Future<HealthScoreResModel?> _healthScoreFuture;
 
   @override
   void initState() {
     super.initState();
+    _healthScoreFuture = HealthScoreService.getPatientHealthScore(
+        patientId: widget.patient!.id!.toString());
     _patient = widget.patient;
   }
 
@@ -125,60 +130,55 @@ class _PatientListTileState extends State<PatientListTile>
                         child: SvgPicture.asset(
                             'assets/images/icons/edit_icon.svg')),
                   ]))),
-          IntrinsicHeight(
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                Expanded(
-                    child: _buildInfoContainer(
-                        borderRadius:
-                            BorderRadius.only(bottomLeft: Radius.circular(12)),
-                        title: 'BMI',
-                        customDescription: isUnderAge
-                            ? null
-                            : bmi == null
-                                ? _buildUnderlineText(text: 'Know your BMI')
-                                : null,
-                        value: bmi == null || isUnderAge
-                            ? 'NA'
-                            : bmi.toStringAsFixed(1),
-                        descriptionText: isUnderAge
-                            ? '(Underage to calculate BMI)'
-                            : bmi == null
-                                ? null
-                                : '(${getBmiText(bmi: bmi)})',
-                        onTap: () {
-                          if (!isUnderAge) {
-                            Navigator.of(context).push(CupertinoPageRoute(
-                                builder: (context) =>
-                                    HealthScoreIntroScreen()));
-                          }
-                        })),
-                Expanded(
-                    child: _buildInfoContainer(
-                        borderRadius:
-                            BorderRadius.only(bottomRight: Radius.circular(12)),
-                        title: 'Health Score',
-                        value: true ? 'NA' : '85',
-                        customDescription: isUnderAge
-                            ? null
-                            : true
-                                ? _buildUnderlineText(
-                                    text: 'Know your health score')
-                                : null,
-                        descriptionText: isUnderAge
-                            ? '(Underage for health score)'
-                            : true
-                                ? null
-                                : '(Excellent)',
-                        onTap: () {
-                          if (!isUnderAge) {
-                            Navigator.of(context).push(CupertinoPageRoute(
-                                builder: (context) =>
-                                    HealthScoreIntroScreen()));
-                          }
-                        })),
-              ])),
+          FutureBuilder<HealthScoreResModel?>(
+              future: _healthScoreFuture,
+              builder: (context, snapshot) {
+                return IntrinsicHeight(
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                      Expanded(
+                          child: _buildInfoContainer(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(12)),
+                              title: 'BMI',
+                              customDescription: isUnderAge
+                                  ? null
+                                  : bmi == null
+                                      ? _buildUnderlineText(
+                                          text: 'Know your BMI')
+                                      : null,
+                              value: bmi == null || isUnderAge
+                                  ? 'NA'
+                                  : bmi.toStringAsFixed(1),
+                              descriptionText: isUnderAge
+                                  ? '(Underage to calculate BMI)'
+                                  : bmi == null
+                                      ? null
+                                      : '(${getBmiText(bmi: bmi)})',
+                              onTap: () => _navigate(isUnderAge: isUnderAge))),
+                      Expanded(
+                          child: _buildInfoContainer(
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(12)),
+                              title: 'Health Score',
+                              value: !snapshot.hasData
+                                  ? 'NA'
+                                  : '${snapshot.data?.healthScore}',
+                              customDescription: isUnderAge
+                                  ? null
+                                  : !snapshot.hasData
+                                      ? _buildUnderlineText(
+                                          text: 'Know your health score')
+                                      : null,
+                              descriptionText: isUnderAge
+                                  ? '(Underage for health score)'
+                                  : !snapshot.hasData
+                                      ? null
+                                      : '(${snapshot.data?.scoreStatus})',
+                              onTap: () => _navigate(isUnderAge: isUnderAge))),
+                    ]));
+              }),
         ]));
   }
 
@@ -235,5 +235,16 @@ class _PatientListTileState extends State<PatientListTile>
         underlineColor: AppColors.primaryPink,
         style: _textTheme.labelSmall!.copyWith(
             color: AppColors.primaryPink, fontWeight: FontWeight.w400));
+  }
+
+  Future<void> _navigate({required bool isUnderAge}) async {
+    if (!isUnderAge) {
+      await Navigator.of(context).push(
+          CupertinoPageRoute(builder: (context) => HealthScoreIntroScreen()));
+
+      _healthScoreFuture = HealthScoreService.getPatientHealthScore(
+          patientId: widget.patient!.id!.toString());
+      setState(() {});
+    }
   }
 }
