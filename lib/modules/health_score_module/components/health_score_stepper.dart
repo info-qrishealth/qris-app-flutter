@@ -15,11 +15,15 @@ class HealthScoreStepper extends StatelessWidget {
       _divider(
           selectedStepIndex > 0 ? AppColors.primaryBlue : Color(0x0C411E75)),
       StepCircle(
-          step: 1, selectedStep: selectedStepIndex, title: 'Basic Diagnosis'),
+          step: 1, selectedStep: selectedStepIndex, title: 'Patient Info'),
       _divider(
           selectedStepIndex > 1 ? AppColors.primaryBlue : Color(0x0C411E75)),
       StepCircle(
-          step: 2, selectedStep: selectedStepIndex, title: 'Lifestyle Habits'),
+          step: 2, selectedStep: selectedStepIndex, title: 'Basic Diagnosis'),
+      _divider(
+          selectedStepIndex > 2 ? AppColors.primaryBlue : Color(0x0C411E75)),
+      StepCircle(
+          step: 3, selectedStep: selectedStepIndex, title: 'Lifestyle Habits'),
     ]);
   }
 

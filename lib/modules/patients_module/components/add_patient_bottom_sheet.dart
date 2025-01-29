@@ -46,6 +46,8 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
   Month? _selectedMonth;
   int? _selectedYear;
 
+  bool _loading = false;
+
   @override
   void initState() {
     super.initState();
@@ -174,7 +176,7 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
                       ]))),
               SizedBox(height: 16),
               ElevatedButton(
-                  onPressed: _addPatient,
+                  onPressed: _loading ? null : _addPatient,
                   style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue),
                   child: Text(widget.patient == null
@@ -205,6 +207,10 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
       }
 
       if (_formKey.currentState?.validate() == true) {
+        setState(() {
+          _loading = true;
+        });
+
         final dob =
             DateTime(_selectedYear!, _selectedMonth!.number, _selectedDay!);
         _patient = _patient.copyWith.call(
@@ -231,6 +237,10 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
       }
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    } finally {
+      setState(() {
+        _loading = false;
+      });
     }
   }
 }

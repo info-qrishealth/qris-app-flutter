@@ -14,6 +14,7 @@ import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../patients_module/cubits/patients_cubit/patients_cubit.dart';
+import '../components/tabs/patient_info_tab.dart';
 
 class HealthScoreScreen extends StatefulWidget {
   const HealthScoreScreen({super.key});
@@ -50,7 +51,7 @@ class _HealthScoreScreenState extends State<HealthScoreScreen> {
                 child: Column(children: [
                   SizedBox(height: 24),
                   Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.symmetric(horizontal: 16),
                       child:
                           HealthScoreStepper(selectedStepIndex: _selectedPage)),
                   SizedBox(height: 60),
@@ -60,6 +61,20 @@ class _HealthScoreScreenState extends State<HealthScoreScreen> {
                           physics: NeverScrollableScrollPhysics(),
                           children: [
                         _buildSelectPatientView(),
+                        if (_selectedPatient != null)
+                          PatientInfoTab(
+                              patient: _selectedPatient!,
+                              onNext: (updatedPatient) {
+                                setState(() {
+                                  _selectedPatient = updatedPatient;
+                                  _healthScoreReqModel.weight =
+                                      updatedPatient.weight?.toString();
+                                  _healthScoreReqModel.height =
+                                      updatedPatient.height?.toString();
+                                });
+
+                                _animateToPage(pageIndex: 2);
+                              }),
                         BasicDiagnosisTab(onNext: (bp, pulse, sleep) {
                           _healthScoreReqModel.bloodPressure =
                               bp.marks.toString();
@@ -68,7 +83,7 @@ class _HealthScoreScreenState extends State<HealthScoreScreen> {
                           _healthScoreReqModel.sleepPattern =
                               sleep.marks.toString();
 
-                          _animateToPage(pageIndex: 2);
+                          _animateToPage(pageIndex: 3);
                         }),
                         LifestyleHabitTab(onSubmit: (dietOption, waterOption,
                             alcholOption, ciggerateOption, exerciseOption) {
