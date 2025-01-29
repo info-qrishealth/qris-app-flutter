@@ -96,7 +96,9 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
                                 .toList(),
                             selectedValue: _patient.title == null
                                 ? null
-                                : MarriedTitle.values[_patient.title! - 1],
+                                : MarriedTitle.values[_patient.title! - 1 < 0
+                                    ? 0
+                                    : _patient.title! - 1],
                             hintText: 'Select your title',
                             isRequired: true,
                             onChanged: (selectedTitle) {
