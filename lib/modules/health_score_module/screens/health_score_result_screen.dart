@@ -57,6 +57,7 @@ class _HealthScoreResultScreenState extends State<HealthScoreResultScreen> {
                         backgroundColor: AppColors.primaryBlue),
                     onPressed: () {
                       Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                       Navigator.of(context).pushReplacement(CupertinoPageRoute(
                           builder: (context) => HealthScoreIntroScreen()));
                     },

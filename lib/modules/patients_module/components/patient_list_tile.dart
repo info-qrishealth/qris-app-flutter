@@ -133,6 +133,9 @@ class _PatientListTileState extends State<PatientListTile>
           FutureBuilder<HealthScoreResModel?>(
               future: _healthScoreFuture,
               builder: (context, snapshot) {
+                final hasData = snapshot.hasData;
+                final healthScore = snapshot.data;
+
                 return IntrinsicHeight(
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -157,25 +160,29 @@ class _PatientListTileState extends State<PatientListTile>
                                       ? null
                                       : '(${getBmiText(bmi: bmi)})',
                               onTap: () => _navigate(isUnderAge: isUnderAge))),
+                      VerticalDivider(
+                          width: 1,
+                          thickness: 0.4,
+                          color: AppColors.primaryPink),
                       Expanded(
                           child: _buildInfoContainer(
                               borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(12)),
                               title: 'Health Score',
-                              value: !snapshot.hasData
+                              value: !hasData
                                   ? 'NA'
-                                  : '${snapshot.data?.healthScore}',
+                                  : snapshot.data?.healthScore ?? 'NA',
                               customDescription: isUnderAge
                                   ? null
-                                  : !snapshot.hasData
+                                  : healthScore == null
                                       ? _buildUnderlineText(
                                           text: 'Know your health score')
                                       : null,
                               descriptionText: isUnderAge
                                   ? '(Underage for health score)'
-                                  : !snapshot.hasData
-                                      ? null
-                                      : '(${snapshot.data?.scoreStatus})',
+                                  : healthScore != null
+                                      ? '(${snapshot.data?.scoreStatus ?? 'NA'})'
+                                      : null,
                               onTap: () => _navigate(isUnderAge: isUnderAge))),
                     ]));
               }),
