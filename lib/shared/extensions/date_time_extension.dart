@@ -151,4 +151,31 @@ extension DateTimeExtension on DateTime? {
     int unixTimestamp = this!.millisecondsSinceEpoch ~/ 1000;
     return unixTimestamp.toString();
   }
+
+  String? get formattedAge {
+    DateTime from = this!;
+    DateTime to = DateTime.now();
+
+    if (from.isAfter(to)) {
+      DateTime temp = from;
+      from = to;
+      to = temp;
+    }
+
+    int years = to.year - from.year;
+    int months = to.month - from.month;
+    int days = to.day - from.day;
+
+    if (days < 0) {
+      final previousMonth = DateTime(to.year, to.month - 1, from.day);
+      days = to.difference(previousMonth).inDays;
+      months -= 1;
+    }
+    if (months < 0) {
+      months += 12;
+      years -= 1;
+    }
+
+    return '${years}Y ${months}M ${days}D';
+  }
 }

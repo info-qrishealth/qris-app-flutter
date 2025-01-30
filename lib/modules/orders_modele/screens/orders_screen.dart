@@ -12,7 +12,7 @@ import 'package:qris_health/shared/components/common_filled_chip.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 
 import '../components/order_list_tile.dart';
-import '../models/order.dart';
+import '../models/order/order.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});

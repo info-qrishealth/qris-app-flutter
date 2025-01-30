@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:qris_health/constants/app_constants.dart';
-import 'package:qris_health/modules/orders_modele/models/order.dart';
+import 'package:qris_health/modules/orders_modele/models/order/order.dart';
 import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
 
 class OrderService {
@@ -13,15 +13,11 @@ class OrderService {
       final response = await Wrapper.get(url);
       final orders = (json.decode(response)['body'] as List).map((element) {
         final order = Order.fromJson(element);
-        print(order.id);
-
         return order;
       }).toList();
 
       return orders;
     } catch (e) {
-      print(e.toString());
-
       rethrow;
     }
   }

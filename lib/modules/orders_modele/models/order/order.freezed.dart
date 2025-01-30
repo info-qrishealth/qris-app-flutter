@@ -32,12 +32,9 @@ mixin _$Order {
   @JsonKey(name: 'paid_amount')
   double get paidAmount => throw _privateConstructorUsedError;
   @JsonKey(name: 'order_status')
-  String get orderStatus => throw _privateConstructorUsedError;
-  @JsonKey(
-      name: 'payment_mode',
-      fromJson: PaymentModeExtension.fromString,
-      toJson: paymentModeToJson)
-  PaymentMode get paymentMode => throw _privateConstructorUsedError;
+  OrderStatus get orderStatus => throw _privateConstructorUsedError;
+  @JsonKey(name: 'payment_mode')
+  String get paymentMode => throw _privateConstructorUsedError;
   @JsonKey(name: 'txn_id')
   String? get txnId => throw _privateConstructorUsedError;
   @JsonKey(name: 'bnk_txn_id')
@@ -59,7 +56,7 @@ mixin _$Order {
   @JsonKey(name: 'sc_coupon_amount')
   double get scCouponAmount => throw _privateConstructorUsedError;
   @JsonKey(name: 'sc_coupon_done')
-  String get scCouponDone => throw _privateConstructorUsedError;
+  int get scCouponDone => throw _privateConstructorUsedError;
   @JsonKey(name: 'cb_amount_done')
   String get cbAmountDone => throw _privateConstructorUsedError;
   @JsonKey(name: 'wallet_paid')
@@ -121,12 +118,8 @@ abstract class $OrderCopyWith<$Res> {
       @JsonKey(name: 'order_total') double orderTotal,
       @JsonKey(name: 'collection_charge') String collectionCharge,
       @JsonKey(name: 'paid_amount') double paidAmount,
-      @JsonKey(name: 'order_status') String orderStatus,
-      @JsonKey(
-          name: 'payment_mode',
-          fromJson: PaymentModeExtension.fromString,
-          toJson: paymentModeToJson)
-      PaymentMode paymentMode,
+      @JsonKey(name: 'order_status') OrderStatus orderStatus,
+      @JsonKey(name: 'payment_mode') String paymentMode,
       @JsonKey(name: 'txn_id') String? txnId,
       @JsonKey(name: 'bnk_txn_id') String? bnkTxnId,
       @JsonKey(name: 'razor_order_id') String razorOrderId,
@@ -137,7 +130,7 @@ abstract class $OrderCopyWith<$Res> {
       @JsonKey(name: 'coupon_cb_amount') double couponCbAmount,
       @JsonKey(name: 'sc_coupon_id') String? scCouponId,
       @JsonKey(name: 'sc_coupon_amount') double scCouponAmount,
-      @JsonKey(name: 'sc_coupon_done') String scCouponDone,
+      @JsonKey(name: 'sc_coupon_done') int scCouponDone,
       @JsonKey(name: 'cb_amount_done') String cbAmountDone,
       @JsonKey(name: 'wallet_paid') double walletPaid,
       @JsonKey(name: 'qris_coins_paid') double qrisCoinsPaid,
@@ -243,11 +236,11 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
       orderStatus: null == orderStatus
           ? _value.orderStatus
           : orderStatus // ignore: cast_nullable_to_non_nullable
-              as String,
+              as OrderStatus,
       paymentMode: null == paymentMode
           ? _value.paymentMode
           : paymentMode // ignore: cast_nullable_to_non_nullable
-              as PaymentMode,
+              as String,
       txnId: freezed == txnId
           ? _value.txnId
           : txnId // ignore: cast_nullable_to_non_nullable
@@ -291,7 +284,7 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
       scCouponDone: null == scCouponDone
           ? _value.scCouponDone
           : scCouponDone // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       cbAmountDone: null == cbAmountDone
           ? _value.cbAmountDone
           : cbAmountDone // ignore: cast_nullable_to_non_nullable
@@ -390,12 +383,8 @@ abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
       @JsonKey(name: 'order_total') double orderTotal,
       @JsonKey(name: 'collection_charge') String collectionCharge,
       @JsonKey(name: 'paid_amount') double paidAmount,
-      @JsonKey(name: 'order_status') String orderStatus,
-      @JsonKey(
-          name: 'payment_mode',
-          fromJson: PaymentModeExtension.fromString,
-          toJson: paymentModeToJson)
-      PaymentMode paymentMode,
+      @JsonKey(name: 'order_status') OrderStatus orderStatus,
+      @JsonKey(name: 'payment_mode') String paymentMode,
       @JsonKey(name: 'txn_id') String? txnId,
       @JsonKey(name: 'bnk_txn_id') String? bnkTxnId,
       @JsonKey(name: 'razor_order_id') String razorOrderId,
@@ -406,7 +395,7 @@ abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
       @JsonKey(name: 'coupon_cb_amount') double couponCbAmount,
       @JsonKey(name: 'sc_coupon_id') String? scCouponId,
       @JsonKey(name: 'sc_coupon_amount') double scCouponAmount,
-      @JsonKey(name: 'sc_coupon_done') String scCouponDone,
+      @JsonKey(name: 'sc_coupon_done') int scCouponDone,
       @JsonKey(name: 'cb_amount_done') String cbAmountDone,
       @JsonKey(name: 'wallet_paid') double walletPaid,
       @JsonKey(name: 'qris_coins_paid') double qrisCoinsPaid,
@@ -510,11 +499,11 @@ class __$$OrderImplCopyWithImpl<$Res>
       orderStatus: null == orderStatus
           ? _value.orderStatus
           : orderStatus // ignore: cast_nullable_to_non_nullable
-              as String,
+              as OrderStatus,
       paymentMode: null == paymentMode
           ? _value.paymentMode
           : paymentMode // ignore: cast_nullable_to_non_nullable
-              as PaymentMode,
+              as String,
       txnId: freezed == txnId
           ? _value.txnId
           : txnId // ignore: cast_nullable_to_non_nullable
@@ -558,7 +547,7 @@ class __$$OrderImplCopyWithImpl<$Res>
       scCouponDone: null == scCouponDone
           ? _value.scCouponDone
           : scCouponDone // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       cbAmountDone: null == cbAmountDone
           ? _value.cbAmountDone
           : cbAmountDone // ignore: cast_nullable_to_non_nullable
@@ -654,11 +643,7 @@ class _$OrderImpl implements _Order {
       @JsonKey(name: 'collection_charge') required this.collectionCharge,
       @JsonKey(name: 'paid_amount') required this.paidAmount,
       @JsonKey(name: 'order_status') required this.orderStatus,
-      @JsonKey(
-          name: 'payment_mode',
-          fromJson: PaymentModeExtension.fromString,
-          toJson: paymentModeToJson)
-      required this.paymentMode,
+      @JsonKey(name: 'payment_mode') required this.paymentMode,
       @JsonKey(name: 'txn_id') this.txnId,
       @JsonKey(name: 'bnk_txn_id') this.bnkTxnId,
       @JsonKey(name: 'razor_order_id') required this.razorOrderId,
@@ -715,13 +700,10 @@ class _$OrderImpl implements _Order {
   final double paidAmount;
   @override
   @JsonKey(name: 'order_status')
-  final String orderStatus;
+  final OrderStatus orderStatus;
   @override
-  @JsonKey(
-      name: 'payment_mode',
-      fromJson: PaymentModeExtension.fromString,
-      toJson: paymentModeToJson)
-  final PaymentMode paymentMode;
+  @JsonKey(name: 'payment_mode')
+  final String paymentMode;
   @override
   @JsonKey(name: 'txn_id')
   final String? txnId;
@@ -754,7 +736,7 @@ class _$OrderImpl implements _Order {
   final double scCouponAmount;
   @override
   @JsonKey(name: 'sc_coupon_done')
-  final String scCouponDone;
+  final int scCouponDone;
   @override
   @JsonKey(name: 'cb_amount_done')
   final String cbAmountDone;
@@ -971,12 +953,8 @@ abstract class _Order implements Order {
       @JsonKey(name: 'collection_charge')
       required final String collectionCharge,
       @JsonKey(name: 'paid_amount') required final double paidAmount,
-      @JsonKey(name: 'order_status') required final String orderStatus,
-      @JsonKey(
-          name: 'payment_mode',
-          fromJson: PaymentModeExtension.fromString,
-          toJson: paymentModeToJson)
-      required final PaymentMode paymentMode,
+      @JsonKey(name: 'order_status') required final OrderStatus orderStatus,
+      @JsonKey(name: 'payment_mode') required final String paymentMode,
       @JsonKey(name: 'txn_id') final String? txnId,
       @JsonKey(name: 'bnk_txn_id') final String? bnkTxnId,
       @JsonKey(name: 'razor_order_id') required final String razorOrderId,
@@ -987,7 +965,7 @@ abstract class _Order implements Order {
       @JsonKey(name: 'coupon_cb_amount') required final double couponCbAmount,
       @JsonKey(name: 'sc_coupon_id') final String? scCouponId,
       @JsonKey(name: 'sc_coupon_amount') required final double scCouponAmount,
-      @JsonKey(name: 'sc_coupon_done') required final String scCouponDone,
+      @JsonKey(name: 'sc_coupon_done') required final int scCouponDone,
       @JsonKey(name: 'cb_amount_done') required final String cbAmountDone,
       @JsonKey(name: 'wallet_paid') required final double walletPaid,
       @JsonKey(name: 'qris_coins_paid') required final double qrisCoinsPaid,
@@ -1034,13 +1012,10 @@ abstract class _Order implements Order {
   double get paidAmount;
   @override
   @JsonKey(name: 'order_status')
-  String get orderStatus;
+  OrderStatus get orderStatus;
   @override
-  @JsonKey(
-      name: 'payment_mode',
-      fromJson: PaymentModeExtension.fromString,
-      toJson: paymentModeToJson)
-  PaymentMode get paymentMode;
+  @JsonKey(name: 'payment_mode')
+  String get paymentMode;
   @override
   @JsonKey(name: 'txn_id')
   String? get txnId;
@@ -1073,7 +1048,7 @@ abstract class _Order implements Order {
   double get scCouponAmount;
   @override
   @JsonKey(name: 'sc_coupon_done')
-  String get scCouponDone;
+  int get scCouponDone;
   @override
   @JsonKey(name: 'cb_amount_done')
   String get cbAmountDone;

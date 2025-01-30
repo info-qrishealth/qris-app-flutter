@@ -10,6 +10,7 @@ class FeatureRow extends StatelessWidget {
   final String title;
   final Color? fontColor;
   final Color? imageColor;
+
   const FeatureRow(
       {super.key,
       this.imagePath,
@@ -22,18 +23,20 @@ class FeatureRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Get.textTheme;
 
-    return Row(children: [
-      if (imagePath != null)
-        Image.asset(imagePath!,
-            height: 12, color: imageColor ?? AppColors.primaryBlue)
-      else if (svgPath != null)
-        SvgPicture.asset(svgPath!,
-            height: 12, color: imageColor ?? AppColors.primaryBlue),
+    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Padding(
+          padding: EdgeInsets.only(top: 1.5),
+          child: imagePath != null
+              ? Image.asset(imagePath!,
+                  height: 12, color: imageColor ?? AppColors.primaryBlue)
+              : SvgPicture.asset(svgPath!,
+                  height: 12, color: imageColor ?? AppColors.primaryBlue)),
       SizedBox(width: 4),
-      Text(title,
-          style: textTheme.labelSmall!.copyWith(
-              fontWeight: FontWeight.w400,
-              color: fontColor ?? AppColors.primaryPink))
+      Flexible(
+          child: Text(title,
+              style: textTheme.labelSmall!.copyWith(
+                  fontWeight: FontWeight.w400,
+                  color: fontColor ?? AppColors.primaryPink)))
     ]);
   }
 }

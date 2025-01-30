@@ -13,9 +13,8 @@ _$OrderImpl _$$OrderImplFromJson(Map<String, dynamic> json) => _$OrderImpl(
       orderTotal: (json['order_total'] as num).toDouble(),
       collectionCharge: json['collection_charge'] as String,
       paidAmount: (json['paid_amount'] as num).toDouble(),
-      orderStatus: json['order_status'] as String,
-      paymentMode:
-          PaymentModeExtension.fromString(json['payment_mode'] as String),
+      orderStatus: $enumDecode(_$OrderStatusEnumMap, json['order_status']),
+      paymentMode: json['payment_mode'] as String,
       txnId: json['txn_id'] as String?,
       bnkTxnId: json['bnk_txn_id'] as String?,
       razorOrderId: json['razor_order_id'] as String,
@@ -26,7 +25,7 @@ _$OrderImpl _$$OrderImplFromJson(Map<String, dynamic> json) => _$OrderImpl(
       couponCbAmount: (json['coupon_cb_amount'] as num).toDouble(),
       scCouponId: json['sc_coupon_id'] as String?,
       scCouponAmount: (json['sc_coupon_amount'] as num).toDouble(),
-      scCouponDone: json['sc_coupon_done'] as String,
+      scCouponDone: (json['sc_coupon_done'] as num).toInt(),
       cbAmountDone: json['cb_amount_done'] as String,
       walletPaid: (json['wallet_paid'] as num).toDouble(),
       qrisCoinsPaid: (json['qris_coins_paid'] as num).toDouble(),
@@ -57,8 +56,8 @@ Map<String, dynamic> _$$OrderImplToJson(_$OrderImpl instance) =>
       'order_total': instance.orderTotal,
       'collection_charge': instance.collectionCharge,
       'paid_amount': instance.paidAmount,
-      'order_status': instance.orderStatus,
-      'payment_mode': paymentModeToJson(instance.paymentMode),
+      'order_status': _$OrderStatusEnumMap[instance.orderStatus]!,
+      'payment_mode': instance.paymentMode,
       'txn_id': instance.txnId,
       'bnk_txn_id': instance.bnkTxnId,
       'razor_order_id': instance.razorOrderId,
@@ -91,3 +90,9 @@ Map<String, dynamic> _$$OrderImplToJson(_$OrderImpl instance) =>
       'doctor_booking_address': instance.doctorBookingAddress,
       'invoice': instance.invoice,
     };
+
+const _$OrderStatusEnumMap = {
+  OrderStatus.success: 'success',
+  OrderStatus.complete: 'complete',
+  OrderStatus.cancel: 'cancel',
+};

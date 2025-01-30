@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/modules/patients_module/services/patient_service.dart';
+import 'package:qris_health/shared/extensions/date_time_extension.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 
 part 'patients_state.dart';
@@ -38,30 +39,7 @@ class PatientsCubit extends Cubit<PatientsState> {
       return null;
     }
 
-    DateTime from = patient.dob.toDateTime!;
-    DateTime to = DateTime.now();
-
-    if (from.isAfter(to)) {
-      DateTime temp = from;
-      from = to;
-      to = temp;
-    }
-
-    int years = to.year - from.year;
-    int months = to.month - from.month;
-    int days = to.day - from.day;
-
-    if (days < 0) {
-      final previousMonth = DateTime(to.year, to.month - 1, from.day);
-      days = to.difference(previousMonth).inDays;
-      months -= 1;
-    }
-    if (months < 0) {
-      months += 12;
-      years -= 1;
-    }
-
-    return '${years}Y ${months}M ${days}D';
+    return patient.dob.toDateTime?.formattedAge;
   }
 
   void addNewPatient(Patient patient) {

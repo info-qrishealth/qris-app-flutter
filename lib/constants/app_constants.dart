@@ -72,6 +72,21 @@ class AppConstants {
         margin: const EdgeInsets.only(left: 28, right: 28, top: 16)));
   }
 
+  static Map<String, dynamic>? decodeBase64({required String? encodedString}) {
+    try {
+      if (encodedString == null || encodedString.isEmpty) {
+        return null;
+      }
+
+      String decodedStr = utf8.decode(base64.decode(encodedString));
+      return json.decode(decodedStr);
+    } on FormatException catch (e) {
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   static const List<String> stateList = [
     'ANDAMAN AND NICOBAR',
     'ANDHRA PRADESH',

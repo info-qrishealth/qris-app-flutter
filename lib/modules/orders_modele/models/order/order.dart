@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../../constants/enums/payment_mode.dart';
+import 'package:qris_health/constants/enums/order_status.dart';
+import '../../../../constants/enums/payment_mode.dart';
 
 part 'order.freezed.dart';
 part 'order.g.dart';
@@ -13,12 +14,13 @@ class Order with _$Order {
     @JsonKey(name: 'order_total') required double orderTotal,
     @JsonKey(name: 'collection_charge') required String collectionCharge,
     @JsonKey(name: 'paid_amount') required double paidAmount,
-    @JsonKey(name: 'order_status') required String orderStatus,
+    @JsonKey(name: 'order_status') required OrderStatus orderStatus,
     @JsonKey(
-        name: 'payment_mode',
-        fromJson: PaymentModeExtension.fromString,
-        toJson: paymentModeToJson)
-    required PaymentMode paymentMode,
+      name: 'payment_mode',
+      /*fromJson: PaymentModeExtension.fromString,
+        toJson: paymentModeToJson*/
+    )
+    required String paymentMode,
     @JsonKey(name: 'txn_id') String? txnId,
     @JsonKey(name: 'bnk_txn_id') String? bnkTxnId,
     @JsonKey(name: 'razor_order_id') required String razorOrderId,
@@ -29,7 +31,7 @@ class Order with _$Order {
     @JsonKey(name: 'coupon_cb_amount') required double couponCbAmount,
     @JsonKey(name: 'sc_coupon_id') String? scCouponId,
     @JsonKey(name: 'sc_coupon_amount') required double scCouponAmount,
-    @JsonKey(name: 'sc_coupon_done') required String scCouponDone,
+    @JsonKey(name: 'sc_coupon_done') required int scCouponDone,
     @JsonKey(name: 'cb_amount_done') required String cbAmountDone,
     @JsonKey(name: 'wallet_paid') required double walletPaid,
     @JsonKey(name: 'qris_coins_paid') required double qrisCoinsPaid,

@@ -1,23 +1,58 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/order_status.dart';
+import 'package:qris_health/modules/address_module/models/address/address.dart';
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
-import 'package:qris_health/modules/orders_modele/models/order.dart';
+import 'package:qris_health/modules/orders_modele/models/order/order.dart';
+import 'package:qris_health/modules/orders_modele/models/order_info/order_info.dart';
+import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
+import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/shared/components/billing_amount_row.dart';
 import 'package:qris_health/shared/components/common_divider.dart';
 import 'package:qris_health/shared/components/feature_row.dart';
+import 'package:qris_health/shared/extensions/date_time_extension.dart';
+import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-class OrderListTile extends StatelessWidget {
+class OrderListTile extends StatefulWidget {
   final Order order;
-  OrderListTile({super.key, required this.order});
+  const OrderListTile({super.key, required this.order});
+
+  @override
+  State<OrderListTile> createState() => _OrderListTileState();
+}
+
+class _OrderListTileState extends State<OrderListTile> {
   final _textTheme = Get.textTheme;
 
   @override
+  void initState() {
+    super.initState();
+    final patientCubit = BlocProvider.of<PatientsCubit>(context);
+    if (patientCubit.state is! PatientsLoaded) {
+      patientCubit.getAllPatientsForUser();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final isCancelled = Random().nextBool();
+    final isCancelled = widget.order.orderStatus == OrderStatus.cancel;
+    final address = Address.fromJson(
+        AppConstants.decodeBase64(encodedString: widget.order.bookingAddress) ??
+            {});
+    final slots = widget.order.bookingSlotTime?.split('-');
+    final from = slots?.firstOrNull;
+    final to = slots != null && slots.length > 1 ? slots[1] : null;
+    final decodedOrderInfo =
+        AppConstants.decodeBase64(encodedString: widget.order.productRecord);
+    final orderInfo =
+        decodedOrderInfo == null ? null : OrderInfo.fromJson(decodedOrderInfo);
 
     return Container(
         decoration: BoxDecoration(
@@ -34,11 +69,12 @@ class OrderListTile extends StatelessWidget {
             iconColor: AppColors.primaryBlue,
             childrenPadding: EdgeInsets.symmetric(horizontal: 10),
             title: Row(children: [
-              _buildRichText(key: 'Order ID:', value: 'QRS12055'),
+              _buildRichText(key: 'Order ID:', value: ' QRS${widget.order.id}'),
               if (isCancelled)
                 Padding(
                     padding: const EdgeInsets.only(left: 4),
-                    child: Text('(Cancelled)',
+                    child: Text(
+                        '(${widget.order.orderStatus.name.formattedEnumName})',
                         style: _textTheme.bodySmall!.copyWith(
                             fontWeight: FontWeight.w500, color: AppColors.red)))
             ]),
@@ -46,7 +82,10 @@ class OrderListTile extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 6),
                 child: _buildRichText(
                     key: 'Order Date:',
-                    value: '12-12-2024 (10:50:00pm)',
+                    value: DateFormat()
+                        .add_yMMMEd()
+                        .add_jm()
+                        .format(widget.order.orderDate.toLocal()),
                     valueColor: AppColors.black)),
             children: [
               CommonDivider(),
@@ -60,25 +99,26 @@ class OrderListTile extends StatelessWidget {
                           style: _textTheme.labelSmall!
                               .copyWith(fontWeight: FontWeight.w300)),
                       SizedBox(height: 4),
-                      Text('T2303151234319715267136',
+                      Text('${widget.order.txnId}',
                           style: _textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.w500,
                               color: AppColors.lightText))
                     ])),
-                SizedBox(
-                    height: 35,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primaryBlue),
-                        onPressed: () {},
-                        child: Row(children: [
-                          Icon(Icons.save_alt, color: Colors.white, size: 18),
-                          SizedBox(width: 4),
-                          Text('Invoice',
-                              style: _textTheme.bodySmall!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white))
-                        ])))
+                if (!isCancelled)
+                  SizedBox(
+                      height: 35,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryBlue),
+                          onPressed: () {},
+                          child: Row(children: [
+                            Icon(Icons.save_alt, color: Colors.white, size: 18),
+                            SizedBox(width: 4),
+                            Text('Invoice',
+                                style: _textTheme.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white))
+                          ])))
               ]),
               SizedBox(height: 5),
               CommonDivider(),
@@ -93,17 +133,18 @@ class OrderListTile extends StatelessWidget {
               FeatureRow(
                   svgPath: 'assets/images/icons/drawer_icons/location_icon.svg',
                   title:
-                      '321, GF, Rajdhani Enclave, Pitampura, Near Rani Bagh, Delhi-110034',
+                      '${address.house}, ${address.address1} ${address.address2 != null && address.address2!.isNotEmpty ? ', ${address.address2}' : ''} ${address.landmark != null && address.landmark!.isNotEmpty ? ', ${address.landmark}' : ''} ${address.pincode != null && address.pincode!.isNotEmpty ? ', ${address.pincode}' : ''}, ${address.state ?? ''}',
                   fontColor: AppColors.textColor),
               SizedBox(height: 6),
               FeatureRow(
                   svgPath: 'assets/images/icons/clock_icon.svg',
-                  title: '06 Dec 2024 (7:00-8:00am)',
+                  title:
+                      '${DateTime.tryParse(widget.order.bookingSlotDate)?.toLocal().getFormattedDatedMMMy} (${from.toDateTime?.toLocal().getTimeStringFromDateTimeString} - ${to.toDateTime?.toLocal().getTimeStringFromDateTimeString})',
                   fontColor: AppColors.textColor),
-              SizedBox(height: 18),
-              _buildPatientLayout(),
-              SizedBox(height: 16),
-              _buildPatientLayout(),
+              SizedBox(height: 10),
+              if (orderInfo != null)
+                ...orderInfo.data.entries.map(
+                    (entry) => _buildPatientLayout(orderData: entry.value)),
               SizedBox(height: 12),
               CommonDivider(),
               SizedBox(height: 5),
@@ -113,16 +154,18 @@ class OrderListTile extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         fontFamily: AppConstants.ubuntuFontFamily)),
                 SizedBox(height: 8),
-                SummaryInfoRow(title: 'Base amount', value: '₹1099'),
+                SummaryInfoRow(
+                    title: 'Base amount',
+                    value: '₹${widget.order.orderTotal.toInt()}'),
                 SizedBox(height: 4),
                 SummaryInfoRow(title: 'Total amount ', value: '₹1099'),
                 SizedBox(height: 4),
                 Row(children: [
                   Expanded(
-                      child: Text('Amount paid (UPI)',
+                      child: Text('Amount paid (${widget.order.paymentMode})',
                           style: _textTheme.bodySmall!
                               .copyWith(fontWeight: FontWeight.w700))),
-                  Text('₹1198',
+                  Text('₹${widget.order.paidAmount.toInt()}',
                       style: _textTheme.bodyLarge!.copyWith(
                           fontWeight: FontWeight.w700,
                           color: AppColors.primaryPink))
@@ -175,28 +218,40 @@ class OrderListTile extends StatelessWidget {
     ]));
   }
 
-  Widget _buildPatientLayout() {
+  Widget _buildPatientLayout({required OrderData orderData}) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      PatientTileLayout(actions: [
-        SizedBox(
-            height: 28,
-            child: ElevatedButton(
-                onPressed: () {},
-                child: Row(children: [
-                  Icon(Icons.save_alt, size: 18),
-                  SizedBox(width: 4),
-                  Text('Download',
-                      style: _textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w600, color: Colors.white)),
-                ]))),
-      ]),
+      ...orderData.patients.entries.map((patientEntry) {
+        final patient = patientEntry.value;
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: PatientTileLayout(
+              patient: Patient(
+                  name: patient.name.capitalize,
+                  dob: patient.dob,
+                  gender: patient.gender),
+              actions: [
+                SizedBox(
+                    height: 28,
+                    child: ElevatedButton(
+                        onPressed: () {},
+                        child: Row(children: [
+                          Icon(Icons.save_alt, size: 18),
+                          SizedBox(width: 4),
+                          Text('Download',
+                              style: _textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white)),
+                        ]))),
+              ]),
+        );
+      }),
       SizedBox(height: 10),
       Container(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           decoration: BoxDecoration(
               border: Border.all(color: AppColors.borderColor),
               borderRadius: BorderRadius.circular(12)),
-          child: Text('Full Body advance checkup, Lipid Profile',
+          child: Text(orderData.product.title.htmlString.clean,
               style: _textTheme.labelSmall!.copyWith(
                   fontWeight: FontWeight.w500,
                   color: AppColors.primaryBlue,
