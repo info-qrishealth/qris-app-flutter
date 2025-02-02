@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   final packages = state.popularPackages;
 
                   return SizedBox(
-                      height: 145,
+                      height: 150,
                       child: ListView.separated(
                           itemCount: packages.length,
                           scrollDirection: Axis.horizontal,

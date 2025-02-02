@@ -1,16 +1,16 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/order_status.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/address_module/models/address/address.dart';
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
 import 'package:qris_health/modules/orders_modele/models/order/order.dart';
 import 'package:qris_health/modules/orders_modele/models/order_info/order_info.dart';
+import 'package:qris_health/modules/orders_modele/models/user_order_report/user_order_report.dart';
+import 'package:qris_health/modules/orders_modele/services/order_service.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/shared/components/billing_amount_row.dart';
@@ -19,6 +19,7 @@ import 'package:qris_health/shared/components/feature_row.dart';
 import 'package:qris_health/shared/extensions/date_time_extension.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderListTile extends StatefulWidget {
   final Order order;
@@ -30,6 +31,7 @@ class OrderListTile extends StatefulWidget {
 
 class _OrderListTileState extends State<OrderListTile> {
   final _textTheme = Get.textTheme;
+  List<UserOrderReport> _reports = [];
 
   @override
   void initState() {
@@ -87,6 +89,13 @@ class _OrderListTileState extends State<OrderListTile> {
                         .add_jm()
                         .format(widget.order.orderDate.toLocal()),
                     valueColor: AppColors.black)),
+            onExpansionChanged: (isExpanded) async {
+              if (isExpanded) {
+                _reports = await OrderService.getUserReportsByOrderId(
+                    orderId: widget.order.id.toString());
+                setState(() {});
+              }
+            },
             children: [
               CommonDivider(),
               SizedBox(height: 10),
@@ -104,13 +113,13 @@ class _OrderListTileState extends State<OrderListTile> {
                               fontWeight: FontWeight.w500,
                               color: AppColors.lightText))
                     ])),
-                if (!isCancelled)
+                if (!isCancelled && !widget.order.invoice.isNullOrEmpty)
                   SizedBox(
                       height: 35,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryBlue),
-                          onPressed: () {},
+                          onPressed: _downloadInvoice,
                           child: Row(children: [
                             Icon(Icons.save_alt, color: Colors.white, size: 18),
                             SizedBox(width: 4),
@@ -222,28 +231,55 @@ class _OrderListTileState extends State<OrderListTile> {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       ...orderData.patients.entries.map((patientEntry) {
         final patient = patientEntry.value;
+        final report = _reports
+            .firstWhereOrNull((element) => element.patientId == patient.id);
+
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: PatientTileLayout(
-              patient: Patient(
-                  name: patient.name.capitalize,
-                  dob: patient.dob,
-                  gender: patient.gender),
-              actions: [
-                SizedBox(
-                    height: 28,
-                    child: ElevatedButton(
-                        onPressed: () {},
-                        child: Row(children: [
-                          Icon(Icons.save_alt, size: 18),
-                          SizedBox(width: 4),
-                          Text('Download',
-                              style: _textTheme.bodySmall!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white)),
-                        ]))),
-              ]),
-        );
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: PatientTileLayout(
+                patient: Patient(
+                    name: patient.name.capitalize,
+                    dob: patient.dob,
+                    gender: patient.gender),
+                actions: [
+                  SizedBox(
+                      height: 28,
+                      child: ElevatedButton(
+                          onPressed: report?.reportFile == null ||
+                                  report!.reportFile.isEmpty
+                              ? null
+                              : () async {
+                                  try {
+                                    final url =
+                                        '${AppConstants.reportUrl}/${report.reportFile}';
+
+                                    if (await canLaunch(url)) {
+                                      await launch(url);
+                                    } else {
+                                      AppConstants.showSnackbar(
+                                          text:
+                                              'Unable to generate report. Please try again later',
+                                          type: SnackbarType.error);
+                                    }
+                                  } catch (e) {
+                                    AppConstants.showSnackbar(
+                                        text: e.toString(),
+                                        type: SnackbarType.error);
+                                  }
+                                },
+                          child: Row(children: [
+                            Icon(Icons.save_alt, size: 18),
+                            SizedBox(width: 4),
+                            Text(
+                                report?.reportFile == null ||
+                                        report!.reportFile.isEmpty
+                                    ? 'Pending'
+                                    : 'Download',
+                                style: _textTheme.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white)),
+                          ]))),
+                ]));
       }),
       SizedBox(height: 10),
       Container(
@@ -257,5 +293,21 @@ class _OrderListTileState extends State<OrderListTile> {
                   color: AppColors.primaryBlue,
                   fontFamily: AppConstants.ubuntuFontFamily)))
     ]);
+  }
+
+  Future<void> _downloadInvoice() async {
+    try {
+      final url = '${AppConstants.invoiceUrl}/${widget.order.invoice}';
+
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        AppConstants.showSnackbar(
+            text: 'Unable to generate invoice for this order',
+            type: SnackbarType.error);
+      }
+    } catch (e) {
+      AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    }
   }
 }

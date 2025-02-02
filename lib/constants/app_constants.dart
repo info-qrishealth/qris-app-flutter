@@ -8,7 +8,7 @@ import '../styles/app_styles.dart';
 import 'enums/snackbar_type.dart';
 
 class AppConstants {
-  static const String baseUrl = 'http://192.168.1.33:8080';
+  static const String baseUrl = 'http://192.168.1.36:8080';
   static const ubuntuFontFamily = 'Ubuntu';
   static const latoFontFamily = 'Lato';
   static const metropolisFontFamily = 'Metropolis';
@@ -16,6 +16,8 @@ class AppConstants {
   static var bottomSheetConstraints =
       BoxConstraints(maxHeight: Get.height * 0.85);
   static const imageBaseUrl = 'https://qrishealth.com/cms/uploads';
+  static const invoiceUrl = 'https://qrishealth.com/payment/invoice';
+  static const reportUrl = 'https://qrishealth.com/mylab/report_file';
 
   static String getErrorMessage(String message) {
     try {
