@@ -10,9 +10,11 @@ import 'package:qris_health/modules/patients_module/services/patient_service.dar
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_filled_chip.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
+import 'package:qris_health/shared/components/no_item_found_container.dart';
 
 import '../components/order_list_tile.dart';
 import '../models/order/order.dart';
+import '../models/order_info/order_info.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -25,6 +27,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   late final Future<List<Patient>> _patientsFuture;
   late final Future<List<Order>> _ordersFuture;
   Patient? _selectedPatient;
+  List<Order>? _ordersToShow;
 
   @override
   void initState() {
@@ -93,8 +96,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           SizedBox(height: 18),
           Expanded(
               child: FutureBuilder<List<Order>>(
-                  future: OrderService.getAllOrdersForUser(
-                      userId: ApiParams.getInstance()!.userId.toString()),
+                  future: _ordersFuture,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       AppConstants.showSnackbar(
@@ -104,6 +106,17 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
                     if (snapshot.hasData) {
                       final orders = snapshot.data!.reversed.toList();
+                      if (_selectedPatient == null) {
+                        _ordersToShow = orders;
+                      } else {
+                        _ordersToShow = _filterOrders(orders: orders);
+                      }
+
+                      if (_ordersToShow!.isEmpty) {
+                        return Center(
+                            child: NoItemFoundContainer(
+                                title: 'No bookings found for the patient'));
+                      }
 
                       return ListView.separated(
                           padding: EdgeInsets.symmetric(
@@ -111,16 +124,41 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           physics: BouncingScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            return OrderListTile(order: orders[index]);
+                            return OrderListTile(order: _ordersToShow![index]);
                           },
                           separatorBuilder: (context, index) {
                             return SizedBox(height: 10);
                           },
-                          itemCount: orders.length);
+                          itemCount: _ordersToShow!.length);
                     }
 
                     return CommonListviewShimmer();
                   }))
         ]));
+  }
+
+  List<Order> _filterOrders({required List<Order> orders}) {
+    final List<Order> filteredOrders = [];
+
+    for (var order in orders) {
+      final decodedOrderInfo =
+          AppConstants.decodeBase64(encodedString: order.productRecord);
+
+      final orderInfo = decodedOrderInfo == null
+          ? null
+          : OrderInfo.fromJson(decodedOrderInfo);
+
+      orderInfo?.data.entries.forEach((entry) {
+        for (var entry in entry.value.patients.entries) {
+          final patient = entry.value;
+
+          if (_selectedPatient?.dob.toString() == patient.dob) {
+            filteredOrders.add(order);
+          }
+        }
+      });
+    }
+
+    return filteredOrders;
   }
 }
