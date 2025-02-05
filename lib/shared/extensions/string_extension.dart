@@ -38,6 +38,12 @@ extension StringExtension on String? {
         .replaceAll(RegExp(r'&lt;br\s*/?&gt;'), '')
         .replaceAll(RegExp(r'&lt;/?'), '')
         .replaceAll(RegExp(r'&gt;'), '')
+        .replaceAll(RegExp(r'&nbsp;'), '')
+        .replaceAll(RegExp(r'&amp;'), '')
+        .replaceAll(RegExp(r'&#39;'), '')
+        .replaceAll(RegExp(r'#39;'), '')
+        .replaceAll(RegExp(r'nbsp;'), '')
+        .replaceAll(RegExp(r'amp;'), '')
         .replaceAll(RegExp(r'&amp;#39;'), "'");
 
     return cleanedString;

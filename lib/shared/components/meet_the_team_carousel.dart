@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:qris_health/shared/components/navigation_row.dart';
+import 'package:qris_health/shared/models/qris_team_doctor/qris_team_doctor.dart';
 
 import '../../modules/health_module/components/doctor_carousel_card.dart';
 import '../../styles/app_colors.dart';
 import 'heading_text.dart';
 
 class MeetTheTeamCarousel extends StatefulWidget {
-  const MeetTheTeamCarousel({super.key});
+  final List<QrisTeamDoctor> doctors;
+  const MeetTheTeamCarousel({super.key, required this.doctors});
 
   @override
   State<MeetTheTeamCarousel> createState() => _MeetTheTeamCarouselState();
@@ -15,7 +17,7 @@ class MeetTheTeamCarousel extends StatefulWidget {
 
 class _MeetTheTeamCarouselState extends State<MeetTheTeamCarousel> {
   final _pageController = FlutterCarouselController();
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -27,48 +29,39 @@ class _MeetTheTeamCarouselState extends State<MeetTheTeamCarousel> {
       FlutterCarousel.builder(
           itemBuilder: (context, index, i) {
             return DoctorCarouselCard(
-                index: index, selectedIndex: _selectedIndex);
+                index: index,
+                selectedIndex: _selectedIndex,
+                doctor: widget.doctors[index]);
           },
           options: FlutterCarouselOptions(
+              autoPlay: true,
               onPageChanged: (index, _) {
                 setState(() {
                   _selectedIndex = index;
                 });
               },
-              aspectRatio: 1.25,
-              initialPage: 1,
+              aspectRatio: 1.2,
+              initialPage: 0,
               controller: _pageController,
               enlargeCenterPage: true,
               showIndicator: false,
               enlargeFactor: 0.2,
-              viewportFraction: 0.75),
-          itemCount: 3),
+              viewportFraction: 0.76),
+          itemCount: widget.doctors.length),
       SizedBox(height: 12),
-      NavigationRow(
-          onPreviousTap: _selectedIndex == 0
-              ? null
-              : () {
-                  _pageController.previousPage();
-                },
-          onNextTap: _selectedIndex == 2
-              ? null
-              : () {
-                  _pageController.nextPage();
-                }),
+      if (widget.doctors.length > 1)
+        Center(
+            child: NavigationRow(
+                onPreviousTap: _selectedIndex == 0
+                    ? null
+                    : () {
+                        _pageController.previousPage();
+                      },
+                onNextTap: _selectedIndex == widget.doctors.length - 1
+                    ? null
+                    : () {
+                        _pageController.nextPage();
+                      })),
     ]));
-  }
-
-  Widget _buildArrowButton(
-      {required IconData icon, required Function()? onTap}) {
-    return GestureDetector(
-        onTap: onTap,
-        child: Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: onTap == null
-                    ? AppColors.primaryBlue.withOpacity(0.5)
-                    : AppColors.primaryPink),
-            child: Icon(icon, color: Colors.white, size: 12)));
   }
 }

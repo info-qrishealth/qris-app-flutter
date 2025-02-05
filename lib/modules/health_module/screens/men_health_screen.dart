@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/health_module/components/doctor_carousel_card.dart';
 import 'package:qris_health/modules/health_module/components/health_problem_list_tile.dart';
 import 'package:qris_health/modules/health_module/components/why_choose_package_container.dart';
+import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
+import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/health_module/screens/male_infertility_screen.dart';
 import 'package:qris_health/modules/health_module/screens/male_performance_screen.dart';
 import 'package:qris_health/shared/components/common_action_app_bar_button.dart';
@@ -68,7 +71,10 @@ class _MenHealthScreenState extends State<MenHealthScreen> {
               SizedBox(height: 20),
               WhyChoosePackageContainer(),
               SizedBox(height: 20),
-              MeetTheTeamCarousel(),
+              BlocBuilder<QrisDoctorsCubit, QrisDoctorsState>(
+                  builder: (context, state) {
+                return MeetTheTeamCarousel(doctors: state.doctors);
+              }),
               SizedBox(height: 16),
             ])));
   }

@@ -1,9 +1,15 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/all_scans_module/models/faq/faq.dart';
+import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
+import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/modules/health_module/components/mental_wellness_bottom_navigation_bar.dart';
+import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
+import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/health_score_module/components/health_score_list_tile.dart';
 import 'package:qris_health/modules/home_module/components/cashback_container.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
@@ -16,6 +22,7 @@ import 'package:qris_health/shared/components/meet_the_team_carousel.dart';
 import 'package:qris_health/shared/components/mini_tile_container.dart';
 import 'package:qris_health/shared/components/what_it_includes_container.dart';
 import 'package:qris_health/shared/models/title_and_description_model.dart';
+import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../shared/screens/questionaire_screen.dart';
@@ -29,8 +36,19 @@ class MentalWellnessDetailsScreen extends StatefulWidget {
 }
 
 class _MentalWellnessDetailsScreenState
-    extends State<MentalWellnessDetailsScreen> {
+    extends State<MentalWellnessDetailsScreen> with GeneralHelperMixin {
   final _textTheme = Get.textTheme;
+  final _testId = 273;
+  TestPackageModel? _testPackage;
+
+  @override
+  void initState() {
+    super.initState();
+    TestService.getTestByTestId(id: _testId).then((test) {
+      _testPackage = test;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,25 +124,34 @@ class _MentalWellnessDetailsScreenState
               SizedBox(height: 18),
               ContactUsContainer(),
               SizedBox(height: 18),
-              MeetTheTeamCarousel(),
+              if (_testPackage != null)
+                BlocBuilder<QrisDoctorsCubit, QrisDoctorsState>(
+                    builder: (context, state) {
+                  final doctorIds =
+                      getIntsFromString(string: _testPackage?.teamIds);
+
+                  return MeetTheTeamCarousel(
+                      doctors: BlocProvider.of<QrisDoctorsCubit>(context)
+                          .getDoctorsByDoctorIds(doctorIds));
+                }),
               SizedBox(height: 18),
               HeadingText(text: 'Frequently Asked Questions'),
               SizedBox(height: 12),
-              Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black.withOpacity(0.09)),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Column(children: [
-                    FaqListTile(
-                        question:
-                            'What is Mental health programme offered by Qris Health?',
-                        answer:
-                            'We all have a mental health which is made up of our beliefs, thoughts, feeling  and behaviours. At Qris Health a team of professionals help work for the treatment of mental disorder.'),
-                    FaqListTile(
-                        question: 'Should I be concerned about a high ESR?',
-                        answer:
-                            'When Should an ESR Test Be Performed? When a child shows symptoms of infection or inflammation, doctors may request an ESR test. It is possible to monitor the efficacy of treatment for inflammation or infection using ESR testing'),
-                  ])),
+              FutureBuilder<List<Faq>>(
+                  future: TestService.getFaqsByTestId(testId: _testId),
+                  builder: (context, snapshot) {
+                    return Container(
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.black.withOpacity(0.09)),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                            children: snapshot.data
+                                    ?.map((faq) => FaqListTile(faq: faq))
+                                    .toList() ??
+                                []));
+                  }),
             ]));
   }
 }

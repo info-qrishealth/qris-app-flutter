@@ -5,6 +5,7 @@ import 'package:qris_health/modules/doctor_consultation_module/models/doctor/doc
 import 'package:qris_health/modules/doctor_consultation_module/models/doctor_category/doctor_category.dart';
 import 'package:qris_health/modules/doctor_consultation_module/models/doctor_education/doctor_education.dart';
 import 'package:qris_health/modules/doctor_consultation_module/models/doctor_location/doctor_location.dart';
+import 'package:qris_health/shared/models/qris_team_doctor/qris_team_doctor.dart';
 import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
 
 class DoctorService {
@@ -89,6 +90,20 @@ class DoctorService {
 
       return (json.decode(response)['body'] as List)
           .map((element) => Doctor.fromJson(element))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<List<QrisTeamDoctor>> getQrisTeamDoctors() async {
+    final url = '${AppConstants.baseUrl}/doctors/qris-team';
+
+    try {
+      final response = await Wrapper.get(url);
+
+      return (json.decode(response)['body'] as List)
+          .map((element) => QrisTeamDoctor.fromJson(element))
           .toList();
     } catch (e) {
       rethrow;

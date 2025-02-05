@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/all_scans_module/models/faq/faq.dart';
+import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
+import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/modules/health_module/components/mental_wellness_bottom_navigation_bar.dart';
+import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
+import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/home_module/components/cashback_container.dart';
 import 'package:qris_health/shared/components/bullet_point.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
@@ -13,6 +19,7 @@ import 'package:qris_health/shared/components/meet_the_team_carousel.dart';
 import 'package:qris_health/shared/components/mini_tile_container.dart';
 import 'package:qris_health/shared/components/what_it_includes_container.dart';
 import 'package:qris_health/shared/models/title_and_description_model.dart';
+import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class MaleInfertilityScreen extends StatefulWidget {
@@ -22,8 +29,20 @@ class MaleInfertilityScreen extends StatefulWidget {
   State<MaleInfertilityScreen> createState() => _MaleInfertilityScreenState();
 }
 
-class _MaleInfertilityScreenState extends State<MaleInfertilityScreen> {
+class _MaleInfertilityScreenState extends State<MaleInfertilityScreen>
+    with GeneralHelperMixin {
   final _textTheme = Get.textTheme;
+  final _testId = 272;
+  TestPackageModel? _test;
+
+  @override
+  void initState() {
+    super.initState();
+    TestService.getTestByTestId(id: _testId).then((test) {
+      _test = test;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,25 +142,40 @@ class _MaleInfertilityScreenState extends State<MaleInfertilityScreen> {
               SizedBox(height: 18),
               ContactUsContainer(),
               SizedBox(height: 20),
-              MeetTheTeamCarousel(),
+              if (_test != null)
+                BlocBuilder<QrisDoctorsCubit, QrisDoctorsState>(
+                    builder: (context, state) {
+                  final doctorIds = getIntsFromString(string: _test!.teamIds);
+
+                  return MeetTheTeamCarousel(
+                      doctors: BlocProvider.of<QrisDoctorsCubit>(context)
+                          .getDoctorsByDoctorIds(doctorIds));
+                }),
               SizedBox(height: 20),
               HeadingText(text: 'Frequently Asked Questions'),
               SizedBox(height: 10),
               Container(
+                  padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(
                       border: Border.all(color: AppColors.borderColor),
                       borderRadius: BorderRadius.circular(15)),
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return FaqListTile(
-                            question:
-                                'Is Smoking/Alcohol effects sperm counts?',
-                            answer:
-                                'Yes, any addiction- Smoking/Alcohol etc repatively effect not only sperm counts but also sperm mobility , morphology etc.');
-                      },
-                      itemCount: 3)),
+                  child: FutureBuilder<List<Faq>>(
+                      future: TestService.getFaqsByTestId(testId: _testId),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final faqs = snapshot.data!;
+
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return FaqListTile(faq: faqs[index]);
+                              },
+                              itemCount: faqs.length);
+                        }
+
+                        return Center(child: CircularProgressIndicator());
+                      })),
             ])));
   }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
+import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/health_module/screens/female_disorder_screen.dart';
 import 'package:qris_health/modules/health_module/screens/female_infertility_screen.dart';
 import 'package:qris_health/modules/health_module/screens/female_menopause_sceen.dart';
@@ -80,7 +83,10 @@ class _WomenHealthScreenState extends State<WomenHealthScreen> {
               SizedBox(height: 20),
               WhyChoosePackageContainer(),
               SizedBox(height: 20),
-              MeetTheTeamCarousel(),
+              BlocBuilder<QrisDoctorsCubit, QrisDoctorsState>(
+                  builder: (context, state) {
+                return MeetTheTeamCarousel(doctors: state.doctors);
+              }),
               SizedBox(height: 16),
             ])));
   }

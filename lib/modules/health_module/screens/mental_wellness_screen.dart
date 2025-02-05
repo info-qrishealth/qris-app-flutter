@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/doctor_consultation_module/services/doctor_service.dart';
 import 'package:qris_health/modules/health_module/components/why_choose_package_container.dart';
+import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/health_module/screens/men_health_screen.dart';
 import 'package:qris_health/modules/health_module/screens/mental_wellness_details_screen.dart';
 import 'package:qris_health/modules/health_module/screens/women_health_screen.dart';
@@ -10,6 +13,7 @@ import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
 import 'package:qris_health/shared/components/meet_the_team_carousel.dart';
+import 'package:qris_health/shared/models/qris_team_doctor/qris_team_doctor.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class MentalWellnessScreen extends StatefulWidget {
@@ -74,7 +78,10 @@ class _MentalWellnessScreenState extends State<MentalWellnessScreen> {
               SizedBox(height: 20),
               ContactUsContainer(),
               SizedBox(height: 24),
-              MeetTheTeamCarousel(),
+              BlocBuilder<QrisDoctorsCubit, QrisDoctorsState>(
+                  builder: (context, state) {
+                return MeetTheTeamCarousel(doctors: state.doctors);
+              }),
             ]));
   }
 
