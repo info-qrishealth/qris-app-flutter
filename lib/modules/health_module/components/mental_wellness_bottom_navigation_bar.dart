@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 
 import '../../../shared/components/discount_coupon_container.dart';
 import '../../../shared/screens/questionaire_screen.dart';
 import '../../../styles/app_colors.dart';
 
 class MentalWellnessBottomNavigationBar extends StatelessWidget {
-  const MentalWellnessBottomNavigationBar({super.key});
+  final TestPackageModel? testPackageModel;
+  const MentalWellnessBottomNavigationBar(
+      {super.key, required this.testPackageModel});
 
   @override
   Widget build(BuildContext context) {
@@ -32,46 +35,57 @@ class MentalWellnessBottomNavigationBar extends StatelessWidget {
                             style: TextStyle(color: AppColors.primaryBlue)))),
                 SizedBox(width: 8),
                 Expanded(
-                    child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(35)),
-                        child: Row(children: [
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text('₹ 2499 *',
-                                    style: textTheme.titleMedium!.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.primaryPink)),
-                                SizedBox(height: 2),
-                                Text('₹ 3999',
-                                    style: textTheme.bodySmall!.copyWith(
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.primaryPink,
-                                        decoration:
-                                            TextDecoration.lineThrough)),
-                              ]),
-                          SizedBox(width: 4),
-                          Expanded(
-                              child: SizedBox(
-                                  height: 45,
-                                  child: ElevatedButton(
-                                      onPressed: () {
+                    child: InkWell(
+                  onTap: () {
+                    if (testPackageModel != null) {
+                      Navigator.of(context).push(CupertinoPageRoute(
+                          builder: (context) => QuestionnaireScreen(
+                              testId: testPackageModel!.id.toString())));
+                    }
+                  },
+                  child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(35)),
+                      child: Row(children: [
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('₹ ${testPackageModel?.price ?? ''} *',
+                                  style: textTheme.titleMedium!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.primaryPink)),
+                              SizedBox(height: 2),
+                              Text('₹ ${testPackageModel?.specialPrice ?? ''}',
+                                  style: textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.primaryPink,
+                                      decoration: TextDecoration.lineThrough)),
+                            ]),
+                        SizedBox(width: 4),
+                        Expanded(
+                            child: SizedBox(
+                                height: 45,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      if (testPackageModel != null) {
                                         Navigator.of(context).push(
                                             CupertinoPageRoute(
                                                 builder: (context) =>
-                                                    QuestionnaireScreen()));
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              AppColors.primaryBlue),
-                                      child:
-                                          FittedBox(child: Text('Book Now')))))
-                        ])))
+                                                    QuestionnaireScreen(
+                                                        testId:
+                                                            testPackageModel!.id
+                                                                .toString())));
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.primaryBlue),
+                                    child: FittedBox(child: Text('Book Now')))))
+                      ])),
+                ))
               ])))
     ]));
   }

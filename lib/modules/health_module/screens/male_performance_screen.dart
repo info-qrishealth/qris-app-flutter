@@ -52,7 +52,8 @@ class _MalePerformanceScreenState extends State<MalePerformanceScreen>
     final textTheme = Get.textTheme;
 
     return Scaffold(
-        bottomNavigationBar: MentalWellnessBottomNavigationBar(),
+        bottomNavigationBar:
+            MentalWellnessBottomNavigationBar(testPackageModel: _test),
         appBar: CommonAppBar(title: 'Details'),
         body: SafeArea(
             child: ListView(

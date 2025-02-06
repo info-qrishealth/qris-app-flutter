@@ -54,7 +54,8 @@ class _MentalWellnessDetailsScreenState
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CommonAppBar(title: 'Details'),
-        bottomNavigationBar: MentalWellnessBottomNavigationBar(),
+        bottomNavigationBar:
+            MentalWellnessBottomNavigationBar(testPackageModel: _testPackage),
         body: ListView(
             physics: BouncingScrollPhysics(),
             padding: EdgeInsets.symmetric(

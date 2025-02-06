@@ -50,7 +50,8 @@ class _FemaleDisorderScreenState extends State<FemaleDisorderScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: MentalWellnessBottomNavigationBar(),
+        bottomNavigationBar:
+            MentalWellnessBottomNavigationBar(testPackageModel: _test),
         appBar: CommonAppBar(title: 'Details'),
         body: SafeArea(
             child: ListView(
