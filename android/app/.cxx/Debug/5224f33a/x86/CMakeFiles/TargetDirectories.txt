@@ -1,0 +1,2 @@
+C:/Users/Keshav Rathore/StudioProjects/qris/android/app/.cxx/Debug/5224f33a/x86/CMakeFiles/edit_cache.dir
+C:/Users/Keshav Rathore/StudioProjects/qris/android/app/.cxx/Debug/5224f33a/x86/CMakeFiles/rebuild_cache.dir
