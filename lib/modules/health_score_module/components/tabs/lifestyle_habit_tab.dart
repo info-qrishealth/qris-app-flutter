@@ -28,7 +28,7 @@ class _LifestyleHabitTabState extends State<LifestyleHabitTab> {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Expanded(
-          child: ListView(children: [
+          child: ListView(physics: BouncingScrollPhysics(), children: [
         CommonFieldDropdown(
             labelText: null,
             items: HealthScoreQuestionsUtil.fruitVegScores

@@ -20,7 +20,8 @@ import 'package:qris_health/styles/app_colors.dart';
 import '../../screens/blood_test_detail_screen.dart';
 
 class PopularPackageScreen extends StatefulWidget {
-  const PopularPackageScreen({super.key});
+  final bool showBottomStrip;
+  const PopularPackageScreen({super.key, this.showBottomStrip = true});
 
   @override
   State<PopularPackageScreen> createState() => _PopularPackageScreenState();
@@ -48,7 +49,8 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: DiscountCouponContainer(),
+        bottomNavigationBar:
+            widget.showBottomStrip ? DiscountCouponContainer() : null,
         appBar: CommonAppBar(title: _selectedTestCategory?.title ?? 'Popular'),
         body: SafeArea(child:
             BlocBuilder<TestsCategoryCubit, TestsCategoryState>(

@@ -44,7 +44,9 @@ extension StringExtension on String? {
         .replaceAll(RegExp(r'#39;'), '')
         .replaceAll(RegExp(r'nbsp;'), '')
         .replaceAll(RegExp(r'amp;'), '')
-        .replaceAll(RegExp(r'&amp;#39;'), "'");
+        .replaceAll(RegExp(r'&amp;#39;'), "'")
+        .replaceAll(RegExp(r'_LOC_'), '')
+        .replaceAll(RegExp(r'_PRICE_'), '');
 
     return cleanedString;
   }

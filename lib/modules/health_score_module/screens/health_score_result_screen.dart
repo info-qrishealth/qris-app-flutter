@@ -64,6 +64,7 @@ class _HealthScoreResultScreenState extends State<HealthScoreResultScreen> {
                     child: Text('Start Assessment again')))),
         appBar: CommonAppBar(title: 'Health Score'),
         body: ListView(
+            physics: BouncingScrollPhysics(),
             padding:
                 EdgeInsets.symmetric(horizontal: AppConstants.scaffoldPadding),
             children: [

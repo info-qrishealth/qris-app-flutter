@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_category_container.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_app_bar.dart';
+import 'package:qris_health/modules/home_module/components/home_screen_nav_bar.dart';
 import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
 import 'package:qris_health/modules/home_module/components/test_and_scan_tile.dart';
 import 'package:qris_health/modules/home_module/enum/test_category.dart';
@@ -37,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomNavigationBar: HomeScreenNavBar(),
         key: _scaffoldKey,
         drawer: MainDrawer(),
         appBar: HomeScreenAppBar(scaffoldKey: _scaffoldKey),

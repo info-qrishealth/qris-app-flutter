@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
+import 'package:qris_health/modules/patients_module/extensions/patient_extension.dart';
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 
@@ -15,8 +16,12 @@ import '../../patients_module/components/add_patient_bottom_sheet.dart';
 class SelectPatientView extends StatefulWidget {
   final Function(Patient) getSelectedPatient;
   final Patient? selectedPatient;
+  final bool onlyAdults;
   const SelectPatientView(
-      {super.key, required this.getSelectedPatient, this.selectedPatient});
+      {super.key,
+      required this.getSelectedPatient,
+      this.selectedPatient,
+      this.onlyAdults = false});
 
   @override
   State<SelectPatientView> createState() => _SelectPatientViewState();
@@ -53,8 +58,10 @@ class _SelectPatientViewState extends State<SelectPatientView> {
       Expanded(child:
           BlocBuilder<PatientsCubit, PatientsState>(builder: (context, state) {
         if (state is PatientsLoaded) {
-          final patients =
-              BlocProvider.of<PatientsCubit>(context).validPatients;
+          final patients = BlocProvider.of<PatientsCubit>(context)
+              .validPatients
+              .where((patient) => !patient.isUnderAge)
+              .toList();
 
           return ListView.separated(
               physics: BouncingScrollPhysics(),
