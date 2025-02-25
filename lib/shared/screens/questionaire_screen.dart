@@ -37,7 +37,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
 
   late Future<List<WellnessQuestion>> _future;
   int _answeredQuestionCount = 0;
-  int? _currentQuestionIndex;
+  int? _currentQuestionIndex = 0;
 
   @override
   void initState() {

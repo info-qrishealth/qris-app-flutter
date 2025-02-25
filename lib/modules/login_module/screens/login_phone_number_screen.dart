@@ -13,6 +13,7 @@ import 'package:qris_health/shared/components/welcome_header_column.dart';
 import 'package:qris_health/shared/utils/search_pattern.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
+import '../../users_module/services/user_service.dart';
 import '../components/create_account_text.dart';
 
 class LoginPhoneNumberScreen extends StatefulWidget {
@@ -82,6 +83,15 @@ class _LoginPhoneNumberScreenState extends State<LoginPhoneNumberScreen> {
                                   setState(() {
                                     _loading = true;
                                   });
+
+                                  final isExists =
+                                      await OtpService.isUserExists(
+                                          phoneNumber:
+                                              _phoneNumberController.text);
+
+                                  if (!isExists) {
+                                    throw 'User not exists. Please create a new account first';
+                                  }
 
                                   final otp = await OtpService.sendOtp(
                                       phoneNumber: _phoneNumberController.text);
