@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/enums/subscan_type.dart';
+import 'package:qris_health/modules/all_scans_module/screens/subscan_info_screen.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 
 import '../../../constants/app_constants.dart';
@@ -16,7 +18,11 @@ class SubscanListTileHorizontal extends StatelessWidget {
     final textTheme = Get.textTheme;
 
     return GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(CupertinoPageRoute(
+              builder: (context) =>
+                  SubscanInfoScreen(subScanType: subScanType)));
+        },
         child: Container(
             width: 152,
             decoration: BoxDecoration(
@@ -27,46 +33,53 @@ class SubscanListTileHorizontal extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 8),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(subScanType.formattedName,
-                                style: textTheme.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: AppConstants.ubuntuFontFamily,
-                                    color: AppColors.primaryBlue)),
-                            SizedBox(height: 6),
-                            Text(
-                                'The CT Scan chest is commonly known as the thoracic CT or...'
-                                    .getEllipticText(charactersAfterTrim: 50)!,
-                                style: textTheme.labelSmall!.copyWith(
-                                    color: AppColors.lightSubTextColor,
-                                    fontWeight: FontWeight.w400))
-                          ])),
+                  Expanded(
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 8),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(subScanType.formattedName,
+                                    style: textTheme.bodySmall!.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily:
+                                            AppConstants.ubuntuFontFamily,
+                                        color: AppColors.primaryBlue)),
+                                SizedBox(height: 6),
+                                Text(
+                                    'The CT Scan chest is commonly known as the thoracic CT or...'
+                                        .getEllipticText(
+                                            charactersAfterTrim: 50)!,
+                                    style: textTheme.labelSmall!.copyWith(
+                                        color: AppColors.lightSubTextColor,
+                                        fontWeight: FontWeight.w400))
+                              ]))),
                   OfferedPriceContainer(
                       customWidget: Text('Starts @ ₹1099',
                           style: textTheme.bodyLarge!.copyWith(
                               color: AppColors.primaryBlue,
                               fontWeight: FontWeight.w700))),
-                  Expanded(
-                      child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                              width: double.infinity,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: AppColors.primaryPink,
-                                  borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10))),
-                              child: Text('Read More...',
-                                  textAlign: TextAlign.center,
-                                  style: textTheme.bodySmall!.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700)))))
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(CupertinoPageRoute(
+                            builder: (context) =>
+                                SubscanInfoScreen(subScanType: subScanType)));
+                      },
+                      child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: AppColors.primaryPink,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10))),
+                          child: Text('Read More...',
+                              textAlign: TextAlign.center,
+                              style: textTheme.bodySmall!.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700))))
                 ])));
     ;
   }
