@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
+import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_category_container.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_app_bar.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_nav_bar.dart';
@@ -24,6 +25,8 @@ import 'package:qris_health/shared/components/main_drawer.dart';
 import 'package:qris_health/shared/components/outlined_icon_button.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
+import '../../../constants/enums/subscan_type.dart';
+import '../../all_scans_module/components/subscan_list_tile_horizontal.dart';
 import '../components/cashback_container.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -108,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: HomeScreenCategoryContainer(
                             testCategory: category)));
               })),
-              SizedBox(height: 45),
+              SizedBox(height: 40),
               CashbackContainer(),
               SizedBox(height: 18),
               _buildHeadingRow(
@@ -148,31 +151,42 @@ class _HomeScreenState extends State<HomeScreen> {
                     radius: 16);
               }),
               SizedBox(height: 16),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => HealthScoreIntroScreen()));
+                  },
+                  child: Image.asset(
+                      'assets/images/illustrations/discover_health_score_illustration.png',
+                      fit: BoxFit.fitWidth)),
+              SizedBox(height: 12),
               ContactUsContainer(),
               SizedBox(height: 16),
               _buildHeadingRow(
                   title: 'Popular Imaging Tests and Scans', onTap: null),
               SizedBox(height: 12),
               SizedBox(
-                  height: 115,
-                  width: 145,
+                  height: 130,
                   child: ListView.separated(
-                      itemCount: 10,
-                      scrollDirection: Axis.horizontal,
                       shrinkWrap: true,
-                      separatorBuilder: (context, index) => SizedBox(width: 8),
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        return TestAndScanTile();
-                      })),
+                        return SubscanListTileHorizontal(
+                            subScanType: SubScanType.values[index]);
+                      },
+                      separatorBuilder: (context, index) {
+                        return SizedBox(width: 8);
+                      },
+                      itemCount: SubScanType.values.length)),
               SizedBox(height: 18),
               GestureDetector(
-                onTap: () {},
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: SvgPicture.asset(
-                        'assets/images/illustrations/refer_and_earn_banner.svg',
-                        fit: BoxFit.cover)),
-              ),
+                  onTap: () {},
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: SvgPicture.asset(
+                          'assets/images/illustrations/refer_and_earn_banner.svg',
+                          fit: BoxFit.fitWidth))),
               SizedBox(height: 18),
               Text('Our Accreditations',
                   style: _textTheme.titleMedium!.copyWith(
@@ -208,6 +222,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildCreditImage({required String path}) {
-    return Image.asset(path, height: 65);
+    return Opacity(opacity: 0.65, child: Image.asset(path, height: 65));
   }
 }
