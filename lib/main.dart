@@ -10,6 +10,7 @@ import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_p
 import 'package:qris_health/modules/intro_module/screens/custom_splash_screen.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
+import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:qris_health/styles/app_styles.dart';
 
 Future<void> main() async {
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => PopularPackagesCubit()),
           BlocProvider(create: (context) => PatientsCubit()),
           BlocProvider(create: (context) => QrisDoctorsCubit()),
+          BlocProvider(create: (context) => QrisConfigCubit()),
         ],
         child: GetMaterialApp(
             debugShowCheckedModeBanner: false,

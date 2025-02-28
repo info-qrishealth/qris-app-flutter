@@ -6,6 +6,7 @@ import 'package:qris_health/constants/pref_constants.dart';
 import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_nav_bar.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
+import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../home_module/screens/home_screen.dart';
@@ -19,6 +20,7 @@ mixin LoginHelperMixin {
       BlocProvider.of<UserCubit>(context).updateUser(user: user);
       BlocProvider.of<PopularPackagesCubit>(context).getPopularPackages();
       BlocProvider.of<QrisDoctorsCubit>(context).getTeamDoctors();
+      await BlocProvider.of<QrisConfigCubit>(context).getConfig();
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(
