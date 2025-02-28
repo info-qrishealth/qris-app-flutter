@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:qris_health/constants/app_constants.dart';
@@ -75,6 +76,13 @@ class _OtpScreenState extends State<OtpScreen> with LoginHelperMixin {
                     style: _textTheme.bodyLarge!.copyWith(
                         fontWeight: FontWeight.w400,
                         color: AppColors.lightText)),
+                SizedBox(width: 4),
+                InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: SvgPicture.asset('assets/images/icons/edit_icon.svg',
+                        color: AppColors.primaryPink, height: 18)),
               ]),
               SizedBox(height: 28),
               PinCodeTextField(
