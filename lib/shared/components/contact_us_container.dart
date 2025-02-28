@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
+import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-class ContactUsContainer extends StatelessWidget {
+class ContactUsContainer extends StatelessWidget with GeneralHelperMixin {
   ContactUsContainer({super.key});
   final _textTheme = Get.textTheme;
 
@@ -33,17 +36,27 @@ class ContactUsContainer extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         color: AppColors.textColor)),
                 SizedBox(height: 12),
-                Row(children: [
-                  _buildButton(
-                      title: 'Call us',
-                      onTap: () {},
-                      svgPath: 'assets/images/icons/call_icon.svg'),
-                  SizedBox(width: 6),
-                  _buildButton(
-                      title: 'Chat',
-                      onTap: () {},
-                      svgPath: 'assets/images/icons/whatsapp_icon.svg'),
-                ])
+                BlocBuilder<QrisConfigCubit, QrisConfigState>(
+                    builder: (context, state) {
+                  return Row(children: [
+                    _buildButton(
+                        title: 'Call us',
+                        onTap: () async {
+                          await openDialPad(
+                              phoneNumber: state.config!.phoneNumber);
+                        },
+                        svgPath: 'assets/images/icons/call_icon.svg'),
+                    SizedBox(width: 6),
+                    _buildButton(
+                        title: 'Chat',
+                        onTap: () {
+                          sendWhatsappMessage(
+                              message: '',
+                              toNumber: state.config!.whatsappNumber);
+                        },
+                        svgPath: 'assets/images/icons/whatsapp_icon.svg'),
+                  ]);
+                })
               ]))
         ]));
   }

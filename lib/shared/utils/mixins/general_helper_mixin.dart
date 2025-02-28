@@ -1,5 +1,8 @@
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../constants/app_constants.dart';
+import '../../../constants/enums/snackbar_type.dart';
+
 mixin GeneralHelperMixin {
   List<int> getIntsFromString({required String? string}) {
     if (string == null) {
@@ -32,6 +35,27 @@ mixin GeneralHelperMixin {
       return 'Overweight';
     } else {
       return 'Obesity';
+    }
+  }
+
+  Future<void> sendWhatsappMessage(
+      {required String message, required String toNumber}) async {
+    try {
+      final whatsappBaseUrl = 'whatsapp://send?phone=91$toNumber&text=$message';
+
+      await launchUrl(Uri.parse(whatsappBaseUrl));
+    } catch (e) {
+      final whatsappBaseUrl = '${'https://wa.me/$toNumber'}?text=';
+      final url = whatsappBaseUrl + Uri.encodeComponent(message);
+
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        return AppConstants.showSnackbar(
+            text:
+                'There is some problem in opening whatsapp. Please try again later or contact onelap support from onelap.in',
+            type: SnackbarType.error);
+      }
     }
   }
 }
