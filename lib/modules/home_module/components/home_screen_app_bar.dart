@@ -48,10 +48,13 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                     Row(children: [
                       SvgPicture.asset('assets/images/icons/location_icon.svg'),
                       SizedBox(width: 4),
-                      Text('New Delhi',
-                          style: _textTheme.bodySmall!.copyWith(
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.lightSubTextColor)),
+                      BlocBuilder<UserCubit, UserState>(
+                          builder: (context, state) {
+                        return Text(state.user.location ?? '-',
+                            style: _textTheme.bodySmall!.copyWith(
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.lightSubTextColor));
+                      }),
                     ])
                   ])),
               InkWell(

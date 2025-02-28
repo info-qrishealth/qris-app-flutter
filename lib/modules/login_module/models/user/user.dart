@@ -16,7 +16,9 @@ class User with _$User {
       @JsonKey(name: 'dob') required String dob,
       @JsonKey(name: 'gender') required String gender,
       @JsonKey(name: 'referral_code') String? referralCode,
-      @JsonKey(name: 'refer_code') String? referCode}) = _User;
+      @JsonKey(name: 'refer_code') String? referCode,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      String? location}) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }

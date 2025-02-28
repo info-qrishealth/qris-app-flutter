@@ -3,8 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_category_container.dart';
@@ -16,6 +17,7 @@ import 'package:qris_health/modules/home_module/enum/test_category.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/home_module/screens/search_package_screen.dart';
+import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
 import 'package:qris_health/shared/components/main_drawer.dart';
@@ -35,6 +37,27 @@ class _HomeScreenState extends State<HomeScreen> {
   final _textTheme = Get.textTheme;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Geolocator.requestPermission().then((permission) async {
+      if (permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse ||
+          permission == LocationPermission.unableToDetermine) {
+        final currentPosition = await Geolocator.getCurrentPosition();
+        final placeMarks = await GeocodingPlatform.instance
+            ?.placemarkFromCoordinates(
+                currentPosition.latitude, currentPosition.longitude);
+
+        if (placeMarks != null && placeMarks.isNotEmpty) {
+          final firstPlacemark = placeMarks.first;
+          BlocProvider.of<UserCubit>(context)
+              .updateUserLocation(location: firstPlacemark.locality);
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -10,4 +10,8 @@ class UserCubit extends Cubit<UserState> {
   void updateUser({required User user}) {
     emit(UserUpdated(user: user));
   }
+
+  void updateUserLocation({required String? location}) {
+    updateUser(user: state.user.copyWith.call(location: location));
+  }
 }

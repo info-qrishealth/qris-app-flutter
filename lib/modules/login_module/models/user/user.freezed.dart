@@ -41,6 +41,8 @@ mixin _$User {
   String? get referralCode => throw _privateConstructorUsedError;
   @JsonKey(name: 'refer_code')
   String? get referCode => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? get location => throw _privateConstructorUsedError;
 
   /// Serializes this User to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -67,7 +69,8 @@ abstract class $UserCopyWith<$Res> {
       @JsonKey(name: 'dob') String dob,
       @JsonKey(name: 'gender') String gender,
       @JsonKey(name: 'referral_code') String? referralCode,
-      @JsonKey(name: 'refer_code') String? referCode});
+      @JsonKey(name: 'refer_code') String? referCode,
+      @JsonKey(includeFromJson: false, includeToJson: false) String? location});
 }
 
 /// @nodoc
@@ -96,6 +99,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? gender = null,
     Object? referralCode = freezed,
     Object? referCode = freezed,
+    Object? location = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -142,6 +146,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.referCode
           : referCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -164,7 +172,8 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       @JsonKey(name: 'dob') String dob,
       @JsonKey(name: 'gender') String gender,
       @JsonKey(name: 'referral_code') String? referralCode,
-      @JsonKey(name: 'refer_code') String? referCode});
+      @JsonKey(name: 'refer_code') String? referCode,
+      @JsonKey(includeFromJson: false, includeToJson: false) String? location});
 }
 
 /// @nodoc
@@ -190,6 +199,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? gender = null,
     Object? referralCode = freezed,
     Object? referCode = freezed,
+    Object? location = freezed,
   }) {
     return _then(_$UserImpl(
       id: freezed == id
@@ -236,6 +246,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.referCode
           : referCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -254,7 +268,8 @@ class _$UserImpl implements _User {
       @JsonKey(name: 'dob') required this.dob,
       @JsonKey(name: 'gender') required this.gender,
       @JsonKey(name: 'referral_code') this.referralCode,
-      @JsonKey(name: 'refer_code') this.referCode});
+      @JsonKey(name: 'refer_code') this.referCode,
+      @JsonKey(includeFromJson: false, includeToJson: false) this.location});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -291,10 +306,13 @@ class _$UserImpl implements _User {
   @override
   @JsonKey(name: 'refer_code')
   final String? referCode;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final String? location;
 
   @override
   String toString() {
-    return 'User(id: $id, title: $title, name: $name, email: $email, phone: $phone, userId: $userId, password: $password, dob: $dob, gender: $gender, referralCode: $referralCode, referCode: $referCode)';
+    return 'User(id: $id, title: $title, name: $name, email: $email, phone: $phone, userId: $userId, password: $password, dob: $dob, gender: $gender, referralCode: $referralCode, referCode: $referCode, location: $location)';
   }
 
   @override
@@ -315,13 +333,15 @@ class _$UserImpl implements _User {
             (identical(other.referralCode, referralCode) ||
                 other.referralCode == referralCode) &&
             (identical(other.referCode, referCode) ||
-                other.referCode == referCode));
+                other.referCode == referCode) &&
+            (identical(other.location, location) ||
+                other.location == location));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, title, name, email, phone,
-      userId, password, dob, gender, referralCode, referCode);
+      userId, password, dob, gender, referralCode, referCode, location);
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -351,7 +371,9 @@ abstract class _User implements User {
       @JsonKey(name: 'dob') required final String dob,
       @JsonKey(name: 'gender') required final String gender,
       @JsonKey(name: 'referral_code') final String? referralCode,
-      @JsonKey(name: 'refer_code') final String? referCode}) = _$UserImpl;
+      @JsonKey(name: 'refer_code') final String? referCode,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final String? location}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -387,6 +409,9 @@ abstract class _User implements User {
   @override
   @JsonKey(name: 'refer_code')
   String? get referCode;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? get location;
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
