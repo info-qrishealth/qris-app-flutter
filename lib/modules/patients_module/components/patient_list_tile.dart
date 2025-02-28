@@ -251,6 +251,9 @@ class _PatientListTileState extends State<PatientListTile>
 
       _healthScoreFuture = HealthScoreService.getPatientHealthScore(
           patientId: widget.patient!.id!.toString());
+      _patient = BlocProvider.of<PatientsCubit>(context)
+          .getPatientByPatientId(patientId: _patient?.id);
+
       setState(() {});
     }
   }

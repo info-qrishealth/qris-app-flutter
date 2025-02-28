@@ -103,7 +103,6 @@ class _PatientInfoTabState extends State<PatientInfoTab> {
                                       height: int.parse(_heightController.text),
                                       weight:
                                           int.parse(_weightController.text)));
-                              print(updatedPatient);
 
                               BlocProvider.of<PatientsCubit>(context)
                                   .updatePatient(updatedPatient);

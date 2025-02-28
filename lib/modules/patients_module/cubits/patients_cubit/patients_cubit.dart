@@ -55,4 +55,9 @@ class PatientsCubit extends Cubit<PatientsState> {
       _updatePatients(patients: [...patients]..insert(index, patient));
     }
   }
+
+  Patient? getPatientByPatientId({required int? patientId}) {
+    return state.patients
+        .firstWhereOrNull((element) => element.id == patientId);
+  }
 }
