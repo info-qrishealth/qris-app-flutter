@@ -58,6 +58,7 @@ class PackageTileHorizontal extends StatelessWidget {
                                         '${testPackageModel?.customParameterCount} Parameters'),
                                 SizedBox(height: 2),
                                 FeatureRow(
+                                    applyImageColor: false,
                                     imagePath: 'assets/images/icons/home.png',
                                     title: 'Home collection'),
                               ]))),

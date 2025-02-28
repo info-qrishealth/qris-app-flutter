@@ -10,6 +10,7 @@ class FeatureRow extends StatelessWidget {
   final String title;
   final Color? fontColor;
   final Color? imageColor;
+  final bool applyImageColor;
 
   const FeatureRow(
       {super.key,
@@ -17,7 +18,8 @@ class FeatureRow extends StatelessWidget {
       required this.title,
       this.svgPath,
       this.fontColor,
-      this.imageColor});
+      this.imageColor,
+      this.applyImageColor = true});
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +30,15 @@ class FeatureRow extends StatelessWidget {
           padding: EdgeInsets.only(top: 1.5),
           child: imagePath != null
               ? Image.asset(imagePath!,
-                  height: 12, color: imageColor ?? AppColors.primaryBlue)
+                  height: 12,
+                  color: !applyImageColor
+                      ? null
+                      : imageColor ?? AppColors.primaryBlue)
               : SvgPicture.asset(svgPath!,
-                  height: 12, color: imageColor ?? AppColors.primaryBlue)),
+                  height: 12,
+                  color: !applyImageColor
+                      ? null
+                      : imageColor ?? AppColors.primaryBlue)),
       SizedBox(width: 4),
       Flexible(
           child: Text(title,
