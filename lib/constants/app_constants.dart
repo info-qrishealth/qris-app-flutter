@@ -8,7 +8,7 @@ import '../styles/app_styles.dart';
 import 'enums/snackbar_type.dart';
 
 class AppConstants {
-  static const String baseUrl = 'http://srv706753.hstgr.cloud:8081';
+  static const String baseUrl = 'http://192.168.1.37:8080';
   static const ubuntuFontFamily = 'Ubuntu';
   static const latoFontFamily = 'Lato';
   static const metropolisFontFamily = 'Metropolis';

@@ -47,7 +47,7 @@ class _MainDrawerState extends State<MainDrawer> {
         child: SafeArea(
             child: Column(children: [
           Expanded(
-              child: ListView(children: [
+              child: ListView(physics: BouncingScrollPhysics(), children: [
             SizedBox(height: GetPlatform.isIOS ? 32 : 38),
             BlocBuilder<UserCubit, UserState>(builder: (context, state) {
               return Padding(
