@@ -71,7 +71,7 @@ class _SearchPackageScreenState extends State<SearchPackageScreen> {
                       SizedBox(height: 14),
                       ContactUsContainer(),
                       SizedBox(height: 19),
-                      Text('Most searched packages',
+                      Text('Popular tests & Packages',
                           style: _textTheme.titleMedium!
                               .copyWith(fontWeight: FontWeight.w700),
                           textAlign: TextAlign.start),
@@ -84,7 +84,8 @@ class _SearchPackageScreenState extends State<SearchPackageScreen> {
                           }
 
                           if (_searchController.text.isEmpty) {
-                            _packagesToShow = state.popularPackages;
+                            _packagesToShow =
+                                state.popularPackages.reversed.toList();
                           }
 
                           if (_packagesToShow.isEmpty) {
