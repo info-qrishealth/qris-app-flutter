@@ -68,6 +68,7 @@ flutter:
     - assets/images/icons/doctor_specialist_type_icons/
     - assets/images/icons/social_media_icons/
     - assets/images/icons/nav_bar_icons/
+    - assets/images/icons/included_packages_icon/
 
   fonts:
     - family: Ubuntu

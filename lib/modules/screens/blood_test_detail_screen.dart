@@ -18,6 +18,7 @@ import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/discount_coupon_container.dart';
 import 'package:qris_health/shared/components/faq_list_tile.dart';
 import 'package:qris_health/shared/components/info_row.dart';
+import 'package:qris_health/shared/extensions/included_package_extension.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
@@ -200,7 +201,7 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                           ContactUsContainer(),
                           SizedBox(height: 18),
                           Text(
-                              'Parameters Included - ${_testPackageModel?.customParameterCount}',
+                              'Parameters Included - ${_testPackageModel?.includedPackages.fold(0, (a, b) => (a + b.customParameterCount).toInt())}',
                               style: _textTheme.titleMedium!
                                   .copyWith(fontWeight: FontWeight.w700)),
                           SizedBox(height: 8),
@@ -311,6 +312,7 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                                     }
 
                                     return ListView.separated(
+                                        physics: BouncingScrollPhysics(),
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
                                           final test = _relatedTests[index];
@@ -341,9 +343,18 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
     return ExpansionTile(
         minTileHeight: 30,
         tilePadding: EdgeInsets.symmetric(horizontal: 10),
-        title: Text(
-            '${includedPackage.title!} (${includedPackage.customParameterCount})',
-            style: _textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w400)),
+        title: Row(children: [
+          SizedBox(
+              height: 22,
+              width: 22,
+              child: Image.asset(includedPackage.imagePath,
+                  height: 22, width: 22)),
+          SizedBox(width: 10),
+          Text(
+              '${includedPackage.title!} (${includedPackage.customParameterCount})',
+              style:
+                  _textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w400)),
+        ]),
         childrenPadding: EdgeInsets.symmetric(horizontal: 9),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         expandedAlignment: Alignment.centerLeft,
