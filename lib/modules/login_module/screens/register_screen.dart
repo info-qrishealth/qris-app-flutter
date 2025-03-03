@@ -214,8 +214,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             dob: DateTime(_year!, _month!.number, _day!).toTimestampForServer!,
             gender: _selectedGender!.number.toString());
 
-        final otp =
-            await OtpService.sendOtp(phoneNumber: _phoneNumberController.text);
+        final otp = await OtpService.sendOtp(
+            phoneNumber: _phoneNumberController.text,
+            email: userToCreate.email);
 
         Navigator.of(context).push(CupertinoPageRoute(
             builder: (context) =>

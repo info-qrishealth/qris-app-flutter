@@ -165,7 +165,8 @@ class _OtpScreenState extends State<OtpScreen> with LoginHelperMixin {
 
   Future<void> _resendOtp() async {
     try {
-      _otp = await OtpService.sendOtp(phoneNumber: _otp.phoneNumber!);
+      _otp = await OtpService.sendOtp(
+          phoneNumber: _otp.phoneNumber!, email: widget.userToAdd?.email);
       _seconds = 59;
       setState(() {});
     } catch (e) {

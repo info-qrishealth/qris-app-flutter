@@ -5,8 +5,10 @@ import '../../../shared/utils/wrappers/wrapper.dart';
 import '../models/otp/otp.dart';
 
 class OtpService {
-  static Future<Otp> sendOtp({required String phoneNumber}) async {
-    final url = '${AppConstants.baseUrl}/otp/send?phoneNumber=$phoneNumber';
+  static Future<Otp> sendOtp(
+      {required String phoneNumber, String? email}) async {
+    final url =
+        '${AppConstants.baseUrl}/otp/send?phoneNumber=$phoneNumber${email != null ? '&email=$email' : ''}';
 
     try {
       final response = await Wrapper.post(url, null);
