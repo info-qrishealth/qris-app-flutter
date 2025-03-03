@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
+import 'package:qris_health/shared/components/request_callback_dialog.dart';
 
 import '../../../shared/components/discount_coupon_container.dart';
 import '../../../shared/screens/questionaire_screen.dart';
@@ -30,7 +31,13 @@ class MentalWellnessBottomNavigationBar extends StatelessWidget {
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),
-                        onPressed: () {},
+                        onPressed: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (context) => RequestCallbackDialog(
+                                  query:
+                                      'Callback request for\nTest no. - ${testPackageModel?.id}\nName - ${testPackageModel?.title}'));
+                        },
                         child: Text('Request Callback',
                             style: TextStyle(color: AppColors.primaryBlue)))),
                 SizedBox(width: 8),

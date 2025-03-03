@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/all_scans_module/screens/all_scans_screen.dart';
 import 'package:qris_health/modules/health_module/screens/mental_wellness_screen.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/shared/components/discount_coupon_container.dart';
+import 'package:qris_health/shared/components/request_callback_dialog.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class HomeScreenNavBar extends StatefulWidget {
@@ -47,8 +49,7 @@ class _HomeScreenNavBarState extends State<HomeScreenNavBar> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                             _buildNavItem(
-                                imagePath:
-                                    'assets/images/icons/nav_bar_icons/home.png',
+                                imagePath: Assets.navBarIconsHome,
                                 label: 'Home',
                                 index: 0,
                                 size: 22),
@@ -59,18 +60,24 @@ class _HomeScreenNavBarState extends State<HomeScreenNavBar> {
                                           PopularPackageScreen()));
                                 },
                                 child: _buildNavItem(
-                                    imagePath:
-                                        'assets/images/icons/nav_bar_icons/lab_test_icon.png',
+                                    imagePath: Assets.navBarIconsLabTestIcon,
                                     label: "Lab Tests",
                                     index: 1)),
                             SizedBox(
                                 height: 65,
                                 width: 65,
                                 child: FloatingActionButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              RequestCallbackDialog(
+                                                  query:
+                                                      'Callback request from application home screen'));
+                                    },
                                     backgroundColor: AppColors.primaryBlue,
                                     child: Image.asset(
-                                        'assets/images/icons/nav_bar_icons/call_icon.png',
+                                        Assets.navBarIconsCallIcon,
                                         height: 28))),
                             InkWell(
                                 onTap: () {
@@ -78,8 +85,7 @@ class _HomeScreenNavBarState extends State<HomeScreenNavBar> {
                                       builder: (context) => AllScansScreen()));
                                 },
                                 child: _buildNavItem(
-                                    imagePath:
-                                        'assets/images/icons/nav_bar_icons/scan_icon.png',
+                                    imagePath: Assets.navBarIconsScanIcon,
                                     label: 'Scans',
                                     index: 2)),
                             InkWell(
@@ -89,8 +95,7 @@ class _HomeScreenNavBarState extends State<HomeScreenNavBar> {
                                           MentalWellnessScreen()));
                                 },
                                 child: _buildNavItem(
-                                    imagePath:
-                                        'assets/images/icons/nav_bar_icons/wellness_icon.png',
+                                    imagePath: Assets.navBarIconsWellnessIcon,
                                     label: 'Wellness',
                                     index: 3))
                           ]))))),

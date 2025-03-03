@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
+import 'package:qris_health/shared/services/config_services.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-class RequestCallbackDialog extends StatelessWidget {
-  const RequestCallbackDialog({super.key});
+class RequestCallbackDialog extends StatefulWidget {
+  final String query;
+  const RequestCallbackDialog({super.key, required this.query});
+
+  @override
+  State<RequestCallbackDialog> createState() => _RequestCallbackDialogState();
+}
+
+class _RequestCallbackDialogState extends State<RequestCallbackDialog> {
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +42,11 @@ class RequestCallbackDialog extends StatelessWidget {
                         child: OutlinedButton(
                             style: OutlinedButton.styleFrom(
                                 side: BorderSide(color: AppColors.primaryBlue)),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
+                            onPressed: _isLoading
+                                ? null
+                                : () {
+                                    Navigator.of(context).pop();
+                                  },
                             child: Text('Cancel',
                                 style: textTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w600,
@@ -44,7 +56,32 @@ class RequestCallbackDialog extends StatelessWidget {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryBlue),
-                            onPressed: () {},
+                            onPressed: _isLoading
+                                ? null
+                                : () async {
+                                    try {
+                                      setState(() {
+                                        _isLoading = true;
+                                      });
+
+                                      await ConfigService.requestCallback(
+                                          query: widget.query);
+
+                                      Navigator.of(context).pop();
+                                      AppConstants.showSnackbar(
+                                          text:
+                                              'Callback requested! You would get a callback from qris team ASAP',
+                                          type: SnackbarType.success);
+                                    } catch (e) {
+                                      AppConstants.showSnackbar(
+                                          text: e.toString(),
+                                          type: SnackbarType.error);
+                                    } finally {
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                    }
+                                  },
                             child: Text('Confirm',
                                 style: textTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w600,

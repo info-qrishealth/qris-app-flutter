@@ -43,10 +43,12 @@ class _SubscanInfoScreenState extends State<SubscanInfoScreen> {
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryBlue),
-                    onPressed: () {
-                      showDialog(
+                    onPressed: () async {
+                      await showDialog(
                           context: context,
-                          builder: (context) => RequestCallbackDialog());
+                          builder: (context) => RequestCallbackDialog(
+                              query:
+                                  'Callback request for ${widget.subScanType.name}'));
                     },
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

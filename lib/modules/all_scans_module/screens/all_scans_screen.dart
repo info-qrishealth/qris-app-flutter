@@ -5,10 +5,10 @@ import 'package:qris_health/constants/enums/subscan_type.dart';
 import 'package:qris_health/modules/all_scans_module/components/scan_category_container.dart';
 import 'package:qris_health/modules/all_scans_module/components/subscan_bottom_sheet.dart';
 import 'package:qris_health/modules/all_scans_module/components/subscan_list_tile_horizontal.dart';
-import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
+import 'package:qris_health/shared/components/request_callback_dialog.dart';
 import 'package:qris_health/shared/components/why_choose_us_container.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
@@ -36,7 +36,12 @@ class _AllScansScreenState extends State<AllScansScreen> {
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryBlue),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await showDialog(
+                          context: context,
+                          builder: (context) => RequestCallbackDialog(
+                              query: 'Callback request from all scans page'));
+                    },
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
