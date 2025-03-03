@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qris_health/modules/health_score_module/components/select_patient_view.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../../shared/components/heading_text.dart';
+import '../../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 
 class SelectPatientTab extends StatefulWidget {
   final Function() onContinue;
@@ -15,7 +16,14 @@ class SelectPatientTab extends StatefulWidget {
 }
 
 class _SelectPatientTabState extends State<SelectPatientTab> {
-  final _textTheme = Get.textTheme;
+  @override
+  void initState() {
+    super.initState();
+    final patientCubit = BlocProvider.of<PatientsCubit>(context);
+    if (patientCubit.state is! PatientsLoaded) {
+      patientCubit.getAllPatientsForUser();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
