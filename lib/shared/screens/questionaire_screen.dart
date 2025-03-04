@@ -316,7 +316,9 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                                             Navigator.of(context).push(
                                                 CupertinoPageRoute(
                                                     builder: (context) =>
-                                                        CartScreen()));
+                                                        CartScreen(
+                                                            testPackageModel:
+                                                                null)));
                                           } else {
                                             _pageController.nextPage(
                                                 duration:

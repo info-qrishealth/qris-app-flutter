@@ -67,8 +67,9 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
               SizedBox(width: 10),
               InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                        CupertinoPageRoute(builder: (context) => CartScreen()));
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) =>
+                            CartScreen(testPackageModel: null)));
                   },
                   child: SvgPicture.asset(
                       'assets/images/icons/home_screen_icons/cart_icon.svg')),

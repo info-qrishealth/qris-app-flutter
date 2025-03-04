@@ -11,6 +11,7 @@ import 'package:qris_health/modules/all_scans_module/services/test_service.dart'
 import 'package:qris_health/modules/home_module/components/cashback_container.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
+import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_html_text.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
@@ -82,9 +83,11 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                       SizedBox(
                           height: 50,
                           child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(CupertinoPageRoute(
-                                    builder: (context) => CartScreen()));
+                              onPressed: () async {
+                                if (_testPackageModel != null) {
+                                  await CartHelper.addToCartAndNavigate(
+                                      testPackageModel: _testPackageModel!);
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white),
@@ -115,9 +118,11 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                           PackageListTile(
                               testPackage: _testPackageModel,
                               onSeeDetailsTap: null,
-                              onBookNowTap: () {
-                                Navigator.of(context).push(CupertinoPageRoute(
-                                    builder: (context) => CartScreen()));
+                              onBookNowTap: () async {
+                                if (_testPackageModel != null) {
+                                  await CartHelper.addToCartAndNavigate(
+                                      testPackageModel: _testPackageModel!);
+                                }
                               }),
                           SizedBox(height: 18),
                           DottedBorder(
@@ -319,11 +324,10 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
 
                                           return PackageTileHorizontal(
                                               testPackageModel: test,
-                                              onBookNowTap: () {
-                                                Navigator.of(context).push(
-                                                    CupertinoPageRoute(
-                                                        builder: (context) =>
-                                                            CartScreen()));
+                                              onBookNowTap: () async {
+                                                await CartHelper
+                                                    .addToCartAndNavigate(
+                                                        testPackageModel: test);
                                               });
                                         },
                                         separatorBuilder: (context, index) {

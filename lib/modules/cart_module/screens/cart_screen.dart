@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/cart_module/components/step_indicator/step_indicator.dart';
 import 'package:qris_health/modules/cart_module/screens/tabs/bill_summary_tab.dart';
 import 'package:qris_health/modules/cart_module/screens/tabs/select_address_tab.dart';
 import 'package:qris_health/modules/cart_module/screens/tabs/select_patient_tab.dart';
 import 'package:qris_health/modules/cart_module/screens/tabs/time_slot_tab.dart';
+import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+  final TestPackageModel? testPackageModel;
+  const CartScreen({super.key, required this.testPackageModel});
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -39,9 +43,16 @@ class _CartScreenState extends State<CartScreen> {
                               controller: _pageController,
                               physics: NeverScrollableScrollPhysics(),
                               children: [
-                            SelectPatientTab(onContinue: (selectedPatient) {
-                              _animateToPage(pageIndex: 1);
-                            }),
+                            SelectPatientTab(
+                                testPackageModel: widget.testPackageModel,
+                                onContinue: (selectedPatient) {
+                                  BlocProvider.of<CartCubit>(context)
+                                      .addPatientToTest(
+                                          patientId: selectedPatient.id!,
+                                          testId: widget.testPackageModel!.id);
+
+                                  _animateToPage(pageIndex: 1);
+                                }),
                             SelectAddressTab(onContinue: () {
                               _animateToPage(pageIndex: 2);
                             }),

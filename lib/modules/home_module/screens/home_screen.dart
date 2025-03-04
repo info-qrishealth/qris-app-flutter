@@ -13,11 +13,11 @@ import 'package:qris_health/modules/home_module/components/home_screen_category_
 import 'package:qris_health/modules/home_module/components/home_screen_app_bar.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_nav_bar.dart';
 import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
-import 'package:qris_health/modules/home_module/components/test_and_scan_tile.dart';
 import 'package:qris_health/modules/home_module/enum/test_category.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/home_module/screens/search_package_screen.dart';
+import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
@@ -137,9 +137,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemBuilder: (context, index) {
                             return PackageTileHorizontal(
                                 testPackageModel: packages[index],
-                                onBookNowTap: () {
-                                  Navigator.of(context).push(CupertinoPageRoute(
-                                      builder: (context) => CartScreen()));
+                                onBookNowTap: () async {
+                                  await CartHelper.addToCartAndNavigate(
+                                      testPackageModel: packages[index]);
                                 });
                           }));
                 }

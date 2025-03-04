@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/address_module/components/add_address_bottom_sheet.dart';
 import 'package:qris_health/modules/address_module/components/address_list_tile.dart';
+import 'package:qris_health/modules/address_module/services/address_service.dart';
+import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
+import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
+import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
+import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
+import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
+import '../../../address_module/models/address/address.dart';
 import '../../components/patient_tile_layout.dart';
 
 class SelectAddressTab extends StatefulWidget {
@@ -22,6 +32,15 @@ class SelectAddressTab extends StatefulWidget {
 
 class _SelectAddressTabState extends State<SelectAddressTab> {
   final _textTheme = Get.textTheme;
+  late final Future<List<Address>> _addressFuture;
+  List<Address>? _addresses;
+
+  @override
+  void initState() {
+    super.initState();
+    _addressFuture = AddressService.getAddressesByUserId(
+        userId: ApiParams.getInstance()!.userId!.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,22 +61,45 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                 title: HeadingText(text: 'Package Details'),
                 childrenPadding: EdgeInsets.symmetric(horizontal: 10),
                 children: [
-                  ...List.generate(1, (index) {
-                    return Column(children: [
-                      PackageListTile(
-                          onSeeDetailsTap: null, onBookNowTap: null),
-                      SizedBox(height: 12),
-                      ...List.generate(2, (index) {
-                        return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: PatientTileLayout(actions: [
-                              VerticalDivider(
-                                  color: Colors.black.withOpacity(0.09),
-                                  thickness: 1.5),
-                              SvgPicture.asset(Assets.iconsDeleteIcon)
-                            ]));
-                      }),
-                    ]);
+                  BlocBuilder<CartCubit, CartState>(builder: (context, state) {
+                    return Column(
+                        children: state.cart.cartTests
+                            .map((cartTest) => Column(children: [
+                                  FutureBuilder<TestPackageModel>(
+                                      future: TestService.getTestByTestId(
+                                          id: cartTest.testId),
+                                      builder: (context, snapshot) {
+                                        return PackageListTile(
+                                            testPackage: snapshot.data,
+                                            onSeeDetailsTap: null,
+                                            onBookNowTap: null);
+                                      }),
+                                  Column(children: [
+                                    ...cartTest.patientIds.map((patientId) =>
+                                        Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12),
+                                            child: BlocBuilder<PatientsCubit,
+                                                    PatientsState>(
+                                                builder: (context, state) {
+                                              return PatientTileLayout(
+                                                  patient: state.patients
+                                                      .firstWhereOrNull(
+                                                          (element) =>
+                                                              element.id ==
+                                                              patientId),
+                                                  actions: [
+                                                    VerticalDivider(
+                                                        color: Colors.black
+                                                            .withOpacity(0.09),
+                                                        thickness: 1.5),
+                                                    SvgPicture.asset(
+                                                        Assets.iconsDeleteIcon)
+                                                  ]);
+                                            })))
+                                  ]),
+                                ]))
+                            .toList());
                   }),
                 ])),
         SizedBox(height: 16),
@@ -81,8 +123,11 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                     context: context,
                     constraints: AppConstants.bottomSheetConstraints,
                     isScrollControlled: true,
-                    builder: (context) => AddAddressBottomSheet(
-                        onAddressAdded: (addedAddress) {}));
+                    builder: (context) =>
+                        AddAddressBottomSheet(onAddressAdded: (addedAddress) {
+                          _addresses = [..._addresses!, addedAddress];
+                          setState(() {});
+                        }));
               },
               child: UnderlineText(
                   text: '+ Add New Address',
@@ -92,23 +137,73 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                       color: AppColors.primaryPink))),
         ]),
         SizedBox(height: 18),
-        ListView.separated(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return AddressListTile(address: null, onDeleteTap: () {});
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(height: 8);
-            },
-            itemCount: 4),
+        FutureBuilder<List<Address>>(
+            future: _addressFuture,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                _addresses ??= snapshot.data!;
+                _addresses = _addresses!
+                    .where((element) => element.status == 1)
+                    .toList();
+
+                return BlocBuilder<CartCubit, CartState>(
+                    builder: (context, state) {
+                  return ListView.separated(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final address = _addresses![index];
+
+                        return InkWell(
+                            onTap: () {
+                              BlocProvider.of<CartCubit>(context)
+                                  .changeAddress(address);
+                            },
+                            child: AddressListTile(
+                                isSelected: address.id ==
+                                    state.cart.selectedAddress?.id,
+                                address: _addresses![index],
+                                onDeleteTap: () async {
+                                  try {
+                                    final updatedAddress = await AddressService
+                                        .changeAddressStatus(
+                                            addressId: address.id!,
+                                            desiredStatus: 0);
+
+                                    if (state.cart.selectedAddress?.id ==
+                                        address.id) {
+                                      BlocProvider.of<CartCubit>(context)
+                                          .changeAddress(null);
+                                    }
+
+                                    _addresses![index] = updatedAddress;
+                                    setState(() {});
+                                  } catch (e) {
+                                    AppConstants.showSnackbar(
+                                        text: e.toString(),
+                                        type: SnackbarType.error);
+                                  }
+                                }));
+                      },
+                      separatorBuilder: (context, index) {
+                        return SizedBox(height: 8);
+                      },
+                      itemCount: _addresses!.length);
+                });
+              }
+
+              return CommonListviewShimmer();
+            }),
       ])),
       SizedBox(height: 16),
-      ElevatedButton(
-          onPressed: widget.onContinue,
-          style:
-              ElevatedButton.styleFrom(backgroundColor: AppColors.primaryBlue),
-          child: Text('Continue')),
+      BlocBuilder<CartCubit, CartState>(builder: (context, state) {
+        return ElevatedButton(
+            onPressed:
+                state.cart.selectedAddress == null ? null : widget.onContinue,
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryBlue),
+            child: Text('Continue'));
+      }),
       SizedBox(height: 16),
     ]);
   }

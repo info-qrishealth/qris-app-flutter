@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/address_module/models/address/address.dart';
 
 import '../../../styles/app_colors.dart';
@@ -8,8 +9,12 @@ import '../../../styles/app_colors.dart';
 class AddressListTile extends StatelessWidget {
   final Address? address;
   final Function() onDeleteTap;
+  final bool isSelected;
   const AddressListTile(
-      {super.key, required this.address, required this.onDeleteTap});
+      {super.key,
+      required this.address,
+      required this.onDeleteTap,
+      this.isSelected = false});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,11 @@ class AddressListTile extends StatelessWidget {
     return Container(
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.black.withOpacity(0.09)),
+            color: isSelected ? Color(0x0C411E75) : null,
+            border: Border.all(
+                color: isSelected
+                    ? AppColors.primaryBlue
+                    : Colors.black.withOpacity(0.09)),
             borderRadius: BorderRadius.circular(12)),
         child: IntrinsicHeight(
             child:
@@ -39,7 +48,7 @@ class AddressListTile extends StatelessWidget {
           SizedBox(width: 4),
           InkWell(
               onTap: onDeleteTap,
-              child: SvgPicture.asset('assets/images/icons/delete_icon.svg')),
+              child: SvgPicture.asset(Assets.iconsDeleteIcon)),
         ])));
   }
 }

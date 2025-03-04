@@ -8,6 +8,7 @@ import 'package:qris_health/modules/health_article_module/cubits/health_articles
 import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/intro_module/screens/custom_splash_screen.dart';
+import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => PatientsCubit()),
           BlocProvider(create: (context) => QrisDoctorsCubit()),
           BlocProvider(create: (context) => QrisConfigCubit()),
+          BlocProvider(create: (context) => CartCubit()),
         ],
         child: GetMaterialApp(
             debugShowCheckedModeBanner: false,

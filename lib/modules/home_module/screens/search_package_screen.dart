@@ -6,6 +6,7 @@ import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
+import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/modules/screens/blood_test_detail_screen.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
@@ -13,7 +14,6 @@ import 'package:qris_health/shared/components/filter_textfield.dart';
 import 'package:qris_health/shared/components/no_item_found_container.dart';
 
 import '../../../shared/components/common_app_bar.dart';
-import '../../cart_module/screens/cart_screen.dart';
 
 class SearchPackageScreen extends StatefulWidget {
   const SearchPackageScreen({super.key});
@@ -114,11 +114,10 @@ class _SearchPackageScreenState extends State<SearchPackageScreen> {
                                                           _packagesToShow[index]
                                                               .id)));
                                     },
-                                    onBookNowTap: () {
-                                      Navigator.of(context).push(
-                                          CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  CartScreen()));
+                                    onBookNowTap: () async {
+                                      await CartHelper.addToCartAndNavigate(
+                                          testPackageModel:
+                                              _packagesToShow[index]);
                                     });
                               },
                               itemCount: _packagesToShow.length);

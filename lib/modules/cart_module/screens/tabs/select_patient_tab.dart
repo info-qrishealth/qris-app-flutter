@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/health_score_module/components/select_patient_view.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
@@ -10,7 +11,9 @@ import '../../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 
 class SelectPatientTab extends StatefulWidget {
   final Function(Patient) onContinue;
-  const SelectPatientTab({super.key, required this.onContinue});
+  final TestPackageModel? testPackageModel;
+  const SelectPatientTab(
+      {super.key, required this.onContinue, this.testPackageModel});
 
   @override
   State<SelectPatientTab> createState() => _SelectPatientTabState();
@@ -36,10 +39,9 @@ class _SelectPatientTabState extends State<SelectPatientTab> {
         HeadingText(text: 'Package Details'),
         SizedBox(height: 18),
         PackageListTile(
+            testPackage: widget.testPackageModel,
             onSeeDetailsTap: null,
-            onBookNowTap: null,
-            description:
-                'Included : Liver Test, Kidney Test, Blood glucose fasting, Lipid profile, Thyroid Profile, HBA1C, Urine Test....'),
+            onBookNowTap: null),
         SizedBox(height: 32),
         SelectPatientView(
             getSelectedPatient: (patient) {

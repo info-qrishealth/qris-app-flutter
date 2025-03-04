@@ -7,9 +7,9 @@ import 'package:qris_health/modules/all_scans_module/cubits/tests_category_cubit
 import 'package:qris_health/modules/all_scans_module/models/test_category_model/test_category_model.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
-import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
+import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/components/common_network_image.dart';
@@ -130,11 +130,9 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                                     BloodTestDetailScreen(
                                                         testId: test.id)));
                                       },
-                                      onBookNowTap: () {
-                                        Navigator.of(context).push(
-                                            CupertinoPageRoute(
-                                                builder: (context) =>
-                                                    CartScreen()));
+                                      onBookNowTap: () async {
+                                        await CartHelper.addToCartAndNavigate(
+                                            testPackageModel: test);
                                       });
                                 },
                                 separatorBuilder: (context, index) {
@@ -175,11 +173,10 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                                               testId:
                                                                   test.id)));
                                             },
-                                            onBookNowTap: () {
-                                              Navigator.of(context).push(
-                                                  CupertinoPageRoute(
-                                                      builder: (context) =>
-                                                          CartScreen()));
+                                            onBookNowTap: () async {
+                                              await CartHelper
+                                                  .addToCartAndNavigate(
+                                                      testPackageModel: test);
                                             });
                                       },
                                       separatorBuilder: (context, index) {
