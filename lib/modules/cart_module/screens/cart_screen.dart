@@ -14,17 +14,28 @@ import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class CartScreen extends StatefulWidget {
+  final int? initialPage;
   final TestPackageModel? testPackageModel;
 
-  const CartScreen({super.key, required this.testPackageModel});
+  const CartScreen(
+      {super.key, required this.testPackageModel, this.initialPage});
 
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final _pageController = PageController();
+  late final PageController _pageController;
   int _selectedPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialPage != null) {
+      _selectedPage = widget.initialPage!;
+    }
+    _pageController = PageController(initialPage: _selectedPage);
+  }
 
   @override
   Widget build(BuildContext context) {
