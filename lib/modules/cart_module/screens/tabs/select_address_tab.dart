@@ -219,7 +219,7 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                 });
               }
 
-              return CommonListviewShimmer();
+              return Container();
             }),
       ])),
       SizedBox(height: 16),
