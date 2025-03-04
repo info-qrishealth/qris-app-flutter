@@ -22,6 +22,8 @@ Cart _$CartFromJson(Map<String, dynamic> json) {
 mixin _$Cart {
   List<CartTest> get cartTests => throw _privateConstructorUsedError;
   Address? get selectedAddress => throw _privateConstructorUsedError;
+  TimeSlot? get timeSlot => throw _privateConstructorUsedError;
+  DateTime? get collectionDate => throw _privateConstructorUsedError;
 
   /// Serializes this Cart to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,9 +39,14 @@ abstract class $CartCopyWith<$Res> {
   factory $CartCopyWith(Cart value, $Res Function(Cart) then) =
       _$CartCopyWithImpl<$Res, Cart>;
   @useResult
-  $Res call({List<CartTest> cartTests, Address? selectedAddress});
+  $Res call(
+      {List<CartTest> cartTests,
+      Address? selectedAddress,
+      TimeSlot? timeSlot,
+      DateTime? collectionDate});
 
   $AddressCopyWith<$Res>? get selectedAddress;
+  $TimeSlotCopyWith<$Res>? get timeSlot;
 }
 
 /// @nodoc
@@ -59,6 +66,8 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
   $Res call({
     Object? cartTests = null,
     Object? selectedAddress = freezed,
+    Object? timeSlot = freezed,
+    Object? collectionDate = freezed,
   }) {
     return _then(_value.copyWith(
       cartTests: null == cartTests
@@ -69,6 +78,14 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
           ? _value.selectedAddress
           : selectedAddress // ignore: cast_nullable_to_non_nullable
               as Address?,
+      timeSlot: freezed == timeSlot
+          ? _value.timeSlot
+          : timeSlot // ignore: cast_nullable_to_non_nullable
+              as TimeSlot?,
+      collectionDate: freezed == collectionDate
+          ? _value.collectionDate
+          : collectionDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 
@@ -85,6 +102,20 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
       return _then(_value.copyWith(selectedAddress: value) as $Val);
     });
   }
+
+  /// Create a copy of Cart
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TimeSlotCopyWith<$Res>? get timeSlot {
+    if (_value.timeSlot == null) {
+      return null;
+    }
+
+    return $TimeSlotCopyWith<$Res>(_value.timeSlot!, (value) {
+      return _then(_value.copyWith(timeSlot: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -94,10 +125,16 @@ abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
       __$$CartImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<CartTest> cartTests, Address? selectedAddress});
+  $Res call(
+      {List<CartTest> cartTests,
+      Address? selectedAddress,
+      TimeSlot? timeSlot,
+      DateTime? collectionDate});
 
   @override
   $AddressCopyWith<$Res>? get selectedAddress;
+  @override
+  $TimeSlotCopyWith<$Res>? get timeSlot;
 }
 
 /// @nodoc
@@ -114,6 +151,8 @@ class __$$CartImplCopyWithImpl<$Res>
   $Res call({
     Object? cartTests = null,
     Object? selectedAddress = freezed,
+    Object? timeSlot = freezed,
+    Object? collectionDate = freezed,
   }) {
     return _then(_$CartImpl(
       cartTests: null == cartTests
@@ -124,6 +163,14 @@ class __$$CartImplCopyWithImpl<$Res>
           ? _value.selectedAddress
           : selectedAddress // ignore: cast_nullable_to_non_nullable
               as Address?,
+      timeSlot: freezed == timeSlot
+          ? _value.timeSlot
+          : timeSlot // ignore: cast_nullable_to_non_nullable
+              as TimeSlot?,
+      collectionDate: freezed == collectionDate
+          ? _value.collectionDate
+          : collectionDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -132,7 +179,10 @@ class __$$CartImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CartImpl implements _Cart {
   const _$CartImpl(
-      {required final List<CartTest> cartTests, this.selectedAddress})
+      {required final List<CartTest> cartTests,
+      this.selectedAddress,
+      this.timeSlot,
+      this.collectionDate})
       : _cartTests = cartTests;
 
   factory _$CartImpl.fromJson(Map<String, dynamic> json) =>
@@ -148,10 +198,14 @@ class _$CartImpl implements _Cart {
 
   @override
   final Address? selectedAddress;
+  @override
+  final TimeSlot? timeSlot;
+  @override
+  final DateTime? collectionDate;
 
   @override
   String toString() {
-    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress)';
+    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate)';
   }
 
   @override
@@ -162,13 +216,21 @@ class _$CartImpl implements _Cart {
             const DeepCollectionEquality()
                 .equals(other._cartTests, _cartTests) &&
             (identical(other.selectedAddress, selectedAddress) ||
-                other.selectedAddress == selectedAddress));
+                other.selectedAddress == selectedAddress) &&
+            (identical(other.timeSlot, timeSlot) ||
+                other.timeSlot == timeSlot) &&
+            (identical(other.collectionDate, collectionDate) ||
+                other.collectionDate == collectionDate));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_cartTests), selectedAddress);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_cartTests),
+      selectedAddress,
+      timeSlot,
+      collectionDate);
 
   /// Create a copy of Cart
   /// with the given fields replaced by the non-null parameter values.
@@ -189,7 +251,9 @@ class _$CartImpl implements _Cart {
 abstract class _Cart implements Cart {
   const factory _Cart(
       {required final List<CartTest> cartTests,
-      final Address? selectedAddress}) = _$CartImpl;
+      final Address? selectedAddress,
+      final TimeSlot? timeSlot,
+      final DateTime? collectionDate}) = _$CartImpl;
 
   factory _Cart.fromJson(Map<String, dynamic> json) = _$CartImpl.fromJson;
 
@@ -197,6 +261,10 @@ abstract class _Cart implements Cart {
   List<CartTest> get cartTests;
   @override
   Address? get selectedAddress;
+  @override
+  TimeSlot? get timeSlot;
+  @override
+  DateTime? get collectionDate;
 
   /// Create a copy of Cart
   /// with the given fields replaced by the non-null parameter values.

@@ -13,12 +13,20 @@ _$CartImpl _$$CartImplFromJson(Map<String, dynamic> json) => _$CartImpl(
       selectedAddress: json['selectedAddress'] == null
           ? null
           : Address.fromJson(json['selectedAddress'] as Map<String, dynamic>),
+      timeSlot: json['timeSlot'] == null
+          ? null
+          : TimeSlot.fromJson(json['timeSlot'] as Map<String, dynamic>),
+      collectionDate: json['collectionDate'] == null
+          ? null
+          : DateTime.parse(json['collectionDate'] as String),
     );
 
 Map<String, dynamic> _$$CartImplToJson(_$CartImpl instance) =>
     <String, dynamic>{
       'cartTests': instance.cartTests,
       'selectedAddress': instance.selectedAddress,
+      'timeSlot': instance.timeSlot,
+      'collectionDate': instance.collectionDate?.toIso8601String(),
     };
 
 _$CartTestImpl _$$CartTestImplFromJson(Map<String, dynamic> json) =>

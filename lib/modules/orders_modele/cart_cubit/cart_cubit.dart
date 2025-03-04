@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
+import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
 
 import '../../address_module/models/address/address.dart';
 import '../models/cart/cart.dart';
@@ -76,5 +77,20 @@ class CartCubit extends Cubit<CartState> {
 
   void clearCart() {
     emit(CartInitial());
+  }
+
+  void removeInvalidTests() {
+    final tests = [...state.cart.cartTests];
+    final validTests =
+        tests.where((element) => element.patientIds.isNotEmpty).toList();
+    _updateCart(cart: state.cart.copyWith.call(cartTests: validTests));
+  }
+
+  void updateTimeSlot(TimeSlot timeSlot) {
+    _updateCart(cart: state.cart.copyWith.call(timeSlot: timeSlot));
+  }
+
+  void updateCollectionDate(DateTime collectionDate) {
+    _updateCart(cart: state.cart.copyWith.call(collectionDate: collectionDate));
   }
 }

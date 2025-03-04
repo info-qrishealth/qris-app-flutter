@@ -12,7 +12,9 @@ class ShimmerTile extends StatelessWidget {
           FadeShimmer(
               width: 48, height: 48, radius: 5, fadeTheme: FadeTheme.light),
           SizedBox(width: 16),
-          FadeShimmer(width: 220, height: 20, fadeTheme: FadeTheme.light),
+          Expanded(
+              child: FadeShimmer(
+                  width: 200, height: 20, fadeTheme: FadeTheme.light)),
         ]));
   }
 }

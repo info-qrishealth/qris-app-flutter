@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/orders_modele/models/order/order.dart';
+import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
 import 'package:qris_health/modules/orders_modele/models/user_order_report/user_order_report.dart';
 import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
 
@@ -31,6 +32,19 @@ class OrderService {
       final response = await Wrapper.get(url);
       return (json.decode(response)['body'] as List)
           .map((element) => UserOrderReport.fromJson(element))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<List<TimeSlot>> getValidTimeslots() async {
+    final url = '${AppConstants.baseUrl}/orders/valid-time-slot';
+
+    try {
+      final response = await Wrapper.get(url);
+      return (json.decode(response)['body'] as List)
+          .map((element) => TimeSlot.fromJson(element))
           .toList();
     } catch (e) {
       rethrow;

@@ -8,6 +8,7 @@ import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/refer_and_earn_module/models/wallet_entry/qris_wallet_entry.dart';
+import 'package:qris_health/modules/refer_and_earn_module/screens/wallet_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/services/qris_wallet_service.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/styles/app_colors.dart';
@@ -61,39 +62,45 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                       }),
                     ])
                   ])),
-              FutureBuilder<List<QrisWalletEntry>>(
-                  future: QrisWalletService.getWalletHistory(
-                      userId: ApiParams.getInstance()!.userId!.toString()),
-                  builder: (context, snapshot) {
-                    int totalCoins = 0;
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                      CupertinoPageRoute(builder: (context) => WalletScreen()));
+                },
+                child: FutureBuilder<List<QrisWalletEntry>>(
+                    future: QrisWalletService.getWalletHistory(
+                        userId: ApiParams.getInstance()!.userId!.toString()),
+                    builder: (context, snapshot) {
+                      int totalCoins = 0;
 
-                    if (snapshot.hasData) {
-                      final coinEntries = snapshot.data!;
+                      if (snapshot.hasData) {
+                        final coinEntries = snapshot.data!;
 
-                      for (var coin in coinEntries) {
-                        if (coin.txnType == TransactionType.debit) {
-                          totalCoins -= coin.amount.toInt();
-                        } else if (coin.txnType == TransactionType.credit) {
-                          totalCoins += coin.amount.toInt();
+                        for (var coin in coinEntries) {
+                          if (coin.txnType == TransactionType.debit) {
+                            totalCoins -= coin.amount.toInt();
+                          } else if (coin.txnType == TransactionType.credit) {
+                            totalCoins += coin.amount.toInt();
+                          }
                         }
                       }
-                    }
 
-                    return Badge(
-                        isLabelVisible: snapshot.hasData,
-                        backgroundColor: AppColors.primaryPink,
-                        padding: EdgeInsets.symmetric(horizontal: 2),
-                        label: Text('₹$totalCoins',
-                            style: _textTheme.labelSmall!.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                                fontSize: 7)),
-                        child:
-                            SvgPicture.asset(Assets.homeScreenIconsWalletIcon));
-                  }),
+                      return Badge(
+                          isLabelVisible: snapshot.hasData,
+                          backgroundColor: AppColors.primaryPink,
+                          padding: EdgeInsets.symmetric(horizontal: 2),
+                          label: Text('₹$totalCoins',
+                              style: _textTheme.labelSmall!.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                  fontSize: 7)),
+                          child: SvgPicture.asset(
+                              Assets.homeScreenIconsWalletIcon));
+                    }),
+              ),
               SizedBox(width: 10),
-              InkWell(onTap: () {
-                Navigator.of(context).push(CupertinoPageRoute(
+              InkWell(onTap: () async {
+                await Navigator.of(context).push(CupertinoPageRoute(
                     builder: (context) =>
                         CartScreen(testPackageModel: null, initialPage: 1)));
               }, child:

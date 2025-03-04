@@ -29,7 +29,7 @@ extension StringExtension on String? {
       return null;
     }
 
-    return DateTime.fromMillisecondsSinceEpoch(intTime * 1000);
+    return DateTime.fromMillisecondsSinceEpoch(intTime * 1000).toLocal();
   }
 
   String get clean {

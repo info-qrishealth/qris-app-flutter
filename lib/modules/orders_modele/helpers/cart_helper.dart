@@ -15,9 +15,6 @@ class CartHelper {
       final context = Get.context!;
       BlocProvider.of<CartCubit>(context).addToCart(testPackageModel);
 
-      final cartTests =
-          BlocProvider.of<CartCubit>(context).state.cart.cartTests;
-
       Navigator.of(context).push(CupertinoPageRoute(
           builder: (context) =>
               CartScreen(testPackageModel: testPackageModel)));
