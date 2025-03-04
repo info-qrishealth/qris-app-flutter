@@ -17,11 +17,13 @@ class SelectPatientView extends StatefulWidget {
   final Function(Patient) getSelectedPatient;
   final Patient? selectedPatient;
   final bool onlyAdults;
+  final bool expanded;
   const SelectPatientView(
       {super.key,
       required this.getSelectedPatient,
       this.selectedPatient,
-      this.onlyAdults = false});
+      this.onlyAdults = false,
+      this.expanded = false});
 
   @override
   State<SelectPatientView> createState() => _SelectPatientViewState();
@@ -55,34 +57,42 @@ class _SelectPatientViewState extends State<SelectPatientView> {
                 underlineColor: AppColors.primaryPink)),
       ]),
       SizedBox(height: 18),
-      Expanded(child:
-          BlocBuilder<PatientsCubit, PatientsState>(builder: (context, state) {
-        if (state is PatientsLoaded) {
-          final patients = BlocProvider.of<PatientsCubit>(context)
-              .validPatients
-              .where((patient) => !patient.isUnderAge)
-              .toList();
-
-          return ListView.separated(
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final patient = patients[index];
-
-                return InkWell(
-                    onTap: () => widget.getSelectedPatient(patient),
-                    child: PatientListTile(
-                        patient: patient,
-                        isSelected: widget.selectedPatient?.id == patient.id));
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 10);
-              },
-              itemCount: patients.length);
-        }
-
-        return CommonListviewShimmer();
-      })),
+      if (widget.expanded)
+        Expanded(child: _buildListView())
+      else
+        _buildListView(),
     ]);
+  }
+
+  Widget _buildListView() {
+    return BlocBuilder<PatientsCubit, PatientsState>(builder: (context, state) {
+      if (state is PatientsLoaded) {
+        final patients = BlocProvider.of<PatientsCubit>(context)
+            .validPatients
+            .where((patient) => !patient.isUnderAge)
+            .toList();
+
+        return ListView.separated(
+            physics: widget.expanded
+                ? BouncingScrollPhysics()
+                : NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              final patient = patients[index];
+
+              return InkWell(
+                  onTap: () => widget.getSelectedPatient(patient),
+                  child: PatientListTile(
+                      patient: patient,
+                      isSelected: widget.selectedPatient?.id == patient.id));
+            },
+            separatorBuilder: (context, index) {
+              return SizedBox(height: 10);
+            },
+            itemCount: patients.length);
+      }
+
+      return CommonListviewShimmer();
+    });
   }
 }

@@ -39,7 +39,7 @@ class _CartScreenState extends State<CartScreen> {
                               controller: _pageController,
                               physics: NeverScrollableScrollPhysics(),
                               children: [
-                            SelectPatientTab(onContinue: () {
+                            SelectPatientTab(onContinue: (selectedPatient) {
                               _animateToPage(pageIndex: 1);
                             }),
                             SelectAddressTab(onContinue: () {

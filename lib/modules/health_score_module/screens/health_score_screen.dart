@@ -117,6 +117,7 @@ class _HealthScoreScreenState extends State<HealthScoreScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Expanded(
           child: SelectPatientView(
+              expanded: true,
               selectedPatient: _selectedPatient,
               getSelectedPatient: (patient) {
                 setState(() {

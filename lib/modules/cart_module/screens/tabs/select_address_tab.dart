@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/address_module/components/add_address_bottom_sheet.dart';
 import 'package:qris_health/modules/address_module/components/address_list_tile.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
@@ -53,8 +54,7 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                               VerticalDivider(
                                   color: Colors.black.withOpacity(0.09),
                                   thickness: 1.5),
-                              SvgPicture.asset(
-                                  'assets/images/icons/delete_icon.svg')
+                              SvgPicture.asset(Assets.iconsDeleteIcon)
                             ]));
                       }),
                     ]);

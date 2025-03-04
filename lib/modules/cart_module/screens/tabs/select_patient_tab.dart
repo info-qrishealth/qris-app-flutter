@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qris_health/modules/health_score_module/components/select_patient_view.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
+import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../../shared/components/heading_text.dart';
 import '../../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 
 class SelectPatientTab extends StatefulWidget {
-  final Function() onContinue;
+  final Function(Patient) onContinue;
   const SelectPatientTab({super.key, required this.onContinue});
 
   @override
@@ -16,6 +17,8 @@ class SelectPatientTab extends StatefulWidget {
 }
 
 class _SelectPatientTabState extends State<SelectPatientTab> {
+  Patient? _selectedPatient;
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +32,7 @@ class _SelectPatientTabState extends State<SelectPatientTab> {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Expanded(
-          child: ListView(children: [
+          child: ListView(physics: BouncingScrollPhysics(), children: [
         HeadingText(text: 'Package Details'),
         SizedBox(height: 18),
         PackageListTile(
@@ -38,13 +41,23 @@ class _SelectPatientTabState extends State<SelectPatientTab> {
             description:
                 'Included : Liver Test, Kidney Test, Blood glucose fasting, Lipid profile, Thyroid Profile, HBA1C, Urine Test....'),
         SizedBox(height: 32),
-        SelectPatientView(getSelectedPatient: (patient) {}),
+        SelectPatientView(
+            getSelectedPatient: (patient) {
+              setState(() {
+                _selectedPatient = patient;
+              });
+            },
+            selectedPatient: _selectedPatient),
       ])),
-      ElevatedButton(
-          onPressed: widget.onContinue,
-          style:
-              ElevatedButton.styleFrom(backgroundColor: AppColors.primaryBlue),
-          child: Text('Continue')),
+      Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: ElevatedButton(
+              onPressed: _selectedPatient == null
+                  ? null
+                  : () => widget.onContinue(_selectedPatient!),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryBlue),
+              child: Text('Continue'))),
       SizedBox(height: 16)
     ]);
   }
