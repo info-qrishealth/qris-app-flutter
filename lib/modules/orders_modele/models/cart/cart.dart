@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../address_module/models/address/address.dart';
+import '../coupon/coupon.dart';
 import '../time_slot/time_slot.dart';
 
 part 'cart.freezed.dart';
@@ -12,7 +13,8 @@ class Cart with _$Cart {
       {required List<CartTest> cartTests,
       Address? selectedAddress,
       TimeSlot? timeSlot,
-      DateTime? collectionDate}) = _Cart;
+      DateTime? collectionDate,
+      Coupon? appliedCoupon}) = _Cart;
 
   factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
 }

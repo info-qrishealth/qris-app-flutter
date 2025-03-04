@@ -24,6 +24,7 @@ mixin _$Cart {
   Address? get selectedAddress => throw _privateConstructorUsedError;
   TimeSlot? get timeSlot => throw _privateConstructorUsedError;
   DateTime? get collectionDate => throw _privateConstructorUsedError;
+  Coupon? get appliedCoupon => throw _privateConstructorUsedError;
 
   /// Serializes this Cart to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,10 +44,12 @@ abstract class $CartCopyWith<$Res> {
       {List<CartTest> cartTests,
       Address? selectedAddress,
       TimeSlot? timeSlot,
-      DateTime? collectionDate});
+      DateTime? collectionDate,
+      Coupon? appliedCoupon});
 
   $AddressCopyWith<$Res>? get selectedAddress;
   $TimeSlotCopyWith<$Res>? get timeSlot;
+  $CouponCopyWith<$Res>? get appliedCoupon;
 }
 
 /// @nodoc
@@ -68,6 +71,7 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
     Object? selectedAddress = freezed,
     Object? timeSlot = freezed,
     Object? collectionDate = freezed,
+    Object? appliedCoupon = freezed,
   }) {
     return _then(_value.copyWith(
       cartTests: null == cartTests
@@ -86,6 +90,10 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
           ? _value.collectionDate
           : collectionDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      appliedCoupon: freezed == appliedCoupon
+          ? _value.appliedCoupon
+          : appliedCoupon // ignore: cast_nullable_to_non_nullable
+              as Coupon?,
     ) as $Val);
   }
 
@@ -116,6 +124,20 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
       return _then(_value.copyWith(timeSlot: value) as $Val);
     });
   }
+
+  /// Create a copy of Cart
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CouponCopyWith<$Res>? get appliedCoupon {
+    if (_value.appliedCoupon == null) {
+      return null;
+    }
+
+    return $CouponCopyWith<$Res>(_value.appliedCoupon!, (value) {
+      return _then(_value.copyWith(appliedCoupon: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -129,12 +151,15 @@ abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
       {List<CartTest> cartTests,
       Address? selectedAddress,
       TimeSlot? timeSlot,
-      DateTime? collectionDate});
+      DateTime? collectionDate,
+      Coupon? appliedCoupon});
 
   @override
   $AddressCopyWith<$Res>? get selectedAddress;
   @override
   $TimeSlotCopyWith<$Res>? get timeSlot;
+  @override
+  $CouponCopyWith<$Res>? get appliedCoupon;
 }
 
 /// @nodoc
@@ -153,6 +178,7 @@ class __$$CartImplCopyWithImpl<$Res>
     Object? selectedAddress = freezed,
     Object? timeSlot = freezed,
     Object? collectionDate = freezed,
+    Object? appliedCoupon = freezed,
   }) {
     return _then(_$CartImpl(
       cartTests: null == cartTests
@@ -171,6 +197,10 @@ class __$$CartImplCopyWithImpl<$Res>
           ? _value.collectionDate
           : collectionDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      appliedCoupon: freezed == appliedCoupon
+          ? _value.appliedCoupon
+          : appliedCoupon // ignore: cast_nullable_to_non_nullable
+              as Coupon?,
     ));
   }
 }
@@ -182,7 +212,8 @@ class _$CartImpl implements _Cart {
       {required final List<CartTest> cartTests,
       this.selectedAddress,
       this.timeSlot,
-      this.collectionDate})
+      this.collectionDate,
+      this.appliedCoupon})
       : _cartTests = cartTests;
 
   factory _$CartImpl.fromJson(Map<String, dynamic> json) =>
@@ -202,10 +233,12 @@ class _$CartImpl implements _Cart {
   final TimeSlot? timeSlot;
   @override
   final DateTime? collectionDate;
+  @override
+  final Coupon? appliedCoupon;
 
   @override
   String toString() {
-    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate)';
+    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate, appliedCoupon: $appliedCoupon)';
   }
 
   @override
@@ -220,7 +253,9 @@ class _$CartImpl implements _Cart {
             (identical(other.timeSlot, timeSlot) ||
                 other.timeSlot == timeSlot) &&
             (identical(other.collectionDate, collectionDate) ||
-                other.collectionDate == collectionDate));
+                other.collectionDate == collectionDate) &&
+            (identical(other.appliedCoupon, appliedCoupon) ||
+                other.appliedCoupon == appliedCoupon));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -230,7 +265,8 @@ class _$CartImpl implements _Cart {
       const DeepCollectionEquality().hash(_cartTests),
       selectedAddress,
       timeSlot,
-      collectionDate);
+      collectionDate,
+      appliedCoupon);
 
   /// Create a copy of Cart
   /// with the given fields replaced by the non-null parameter values.
@@ -253,7 +289,8 @@ abstract class _Cart implements Cart {
       {required final List<CartTest> cartTests,
       final Address? selectedAddress,
       final TimeSlot? timeSlot,
-      final DateTime? collectionDate}) = _$CartImpl;
+      final DateTime? collectionDate,
+      final Coupon? appliedCoupon}) = _$CartImpl;
 
   factory _Cart.fromJson(Map<String, dynamic> json) = _$CartImpl.fromJson;
 
@@ -265,6 +302,8 @@ abstract class _Cart implements Cart {
   TimeSlot? get timeSlot;
   @override
   DateTime? get collectionDate;
+  @override
+  Coupon? get appliedCoupon;
 
   /// Create a copy of Cart
   /// with the given fields replaced by the non-null parameter values.

@@ -34,8 +34,7 @@ class AddressListTile extends StatelessWidget {
                 Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Align(
               alignment: Alignment.topCenter,
-              child: SvgPicture.asset('assets/images/icons/location_icon.svg',
-                  height: 22)),
+              child: SvgPicture.asset(Assets.iconsLocationIcon, height: 22)),
           SizedBox(width: 8),
           Expanded(
               child: Text(
