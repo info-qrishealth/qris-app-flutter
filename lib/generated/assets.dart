@@ -86,6 +86,7 @@ class Assets {
   static const String illustrationsDoctorAdIllustration = 'assets/images/illustrations/doctor_ad_illustration.png';
   static const String illustrationsDoctorConsultationIllustration = 'assets/images/illustrations/doctor_consultation_illustration.png';
   static const String illustrationsDoctorIllustration = 'assets/images/illustrations/doctor_illustration.png';
+  static const String illustrationsEmptyCartIllustration = 'assets/images/illustrations/empty_cart_illustration.png';
   static const String illustrationsFemaleDisorderIllustration = 'assets/images/illustrations/female_disorder_illustration.png';
   static const String illustrationsFemaleInfertilityIllustration = 'assets/images/illustrations/female_infertility_illustration.png';
   static const String illustrationsHealthScoreIllustration = 'assets/images/illustrations/health_score_illustration.png';

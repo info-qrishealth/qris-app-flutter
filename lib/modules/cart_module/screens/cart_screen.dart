@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/cart_module/components/step_indicator/step_indicator.dart';
 import 'package:qris_health/modules/cart_module/screens/tabs/bill_summary_tab.dart';
@@ -9,9 +11,11 @@ import 'package:qris_health/modules/cart_module/screens/tabs/select_patient_tab.
 import 'package:qris_health/modules/cart_module/screens/tabs/time_slot_tab.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
+import 'package:qris_health/styles/app_colors.dart';
 
 class CartScreen extends StatefulWidget {
   final TestPackageModel? testPackageModel;
+
   const CartScreen({super.key, required this.testPackageModel});
 
   @override
@@ -27,41 +31,65 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
         appBar: CommonAppBar(title: 'My Cart'),
         body: SafeArea(
-            child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: AppConstants.scaffoldPadding),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 24),
-                      Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: CartStepIndicator(_selectedPage)),
-                      SizedBox(height: 50),
-                      Expanded(
-                          child: PageView(
-                              controller: _pageController,
-                              physics: NeverScrollableScrollPhysics(),
-                              children: [
-                            SelectPatientTab(
-                                testPackageModel: widget.testPackageModel,
-                                onContinue: (selectedPatient) {
-                                  BlocProvider.of<CartCubit>(context)
-                                      .addPatientToTest(
-                                          patientId: selectedPatient.id!,
-                                          testId: widget.testPackageModel!.id);
+            child: BlocBuilder<CartCubit, CartState>(
+                buildWhen: (p, c) =>
+                    p.cart.cartTests.length != c.cart.cartTests.length,
+                builder: (context, state) {
+                  if (state.cart.cartTests.isEmpty) {
+                    BlocProvider.of<CartCubit>(context).clearCart();
 
-                                  _animateToPage(pageIndex: 1);
-                                }),
-                            SelectAddressTab(onContinue: () {
-                              _animateToPage(pageIndex: 2);
-                            }),
-                            TimeSlotTab(onContinue: () {
-                              _animateToPage(pageIndex: 3);
-                            }),
-                            BillSummaryTab()
-                          ])),
-                    ]))));
+                    return Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                          Image.asset(Assets.illustrationsEmptyCartIllustration,
+                              height: 180),
+                          SizedBox(height: 24),
+                          Text('No test added.',
+                              style: Get.textTheme.titleMedium!.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.lightGrey)),
+                          SizedBox(height: 50)
+                        ]));
+                  }
+
+                  return Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppConstants.scaffoldPadding),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 24),
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: CartStepIndicator(_selectedPage)),
+                            SizedBox(height: 50),
+                            Expanded(
+                                child: PageView(
+                                    controller: _pageController,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    children: [
+                                  SelectPatientTab(
+                                      testPackageModel: widget.testPackageModel,
+                                      onContinue: (selectedPatient) {
+                                        BlocProvider.of<CartCubit>(context)
+                                            .addPatientToTest(
+                                                patientId: selectedPatient.id!,
+                                                testId: widget
+                                                    .testPackageModel!.id);
+
+                                        _animateToPage(pageIndex: 1);
+                                      }),
+                                  SelectAddressTab(onContinue: () {
+                                    _animateToPage(pageIndex: 2);
+                                  }),
+                                  TimeSlotTab(onContinue: () {
+                                    _animateToPage(pageIndex: 3);
+                                  }),
+                                  BillSummaryTab()
+                                ])),
+                          ]));
+                })));
   }
 
   void _animateToPage({required int pageIndex}) {

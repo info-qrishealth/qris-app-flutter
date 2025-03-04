@@ -72,7 +72,17 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                                         return PackageListTile(
                                             testPackage: snapshot.data,
                                             onSeeDetailsTap: null,
-                                            onBookNowTap: null);
+                                            onBookNowTap: null,
+                                            suffix: InkWell(
+                                                onTap: () {
+                                                  BlocProvider.of<CartCubit>(
+                                                          context)
+                                                      .removeTestFromCart(
+                                                          cartTest.testId);
+                                                },
+                                                child: SvgPicture.asset(
+                                                    Assets.iconsDeleteIcon,
+                                                    height: 20)));
                                       }),
                                   Column(children: [
                                     ...cartTest.patientIds.map((patientId) =>
@@ -88,14 +98,31 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                                                           (element) =>
                                                               element.id ==
                                                               patientId),
-                                                  actions: [
-                                                    VerticalDivider(
-                                                        color: Colors.black
-                                                            .withOpacity(0.09),
-                                                        thickness: 1.5),
-                                                    SvgPicture.asset(
-                                                        Assets.iconsDeleteIcon)
-                                                  ]);
+                                                  actions:
+                                                      cartTest.patientIds
+                                                                  .length ==
+                                                              1
+                                                          ? null
+                                                          : [
+                                                              VerticalDivider(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          0.09),
+                                                                  thickness:
+                                                                      1.5),
+                                                              InkWell(
+                                                                  onTap: () {
+                                                                    BlocProvider.of<CartCubit>(context).removePatientFromTest(
+                                                                        patientId:
+                                                                            patientId,
+                                                                        testId:
+                                                                            cartTest.testId);
+                                                                  },
+                                                                  child: SvgPicture
+                                                                      .asset(Assets
+                                                                          .iconsDeleteIcon))
+                                                            ]);
                                             })))
                                   ]),
                                 ]))

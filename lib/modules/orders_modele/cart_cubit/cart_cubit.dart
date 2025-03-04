@@ -15,6 +15,11 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void addToCart(TestPackageModel testPackageModel) {
+    if (state.cart.cartTests
+        .any((element) => element.testId == testPackageModel.id)) {
+      return;
+    }
+
     _updateCart(
         cart: state.cart.copyWith.call(cartTests: [
       ...state.cart.cartTests,
@@ -40,5 +45,36 @@ class CartCubit extends Cubit<CartState> {
 
   void changeAddress(Address? address) {
     _updateCart(cart: state.cart.copyWith.call(selectedAddress: address));
+  }
+
+  void removePatientFromTest({required int patientId, required int testId}) {
+    final cartTestIndex =
+        state.cart.cartTests.indexWhere((element) => element.testId == testId);
+
+    if (cartTestIndex != -1) {
+      final cartTest = state.cart.cartTests[cartTestIndex];
+      final updatedCartTest = cartTest.copyWith
+          .call(patientIds: [...cartTest.patientIds]..removeAt(cartTestIndex));
+      final tests = [...state.cart.cartTests]..removeAt(cartTestIndex);
+
+      _updateCart(
+          cart: state.cart.copyWith.call(
+              cartTests: [...tests]..insert(cartTestIndex, updatedCartTest)));
+    }
+  }
+
+  void removeTestFromCart(int testId) {
+    final index =
+        state.cart.cartTests.indexWhere((element) => element.testId == testId);
+
+    if (index != -1) {
+      _updateCart(
+          cart: state.cart.copyWith
+              .call(cartTests: [...state.cart.cartTests]..removeAt(index)));
+    }
+  }
+
+  void clearCart() {
+    emit(CartInitial());
   }
 }
