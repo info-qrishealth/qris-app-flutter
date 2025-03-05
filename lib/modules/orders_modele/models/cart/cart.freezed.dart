@@ -25,6 +25,7 @@ mixin _$Cart {
   TimeSlot? get timeSlot => throw _privateConstructorUsedError;
   DateTime? get collectionDate => throw _privateConstructorUsedError;
   Coupon? get appliedCoupon => throw _privateConstructorUsedError;
+  bool get shouldGetHardCopy => throw _privateConstructorUsedError;
 
   /// Serializes this Cart to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,7 +46,8 @@ abstract class $CartCopyWith<$Res> {
       Address? selectedAddress,
       TimeSlot? timeSlot,
       DateTime? collectionDate,
-      Coupon? appliedCoupon});
+      Coupon? appliedCoupon,
+      bool shouldGetHardCopy});
 
   $AddressCopyWith<$Res>? get selectedAddress;
   $TimeSlotCopyWith<$Res>? get timeSlot;
@@ -72,6 +74,7 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
     Object? timeSlot = freezed,
     Object? collectionDate = freezed,
     Object? appliedCoupon = freezed,
+    Object? shouldGetHardCopy = null,
   }) {
     return _then(_value.copyWith(
       cartTests: null == cartTests
@@ -94,6 +97,10 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
           ? _value.appliedCoupon
           : appliedCoupon // ignore: cast_nullable_to_non_nullable
               as Coupon?,
+      shouldGetHardCopy: null == shouldGetHardCopy
+          ? _value.shouldGetHardCopy
+          : shouldGetHardCopy // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -152,7 +159,8 @@ abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
       Address? selectedAddress,
       TimeSlot? timeSlot,
       DateTime? collectionDate,
-      Coupon? appliedCoupon});
+      Coupon? appliedCoupon,
+      bool shouldGetHardCopy});
 
   @override
   $AddressCopyWith<$Res>? get selectedAddress;
@@ -179,6 +187,7 @@ class __$$CartImplCopyWithImpl<$Res>
     Object? timeSlot = freezed,
     Object? collectionDate = freezed,
     Object? appliedCoupon = freezed,
+    Object? shouldGetHardCopy = null,
   }) {
     return _then(_$CartImpl(
       cartTests: null == cartTests
@@ -201,6 +210,10 @@ class __$$CartImplCopyWithImpl<$Res>
           ? _value.appliedCoupon
           : appliedCoupon // ignore: cast_nullable_to_non_nullable
               as Coupon?,
+      shouldGetHardCopy: null == shouldGetHardCopy
+          ? _value.shouldGetHardCopy
+          : shouldGetHardCopy // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -213,7 +226,8 @@ class _$CartImpl implements _Cart {
       this.selectedAddress,
       this.timeSlot,
       this.collectionDate,
-      this.appliedCoupon})
+      this.appliedCoupon,
+      this.shouldGetHardCopy = false})
       : _cartTests = cartTests;
 
   factory _$CartImpl.fromJson(Map<String, dynamic> json) =>
@@ -235,10 +249,13 @@ class _$CartImpl implements _Cart {
   final DateTime? collectionDate;
   @override
   final Coupon? appliedCoupon;
+  @override
+  @JsonKey()
+  final bool shouldGetHardCopy;
 
   @override
   String toString() {
-    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate, appliedCoupon: $appliedCoupon)';
+    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate, appliedCoupon: $appliedCoupon, shouldGetHardCopy: $shouldGetHardCopy)';
   }
 
   @override
@@ -255,7 +272,9 @@ class _$CartImpl implements _Cart {
             (identical(other.collectionDate, collectionDate) ||
                 other.collectionDate == collectionDate) &&
             (identical(other.appliedCoupon, appliedCoupon) ||
-                other.appliedCoupon == appliedCoupon));
+                other.appliedCoupon == appliedCoupon) &&
+            (identical(other.shouldGetHardCopy, shouldGetHardCopy) ||
+                other.shouldGetHardCopy == shouldGetHardCopy));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -266,7 +285,8 @@ class _$CartImpl implements _Cart {
       selectedAddress,
       timeSlot,
       collectionDate,
-      appliedCoupon);
+      appliedCoupon,
+      shouldGetHardCopy);
 
   /// Create a copy of Cart
   /// with the given fields replaced by the non-null parameter values.
@@ -290,7 +310,8 @@ abstract class _Cart implements Cart {
       final Address? selectedAddress,
       final TimeSlot? timeSlot,
       final DateTime? collectionDate,
-      final Coupon? appliedCoupon}) = _$CartImpl;
+      final Coupon? appliedCoupon,
+      final bool shouldGetHardCopy}) = _$CartImpl;
 
   factory _Cart.fromJson(Map<String, dynamic> json) = _$CartImpl.fromJson;
 
@@ -304,6 +325,8 @@ abstract class _Cart implements Cart {
   DateTime? get collectionDate;
   @override
   Coupon? get appliedCoupon;
+  @override
+  bool get shouldGetHardCopy;
 
   /// Create a copy of Cart
   /// with the given fields replaced by the non-null parameter values.
@@ -319,7 +342,7 @@ CartTest _$CartTestFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CartTest {
-  int get testId => throw _privateConstructorUsedError;
+  TestPackageModel get test => throw _privateConstructorUsedError;
   List<int> get patientIds => throw _privateConstructorUsedError;
 
   /// Serializes this CartTest to a JSON map.
@@ -337,7 +360,9 @@ abstract class $CartTestCopyWith<$Res> {
   factory $CartTestCopyWith(CartTest value, $Res Function(CartTest) then) =
       _$CartTestCopyWithImpl<$Res, CartTest>;
   @useResult
-  $Res call({int testId, List<int> patientIds});
+  $Res call({TestPackageModel test, List<int> patientIds});
+
+  $TestPackageModelCopyWith<$Res> get test;
 }
 
 /// @nodoc
@@ -355,19 +380,29 @@ class _$CartTestCopyWithImpl<$Res, $Val extends CartTest>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? testId = null,
+    Object? test = null,
     Object? patientIds = null,
   }) {
     return _then(_value.copyWith(
-      testId: null == testId
-          ? _value.testId
-          : testId // ignore: cast_nullable_to_non_nullable
-              as int,
+      test: null == test
+          ? _value.test
+          : test // ignore: cast_nullable_to_non_nullable
+              as TestPackageModel,
       patientIds: null == patientIds
           ? _value.patientIds
           : patientIds // ignore: cast_nullable_to_non_nullable
               as List<int>,
     ) as $Val);
+  }
+
+  /// Create a copy of CartTest
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TestPackageModelCopyWith<$Res> get test {
+    return $TestPackageModelCopyWith<$Res>(_value.test, (value) {
+      return _then(_value.copyWith(test: value) as $Val);
+    });
   }
 }
 
@@ -379,7 +414,10 @@ abstract class _$$CartTestImplCopyWith<$Res>
       __$$CartTestImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int testId, List<int> patientIds});
+  $Res call({TestPackageModel test, List<int> patientIds});
+
+  @override
+  $TestPackageModelCopyWith<$Res> get test;
 }
 
 /// @nodoc
@@ -395,14 +433,14 @@ class __$$CartTestImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? testId = null,
+    Object? test = null,
     Object? patientIds = null,
   }) {
     return _then(_$CartTestImpl(
-      testId: null == testId
-          ? _value.testId
-          : testId // ignore: cast_nullable_to_non_nullable
-              as int,
+      test: null == test
+          ? _value.test
+          : test // ignore: cast_nullable_to_non_nullable
+              as TestPackageModel,
       patientIds: null == patientIds
           ? _value._patientIds
           : patientIds // ignore: cast_nullable_to_non_nullable
@@ -415,14 +453,14 @@ class __$$CartTestImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CartTestImpl implements _CartTest {
   const _$CartTestImpl(
-      {required this.testId, required final List<int> patientIds})
+      {required this.test, required final List<int> patientIds})
       : _patientIds = patientIds;
 
   factory _$CartTestImpl.fromJson(Map<String, dynamic> json) =>
       _$$CartTestImplFromJson(json);
 
   @override
-  final int testId;
+  final TestPackageModel test;
   final List<int> _patientIds;
   @override
   List<int> get patientIds {
@@ -433,7 +471,7 @@ class _$CartTestImpl implements _CartTest {
 
   @override
   String toString() {
-    return 'CartTest(testId: $testId, patientIds: $patientIds)';
+    return 'CartTest(test: $test, patientIds: $patientIds)';
   }
 
   @override
@@ -441,7 +479,7 @@ class _$CartTestImpl implements _CartTest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CartTestImpl &&
-            (identical(other.testId, testId) || other.testId == testId) &&
+            (identical(other.test, test) || other.test == test) &&
             const DeepCollectionEquality()
                 .equals(other._patientIds, _patientIds));
   }
@@ -449,7 +487,7 @@ class _$CartTestImpl implements _CartTest {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, testId, const DeepCollectionEquality().hash(_patientIds));
+      runtimeType, test, const DeepCollectionEquality().hash(_patientIds));
 
   /// Create a copy of CartTest
   /// with the given fields replaced by the non-null parameter values.
@@ -469,14 +507,14 @@ class _$CartTestImpl implements _CartTest {
 
 abstract class _CartTest implements CartTest {
   const factory _CartTest(
-      {required final int testId,
+      {required final TestPackageModel test,
       required final List<int> patientIds}) = _$CartTestImpl;
 
   factory _CartTest.fromJson(Map<String, dynamic> json) =
       _$CartTestImpl.fromJson;
 
   @override
-  int get testId;
+  TestPackageModel get test;
   @override
   List<int> get patientIds;
 

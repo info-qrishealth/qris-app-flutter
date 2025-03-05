@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 
 import '../../../address_module/models/address/address.dart';
 import '../coupon/coupon.dart';
@@ -14,15 +15,17 @@ class Cart with _$Cart {
       Address? selectedAddress,
       TimeSlot? timeSlot,
       DateTime? collectionDate,
-      Coupon? appliedCoupon}) = _Cart;
+      Coupon? appliedCoupon,
+      @Default(false) bool shouldGetHardCopy}) = _Cart;
 
   factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
 }
 
 @freezed
 class CartTest with _$CartTest {
-  const factory CartTest({required int testId, required List<int> patientIds}) =
-      _CartTest;
+  const factory CartTest(
+      {required TestPackageModel test,
+      required List<int> patientIds}) = _CartTest;
 
   factory CartTest.fromJson(Map<String, dynamic> json) =>
       _$CartTestFromJson(json);

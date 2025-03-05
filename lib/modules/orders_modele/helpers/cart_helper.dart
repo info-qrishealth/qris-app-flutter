@@ -13,6 +13,7 @@ class CartHelper {
       {required TestPackageModel testPackageModel}) async {
     try {
       final context = Get.context!;
+      BlocProvider.of<CartCubit>(context).removeInvalidTestsFromCart();
       BlocProvider.of<CartCubit>(context).addToCart(testPackageModel);
 
       Navigator.of(context).push(CupertinoPageRoute(

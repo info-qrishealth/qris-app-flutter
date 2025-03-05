@@ -4,15 +4,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:qris_health/constants/app_constants.dart';
-import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
-import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/shared/components/billing_amount_row.dart';
 import 'package:qris_health/shared/components/feature_row.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
+import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
+import 'package:qris_health/shared/models/qris_config/qris_config.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../../constants/enums/payment_mode.dart';
@@ -29,9 +29,15 @@ class BillSummaryTab extends StatefulWidget {
 
 class _BillSummaryTabState extends State<BillSummaryTab> {
   final _textTheme = Get.textTheme;
-  bool _shouldGetHardCopy = false;
   bool _redeemCoins = false;
   PaymentMode? _selectedPaymentMode;
+  late final QrisConfig _config;
+
+  @override
+  void initState() {
+    super.initState();
+    _config = BlocProvider.of<QrisConfigCubit>(context).state.config!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,25 +77,19 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                           SizedBox(height: 12),
                           ...state.cart.cartTests.map((cartTest) {
                             return Column(children: [
-                              FutureBuilder<TestPackageModel>(
-                                  future: TestService.getTestByTestId(
-                                      id: cartTest.testId),
-                                  builder: (context, snapshot) {
-                                    return PackageListTile(
-                                        testPackage: snapshot.data,
-                                        onSeeDetailsTap: null,
-                                        onBookNowTap: null,
-                                        suffix: InkWell(
-                                            onTap: () {
-                                              BlocProvider.of<CartCubit>(
-                                                      context)
-                                                  .removeTestFromCart(
-                                                      cartTest.testId);
-                                            },
-                                            child: SvgPicture.asset(
-                                                Assets.iconsDeleteIcon,
-                                                height: 20)));
-                                  }),
+                              PackageListTile(
+                                  testPackage: cartTest.test,
+                                  onSeeDetailsTap: null,
+                                  onBookNowTap: null,
+                                  suffix: InkWell(
+                                      onTap: () {
+                                        BlocProvider.of<CartCubit>(context)
+                                            .removeTestFromCart(
+                                                cartTest.test.id);
+                                      },
+                                      child: SvgPicture.asset(
+                                          Assets.iconsDeleteIcon,
+                                          height: 20))),
                               Column(children: [
                                 ...cartTest.patientIds.map((patientId) =>
                                     Padding(
@@ -120,8 +120,10 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                                                 .removePatientFromTest(
                                                                     patientId:
                                                                         patientId,
-                                                                    testId: cartTest
-                                                                        .testId);
+                                                                    testId:
+                                                                        cartTest
+                                                                            .test
+                                                                            .id);
                                                           },
                                                           child: SvgPicture.asset(
                                                               Assets
@@ -161,8 +163,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                       border: Border.all(
                                           color: AppColors.borderColor)),
                                   child: Row(children: [
-                                    SvgPicture.asset(
-                                        'assets/images/icons/coupon_icon.svg',
+                                    SvgPicture.asset(Assets.iconsCouponIcon,
                                         color: AppColors.green),
                                     SizedBox(width: 8),
                                     Text('Apply coupon',
@@ -179,9 +180,8 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                 SizedBox(height: 10),
                 GestureDetector(
                     onTap: () {
-                      setState(() {
-                        _shouldGetHardCopy = !_shouldGetHardCopy;
-                      });
+                      BlocProvider.of<CartCubit>(context)
+                          .updateHardCopy(!state.cart.shouldGetHardCopy);
                     },
                     child: Container(
                         padding:
@@ -198,12 +198,11 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                       height: 16,
                                       width: 16,
                                       child: Checkbox(
-                                          value: _shouldGetHardCopy,
+                                          value: state.cart.shouldGetHardCopy,
                                           onChanged: (value) {
-                                            setState(() {
-                                              _shouldGetHardCopy =
-                                                  !_shouldGetHardCopy;
-                                            });
+                                            BlocProvider.of<CartCubit>(context)
+                                                .updateHardCopy(!state
+                                                    .cart.shouldGetHardCopy);
                                           },
                                           side: BorderSide(
                                               color: AppColors
@@ -271,14 +270,19 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                           HeadingText(text: 'Bill Summary'),
                           SizedBox(height: 16),
                           SummaryInfoRow(
-                              title: 'Package added', value: '₹1099'),
+                              title: 'Package added',
+                              value:
+                                  '₹${BlocProvider.of<CartCubit>(context).getCartTestPrices().toInt()}'),
                           SizedBox(height: 4),
                           SummaryInfoRow(
-                              title: 'Hard copy charges', value: '₹99'),
+                              title: 'Hard copy charges',
+                              value:
+                                  '₹${state.cart.shouldGetHardCopy ? '99' : '0'}'),
                           SizedBox(height: 4),
                           SummaryInfoRow(
                               title: 'Sample collection charges ',
-                              value: '₹99'),
+                              value:
+                                  '₹${BlocProvider.of<CartCubit>(context).getCartTestPrices() >= 499 ? '0' : '99'}'),
                           SizedBox(height: 2),
                           Text('(applicable when order below ₹499)',
                               style: _textTheme.labelSmall!.copyWith(
@@ -295,7 +299,8 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                 child: Text('Cart Value',
                                     style: _textTheme.bodySmall!.copyWith(
                                         fontWeight: FontWeight.w700))),
-                            Text('₹1198',
+                            Text(
+                                '₹${BlocProvider.of<CartCubit>(context).getCartFinalValue().toInt()}',
                                 style: _textTheme.bodySmall!
                                     .copyWith(color: AppColors.primaryPink)),
                           ]),

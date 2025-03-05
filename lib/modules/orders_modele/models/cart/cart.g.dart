@@ -22,6 +22,7 @@ _$CartImpl _$$CartImplFromJson(Map<String, dynamic> json) => _$CartImpl(
       appliedCoupon: json['appliedCoupon'] == null
           ? null
           : Coupon.fromJson(json['appliedCoupon'] as Map<String, dynamic>),
+      shouldGetHardCopy: json['shouldGetHardCopy'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$CartImplToJson(_$CartImpl instance) =>
@@ -31,11 +32,12 @@ Map<String, dynamic> _$$CartImplToJson(_$CartImpl instance) =>
       'timeSlot': instance.timeSlot,
       'collectionDate': instance.collectionDate?.toIso8601String(),
       'appliedCoupon': instance.appliedCoupon,
+      'shouldGetHardCopy': instance.shouldGetHardCopy,
     };
 
 _$CartTestImpl _$$CartTestImplFromJson(Map<String, dynamic> json) =>
     _$CartTestImpl(
-      testId: (json['testId'] as num).toInt(),
+      test: TestPackageModel.fromJson(json['test'] as Map<String, dynamic>),
       patientIds: (json['patientIds'] as List<dynamic>)
           .map((e) => (e as num).toInt())
           .toList(),
@@ -43,6 +45,6 @@ _$CartTestImpl _$$CartTestImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$CartTestImplToJson(_$CartTestImpl instance) =>
     <String, dynamic>{
-      'testId': instance.testId,
+      'test': instance.test,
       'patientIds': instance.patientIds,
     };

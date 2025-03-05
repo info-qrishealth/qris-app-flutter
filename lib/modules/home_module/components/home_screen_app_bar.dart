@@ -63,43 +63,44 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ])
                   ])),
               InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                      CupertinoPageRoute(builder: (context) => WalletScreen()));
-                },
-                child: FutureBuilder<List<QrisWalletEntry>>(
-                    future: QrisWalletService.getWalletHistory(
-                        userId: ApiParams.getInstance()!.userId!.toString()),
-                    builder: (context, snapshot) {
-                      int totalCoins = 0;
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => WalletScreen()));
+                  },
+                  child: FutureBuilder<List<QrisWalletEntry>>(
+                      future: QrisWalletService.getWalletHistory(
+                          userId: ApiParams.getInstance()!.userId!.toString()),
+                      builder: (context, snapshot) {
+                        int totalCoins = 0;
 
-                      if (snapshot.hasData) {
-                        final coinEntries = snapshot.data!;
+                        if (snapshot.hasData) {
+                          final coinEntries = snapshot.data!;
 
-                        for (var coin in coinEntries) {
-                          if (coin.txnType == TransactionType.debit) {
-                            totalCoins -= coin.amount.toInt();
-                          } else if (coin.txnType == TransactionType.credit) {
-                            totalCoins += coin.amount.toInt();
+                          for (var coin in coinEntries) {
+                            if (coin.txnType == TransactionType.debit) {
+                              totalCoins -= coin.amount.toInt();
+                            } else if (coin.txnType == TransactionType.credit) {
+                              totalCoins += coin.amount.toInt();
+                            }
                           }
                         }
-                      }
 
-                      return Badge(
-                          isLabelVisible: snapshot.hasData,
-                          backgroundColor: AppColors.primaryPink,
-                          padding: EdgeInsets.symmetric(horizontal: 2),
-                          label: Text('₹$totalCoins',
-                              style: _textTheme.labelSmall!.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                  fontSize: 7)),
-                          child: SvgPicture.asset(
-                              Assets.homeScreenIconsWalletIcon));
-                    }),
-              ),
+                        return Badge(
+                            isLabelVisible: snapshot.hasData,
+                            backgroundColor: AppColors.primaryPink,
+                            padding: EdgeInsets.symmetric(horizontal: 2),
+                            label: Text('₹$totalCoins',
+                                style: _textTheme.labelSmall!.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    fontSize: 7)),
+                            child: SvgPicture.asset(
+                                Assets.homeScreenIconsWalletIcon));
+                      })),
               SizedBox(width: 10),
               InkWell(onTap: () async {
+                BlocProvider.of<CartCubit>(context)
+                    .removeInvalidTestsFromCart();
                 await Navigator.of(context).push(CupertinoPageRoute(
                     builder: (context) =>
                         CartScreen(testPackageModel: null, initialPage: 1)));
@@ -108,7 +109,11 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                 return Badge(
                     backgroundColor: AppColors.primaryPink,
                     padding: EdgeInsets.zero,
-                    label: Text(state.cart.cartTests.length.toString(),
+                    label: Text(
+                        state.cart.cartTests
+                            .where((element) => element.patientIds.isNotEmpty)
+                            .length
+                            .toString(),
                         style: _textTheme.labelSmall!.copyWith(
                             fontWeight: FontWeight.w700,
                             color: Colors.white,

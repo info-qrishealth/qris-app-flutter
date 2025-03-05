@@ -65,25 +65,19 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                     return Column(
                         children: state.cart.cartTests
                             .map((cartTest) => Column(children: [
-                                  FutureBuilder<TestPackageModel>(
-                                      future: TestService.getTestByTestId(
-                                          id: cartTest.testId),
-                                      builder: (context, snapshot) {
-                                        return PackageListTile(
-                                            testPackage: snapshot.data,
-                                            onSeeDetailsTap: null,
-                                            onBookNowTap: null,
-                                            suffix: InkWell(
-                                                onTap: () {
-                                                  BlocProvider.of<CartCubit>(
-                                                          context)
-                                                      .removeTestFromCart(
-                                                          cartTest.testId);
-                                                },
-                                                child: SvgPicture.asset(
-                                                    Assets.iconsDeleteIcon,
-                                                    height: 20)));
-                                      }),
+                                  PackageListTile(
+                                      testPackage: cartTest.test,
+                                      onSeeDetailsTap: null,
+                                      onBookNowTap: null,
+                                      suffix: InkWell(
+                                          onTap: () {
+                                            BlocProvider.of<CartCubit>(context)
+                                                .removeTestFromCart(
+                                                    cartTest.test.id);
+                                          },
+                                          child: SvgPicture.asset(
+                                              Assets.iconsDeleteIcon,
+                                              height: 20))),
                                   Column(children: [
                                     ...cartTest.patientIds.map((patientId) =>
                                         Padding(
@@ -116,8 +110,9 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                                                                     BlocProvider.of<CartCubit>(context).removePatientFromTest(
                                                                         patientId:
                                                                             patientId,
-                                                                        testId:
-                                                                            cartTest.testId);
+                                                                        testId: cartTest
+                                                                            .test
+                                                                            .id);
                                                                   },
                                                                   child: SvgPicture
                                                                       .asset(Assets
