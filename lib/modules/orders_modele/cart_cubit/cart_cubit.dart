@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
+import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
 
+import '../../../shared/models/qris_config/qris_config.dart';
 import '../../address_module/models/address/address.dart';
 import '../models/cart/cart.dart';
 
@@ -93,4 +95,6 @@ class CartCubit extends Cubit<CartState> {
   void updateCollectionDate(DateTime collectionDate) {
     _updateCart(cart: state.cart.copyWith.call(collectionDate: collectionDate));
   }
+
+  void applyCoupon({required Coupon coupon, required QrisConfig config}) {}
 }

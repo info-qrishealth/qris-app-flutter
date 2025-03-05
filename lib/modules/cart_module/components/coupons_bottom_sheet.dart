@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/cart_module/components/coupon_applied_dialog.dart';
+import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/orders_modele/services/coupon_service.dart';
 import 'package:qris_health/shared/components/common_bottom_sheet_template.dart';
 import 'package:qris_health/shared/components/common_cross_icon.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
+import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
+import 'package:qris_health/shared/models/qris_config/qris_config.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../orders_modele/models/coupon/coupon.dart';
@@ -24,11 +28,13 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
   final _textTheme = Get.textTheme;
   late final Future<List<Coupon>> _couponsFuture;
   List<Coupon>? _coupons;
+  late QrisConfig _config;
 
   @override
   void initState() {
     super.initState();
     _couponsFuture = CouponService.getAllCoupons();
+    _config = BlocProvider.of<QrisConfigCubit>(context).state.config!;
   }
 
   @override
@@ -108,6 +114,9 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
                             onTap: () async {
                               Navigator.of(context).pop();
                               await Future.delayed(Duration(milliseconds: 100));
+
+                              BlocProvider.of<CartCubit>(context)
+                                  .applyCoupon(coupon: coupon, config: _config);
 
                               await showDialog(
                                   context: context,
