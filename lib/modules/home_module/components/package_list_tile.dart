@@ -98,7 +98,7 @@ class PackageListTile extends StatelessWidget {
                 if (onBookNowTap != null)
                   Expanded(
                       child: InkWell(
-                          onTap: () {},
+                          onTap: onBookNowTap,
                           child: Container(
                               padding: EdgeInsets.symmetric(vertical: 10),
                               alignment: Alignment.center,

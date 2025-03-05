@@ -9,6 +9,7 @@ import 'package:qris_health/modules/health_article_module/cubits/health_articles
 import 'package:qris_health/modules/health_article_module/models/health_article/health_article.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
+import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_html_text.dart';
 import 'package:qris_health/shared/components/common_network_image.dart';
@@ -92,7 +93,11 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
                                   itemBuilder: (context, index) {
                                     return PackageTileHorizontal(
                                         testPackageModel: packages[index],
-                                        onBookNowTap: () {});
+                                        onBookNowTap: () async {
+                                          await CartHelper.addToCartAndNavigate(
+                                              testPackageModel:
+                                                  packages[index]);
+                                        });
                                   },
                                   separatorBuilder: (context, index) {
                                     return SizedBox(width: 8);

@@ -10,6 +10,7 @@ import 'package:qris_health/modules/health_score_module/screens/health_score_int
 import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
+import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
 import 'package:qris_health/styles/app_colors.dart';
@@ -102,7 +103,11 @@ class _HealthScoreResultScreenState extends State<HealthScoreResultScreen> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return PackageTileHorizontal(
-                                onBookNowTap: () {},
+                                onBookNowTap: () async {
+                                  await CartHelper.addToCartAndNavigate(
+                                      testPackageModel:
+                                          state.popularPackages[index]);
+                                },
                                 testPackageModel: state.popularPackages[index]);
                           },
                           separatorBuilder: (context, index) {

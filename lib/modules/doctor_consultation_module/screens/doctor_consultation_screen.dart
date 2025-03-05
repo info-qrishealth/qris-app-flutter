@@ -9,6 +9,7 @@ import 'package:qris_health/modules/health_score_module/screens/health_score_int
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
+import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/modules/screens/blood_test_detail_screen.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/double_tick_row.dart';
@@ -154,7 +155,10 @@ class _DoctorConsultationScreenState extends State<DoctorConsultationScreen> {
                                                         testId:
                                                             testPackage.id)));
                                       },
-                                      onBookNowTap: () {});
+                                      onBookNowTap: () async {
+                                        await CartHelper.addToCartAndNavigate(
+                                            testPackageModel: testPackage);
+                                      });
                                 },
                                 separatorBuilder: (context, index) {
                                   return SizedBox(height: 8);
