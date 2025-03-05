@@ -29,6 +29,11 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
   void initState() {
     super.initState();
     _timeSlotFuture = OrderService.getValidTimeslots();
+    final cartCubit = BlocProvider.of<CartCubit>(context);
+
+    if (cartCubit.state.cart.collectionDate == null) {
+      cartCubit.updateCollectionDate(DateTime.now().add(Duration(days: 1)));
+    }
   }
 
   @override
@@ -52,6 +57,24 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
 
               return aTime.compareTo(bTime);
             });
+
+            final currentDateTime = DateTime.now();
+
+            if (currentDateTime.hour >= 22 &&
+                BlocProvider.of<CartCubit>(context)
+                    .state
+                    .cart
+                    .collectionDate
+                    .isTomorrow) {
+              timeSlots.removeWhere((element) {
+                final startingDateTime = element.startingTime.toDateTime!;
+                final startingTime = TimeOfDay(
+                    hour: startingDateTime.hour,
+                    minute: startingDateTime.minute);
+
+                return startingTime.isBefore(TimeOfDay(hour: 8, minute: 0));
+              });
+            }
 
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -159,6 +182,7 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
     return InkWell(
         onTap: () {
           BlocProvider.of<CartCubit>(context).updateCollectionDate(dateTime);
+          setState(() {});
         },
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
