@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
@@ -113,13 +114,14 @@ class CartCubit extends Cubit<CartState> {
     double cartFinalValue = getCartTestPrices();
 
     /// For sample collection charges
-    if (cartFinalValue < 499) {
-      cartFinalValue = cartFinalValue + 99;
+    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
+      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
     }
 
     /// For hard copy charges
     if (state.cart.shouldGetHardCopy) {
-      cartFinalValue = cartFinalValue + 99;
+      cartFinalValue =
+          cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
     }
 
     return cartFinalValue;
@@ -134,5 +136,9 @@ class CartCubit extends Cubit<CartState> {
     tests.removeWhere((element) => element.patientIds.isEmpty);
 
     _updateCart(cart: state.cart.copyWith.call(cartTests: tests));
+  }
+
+  void updateCollectionPincode(Pincode? pincode) {
+    _updateCart(cart: state.cart.copyWith.call(pincode: pincode));
   }
 }

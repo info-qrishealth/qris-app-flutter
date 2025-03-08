@@ -26,6 +26,7 @@ mixin _$Cart {
   DateTime? get collectionDate => throw _privateConstructorUsedError;
   Coupon? get appliedCoupon => throw _privateConstructorUsedError;
   bool get shouldGetHardCopy => throw _privateConstructorUsedError;
+  Pincode? get pincode => throw _privateConstructorUsedError;
 
   /// Serializes this Cart to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,11 +48,13 @@ abstract class $CartCopyWith<$Res> {
       TimeSlot? timeSlot,
       DateTime? collectionDate,
       Coupon? appliedCoupon,
-      bool shouldGetHardCopy});
+      bool shouldGetHardCopy,
+      Pincode? pincode});
 
   $AddressCopyWith<$Res>? get selectedAddress;
   $TimeSlotCopyWith<$Res>? get timeSlot;
   $CouponCopyWith<$Res>? get appliedCoupon;
+  $PincodeCopyWith<$Res>? get pincode;
 }
 
 /// @nodoc
@@ -75,6 +78,7 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
     Object? collectionDate = freezed,
     Object? appliedCoupon = freezed,
     Object? shouldGetHardCopy = null,
+    Object? pincode = freezed,
   }) {
     return _then(_value.copyWith(
       cartTests: null == cartTests
@@ -101,6 +105,10 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
           ? _value.shouldGetHardCopy
           : shouldGetHardCopy // ignore: cast_nullable_to_non_nullable
               as bool,
+      pincode: freezed == pincode
+          ? _value.pincode
+          : pincode // ignore: cast_nullable_to_non_nullable
+              as Pincode?,
     ) as $Val);
   }
 
@@ -145,6 +153,20 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
       return _then(_value.copyWith(appliedCoupon: value) as $Val);
     });
   }
+
+  /// Create a copy of Cart
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PincodeCopyWith<$Res>? get pincode {
+    if (_value.pincode == null) {
+      return null;
+    }
+
+    return $PincodeCopyWith<$Res>(_value.pincode!, (value) {
+      return _then(_value.copyWith(pincode: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -160,7 +182,8 @@ abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
       TimeSlot? timeSlot,
       DateTime? collectionDate,
       Coupon? appliedCoupon,
-      bool shouldGetHardCopy});
+      bool shouldGetHardCopy,
+      Pincode? pincode});
 
   @override
   $AddressCopyWith<$Res>? get selectedAddress;
@@ -168,6 +191,8 @@ abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
   $TimeSlotCopyWith<$Res>? get timeSlot;
   @override
   $CouponCopyWith<$Res>? get appliedCoupon;
+  @override
+  $PincodeCopyWith<$Res>? get pincode;
 }
 
 /// @nodoc
@@ -188,6 +213,7 @@ class __$$CartImplCopyWithImpl<$Res>
     Object? collectionDate = freezed,
     Object? appliedCoupon = freezed,
     Object? shouldGetHardCopy = null,
+    Object? pincode = freezed,
   }) {
     return _then(_$CartImpl(
       cartTests: null == cartTests
@@ -214,6 +240,10 @@ class __$$CartImplCopyWithImpl<$Res>
           ? _value.shouldGetHardCopy
           : shouldGetHardCopy // ignore: cast_nullable_to_non_nullable
               as bool,
+      pincode: freezed == pincode
+          ? _value.pincode
+          : pincode // ignore: cast_nullable_to_non_nullable
+              as Pincode?,
     ));
   }
 }
@@ -227,7 +257,8 @@ class _$CartImpl implements _Cart {
       this.timeSlot,
       this.collectionDate,
       this.appliedCoupon,
-      this.shouldGetHardCopy = false})
+      this.shouldGetHardCopy = false,
+      this.pincode})
       : _cartTests = cartTests;
 
   factory _$CartImpl.fromJson(Map<String, dynamic> json) =>
@@ -252,10 +283,12 @@ class _$CartImpl implements _Cart {
   @override
   @JsonKey()
   final bool shouldGetHardCopy;
+  @override
+  final Pincode? pincode;
 
   @override
   String toString() {
-    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate, appliedCoupon: $appliedCoupon, shouldGetHardCopy: $shouldGetHardCopy)';
+    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate, appliedCoupon: $appliedCoupon, shouldGetHardCopy: $shouldGetHardCopy, pincode: $pincode)';
   }
 
   @override
@@ -274,7 +307,8 @@ class _$CartImpl implements _Cart {
             (identical(other.appliedCoupon, appliedCoupon) ||
                 other.appliedCoupon == appliedCoupon) &&
             (identical(other.shouldGetHardCopy, shouldGetHardCopy) ||
-                other.shouldGetHardCopy == shouldGetHardCopy));
+                other.shouldGetHardCopy == shouldGetHardCopy) &&
+            (identical(other.pincode, pincode) || other.pincode == pincode));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -286,7 +320,8 @@ class _$CartImpl implements _Cart {
       timeSlot,
       collectionDate,
       appliedCoupon,
-      shouldGetHardCopy);
+      shouldGetHardCopy,
+      pincode);
 
   /// Create a copy of Cart
   /// with the given fields replaced by the non-null parameter values.
@@ -311,7 +346,8 @@ abstract class _Cart implements Cart {
       final TimeSlot? timeSlot,
       final DateTime? collectionDate,
       final Coupon? appliedCoupon,
-      final bool shouldGetHardCopy}) = _$CartImpl;
+      final bool shouldGetHardCopy,
+      final Pincode? pincode}) = _$CartImpl;
 
   factory _Cart.fromJson(Map<String, dynamic> json) = _$CartImpl.fromJson;
 
@@ -327,6 +363,8 @@ abstract class _Cart implements Cart {
   Coupon? get appliedCoupon;
   @override
   bool get shouldGetHardCopy;
+  @override
+  Pincode? get pincode;
 
   /// Create a copy of Cart
   /// with the given fields replaced by the non-null parameter values.

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
 
 import '../models/address/address.dart';
@@ -40,6 +41,19 @@ class AddressService {
     try {
       final response = await Wrapper.post(url, json.encode(address.toJson()));
       return Address.fromJson(json.decode(response)['body']);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<List<Pincode>> getValidPinCodes() async {
+    final url = '${AppConstants.baseUrl}/address/available-pincodes';
+
+    try {
+      final response = await Wrapper.get(url);
+      return (json.decode(response)['body'] as List)
+          .map((element) => Pincode.fromJson(element))
+          .toList();
     } catch (e) {
       rethrow;
     }

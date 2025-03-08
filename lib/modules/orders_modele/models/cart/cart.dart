@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 
 import '../../../address_module/models/address/address.dart';
+import '../../../address_module/models/pincode/pincode.dart';
 import '../coupon/coupon.dart';
 import '../time_slot/time_slot.dart';
 
@@ -16,7 +17,8 @@ class Cart with _$Cart {
       TimeSlot? timeSlot,
       DateTime? collectionDate,
       Coupon? appliedCoupon,
-      @Default(false) bool shouldGetHardCopy}) = _Cart;
+      @Default(false) bool shouldGetHardCopy,
+      Pincode? pincode}) = _Cart;
 
   factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
 }

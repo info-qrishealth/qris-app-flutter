@@ -23,6 +23,9 @@ _$CartImpl _$$CartImplFromJson(Map<String, dynamic> json) => _$CartImpl(
           ? null
           : Coupon.fromJson(json['appliedCoupon'] as Map<String, dynamic>),
       shouldGetHardCopy: json['shouldGetHardCopy'] as bool? ?? false,
+      pincode: json['pincode'] == null
+          ? null
+          : Pincode.fromJson(json['pincode'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$CartImplToJson(_$CartImpl instance) =>
@@ -33,6 +36,7 @@ Map<String, dynamic> _$$CartImplToJson(_$CartImpl instance) =>
       'collectionDate': instance.collectionDate?.toIso8601String(),
       'appliedCoupon': instance.appliedCoupon,
       'shouldGetHardCopy': instance.shouldGetHardCopy,
+      'pincode': instance.pincode,
     };
 
 _$CartTestImpl _$$CartTestImplFromJson(Map<String, dynamic> json) =>
