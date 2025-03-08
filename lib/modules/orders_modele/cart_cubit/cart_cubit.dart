@@ -88,7 +88,7 @@ class CartCubit extends Cubit<CartState> {
     _updateCart(cart: state.cart.copyWith.call(cartTests: validTests));
   }
 
-  void updateTimeSlot(TimeSlot timeSlot) {
+  void updateTimeSlot(TimeSlot? timeSlot) {
     _updateCart(cart: state.cart.copyWith.call(timeSlot: timeSlot));
   }
 

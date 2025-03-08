@@ -164,6 +164,7 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
     return InkWell(
         onTap: () {
           BlocProvider.of<CartCubit>(context).updateCollectionDate(dateTime);
+          BlocProvider.of<CartCubit>(context).updateTimeSlot(null);
           _initializeTimeSlotFuture();
         },
         child: Container(
