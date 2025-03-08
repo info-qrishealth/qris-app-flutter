@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants/enums/snackbar_type.dart';
 import '../../../styles/app_colors.dart';
@@ -115,20 +116,25 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                         ]),
                   ),
                   SizedBox(height: 34),
-                  Text.rich(
-                      TextSpan(children: [
-                        TextSpan(
-                            text: 'By participating, you agree to the ',
-                            style: _textTheme.bodyLarge!.copyWith(
-                                color: AppColors.textColor,
-                                fontWeight: FontWeight.w400)),
-                        TextSpan(
-                            text: 'Terms & Conditions',
-                            style: _textTheme.bodyLarge!.copyWith(
-                                color: AppColors.primaryBlue,
-                                fontWeight: FontWeight.w400))
-                      ]),
-                      textAlign: TextAlign.center),
+                  GestureDetector(
+                    onTap: () async {
+                      await launch(AppConstants.termsAndConditionsUrl);
+                    },
+                    child: Text.rich(
+                        TextSpan(children: [
+                          TextSpan(
+                              text: 'By participating, you agree to the ',
+                              style: _textTheme.bodyLarge!.copyWith(
+                                  color: AppColors.textColor,
+                                  fontWeight: FontWeight.w400)),
+                          TextSpan(
+                              text: 'Terms & Conditions',
+                              style: _textTheme.bodyLarge!.copyWith(
+                                  color: AppColors.primaryBlue,
+                                  fontWeight: FontWeight.w400))
+                        ]),
+                        textAlign: TextAlign.center),
+                  ),
                 ]);
           },
         )));
