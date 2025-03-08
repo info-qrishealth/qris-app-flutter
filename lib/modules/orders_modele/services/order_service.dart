@@ -38,11 +38,15 @@ class OrderService {
     }
   }
 
-  static Future<List<TimeSlot>> getValidTimeslots() async {
+  static Future<List<TimeSlot>> getValidTimeslots(
+      {required DateTime date}) async {
     final url = '${AppConstants.baseUrl}/orders/valid-time-slot';
 
     try {
-      final response = await Wrapper.get(url);
+      print(date.toIso8601String());
+
+      final response = await Wrapper.post(
+          url, json.encode({'requestedDate': date.toIso8601String()}));
       return (json.decode(response)['body'] as List)
           .map((element) => TimeSlot.fromJson(element))
           .toList();

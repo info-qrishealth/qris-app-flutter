@@ -19,8 +19,10 @@ class AppConstants {
   static const imageBaseUrl = 'https://qrishealth.com/cms/uploads';
   static const invoiceUrl = 'https://qrishealth.com/payment/invoice';
   static const reportUrl = 'https://qrishealth.com/mylab/report_file';
-  static const privacyPolicyUrl = 'https://qrishealth.com/privacy-and-policy.php';
-  static const termsAndConditionsUrl = 'https://qrishealth.com/terms-and-conditions.php';
+  static const privacyPolicyUrl =
+      'https://qrishealth.com/privacy-and-policy.php';
+  static const termsAndConditionsUrl =
+      'https://qrishealth.com/terms-and-conditions.php';
 
   static String getErrorMessage(String message) {
     try {
