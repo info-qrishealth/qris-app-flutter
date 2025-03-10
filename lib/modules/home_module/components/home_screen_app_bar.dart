@@ -85,6 +85,9 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                           }
                         }
 
+                        BlocProvider.of<CartCubit>(context)
+                            .updateWalletAmount(totalCoins);
+
                         return Badge(
                             isLabelVisible: snapshot.hasData,
                             backgroundColor: AppColors.primaryPink,

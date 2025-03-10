@@ -22,10 +22,12 @@ _$CartImpl _$$CartImplFromJson(Map<String, dynamic> json) => _$CartImpl(
       appliedCoupon: json['appliedCoupon'] == null
           ? null
           : Coupon.fromJson(json['appliedCoupon'] as Map<String, dynamic>),
+      appliedCouponAmount: (json['appliedCouponAmount'] as num?)?.toDouble(),
       shouldGetHardCopy: json['shouldGetHardCopy'] as bool? ?? false,
       pincode: json['pincode'] == null
           ? null
           : Pincode.fromJson(json['pincode'] as Map<String, dynamic>),
+      walletAmount: (json['walletAmount'] as num?)?.toInt() ?? 0,
       redeemCoins: json['redeemCoins'] as bool? ?? false,
     );
 
@@ -36,8 +38,10 @@ Map<String, dynamic> _$$CartImplToJson(_$CartImpl instance) =>
       'timeSlot': instance.timeSlot,
       'collectionDate': instance.collectionDate?.toIso8601String(),
       'appliedCoupon': instance.appliedCoupon,
+      'appliedCouponAmount': instance.appliedCouponAmount,
       'shouldGetHardCopy': instance.shouldGetHardCopy,
       'pincode': instance.pincode,
+      'walletAmount': instance.walletAmount,
       'redeemCoins': instance.redeemCoins,
     };
 

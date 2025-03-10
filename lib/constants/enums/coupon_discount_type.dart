@@ -1,0 +1,1 @@
+enum CouponDiscountType { per, fix }

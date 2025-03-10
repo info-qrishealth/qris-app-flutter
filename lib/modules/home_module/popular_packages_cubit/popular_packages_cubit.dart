@@ -12,7 +12,7 @@ class PopularPackagesCubit extends Cubit<PopularPackagesState> {
     try {
       emit(PopularPackagesLoading());
       final packages = await TestService.getMiniPopularTests();
-      emit(PopularPackagesLoaded(popularPackages: packages));
+      emit(PopularPackagesLoaded(popularPackages: packages.reversed.toList()));
     } catch (e) {
       emit(PopularPackagesLoadingError(
           errorMessage: e.toString(), popularPackages: state.popularPackages));

@@ -4,11 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/coupon_discount_type.dart';
+import 'package:qris_health/constants/enums/coupon_type.dart';
 import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/modules/address_module/services/address_service.dart';
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
+import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/shared/components/billing_amount_row.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/components/feature_row.dart';
@@ -321,14 +324,26 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                   style: _textTheme.labelSmall!.copyWith(
                                       fontWeight: FontWeight.w300,
                                       color: AppColors.primaryBlue)),
-                              SizedBox(height: 4),
+                              if (state.cart.appliedCoupon != null)
+                                Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 6),
+                                      SummaryInfoRow(
+                                          title:
+                                              '${state.cart.appliedCoupon!.couponCode} applied!',
+                                          value:
+                                              '-₹${state.cart.appliedCouponAmount?.toInt() ?? 0}',
+                                          color: AppColors.green),
+                                      SizedBox(height: 2),
+                                      _buildCouponDetailText(
+                                          state.cart.appliedCoupon!),
+                                    ]),
+                              SizedBox(height: 8),
                               SummaryInfoRow(
-                                  title: 'Yay! Coupon applied',
-                                  value: '-₹99',
-                                  color: AppColors.green),
-                              SizedBox(height: 4),
-                              SummaryInfoRow(
-                                  title: 'Wallet amount', value: '-₹99'),
+                                  title: 'Wallet amount',
+                                  value: '-₹${state.cart.walletAmount}'),
                               SizedBox(height: 8),
                               Row(children: [
                                 Expanded(
@@ -508,5 +523,33 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
         ]),
       ),
     );
+  }
+
+  Widget _buildCouponDetailText(Coupon coupon) {
+    final couponType = coupon.discountAction;
+    final testAmount = BlocProvider.of<CartCubit>(context).getCartTestPrices();
+    final style = _textTheme.labelSmall!
+        .copyWith(fontWeight: FontWeight.w300, color: AppColors.primaryBlue);
+
+    if (couponType == CouponType.dc) {
+      return Container();
+    }
+
+    if (couponType == CouponType.cb) {
+      String text;
+      if (coupon.discountMode == CouponDiscountType.per) {
+        text =
+            '(You will get %${coupon.couponPrice.toInt()} (₹${(testAmount * coupon.couponPrice) ~/ 100}) cashback right after your order completion)';
+      } else {
+        text =
+            '(You will get ₹${testAmount - coupon.couponPrice} cashback right after your order completion)';
+      }
+
+      return Text(text, style: style);
+    } else if (couponType == CouponType.sc) {
+      return Text(coupon.shortDesc, style: style);
+    }
+
+    return Container();
   }
 }

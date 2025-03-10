@@ -26,7 +26,7 @@ mixin _$Coupon {
   @JsonKey(name: 'coupan_price')
   double get couponPrice => throw _privateConstructorUsedError;
   @JsonKey(name: 'discount_mode')
-  String get discountMode => throw _privateConstructorUsedError;
+  CouponDiscountType get discountMode => throw _privateConstructorUsedError;
   @JsonKey(name: 'coupan_limit')
   int get couponLimit => throw _privateConstructorUsedError;
   @JsonKey(name: 'coupan_start_date')
@@ -37,7 +37,7 @@ mixin _$Coupon {
   String get shortDesc => throw _privateConstructorUsedError;
   int get display => throw _privateConstructorUsedError;
   @JsonKey(name: 'discount_action')
-  String get discountAction => throw _privateConstructorUsedError;
+  CouponType get discountAction => throw _privateConstructorUsedError;
   @JsonKey(name: 'cart_value')
   double get cartValue => throw _privateConstructorUsedError;
   int get status => throw _privateConstructorUsedError;
@@ -49,13 +49,13 @@ mixin _$Coupon {
   @JsonKey(name: 'sc_cashback')
   int get scCashback => throw _privateConstructorUsedError;
   @JsonKey(name: 'cb_discount_type')
-  String get cbDiscountType => throw _privateConstructorUsedError;
+  CouponDiscountType get cbDiscountType => throw _privateConstructorUsedError;
   @JsonKey(name: 'cb_coupon_amt')
   double get cbCouponAmt => throw _privateConstructorUsedError;
   @JsonKey(name: 'sc_cashdiscount')
   int get scCashDiscount => throw _privateConstructorUsedError;
   @JsonKey(name: 'cd_discount_type')
-  String get cdDiscountType => throw _privateConstructorUsedError;
+  CouponDiscountType get cdDiscountType => throw _privateConstructorUsedError;
   @JsonKey(name: 'cd_coupon_amt')
   double get cdCouponAmt => throw _privateConstructorUsedError;
   @JsonKey(name: 'for120days')
@@ -79,23 +79,23 @@ abstract class $CouponCopyWith<$Res> {
       {int id,
       @JsonKey(name: 'coupan_code') String couponCode,
       @JsonKey(name: 'coupan_price') double couponPrice,
-      @JsonKey(name: 'discount_mode') String discountMode,
+      @JsonKey(name: 'discount_mode') CouponDiscountType discountMode,
       @JsonKey(name: 'coupan_limit') int couponLimit,
       @JsonKey(name: 'coupan_start_date') DateTime couponStartDate,
       @JsonKey(name: 'coupan_end_date') DateTime couponEndDate,
       @JsonKey(name: 'short_desc') String shortDesc,
       int display,
-      @JsonKey(name: 'discount_action') String discountAction,
+      @JsonKey(name: 'discount_action') CouponType discountAction,
       @JsonKey(name: 'cart_value') double cartValue,
       int status,
       int visibility,
       @JsonKey(name: 'one_time') int oneTime,
       @JsonKey(name: 'first_order') String firstOrder,
       @JsonKey(name: 'sc_cashback') int scCashback,
-      @JsonKey(name: 'cb_discount_type') String cbDiscountType,
+      @JsonKey(name: 'cb_discount_type') CouponDiscountType cbDiscountType,
       @JsonKey(name: 'cb_coupon_amt') double cbCouponAmt,
       @JsonKey(name: 'sc_cashdiscount') int scCashDiscount,
-      @JsonKey(name: 'cd_discount_type') String cdDiscountType,
+      @JsonKey(name: 'cd_discount_type') CouponDiscountType cdDiscountType,
       @JsonKey(name: 'cd_coupon_amt') double cdCouponAmt,
       @JsonKey(name: 'for120days') String for120days});
 }
@@ -154,7 +154,7 @@ class _$CouponCopyWithImpl<$Res, $Val extends Coupon>
       discountMode: null == discountMode
           ? _value.discountMode
           : discountMode // ignore: cast_nullable_to_non_nullable
-              as String,
+              as CouponDiscountType,
       couponLimit: null == couponLimit
           ? _value.couponLimit
           : couponLimit // ignore: cast_nullable_to_non_nullable
@@ -178,7 +178,7 @@ class _$CouponCopyWithImpl<$Res, $Val extends Coupon>
       discountAction: null == discountAction
           ? _value.discountAction
           : discountAction // ignore: cast_nullable_to_non_nullable
-              as String,
+              as CouponType,
       cartValue: null == cartValue
           ? _value.cartValue
           : cartValue // ignore: cast_nullable_to_non_nullable
@@ -206,7 +206,7 @@ class _$CouponCopyWithImpl<$Res, $Val extends Coupon>
       cbDiscountType: null == cbDiscountType
           ? _value.cbDiscountType
           : cbDiscountType // ignore: cast_nullable_to_non_nullable
-              as String,
+              as CouponDiscountType,
       cbCouponAmt: null == cbCouponAmt
           ? _value.cbCouponAmt
           : cbCouponAmt // ignore: cast_nullable_to_non_nullable
@@ -218,7 +218,7 @@ class _$CouponCopyWithImpl<$Res, $Val extends Coupon>
       cdDiscountType: null == cdDiscountType
           ? _value.cdDiscountType
           : cdDiscountType // ignore: cast_nullable_to_non_nullable
-              as String,
+              as CouponDiscountType,
       cdCouponAmt: null == cdCouponAmt
           ? _value.cdCouponAmt
           : cdCouponAmt // ignore: cast_nullable_to_non_nullable
@@ -242,23 +242,23 @@ abstract class _$$CouponImplCopyWith<$Res> implements $CouponCopyWith<$Res> {
       {int id,
       @JsonKey(name: 'coupan_code') String couponCode,
       @JsonKey(name: 'coupan_price') double couponPrice,
-      @JsonKey(name: 'discount_mode') String discountMode,
+      @JsonKey(name: 'discount_mode') CouponDiscountType discountMode,
       @JsonKey(name: 'coupan_limit') int couponLimit,
       @JsonKey(name: 'coupan_start_date') DateTime couponStartDate,
       @JsonKey(name: 'coupan_end_date') DateTime couponEndDate,
       @JsonKey(name: 'short_desc') String shortDesc,
       int display,
-      @JsonKey(name: 'discount_action') String discountAction,
+      @JsonKey(name: 'discount_action') CouponType discountAction,
       @JsonKey(name: 'cart_value') double cartValue,
       int status,
       int visibility,
       @JsonKey(name: 'one_time') int oneTime,
       @JsonKey(name: 'first_order') String firstOrder,
       @JsonKey(name: 'sc_cashback') int scCashback,
-      @JsonKey(name: 'cb_discount_type') String cbDiscountType,
+      @JsonKey(name: 'cb_discount_type') CouponDiscountType cbDiscountType,
       @JsonKey(name: 'cb_coupon_amt') double cbCouponAmt,
       @JsonKey(name: 'sc_cashdiscount') int scCashDiscount,
-      @JsonKey(name: 'cd_discount_type') String cdDiscountType,
+      @JsonKey(name: 'cd_discount_type') CouponDiscountType cdDiscountType,
       @JsonKey(name: 'cd_coupon_amt') double cdCouponAmt,
       @JsonKey(name: 'for120days') String for120days});
 }
@@ -315,7 +315,7 @@ class __$$CouponImplCopyWithImpl<$Res>
       discountMode: null == discountMode
           ? _value.discountMode
           : discountMode // ignore: cast_nullable_to_non_nullable
-              as String,
+              as CouponDiscountType,
       couponLimit: null == couponLimit
           ? _value.couponLimit
           : couponLimit // ignore: cast_nullable_to_non_nullable
@@ -339,7 +339,7 @@ class __$$CouponImplCopyWithImpl<$Res>
       discountAction: null == discountAction
           ? _value.discountAction
           : discountAction // ignore: cast_nullable_to_non_nullable
-              as String,
+              as CouponType,
       cartValue: null == cartValue
           ? _value.cartValue
           : cartValue // ignore: cast_nullable_to_non_nullable
@@ -367,7 +367,7 @@ class __$$CouponImplCopyWithImpl<$Res>
       cbDiscountType: null == cbDiscountType
           ? _value.cbDiscountType
           : cbDiscountType // ignore: cast_nullable_to_non_nullable
-              as String,
+              as CouponDiscountType,
       cbCouponAmt: null == cbCouponAmt
           ? _value.cbCouponAmt
           : cbCouponAmt // ignore: cast_nullable_to_non_nullable
@@ -379,7 +379,7 @@ class __$$CouponImplCopyWithImpl<$Res>
       cdDiscountType: null == cdDiscountType
           ? _value.cdDiscountType
           : cdDiscountType // ignore: cast_nullable_to_non_nullable
-              as String,
+              as CouponDiscountType,
       cdCouponAmt: null == cdCouponAmt
           ? _value.cdCouponAmt
           : cdCouponAmt // ignore: cast_nullable_to_non_nullable
@@ -432,7 +432,7 @@ class _$CouponImpl implements _Coupon {
   final double couponPrice;
   @override
   @JsonKey(name: 'discount_mode')
-  final String discountMode;
+  final CouponDiscountType discountMode;
   @override
   @JsonKey(name: 'coupan_limit')
   final int couponLimit;
@@ -449,7 +449,7 @@ class _$CouponImpl implements _Coupon {
   final int display;
   @override
   @JsonKey(name: 'discount_action')
-  final String discountAction;
+  final CouponType discountAction;
   @override
   @JsonKey(name: 'cart_value')
   final double cartValue;
@@ -468,7 +468,7 @@ class _$CouponImpl implements _Coupon {
   final int scCashback;
   @override
   @JsonKey(name: 'cb_discount_type')
-  final String cbDiscountType;
+  final CouponDiscountType cbDiscountType;
   @override
   @JsonKey(name: 'cb_coupon_amt')
   final double cbCouponAmt;
@@ -477,7 +477,7 @@ class _$CouponImpl implements _Coupon {
   final int scCashDiscount;
   @override
   @JsonKey(name: 'cd_discount_type')
-  final String cdDiscountType;
+  final CouponDiscountType cdDiscountType;
   @override
   @JsonKey(name: 'cd_coupon_amt')
   final double cdCouponAmt;
@@ -586,24 +586,28 @@ abstract class _Coupon implements Coupon {
       {required final int id,
       @JsonKey(name: 'coupan_code') required final String couponCode,
       @JsonKey(name: 'coupan_price') required final double couponPrice,
-      @JsonKey(name: 'discount_mode') required final String discountMode,
+      @JsonKey(name: 'discount_mode')
+      required final CouponDiscountType discountMode,
       @JsonKey(name: 'coupan_limit') required final int couponLimit,
       @JsonKey(name: 'coupan_start_date')
       required final DateTime couponStartDate,
       @JsonKey(name: 'coupan_end_date') required final DateTime couponEndDate,
       @JsonKey(name: 'short_desc') required final String shortDesc,
       required final int display,
-      @JsonKey(name: 'discount_action') required final String discountAction,
+      @JsonKey(name: 'discount_action')
+      required final CouponType discountAction,
       @JsonKey(name: 'cart_value') required final double cartValue,
       required final int status,
       required final int visibility,
       @JsonKey(name: 'one_time') required final int oneTime,
       @JsonKey(name: 'first_order') required final String firstOrder,
       @JsonKey(name: 'sc_cashback') required final int scCashback,
-      @JsonKey(name: 'cb_discount_type') required final String cbDiscountType,
+      @JsonKey(name: 'cb_discount_type')
+      required final CouponDiscountType cbDiscountType,
       @JsonKey(name: 'cb_coupon_amt') required final double cbCouponAmt,
       @JsonKey(name: 'sc_cashdiscount') required final int scCashDiscount,
-      @JsonKey(name: 'cd_discount_type') required final String cdDiscountType,
+      @JsonKey(name: 'cd_discount_type')
+      required final CouponDiscountType cdDiscountType,
       @JsonKey(name: 'cd_coupon_amt') required final double cdCouponAmt,
       @JsonKey(name: 'for120days')
       required final String for120days}) = _$CouponImpl;
@@ -620,7 +624,7 @@ abstract class _Coupon implements Coupon {
   double get couponPrice;
   @override
   @JsonKey(name: 'discount_mode')
-  String get discountMode;
+  CouponDiscountType get discountMode;
   @override
   @JsonKey(name: 'coupan_limit')
   int get couponLimit;
@@ -637,7 +641,7 @@ abstract class _Coupon implements Coupon {
   int get display;
   @override
   @JsonKey(name: 'discount_action')
-  String get discountAction;
+  CouponType get discountAction;
   @override
   @JsonKey(name: 'cart_value')
   double get cartValue;
@@ -656,7 +660,7 @@ abstract class _Coupon implements Coupon {
   int get scCashback;
   @override
   @JsonKey(name: 'cb_discount_type')
-  String get cbDiscountType;
+  CouponDiscountType get cbDiscountType;
   @override
   @JsonKey(name: 'cb_coupon_amt')
   double get cbCouponAmt;
@@ -665,7 +669,7 @@ abstract class _Coupon implements Coupon {
   int get scCashDiscount;
   @override
   @JsonKey(name: 'cd_discount_type')
-  String get cdDiscountType;
+  CouponDiscountType get cdDiscountType;
   @override
   @JsonKey(name: 'cd_coupon_amt')
   double get cdCouponAmt;

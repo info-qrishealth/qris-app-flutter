@@ -78,14 +78,26 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 0.5),
                 child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       final searchedText = _searchController.text.toLowerCase();
-                      if (_coupons?.firstWhereOrNull((coupon) =>
-                              coupon.couponCode.toLowerCase() ==
-                              searchedText) !=
-                          null) {
+                      final coupon = _coupons?.firstWhereOrNull((coupon) =>
+                          coupon.couponCode.toLowerCase() == searchedText);
+                      final testValue =
+                          BlocProvider.of<CartCubit>(context).cartTestValue;
+
+                      if (coupon != null) {
+                        if (testValue >= coupon.cartValue) {
+                          await _applyCoupon(coupon: coupon);
+                        } else {
+                          AppConstants.showSnackbar(
+                              text:
+                                  'Your cart is ineligible to apply the searched coupon',
+                              type: SnackbarType.error);
+                        }
+                      } else {
                         AppConstants.showSnackbar(
-                            text: 'Coupon found', type: SnackbarType.success);
+                            text: 'No coupon found with name $searchedText',
+                            type: SnackbarType.error);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -118,22 +130,7 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
                             return CouponListTile(
                                 onTap: cartTestValue < coupon.cartValue
                                     ? null
-                                    : () async {
-                                        Navigator.of(context).pop();
-                                        await Future.delayed(
-                                            Duration(milliseconds: 100));
-
-                                        BlocProvider.of<CartCubit>(context)
-                                            .applyCoupon(
-                                                coupon: coupon,
-                                                config: _config);
-
-                                        await showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                CouponAppliedDialog(
-                                                    appliedCoupon: coupon));
-                                      },
+                                    : () => _applyCoupon(coupon: coupon),
                                 coupon: coupon);
                           },
                           separatorBuilder: (context, index) {
@@ -148,5 +145,16 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
               })),
       SizedBox(height: 16)
     ]));
+  }
+
+  Future<void> _applyCoupon({required Coupon coupon}) async {
+    Navigator.of(context).pop();
+    await Future.delayed(Duration(milliseconds: 100));
+
+    BlocProvider.of<CartCubit>(context).applyCoupon(coupon: coupon);
+
+    await showDialog(
+        context: context,
+        builder: (context) => CouponAppliedDialog(appliedCoupon: coupon));
   }
 }

@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:qris_health/constants/enums/coupon_discount_type.dart';
+import 'package:qris_health/constants/enums/coupon_type.dart';
 import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
 
-import '../../../shared/models/qris_config/qris_config.dart';
 import '../../address_module/models/address/address.dart';
 import '../models/cart/cart.dart';
 
@@ -99,7 +100,7 @@ class CartCubit extends Cubit<CartState> {
     _updateCart(cart: state.cart.copyWith.call(collectionDate: collectionDate));
   }
 
-  void applyCoupon({required Coupon coupon, required QrisConfig config}) {
+  void applyCoupon({required Coupon coupon}) {
     _updateCart(cart: state.cart.copyWith.call(appliedCoupon: coupon));
   }
 
@@ -128,6 +129,57 @@ class CartCubit extends Cubit<CartState> {
           cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
     }
 
+    /// Coupon calculations
+    if (state.cart.appliedCoupon != null) {
+      final appliedCoupon = state.cart.appliedCoupon!;
+
+      /// If coupon type is direct cashback
+      if (appliedCoupon.discountAction == CouponType.dc) {
+        /// If percentage coupon
+        if (appliedCoupon.discountMode == CouponDiscountType.per) {
+          final discountPercentage = appliedCoupon.couponPrice;
+          final couponAmount = (getCartTestPrices() * discountPercentage) / 100;
+          cartFinalValue = cartFinalValue - couponAmount;
+          _updateCart(
+              cart:
+                  state.cart.copyWith.call(appliedCouponAmount: couponAmount));
+        }
+
+        /// If fixed discount coupon
+        else if (appliedCoupon.discountMode == CouponDiscountType.fix) {
+          final discountAmount = appliedCoupon.couponPrice;
+          cartFinalValue = getCartTestPrices() - discountAmount;
+          _updateCart(
+              cart: state.cart.copyWith
+                  .call(appliedCouponAmount: discountAmount));
+        }
+      }
+
+      /// If coupon type is combo
+      else if (appliedCoupon.discountAction == CouponType.sc) {
+        /// If percentage coupon
+        if (appliedCoupon.cdDiscountType == CouponDiscountType.per) {
+          final discountPercentage = appliedCoupon.cdCouponAmt;
+          final couponAmount = (getCartTestPrices() * discountPercentage) / 100;
+          cartFinalValue = cartFinalValue - couponAmount;
+          _updateCart(
+              cart:
+                  state.cart.copyWith.call(appliedCouponAmount: couponAmount));
+        }
+
+        /// If fixed discount coupon
+        else if (appliedCoupon.cdDiscountType == CouponDiscountType.fix) {
+          final discountAmount = appliedCoupon.cdCouponAmt;
+          cartFinalValue = getCartTestPrices() - discountAmount;
+          _updateCart(
+              cart: state.cart.copyWith
+                  .call(appliedCouponAmount: discountAmount));
+        }
+      }
+
+      cartFinalValue = cartFinalValue - state.cart.walletAmount;
+    }
+
     return cartFinalValue;
   }
 
@@ -151,7 +203,13 @@ class CartCubit extends Cubit<CartState> {
     _updateCart(
         cart: state.cart.copyWith.call(
             redeemCoins: shouldRedeemCoins,
+            appliedCouponAmount:
+                shouldRedeemCoins ? null : state.cart.appliedCouponAmount,
             appliedCoupon:
                 shouldRedeemCoins ? null : state.cart.appliedCoupon));
+  }
+
+  void updateWalletAmount(int totalCoins) {
+    _updateCart(cart: state.cart.copyWith.call(walletAmount: totalCoins));
   }
 }
