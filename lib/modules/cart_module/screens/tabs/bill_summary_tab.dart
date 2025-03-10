@@ -57,9 +57,10 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
 
           return BlocBuilder<CartCubit, CartState>(builder: (context, state) {
             final address = state.cart.selectedAddress;
-            BlocProvider.of<CartCubit>(context).updateCollectionPincode(
-                pincodes.firstWhereOrNull((element) =>
-                    element.pincode.toString() == address?.pincode));
+            final pincode = pincodes.firstWhereOrNull(
+                (element) => element.pincode.toString() == address?.pincode);
+            BlocProvider.of<CartCubit>(context)
+                .updateCollectionPincode(pincode);
 
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -240,7 +241,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                               CrossAxisAlignment.stretch,
                                           children: [
                                         Text(
-                                            'Hard copy of reports for ₹${state.cart.pincode?.hardCopyCharge}',
+                                            'Hard copy of reports for ₹${pincode?.hardCopyCharge}',
                                             style: _textTheme.bodySmall!
                                                 .copyWith(
                                                     fontWeight:
@@ -309,15 +310,15 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                               SummaryInfoRow(
                                   title: 'Hard copy charges',
                                   value:
-                                      '₹${state.cart.shouldGetHardCopy ? '${state.cart.pincode?.hardCopyCharge}' : '0'}'),
+                                      '₹${state.cart.shouldGetHardCopy ? '${pincode?.hardCopyCharge}' : '0'}'),
                               SizedBox(height: 4),
                               SummaryInfoRow(
                                   title: 'Sample collection charges ',
                                   value:
-                                      '₹${BlocProvider.of<CartCubit>(context).getCartTestPrices() >= (state.cart.pincode?.minOrder ?? 0) ? '0' : '${state.cart.pincode!.minOrder}'}'),
+                                      '₹${BlocProvider.of<CartCubit>(context).getCartTestPrices() >= (pincode?.deliveryCharge ?? 0) ? '0' : '${state.cart.pincode!.minOrder}'}'),
                               SizedBox(height: 2),
                               Text(
-                                  '(applicable when order below ₹${state.cart.pincode?.minOrder})',
+                                  '(applicable when order below ₹${pincode?.minOrder})',
                                   style: _textTheme.labelSmall!.copyWith(
                                       fontWeight: FontWeight.w300,
                                       color: AppColors.primaryBlue)),
