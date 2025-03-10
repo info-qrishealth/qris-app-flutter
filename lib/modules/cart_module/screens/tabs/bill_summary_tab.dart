@@ -315,7 +315,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                               SummaryInfoRow(
                                   title: 'Sample collection charges ',
                                   value:
-                                      '₹${BlocProvider.of<CartCubit>(context).getCartTestPrices() >= (pincode?.deliveryCharge ?? 0) ? '0' : '${state.cart.pincode!.minOrder}'}'),
+                                      '₹${BlocProvider.of<CartCubit>(context).getCartTestPrices() >= (pincode?.minOrder ?? 0) ? '0' : '${pincode?.deliveryCharge}'}'),
                               SizedBox(height: 2),
                               Text(
                                   '(applicable when order below ₹${pincode?.minOrder})',
