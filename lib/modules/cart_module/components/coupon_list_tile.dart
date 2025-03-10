@@ -7,7 +7,7 @@ import 'package:qris_health/styles/app_colors.dart';
 
 class CouponListTile extends StatelessWidget {
   final Coupon coupon;
-  final Function() onTap;
+  final Function()? onTap;
   CouponListTile({super.key, required this.onTap, required this.coupon});
   final _textTheme = Get.textTheme;
 
@@ -19,8 +19,11 @@ class CouponListTile extends StatelessWidget {
           SizedBox(
               width: 120,
               height: 30,
-              child:
-                  SvgPicture.asset(Assets.iconsCouponImage, fit: BoxFit.fill)),
+              child: SvgPicture.asset(Assets.iconsCouponImage,
+                  fit: BoxFit.fill,
+                  color: onTap == null
+                      ? AppColors.lightGrey
+                      : AppColors.primaryPink)),
           Text(coupon.couponCode,
               style: _textTheme.bodyMedium!
                   .copyWith(fontWeight: FontWeight.w700, color: Colors.white))
@@ -31,12 +34,18 @@ class CouponListTile extends StatelessWidget {
             child: OutlinedButton(
                 onPressed: onTap,
                 style: OutlinedButton.styleFrom(
+                    side: BorderSide(
+                        color: onTap == null
+                            ? AppColors.lightGrey
+                            : AppColors.primaryPink),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6))),
                 child: Text('Apply',
                     style: _textTheme.bodyMedium!.copyWith(
                         fontWeight: FontWeight.w400,
-                        color: AppColors.primaryPink))))
+                        color: onTap == null
+                            ? AppColors.lightGrey
+                            : AppColors.primaryPink))))
       ]),
       SizedBox(height: 12),
       Text(coupon.shortDesc,

@@ -18,7 +18,8 @@ class Cart with _$Cart {
       DateTime? collectionDate,
       Coupon? appliedCoupon,
       @Default(false) bool shouldGetHardCopy,
-      Pincode? pincode}) = _Cart;
+      Pincode? pincode,
+      @Default(false) bool redeemCoins}) = _Cart;
 
   factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
 }

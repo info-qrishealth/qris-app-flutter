@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/generated/assets.dart';
+import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class CouponAppliedDialog extends StatelessWidget {
-  const CouponAppliedDialog({super.key});
+  final Coupon appliedCoupon;
+  const CouponAppliedDialog({super.key, required this.appliedCoupon});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +23,7 @@ class CouponAppliedDialog extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset('assets/images/icons/party_popper.png',
-                      height: 100),
+                  Image.asset(Assets.iconsPartyPopper, height: 100),
                   SizedBox(height: 16),
                   Text('Yay!!',
                       style: textTheme.headlineSmall!

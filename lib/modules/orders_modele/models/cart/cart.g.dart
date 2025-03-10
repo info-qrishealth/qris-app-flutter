@@ -26,6 +26,7 @@ _$CartImpl _$$CartImplFromJson(Map<String, dynamic> json) => _$CartImpl(
       pincode: json['pincode'] == null
           ? null
           : Pincode.fromJson(json['pincode'] as Map<String, dynamic>),
+      redeemCoins: json['redeemCoins'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$CartImplToJson(_$CartImpl instance) =>
@@ -37,6 +38,7 @@ Map<String, dynamic> _$$CartImplToJson(_$CartImpl instance) =>
       'appliedCoupon': instance.appliedCoupon,
       'shouldGetHardCopy': instance.shouldGetHardCopy,
       'pincode': instance.pincode,
+      'redeemCoins': instance.redeemCoins,
     };
 
 _$CartTestImpl _$$CartTestImplFromJson(Map<String, dynamic> json) =>

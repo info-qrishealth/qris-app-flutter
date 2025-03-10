@@ -14,6 +14,8 @@ part 'cart_state.dart';
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial());
 
+  double get cartTestValue => getCartTestPrices();
+
   void _updateCart({required Cart cart}) {
     emit(CartUpdated(cart: cart));
   }
@@ -97,7 +99,9 @@ class CartCubit extends Cubit<CartState> {
     _updateCart(cart: state.cart.copyWith.call(collectionDate: collectionDate));
   }
 
-  void applyCoupon({required Coupon coupon, required QrisConfig config}) {}
+  void applyCoupon({required Coupon coupon, required QrisConfig config}) {
+    _updateCart(cart: state.cart.copyWith.call(appliedCoupon: coupon));
+  }
 
   double getCartTestPrices() {
     double cartFinalValue = 0;
@@ -140,5 +144,14 @@ class CartCubit extends Cubit<CartState> {
 
   void updateCollectionPincode(Pincode? pincode) {
     _updateCart(cart: state.cart.copyWith.call(pincode: pincode));
+  }
+
+  void toggleRedeemCoins() {
+    final shouldRedeemCoins = !state.cart.redeemCoins;
+    _updateCart(
+        cart: state.cart.copyWith.call(
+            redeemCoins: shouldRedeemCoins,
+            appliedCoupon:
+                shouldRedeemCoins ? null : state.cart.appliedCoupon));
   }
 }

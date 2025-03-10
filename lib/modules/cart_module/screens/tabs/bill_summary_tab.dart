@@ -33,7 +33,6 @@ class BillSummaryTab extends StatefulWidget {
 class _BillSummaryTabState extends State<BillSummaryTab> {
   late final Future<List<Pincode>> _pincodeFuture;
   final _textTheme = Get.textTheme;
-  bool _redeemCoins = false;
   PaymentMode? _selectedPaymentMode;
   late final QrisConfig _config;
 
@@ -327,6 +326,9 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                   title: 'Yay! Coupon applied',
                                   value: '-₹99',
                                   color: AppColors.green),
+                              SizedBox(height: 4),
+                              SummaryInfoRow(
+                                  title: 'Wallet amount', value: '-₹99'),
                               SizedBox(height: 8),
                               Row(children: [
                                 Expanded(
@@ -341,9 +343,8 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                               SizedBox(height: 18),
                               GestureDetector(
                                   onTap: () {
-                                    setState(() {
-                                      _redeemCoins = !_redeemCoins;
-                                    });
+                                    BlocProvider.of<CartCubit>(context)
+                                        .toggleRedeemCoins();
                                   },
                                   child: Row(
                                       crossAxisAlignment:
@@ -353,12 +354,11 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                             height: 16,
                                             width: 16,
                                             child: Checkbox(
-                                                value: _redeemCoins,
+                                                value: state.cart.redeemCoins,
                                                 onChanged: (value) {
-                                                  setState(() {
-                                                    _redeemCoins =
-                                                        !_redeemCoins;
-                                                  });
+                                                  BlocProvider.of<CartCubit>(
+                                                          context)
+                                                      .toggleRedeemCoins();
                                                 },
                                                 side: BorderSide(
                                                     color: AppColors

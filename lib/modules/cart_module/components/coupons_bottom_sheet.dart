@@ -104,30 +104,44 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
                 if (snapshot.hasData) {
                   _coupons ??= snapshot.data!;
 
-                  return ListView.separated(
-                      physics: BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final coupon = _coupons![index];
+                  return BlocBuilder<CartCubit, CartState>(
+                    builder: (context, state) {
+                      final cartTestValue = BlocProvider.of<CartCubit>(context)
+                          .getCartTestPrices();
 
-                        return CouponListTile(
-                            onTap: () async {
-                              Navigator.of(context).pop();
-                              await Future.delayed(Duration(milliseconds: 100));
+                      return ListView.separated(
+                          physics: BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            final coupon = _coupons![index];
 
-                              BlocProvider.of<CartCubit>(context)
-                                  .applyCoupon(coupon: coupon, config: _config);
+                            return CouponListTile(
+                                onTap: cartTestValue < coupon.cartValue
+                                    ? null
+                                    : () async {
+                                        Navigator.of(context).pop();
+                                        await Future.delayed(
+                                            Duration(milliseconds: 100));
 
-                              await showDialog(
-                                  context: context,
-                                  builder: (context) => CouponAppliedDialog());
-                            },
-                            coupon: coupon);
-                      },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: 12);
-                      },
-                      itemCount: _coupons!.length);
+                                        BlocProvider.of<CartCubit>(context)
+                                            .applyCoupon(
+                                                coupon: coupon,
+                                                config: _config);
+
+                                        await showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                CouponAppliedDialog(
+                                                    appliedCoupon: coupon));
+                                      },
+                                coupon: coupon);
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(height: 12);
+                          },
+                          itemCount: _coupons!.length);
+                    },
+                  );
                 }
 
                 return CommonListviewShimmer();
