@@ -8,7 +8,9 @@ sealed class CartState extends Equatable {
   List<Object> get props => [cart];
 }
 
-final class CartInitial extends CartState {}
+final class CartInitial extends CartState {
+  const CartInitial({super.cart});
+}
 
 final class CartUpdated extends CartState {
   const CartUpdated({required super.cart});

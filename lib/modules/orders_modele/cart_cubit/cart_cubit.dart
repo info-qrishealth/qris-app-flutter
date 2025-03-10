@@ -82,7 +82,8 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void clearCart() {
-    emit(CartInitial());
+    emit(CartInitial(
+        cart: Cart(cartTests: [], walletAmount: state.cart.walletAmount)));
   }
 
   void removeInvalidTests() {
