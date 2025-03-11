@@ -23,7 +23,7 @@ class QrisCoinsCubit extends Cubit<QrisCoinsState> {
     }
   }
 
-  int getTotalAmount() {
+  int getTotalCoins() {
     int totalCoins = 0;
     final coinsEntries = state.coinEntries;
 

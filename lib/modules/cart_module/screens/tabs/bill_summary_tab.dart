@@ -12,6 +12,7 @@ import 'package:qris_health/modules/cart_module/components/patient_tile_layout.d
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
+import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 import 'package:qris_health/shared/components/billing_amount_row.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
@@ -57,6 +58,12 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
           }
 
           final pincodes = snapshot.data!;
+          final totalWalletAmount =
+              BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
+          final totalQrisCoins =
+              BlocProvider.of<QrisCoinsCubit>(context).getTotalCoins();
+          final cartTestPrices =
+              BlocProvider.of<CartCubit>(context).getCartTestPrices().toInt();
 
           return BlocBuilder<CartCubit, CartState>(builder: (context, state) {
             final address = state.cart.selectedAddress;
@@ -64,6 +71,10 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                 (element) => element.pincode.toString() == address?.pincode);
             BlocProvider.of<CartCubit>(context)
                 .updateCollectionPincode(pincode);
+
+            final cartFinalValue = BlocProvider.of<CartCubit>(context)
+                .getCartFinalValue(context: context)
+                .toInt();
 
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -307,8 +318,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                               SizedBox(height: 16),
                               SummaryInfoRow(
                                   title: 'Package added',
-                                  value:
-                                      '₹${BlocProvider.of<CartCubit>(context).getCartTestPrices().toInt()}'),
+                                  value: '₹$cartTestPrices'),
                               SizedBox(height: 4),
                               SummaryInfoRow(
                                   title: 'Hard copy charges',
@@ -318,7 +328,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                               SummaryInfoRow(
                                   title: 'Sample collection charges ',
                                   value:
-                                      '₹${BlocProvider.of<CartCubit>(context).getCartTestPrices() >= (pincode?.minOrder ?? 0) ? '0' : '${pincode?.deliveryCharge}'}'),
+                                      '₹${cartTestPrices >= (pincode?.minOrder ?? 0) ? '0' : '${pincode?.deliveryCharge}'}'),
                               SizedBox(height: 2),
                               Text(
                                   '(applicable when order below ₹${pincode?.minOrder})',
@@ -341,130 +351,141 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                       _buildCouponDetailText(
                                           state.cart.appliedCoupon!),
                                     ]),
+                              if (state.cart.redeemCoins &&
+                                  _config.qcEnable == '1')
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: SummaryInfoRow(
+                                        title:
+                                            'Qris coins (${_config.qcUsedCoins.toInt()}% of packages amount)',
+                                        value:
+                                            '-₹${(_config.qcUsedCoins * cartTestPrices) ~/ 100}')),
                               SizedBox(height: 8),
-                              BlocBuilder<QrisWalletCubit, QrisWalletState>(
-                                builder: (context, state) {
-                                  return SummaryInfoRow(
-                                      title: 'Wallet amount',
-                                      value:
-                                          '-₹${BlocProvider.of<QrisWalletCubit>(context).getTotalAmount()}');
-                                },
-                              ),
+                              SummaryInfoRow(
+                                  title: 'Wallet amount',
+                                  value: '-₹$totalWalletAmount'),
                               SizedBox(height: 8),
                               Row(children: [
                                 Expanded(
                                     child: Text('Cart Value',
                                         style: _textTheme.bodySmall!.copyWith(
                                             fontWeight: FontWeight.w700))),
-                                Text(
-                                    '₹${BlocProvider.of<CartCubit>(context).getCartFinalValue(context: context).toInt()}',
+                                Text('₹${cartFinalValue.toInt()}',
                                     style: _textTheme.bodySmall!.copyWith(
                                         color: AppColors.primaryPink)),
                               ]),
                               SizedBox(height: 18),
-                              GestureDetector(
-                                  onTap: () {
-                                    BlocProvider.of<CartCubit>(context)
-                                        .toggleRedeemCoins();
-                                  },
-                                  child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                            height: 16,
-                                            width: 16,
-                                            child: Checkbox(
-                                                value: state.cart.redeemCoins,
-                                                onChanged: (value) {
-                                                  BlocProvider.of<CartCubit>(
-                                                          context)
-                                                      .toggleRedeemCoins();
-                                                },
-                                                side: BorderSide(
-                                                    color: AppColors
-                                                        .lightSubTextColor))),
-                                        SizedBox(width: 12),
-                                        Expanded(
-                                            child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                              Text.rich(
-                                                  style: _textTheme.bodySmall,
-                                                  TextSpan(children: [
-                                                    TextSpan(
-                                                        text:
-                                                            'Redeem my Qris Coins ',
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .textColor,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700)),
-                                                    TextSpan(
-                                                        text: '( 2100 coins )',
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .goldenColor,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700)),
-                                                  ])),
-                                              SizedBox(height: 4),
-                                              Column(children: [
-                                                Row(children: [
-                                                  Container(
-                                                      height: 5,
-                                                      width: 5,
-                                                      decoration: BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color:
-                                                              AppColors.black)),
-                                                  SizedBox(width: 6),
-                                                  Text('Coupon codes will not be applicable with Qris coins',
-                                                      style: _textTheme
-                                                          .labelSmall!
-                                                          .copyWith(
+                              if (cartTestPrices >=
+                                      double.parse(_config.qcMinCartAmt) &&
+                                  _config.qcEnable == '1')
+                                GestureDetector(
+                                    onTap: () {
+                                      BlocProvider.of<CartCubit>(context)
+                                          .toggleRedeemCoins();
+                                    },
+                                    child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                              height: 16,
+                                              width: 16,
+                                              child: Checkbox(
+                                                  value: state.cart.redeemCoins,
+                                                  onChanged: (value) {
+                                                    BlocProvider.of<CartCubit>(
+                                                            context)
+                                                        .toggleRedeemCoins();
+                                                  },
+                                                  side: BorderSide(
+                                                      color: AppColors
+                                                          .lightSubTextColor))),
+                                          SizedBox(width: 12),
+                                          Expanded(
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                Text.rich(
+                                                    style: _textTheme.bodySmall,
+                                                    TextSpan(children: [
+                                                      TextSpan(
+                                                          text:
+                                                              'Redeem my Qris Coins ',
+                                                          style: TextStyle(
+                                                              color: AppColors
+                                                                  .textColor,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w400,
+                                                                      .w700)),
+                                                      TextSpan(
+                                                          text:
+                                                              '( $totalQrisCoins coins )',
+                                                          style: TextStyle(
                                                               color: AppColors
-                                                                  .textColor)),
-                                                ]),
+                                                                  .goldenColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700)),
+                                                    ])),
                                                 SizedBox(height: 4),
-                                                Row(children: [
-                                                  Container(
-                                                      height: 5,
-                                                      width: 5,
-                                                      decoration: BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color:
-                                                              AppColors.black)),
-                                                  SizedBox(width: 6),
-                                                  Text('1099 coins ',
-                                                      style: _textTheme
-                                                          .labelSmall!
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              color: AppColors
-                                                                  .goldenColor)),
-                                                  Text(
-                                                      'will be earned on this order',
-                                                      style: _textTheme
-                                                          .labelSmall!
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700))
+                                                Column(children: [
+                                                  Row(children: [
+                                                    Container(
+                                                        height: 5,
+                                                        width: 5,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: AppColors
+                                                                    .black)),
+                                                    SizedBox(width: 6),
+                                                    Text(
+                                                        'Coupon codes will not be applicable with Qris coins',
+                                                        style: _textTheme
+                                                            .labelSmall!
+                                                            .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                color: AppColors
+                                                                    .textColor)),
+                                                  ]),
+                                                  SizedBox(height: 4),
+                                                  Row(children: [
+                                                    Container(
+                                                        height: 5,
+                                                        width: 5,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: AppColors
+                                                                    .black)),
+                                                    SizedBox(width: 6),
+                                                    Text(
+                                                        '${cartFinalValue * _config.qcAmount ~/ 100} coins ',
+                                                        style: _textTheme
+                                                            .labelSmall!
+                                                            .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: AppColors
+                                                                    .goldenColor)),
+                                                    Text(
+                                                        'will be earned on this order',
+                                                        style: _textTheme
+                                                            .labelSmall!
+                                                            .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700))
+                                                  ]),
                                                 ]),
-                                              ]),
-                                            ]))
-                                      ])),
+                                              ]))
+                                        ])),
                             ])),
                     SizedBox(height: 10),
                     Container(
@@ -492,8 +513,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue),
-                      child: Text(
-                          'Pay ₹${BlocProvider.of<CartCubit>(context).getCartFinalValue(context: context).toInt()}/-')),
+                      child: Text('Pay ₹$cartFinalValue/-')),
                   SizedBox(height: 16),
                 ]);
           });

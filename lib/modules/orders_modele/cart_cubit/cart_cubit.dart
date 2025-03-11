@@ -180,10 +180,11 @@ class CartCubit extends Cubit<CartState> {
                   .call(appliedCouponAmount: discountAmount));
         }
       }
-
-      cartFinalValue = cartFinalValue -
-          BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
     }
+
+    /// Subtract wallet amount
+    cartFinalValue = cartFinalValue -
+        BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
 
     return cartFinalValue;
   }

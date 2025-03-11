@@ -42,7 +42,7 @@ class _CoinsScreenState extends State<CoinsScreen> {
 
           if (state is QrisCoinsLoaded) {
             final totalCoins =
-                BlocProvider.of<QrisCoinsCubit>(context).getTotalAmount();
+                BlocProvider.of<QrisCoinsCubit>(context).getTotalCoins();
 
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
