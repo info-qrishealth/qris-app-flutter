@@ -150,6 +150,11 @@ class CartCubit extends Cubit<CartState> {
         }
       }
 
+      /// If coupon type is cashback
+      else if (appliedCoupon.discountAction == CouponType.cb) {
+        _updateCart(cart: state.cart.copyWith.call(appliedCouponAmount: null));
+      }
+
       /// If coupon type is combo
       else if (appliedCoupon.discountAction == CouponType.sc) {
         /// If percentage coupon
