@@ -10,6 +10,7 @@ import 'package:qris_health/modules/all_scans_module/models/test_package_model/t
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
+import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 
 import '../../address_module/models/address/address.dart';
 import '../models/cart/cart.dart';
@@ -121,17 +122,7 @@ class CartCubit extends Cubit<CartState> {
 
   double getCartFinalValue({required BuildContext context}) {
     double cartFinalValue = getCartTestPrices();
-
-    /// For sample collection charges
-    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
-      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
-    }
-
-    /// For hard copy charges
-    if (state.cart.shouldGetHardCopy) {
-      cartFinalValue =
-          cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
-    }
+    final config = BlocProvider.of<QrisConfigCubit>(context).state.config;
 
     /// Coupon calculations
     if (state.cart.appliedCoupon != null) {
@@ -180,6 +171,23 @@ class CartCubit extends Cubit<CartState> {
                   .call(appliedCouponAmount: discountAmount));
         }
       }
+    }
+
+    /// Check redeem coins condition
+    if (state.cart.redeemCoins) {
+      cartFinalValue =
+          cartFinalValue - ((config!.qcUsedCoins * getCartTestPrices()) ~/ 100);
+    }
+
+    /// For sample collection charges
+    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
+      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
+    }
+
+    /// For hard copy charges
+    if (state.cart.shouldGetHardCopy) {
+      cartFinalValue =
+          cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
     }
 
     /// Subtract wallet amount

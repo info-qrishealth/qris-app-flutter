@@ -33,7 +33,7 @@ class CouponAppliedDialog extends StatelessWidget {
                       style: textTheme.titleLarge!
                           .copyWith(fontWeight: FontWeight.w400)),
                   SizedBox(height: 10),
-                  Text('You saved ₹1099!',
+                  Text('${appliedCoupon.couponCode} Applied Successfully!',
                       style: textTheme.titleLarge!.copyWith(
                           color: AppColors.green, fontWeight: FontWeight.w400))
                 ])));

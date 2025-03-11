@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/coupon_discount_type.dart';
 import 'package:qris_health/constants/enums/coupon_type.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/modules/address_module/services/address_service.dart';
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
@@ -173,11 +174,19 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                     SizedBox(height: 12),
                     GestureDetector(
                         onTap: () {
-                          showModalBottomSheet(
-                              isScrollControlled: true,
-                              constraints: AppConstants.bottomSheetConstraints,
-                              context: context,
-                              builder: (context) => CouponsBottomSheet());
+                          if (state.cart.redeemCoins) {
+                            AppConstants.showSnackbar(
+                                text:
+                                    'Either qris coins or coupon can be applied at once. Please unselect redeem qris coins option to apply coupon',
+                                type: SnackbarType.error);
+                          } else {
+                            showModalBottomSheet(
+                                isScrollControlled: true,
+                                constraints:
+                                    AppConstants.bottomSheetConstraints,
+                                context: context,
+                                builder: (context) => CouponsBottomSheet());
+                          }
                         },
                         child: Container(
                             padding: EdgeInsets.symmetric(
