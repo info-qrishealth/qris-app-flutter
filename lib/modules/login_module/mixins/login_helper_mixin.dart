@@ -5,10 +5,12 @@ import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/pref_constants.dart';
 import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
+import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../home_module/screens/home_screen.dart';
+import '../../refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 import '../../users_module/cubits/user_cubit.dart';
 import '../models/user/user.dart';
 
@@ -26,6 +28,9 @@ mixin LoginHelperMixin {
           PrefConstants.authToken, ApiParams.getInstance()!.authorization!);
       await prefs.setString(PrefConstants.phoneNumber, user.phone!);
       ApiParams.getInstance()!.userId = user.id;
+
+      BlocProvider.of<QrisCoinsCubit>(context).getQrisCoins();
+      BlocProvider.of<QrisWalletCubit>(context).getWalletEntries();
 
       Navigator.of(context).pushAndRemoveUntil(
           CupertinoPageRoute(builder: (context) => HomeScreen()), (_) => false);

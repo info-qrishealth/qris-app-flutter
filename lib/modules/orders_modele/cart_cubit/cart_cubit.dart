@@ -1,11 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:qris_health/constants/enums/coupon_discount_type.dart';
 import 'package:qris_health/constants/enums/coupon_type.dart';
 import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
+import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 
 import '../../address_module/models/address/address.dart';
 import '../models/cart/cart.dart';
@@ -82,8 +86,7 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void clearCart() {
-    emit(CartInitial(
-        cart: Cart(cartTests: [], walletAmount: state.cart.walletAmount)));
+    emit(CartInitial(cart: Cart(cartTests: [])));
   }
 
   void removeInvalidTests() {
@@ -116,7 +119,7 @@ class CartCubit extends Cubit<CartState> {
     return cartFinalValue;
   }
 
-  double getCartFinalValue() {
+  double getCartFinalValue({required BuildContext context}) {
     double cartFinalValue = getCartTestPrices();
 
     /// For sample collection charges
@@ -178,7 +181,8 @@ class CartCubit extends Cubit<CartState> {
         }
       }
 
-      cartFinalValue = cartFinalValue - state.cart.walletAmount;
+      cartFinalValue = cartFinalValue -
+          BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
     }
 
     return cartFinalValue;
@@ -208,9 +212,5 @@ class CartCubit extends Cubit<CartState> {
                 shouldRedeemCoins ? null : state.cart.appliedCouponAmount,
             appliedCoupon:
                 shouldRedeemCoins ? null : state.cart.appliedCoupon));
-  }
-
-  void updateWalletAmount(int totalCoins) {
-    _updateCart(cart: state.cart.copyWith.call(walletAmount: totalCoins));
   }
 }

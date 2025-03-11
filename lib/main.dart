@@ -10,9 +10,12 @@ import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_p
 import 'package:qris_health/modules/intro_module/screens/custom_splash_screen.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
+import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:qris_health/styles/app_styles.dart';
+
+import 'modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +39,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => QrisDoctorsCubit()),
           BlocProvider(create: (context) => QrisConfigCubit()),
           BlocProvider(create: (context) => CartCubit()),
+          BlocProvider(create: (context) => QrisWalletCubit()),
+          BlocProvider(create: (context) => QrisCoinsCubit()),
         ],
         child: GetMaterialApp(
             debugShowCheckedModeBanner: false,

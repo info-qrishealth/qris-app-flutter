@@ -28,7 +28,6 @@ mixin _$Cart {
   double? get appliedCouponAmount => throw _privateConstructorUsedError;
   bool get shouldGetHardCopy => throw _privateConstructorUsedError;
   Pincode? get pincode => throw _privateConstructorUsedError;
-  int get walletAmount => throw _privateConstructorUsedError;
   bool get redeemCoins => throw _privateConstructorUsedError;
 
   /// Serializes this Cart to a JSON map.
@@ -54,7 +53,6 @@ abstract class $CartCopyWith<$Res> {
       double? appliedCouponAmount,
       bool shouldGetHardCopy,
       Pincode? pincode,
-      int walletAmount,
       bool redeemCoins});
 
   $AddressCopyWith<$Res>? get selectedAddress;
@@ -86,7 +84,6 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
     Object? appliedCouponAmount = freezed,
     Object? shouldGetHardCopy = null,
     Object? pincode = freezed,
-    Object? walletAmount = null,
     Object? redeemCoins = null,
   }) {
     return _then(_value.copyWith(
@@ -122,10 +119,6 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
           ? _value.pincode
           : pincode // ignore: cast_nullable_to_non_nullable
               as Pincode?,
-      walletAmount: null == walletAmount
-          ? _value.walletAmount
-          : walletAmount // ignore: cast_nullable_to_non_nullable
-              as int,
       redeemCoins: null == redeemCoins
           ? _value.redeemCoins
           : redeemCoins // ignore: cast_nullable_to_non_nullable
@@ -206,7 +199,6 @@ abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
       double? appliedCouponAmount,
       bool shouldGetHardCopy,
       Pincode? pincode,
-      int walletAmount,
       bool redeemCoins});
 
   @override
@@ -239,7 +231,6 @@ class __$$CartImplCopyWithImpl<$Res>
     Object? appliedCouponAmount = freezed,
     Object? shouldGetHardCopy = null,
     Object? pincode = freezed,
-    Object? walletAmount = null,
     Object? redeemCoins = null,
   }) {
     return _then(_$CartImpl(
@@ -275,10 +266,6 @@ class __$$CartImplCopyWithImpl<$Res>
           ? _value.pincode
           : pincode // ignore: cast_nullable_to_non_nullable
               as Pincode?,
-      walletAmount: null == walletAmount
-          ? _value.walletAmount
-          : walletAmount // ignore: cast_nullable_to_non_nullable
-              as int,
       redeemCoins: null == redeemCoins
           ? _value.redeemCoins
           : redeemCoins // ignore: cast_nullable_to_non_nullable
@@ -299,7 +286,6 @@ class _$CartImpl implements _Cart {
       this.appliedCouponAmount,
       this.shouldGetHardCopy = false,
       this.pincode,
-      this.walletAmount = 0,
       this.redeemCoins = false})
       : _cartTests = cartTests;
 
@@ -331,14 +317,11 @@ class _$CartImpl implements _Cart {
   final Pincode? pincode;
   @override
   @JsonKey()
-  final int walletAmount;
-  @override
-  @JsonKey()
   final bool redeemCoins;
 
   @override
   String toString() {
-    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate, appliedCoupon: $appliedCoupon, appliedCouponAmount: $appliedCouponAmount, shouldGetHardCopy: $shouldGetHardCopy, pincode: $pincode, walletAmount: $walletAmount, redeemCoins: $redeemCoins)';
+    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate, appliedCoupon: $appliedCoupon, appliedCouponAmount: $appliedCouponAmount, shouldGetHardCopy: $shouldGetHardCopy, pincode: $pincode, redeemCoins: $redeemCoins)';
   }
 
   @override
@@ -361,8 +344,6 @@ class _$CartImpl implements _Cart {
             (identical(other.shouldGetHardCopy, shouldGetHardCopy) ||
                 other.shouldGetHardCopy == shouldGetHardCopy) &&
             (identical(other.pincode, pincode) || other.pincode == pincode) &&
-            (identical(other.walletAmount, walletAmount) ||
-                other.walletAmount == walletAmount) &&
             (identical(other.redeemCoins, redeemCoins) ||
                 other.redeemCoins == redeemCoins));
   }
@@ -379,7 +360,6 @@ class _$CartImpl implements _Cart {
       appliedCouponAmount,
       shouldGetHardCopy,
       pincode,
-      walletAmount,
       redeemCoins);
 
   /// Create a copy of Cart
@@ -408,7 +388,6 @@ abstract class _Cart implements Cart {
       final double? appliedCouponAmount,
       final bool shouldGetHardCopy,
       final Pincode? pincode,
-      final int walletAmount,
       final bool redeemCoins}) = _$CartImpl;
 
   factory _Cart.fromJson(Map<String, dynamic> json) = _$CartImpl.fromJson;
@@ -429,8 +408,6 @@ abstract class _Cart implements Cart {
   bool get shouldGetHardCopy;
   @override
   Pincode? get pincode;
-  @override
-  int get walletAmount;
   @override
   bool get redeemCoins;
 

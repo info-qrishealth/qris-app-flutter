@@ -12,6 +12,7 @@ import 'package:qris_health/modules/cart_module/components/patient_tile_layout.d
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
+import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 import 'package:qris_health/shared/components/billing_amount_row.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/components/feature_row.dart';
@@ -341,9 +342,14 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                           state.cart.appliedCoupon!),
                                     ]),
                               SizedBox(height: 8),
-                              SummaryInfoRow(
-                                  title: 'Wallet amount',
-                                  value: '-₹${state.cart.walletAmount}'),
+                              BlocBuilder<QrisWalletCubit, QrisWalletState>(
+                                builder: (context, state) {
+                                  return SummaryInfoRow(
+                                      title: 'Wallet amount',
+                                      value:
+                                          '-₹${BlocProvider.of<QrisWalletCubit>(context).getTotalAmount()}');
+                                },
+                              ),
                               SizedBox(height: 8),
                               Row(children: [
                                 Expanded(
@@ -351,7 +357,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                         style: _textTheme.bodySmall!.copyWith(
                                             fontWeight: FontWeight.w700))),
                                 Text(
-                                    '₹${BlocProvider.of<CartCubit>(context).getCartFinalValue().toInt()}',
+                                    '₹${BlocProvider.of<CartCubit>(context).getCartFinalValue(context: context).toInt()}',
                                     style: _textTheme.bodySmall!.copyWith(
                                         color: AppColors.primaryPink)),
                               ]),
@@ -487,7 +493,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue),
                       child: Text(
-                          'Pay ₹${BlocProvider.of<CartCubit>(context).getCartFinalValue().toInt()}/-')),
+                          'Pay ₹${BlocProvider.of<CartCubit>(context).getCartFinalValue(context: context).toInt()}/-')),
                   SizedBox(height: 16),
                 ]);
           });
