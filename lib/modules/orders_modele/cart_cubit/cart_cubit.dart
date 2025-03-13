@@ -191,8 +191,8 @@ class CartCubit extends Cubit<CartState> {
       cartFinalValue = cartFinalValue - walletRedeemAmount;
     } else {
       cartFinalValue = cartFinalValue - discountAmount;
-      walletRedeemAmount = cartFinalValue.ceil();
-      cartFinalValue = cartFinalValue - walletRedeemAmount.ceil();
+      walletRedeemAmount = cartFinalValue.round();
+      cartFinalValue = cartFinalValue - walletRedeemAmount.round();
     }
 
     /// Update state
@@ -202,7 +202,24 @@ class CartCubit extends Cubit<CartState> {
             appliedCouponAmount:
                 state.cart.appliedCoupon != null ? discountAmount : null,
             redeemedQrisCoins:
-                state.cart.redeemCoins ? discountAmount.ceil() : 0));
+                state.cart.redeemCoins ? discountAmount.round() : 0));
+
+    return cartFinalValue;
+  }
+
+  double getBaseCartValue() {
+    double cartFinalValue = getCartTestPrices();
+
+    /// For hard copy charges
+    if (state.cart.shouldGetHardCopy) {
+      cartFinalValue =
+          cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
+    }
+
+    /// For sample collection charges
+    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
+      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
+    }
 
     return cartFinalValue;
   }

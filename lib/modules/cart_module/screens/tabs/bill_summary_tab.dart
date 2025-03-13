@@ -63,17 +63,22 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
               BlocProvider.of<QrisCoinsCubit>(context).getTotalCoins();
           final cartTestPrices =
               BlocProvider.of<CartCubit>(context).getCartTestPrices().toInt();
+          final totalWalletAmount =
+              BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
 
           return BlocBuilder<CartCubit, CartState>(builder: (context, state) {
             final address = state.cart.selectedAddress;
             final pincode = pincodes.firstWhereOrNull(
                 (element) => element.pincode.toString() == address?.pincode);
-            BlocProvider.of<CartCubit>(context)
-                .updateCollectionPincode(pincode);
+            final cartCubit = BlocProvider.of<CartCubit>(context);
+            cartCubit.updateCollectionPincode(pincode);
 
-            final cartFinalValue = BlocProvider.of<CartCubit>(context)
-                .getCartFinalValue(context: context)
-                .toInt();
+            /// Cart final value after coupons and wallet amounts
+            final cartFinalValue =
+                cartCubit.getCartFinalValue(context: context).toInt();
+
+            /// Cart value which consists of package amount, hard copy charges and delivery charges
+            final baseCartValue = cartCubit.getBaseCartValue();
 
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -170,58 +175,63 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                               }),
                             ])),
                     SizedBox(height: 12),
-                    GestureDetector(
-                        onTap: () {
-                          if (state.cart.redeemCoins) {
-                            AppConstants.showSnackbar(
-                                text:
-                                    'Either qris coins or coupon can be applied at once. Please unselect redeem qris coins option to apply coupon',
-                                type: SnackbarType.error);
-                          } else {
-                            showModalBottomSheet(
-                                isScrollControlled: true,
-                                constraints:
-                                    AppConstants.bottomSheetConstraints,
-                                context: context,
-                                builder: (context) => CouponsBottomSheet());
-                          }
-                        },
-                        child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 16),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: AppColors.borderColor),
-                                borderRadius: BorderRadius.circular(12)),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  HeadingText(text: 'Offers'),
-                                  SizedBox(height: 8),
-                                  Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                          border: Border.all(
-                                              color: AppColors.borderColor)),
-                                      child: Row(children: [
-                                        SvgPicture.asset(Assets.iconsCouponIcon,
-                                            color: AppColors.green),
-                                        SizedBox(width: 8),
-                                        Text('Apply coupon',
-                                            style: _textTheme.bodySmall!
-                                                .copyWith(
-                                                    fontWeight: FontWeight.w700,
-                                                    color: AppColors
-                                                        .lightSubTextColor)),
-                                        Spacer(),
-                                        Icon(Icons.keyboard_arrow_right,
-                                            size: 18,
-                                            color: AppColors.lightSubTextColor),
-                                      ]))
-                                ]))),
+                    if (baseCartValue > totalWalletAmount)
+                      GestureDetector(
+                          onTap: () {
+                            if (state.cart.redeemCoins) {
+                              AppConstants.showSnackbar(
+                                  text:
+                                      'Either qris coins or coupon can be applied at once. Please unselect redeem qris coins option to apply coupon',
+                                  type: SnackbarType.error);
+                            } else {
+                              showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  constraints:
+                                      AppConstants.bottomSheetConstraints,
+                                  context: context,
+                                  builder: (context) => CouponsBottomSheet());
+                            }
+                          },
+                          child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 16),
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: AppColors.borderColor),
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    HeadingText(text: 'Offers'),
+                                    SizedBox(height: 8),
+                                    Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 10),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                            border: Border.all(
+                                                color: AppColors.borderColor)),
+                                        child: Row(children: [
+                                          SvgPicture.asset(
+                                              Assets.iconsCouponIcon,
+                                              color: AppColors.green),
+                                          SizedBox(width: 8),
+                                          Text('Apply coupon',
+                                              style: _textTheme.bodySmall!
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: AppColors
+                                                          .lightSubTextColor)),
+                                          Spacer(),
+                                          Icon(Icons.keyboard_arrow_right,
+                                              size: 18,
+                                              color:
+                                                  AppColors.lightSubTextColor),
+                                        ]))
+                                  ]))),
                     SizedBox(height: 10),
                     GestureDetector(
                         onTap: () {
@@ -385,7 +395,8 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                               SizedBox(height: 18),
                               if (cartTestPrices >=
                                       double.parse(_config.qcMinCartAmt) &&
-                                  _config.qcEnable == '1')
+                                  _config.qcEnable == '1' &&
+                                  baseCartValue > totalWalletAmount)
                                 GestureDetector(
                                     onTap: () {
                                       BlocProvider.of<CartCubit>(context)
