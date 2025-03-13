@@ -59,8 +59,6 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
           }
 
           final pincodes = snapshot.data!;
-          final totalWalletAmount =
-              BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
           final totalQrisCoins =
               BlocProvider.of<QrisCoinsCubit>(context).getTotalCoins();
           final cartTestPrices =
@@ -373,7 +371,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                               SummaryInfoRow(
                                   title: 'Wallet amount',
                                   value:
-                                      '-₹${state.cart.walletRedeemedAmount}'),
+                                      '-₹${BlocProvider.of<CartCubit>(context).state.cart.walletRedeemedAmount}'),
                               SizedBox(height: 8),
                               Row(children: [
                                 Expanded(
