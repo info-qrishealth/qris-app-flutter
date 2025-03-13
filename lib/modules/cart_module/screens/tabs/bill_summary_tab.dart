@@ -382,6 +382,18 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                   title: 'Wallet amount',
                                   value:
                                       '-₹${BlocProvider.of<CartCubit>(context).state.cart.walletRedeemedAmount}'),
+                              if (BlocProvider.of<CartCubit>(context)
+                                      .state
+                                      .cart
+                                      .walletRedeemedAmount !=
+                                  totalWalletAmount)
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 2),
+                                    child: Text(
+                                        '(Balance after this transaction ₹${totalWalletAmount - BlocProvider.of<CartCubit>(context).state.cart.walletRedeemedAmount})',
+                                        style: _textTheme.labelSmall!.copyWith(
+                                            fontWeight: FontWeight.w300,
+                                            color: AppColors.primaryBlue))),
                               SizedBox(height: 8),
                               Row(children: [
                                 Expanded(
