@@ -191,8 +191,8 @@ class CartCubit extends Cubit<CartState> {
       cartFinalValue = cartFinalValue - walletRedeemAmount;
     } else {
       cartFinalValue = cartFinalValue - discountAmount;
-      walletRedeemAmount = cartFinalValue.toInt();
-      cartFinalValue = cartFinalValue - walletRedeemAmount.toDouble();
+      walletRedeemAmount = cartFinalValue.ceil();
+      cartFinalValue = cartFinalValue - walletRedeemAmount.ceil();
     }
 
     /// Update state
@@ -202,7 +202,7 @@ class CartCubit extends Cubit<CartState> {
             appliedCouponAmount:
                 state.cart.appliedCoupon != null ? discountAmount : null,
             redeemedQrisCoins:
-                state.cart.redeemCoins ? discountAmount.toInt() : 0));
+                state.cart.redeemCoins ? discountAmount.ceil() : 0));
 
     return cartFinalValue;
   }
