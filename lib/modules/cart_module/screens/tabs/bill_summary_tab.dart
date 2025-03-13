@@ -409,7 +409,9 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                       double.parse(_config.qcMinCartAmt) &&
                                   _config.qcEnable == '1' &&
                                   baseCartValue > totalWalletAmount)
-                                GestureDetector(
+                                InkWell(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
                                     onTap: () {
                                       BlocProvider.of<CartCubit>(context)
                                           .toggleRedeemCoins();
@@ -553,7 +555,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
 
   Widget _buildRadioButtonRow(
       {required String title, required PaymentMode paymentMode}) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         setState(() {
           _selectedPaymentMode = paymentMode;
