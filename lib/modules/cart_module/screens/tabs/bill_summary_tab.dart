@@ -368,11 +368,12 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                         title:
                                             'Qris coins (${_config.qcUsedCoins.toInt()}% of packages amount)',
                                         value:
-                                            '-₹${(_config.qcUsedCoins * cartTestPrices) ~/ 100}')),
+                                            '-₹${state.cart.redeemedQrisCoins}')),
                               SizedBox(height: 4),
                               SummaryInfoRow(
                                   title: 'Wallet amount',
-                                  value: '-₹$totalWalletAmount'),
+                                  value:
+                                      '-₹${state.cart.walletRedeemedAmount}'),
                               SizedBox(height: 8),
                               Row(children: [
                                 Expanded(

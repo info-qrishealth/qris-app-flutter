@@ -124,6 +124,19 @@ class CartCubit extends Cubit<CartState> {
     double cartFinalValue = getCartTestPrices();
     final config = BlocProvider.of<QrisConfigCubit>(context).state.config;
 
+    /// For hard copy charges
+    if (state.cart.shouldGetHardCopy) {
+      cartFinalValue =
+          cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
+    }
+
+    /// For sample collection charges
+    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
+      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
+    }
+
+    double discountAmount = 0;
+
     /// Coupon calculations
     if (state.cart.appliedCoupon != null) {
       final appliedCoupon = state.cart.appliedCoupon!;
@@ -133,20 +146,12 @@ class CartCubit extends Cubit<CartState> {
         /// If percentage coupon
         if (appliedCoupon.discountMode == CouponDiscountType.per) {
           final discountPercentage = appliedCoupon.couponPrice;
-          final couponAmount = (getCartTestPrices() * discountPercentage) / 100;
-          cartFinalValue = cartFinalValue - couponAmount;
-          _updateCart(
-              cart:
-                  state.cart.copyWith.call(appliedCouponAmount: couponAmount));
+          discountAmount = (getCartTestPrices() * discountPercentage) / 100;
         }
 
         /// If fixed discount coupon
         else if (appliedCoupon.discountMode == CouponDiscountType.fix) {
-          final discountAmount = appliedCoupon.couponPrice;
-          cartFinalValue = getCartTestPrices() - discountAmount;
-          _updateCart(
-              cart: state.cart.copyWith
-                  .call(appliedCouponAmount: discountAmount));
+          discountAmount = appliedCoupon.couponPrice;
         }
       }
 
@@ -160,44 +165,44 @@ class CartCubit extends Cubit<CartState> {
         /// If percentage coupon
         if (appliedCoupon.cdDiscountType == CouponDiscountType.per) {
           final discountPercentage = appliedCoupon.cdCouponAmt;
-          final couponAmount = (getCartTestPrices() * discountPercentage) / 100;
-          cartFinalValue = cartFinalValue - couponAmount;
-          _updateCart(
-              cart:
-                  state.cart.copyWith.call(appliedCouponAmount: couponAmount));
+          discountAmount = (getCartTestPrices() * discountPercentage) / 100;
         }
 
         /// If fixed discount coupon
         else if (appliedCoupon.cdDiscountType == CouponDiscountType.fix) {
-          final discountAmount = appliedCoupon.cdCouponAmt;
-          cartFinalValue = getCartTestPrices() - discountAmount;
-          _updateCart(
-              cart: state.cart.copyWith
-                  .call(appliedCouponAmount: discountAmount));
+          discountAmount = appliedCoupon.cdCouponAmt;
         }
       }
     }
 
     /// Check redeem coins condition
     if (state.cart.redeemCoins) {
-      cartFinalValue =
-          cartFinalValue - ((config!.qcUsedCoins * getCartTestPrices()) ~/ 100);
+      discountAmount = (config!.qcUsedCoins * getCartTestPrices()) / 100;
     }
 
-    /// For sample collection charges
-    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
-      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
-    }
-
-    /// For hard copy charges
-    if (state.cart.shouldGetHardCopy) {
-      cartFinalValue =
-          cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
-    }
-
-    /// Subtract wallet amount
-    cartFinalValue = cartFinalValue -
+    /// Wallet money calculations
+    final totalWalletAmount =
         BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
+    int walletRedeemAmount = 0;
+
+    if ((totalWalletAmount + discountAmount) < cartFinalValue) {
+      cartFinalValue = cartFinalValue - discountAmount;
+      walletRedeemAmount = totalWalletAmount;
+      cartFinalValue = cartFinalValue - walletRedeemAmount;
+    } else {
+      cartFinalValue = cartFinalValue - discountAmount;
+      walletRedeemAmount = cartFinalValue.toInt();
+      cartFinalValue = cartFinalValue - walletRedeemAmount.toDouble();
+    }
+
+    /// Update state
+    _updateCart(
+        cart: state.cart.copyWith.call(
+            walletRedeemedAmount: walletRedeemAmount,
+            appliedCouponAmount:
+                state.cart.appliedCoupon != null ? discountAmount : null,
+            redeemedQrisCoins:
+                state.cart.redeemCoins ? discountAmount.toInt() : 0));
 
     return cartFinalValue;
   }
