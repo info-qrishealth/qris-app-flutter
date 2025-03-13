@@ -404,121 +404,127 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                     style: _textTheme.bodySmall!.copyWith(
                                         color: AppColors.primaryPink)),
                               ]),
-                              SizedBox(height: 18),
                               if (cartTestPrices >=
                                       double.parse(_config.qcMinCartAmt) &&
                                   _config.qcEnable == '1' &&
                                   baseCartValue > totalWalletAmount)
-                                InkWell(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () {
-                                      BlocProvider.of<CartCubit>(context)
-                                          .toggleRedeemCoins();
-                                    },
-                                    child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                              height: 16,
-                                              width: 16,
-                                              child: Checkbox(
-                                                  value: state.cart.redeemCoins,
-                                                  onChanged: (value) {
-                                                    BlocProvider.of<CartCubit>(
-                                                            context)
-                                                        .toggleRedeemCoins();
-                                                  },
-                                                  side: BorderSide(
-                                                      color: AppColors
-                                                          .lightSubTextColor))),
-                                          SizedBox(width: 12),
-                                          Expanded(
-                                              child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                Text.rich(
-                                                    style: _textTheme.bodySmall,
-                                                    TextSpan(children: [
-                                                      TextSpan(
-                                                          text:
-                                                              'Redeem my Qris Coins ',
-                                                          style: TextStyle(
-                                                              color: AppColors
-                                                                  .textColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700)),
-                                                      TextSpan(
-                                                          text:
-                                                              '( $totalQrisCoins coins )',
-                                                          style: TextStyle(
-                                                              color: AppColors
-                                                                  .goldenColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700)),
-                                                    ])),
-                                                SizedBox(height: 4),
-                                                Column(children: [
-                                                  Row(children: [
-                                                    Container(
-                                                        height: 5,
-                                                        width: 5,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle,
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 18),
+                                  child: InkWell(
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () {
+                                        BlocProvider.of<CartCubit>(context)
+                                            .toggleRedeemCoins();
+                                      },
+                                      child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                                height: 16,
+                                                width: 16,
+                                                child: Checkbox(
+                                                    value:
+                                                        state.cart.redeemCoins,
+                                                    onChanged: (value) {
+                                                      BlocProvider.of<
+                                                                  CartCubit>(
+                                                              context)
+                                                          .toggleRedeemCoins();
+                                                    },
+                                                    side: BorderSide(
+                                                        color: AppColors
+                                                            .lightSubTextColor))),
+                                            SizedBox(width: 12),
+                                            Expanded(
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                  Text.rich(
+                                                      style:
+                                                          _textTheme.bodySmall,
+                                                      TextSpan(children: [
+                                                        TextSpan(
+                                                            text:
+                                                                'Redeem my Qris Coins ',
+                                                            style: TextStyle(
                                                                 color: AppColors
-                                                                    .black)),
-                                                    SizedBox(width: 6),
-                                                    Text(
-                                                        'Coupon codes will not be applicable with Qris coins',
-                                                        style: _textTheme
-                                                            .labelSmall!
-                                                            .copyWith(
+                                                                    .textColor,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .w400,
+                                                                        .w700)),
+                                                        TextSpan(
+                                                            text:
+                                                                '( $totalQrisCoins coins )',
+                                                            style: TextStyle(
                                                                 color: AppColors
-                                                                    .textColor)),
-                                                  ]),
+                                                                    .goldenColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700)),
+                                                      ])),
                                                   SizedBox(height: 4),
-                                                  Row(children: [
-                                                    Container(
-                                                        height: 5,
-                                                        width: 5,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                color: AppColors
-                                                                    .black)),
-                                                    SizedBox(width: 6),
-                                                    Text(
-                                                        '${cartFinalValue * _config.qcAmount ~/ 100} coins ',
-                                                        style: _textTheme
-                                                            .labelSmall!
-                                                            .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                                color: AppColors
-                                                                    .goldenColor)),
-                                                    Text(
-                                                        'will be earned on this order',
-                                                        style: _textTheme
-                                                            .labelSmall!
-                                                            .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700))
+                                                  Column(children: [
+                                                    Row(children: [
+                                                      Container(
+                                                          height: 5,
+                                                          width: 5,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                  color: AppColors
+                                                                      .black)),
+                                                      SizedBox(width: 6),
+                                                      Text(
+                                                          'Coupon codes will not be applicable with Qris coins',
+                                                          style: _textTheme
+                                                              .labelSmall!
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  color: AppColors
+                                                                      .textColor)),
+                                                    ]),
+                                                    SizedBox(height: 4),
+                                                    Row(children: [
+                                                      Container(
+                                                          height: 5,
+                                                          width: 5,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                  color: AppColors
+                                                                      .black)),
+                                                      SizedBox(width: 6),
+                                                      Text(
+                                                          '${cartFinalValue * _config.qcAmount ~/ 100} coins ',
+                                                          style: _textTheme
+                                                              .labelSmall!
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: AppColors
+                                                                      .goldenColor)),
+                                                      Text(
+                                                          'will be earned on this order',
+                                                          style: _textTheme
+                                                              .labelSmall!
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700))
+                                                    ]),
                                                   ]),
-                                                ]),
-                                              ]))
-                                        ])),
+                                                ]))
+                                          ])),
+                                ),
                             ])),
                     SizedBox(height: 10),
                     Container(
