@@ -543,33 +543,39 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                 ),
                             ])),
                     SizedBox(height: 10),
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.borderColor),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              HeadingText(text: 'Payment Method'),
-                              SizedBox(height: 12),
-                              _buildRadioButtonRow(
-                                  title:
-                                      'Credit/Debit card, UPI, Net banking, Wallet',
-                                  paymentMode: PaymentMode.razorpay),
-                              _buildRadioButtonRow(
-                                  title: 'Cash on Delivery',
-                                  paymentMode: PaymentMode.cod)
-                            ])),
+                    if (cartFinalValue > 0)
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 16),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.borderColor),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                HeadingText(text: 'Payment Method'),
+                                SizedBox(height: 12),
+                                _buildRadioButtonRow(
+                                    title:
+                                        'Credit/Debit card, UPI, Net banking, Wallet',
+                                    paymentMode: PaymentMode.razorpay),
+                                _buildRadioButtonRow(
+                                    title: 'Cash on Delivery',
+                                    paymentMode: PaymentMode.cod)
+                              ])),
                   ])),
                   SizedBox(height: 16),
                   ElevatedButton(
-                      onPressed:
-                          _selectedPaymentMode == null ? null : _checkout,
+                      onPressed: cartFinalValue > 0
+                          ? _selectedPaymentMode == null
+                              ? null
+                              : _checkout
+                          : () => _createOrder(),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue),
-                      child: Text('Pay ₹$cartFinalValue/-')),
+                      child: Text(cartFinalValue > 0
+                          ? 'Pay ₹$cartFinalValue/-'
+                          : 'Complete Booking')),
                   SizedBox(height: 16),
                 ]);
           });
@@ -681,23 +687,19 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
       final cartCubit = BlocProvider.of<CartCubit>(context);
       final cartFinalValue = cartCubit.getCartFinalValue(context: context);
 
-      if (cartFinalValue > 0) {
-        var options = {
-          'key': AppConstants.razorpayKey,
-          'amount': cartFinalValue * 100,
-          'name': 'Qris Health',
-          'image':
-              'https://cdn-1.webcatalog.io/catalog/qris-health/qris-health-icon-filled-256.webp?v=1714781957813',
-          'description':
-              "Securely book your health tests with Qris Health using our seamless online payment system.",
-          'prefill': {'contact': ApiParams.getInstance()!.phoneNumber},
-          "theme": {"color": "#B23C97"}
-        };
+      var options = {
+        'key': AppConstants.razorpayKey,
+        'amount': cartFinalValue * 100,
+        'name': 'Qris Health',
+        'image':
+            'https://cdn-1.webcatalog.io/catalog/qris-health/qris-health-icon-filled-256.webp?v=1714781957813',
+        'description':
+            "Securely book your health tests with Qris Health using our seamless online payment system.",
+        'prefill': {'contact': ApiParams.getInstance()!.phoneNumber},
+        "theme": {"color": "#B23C97"}
+      };
 
-        _razorpay.open(options);
-      } else {
-        await _createOrder();
-      }
+      _razorpay.open(options);
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     }
