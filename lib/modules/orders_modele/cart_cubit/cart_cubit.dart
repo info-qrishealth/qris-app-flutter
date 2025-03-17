@@ -188,6 +188,7 @@ class CartCubit extends Cubit<CartState> {
     final totalWalletAmount =
         BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
     int walletRedeemAmount = 0;
+    discountAmount = discountAmount.roundToDouble();
 
     if ((totalWalletAmount + discountAmount) < cartFinalValue) {
       cartFinalValue = cartFinalValue - discountAmount;
