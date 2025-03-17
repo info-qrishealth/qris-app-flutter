@@ -376,21 +376,26 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                             '₹${state.cart.shouldGetHardCopy ? '${pincode?.hardCopyCharge}' : '0'}'),
                                   if (!(cartTestPrices >=
                                       (pincode?.minOrder ?? 0)))
-                                    Column(children: [
-                                      SizedBox(height: 4),
-                                      SummaryInfoRow(
-                                          title: 'Sample collection charges ',
-                                          value:
-                                              '₹${'${pincode?.deliveryCharge}'}'),
-                                      SizedBox(height: 2),
-                                      Text(
-                                          '(applicable when order below ₹${pincode?.minOrder})',
-                                          style: _textTheme.labelSmall!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w300,
-                                                  color:
-                                                      AppColors.primaryBlue)),
-                                    ]),
+                                    Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 4),
+                                          SummaryInfoRow(
+                                              title:
+                                                  'Sample collection charges ',
+                                              value:
+                                                  '₹${'${pincode?.deliveryCharge}'}'),
+                                          SizedBox(height: 2),
+                                          Text(
+                                              '(applicable when order below ₹${pincode?.minOrder})',
+                                              style: _textTheme.labelSmall!
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      color: AppColors
+                                                          .primaryBlue)),
+                                        ]),
                                   if (state.cart.appliedCoupon != null)
                                     Column(
                                         crossAxisAlignment:
