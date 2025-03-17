@@ -32,6 +32,7 @@ class CartCubit extends Cubit<CartState> {
       return;
     }
 
+    removeAppliedCouponAndCoins();
     _updateCart(
         cart: state.cart.copyWith.call(cartTests: [
       ...state.cart.cartTests,
@@ -48,6 +49,7 @@ class CartCubit extends Cubit<CartState> {
       final updatedCartTest = cartTest.copyWith
           .call(patientIds: [...cartTest.patientIds, patientId]);
       final tests = [...state.cart.cartTests]..removeAt(cartTestIndex);
+      removeAppliedCouponAndCoins();
 
       _updateCart(
           cart: state.cart.copyWith.call(
@@ -68,6 +70,7 @@ class CartCubit extends Cubit<CartState> {
       final updatedCartTest = cartTest.copyWith
           .call(patientIds: [...cartTest.patientIds]..removeAt(cartTestIndex));
       final tests = [...state.cart.cartTests]..removeAt(cartTestIndex);
+      removeAppliedCouponAndCoins();
 
       _updateCart(
           cart: state.cart.copyWith.call(
@@ -80,6 +83,7 @@ class CartCubit extends Cubit<CartState> {
         state.cart.cartTests.indexWhere((element) => element.test.id == testId);
 
     if (index != -1) {
+      removeAppliedCouponAndCoins();
       _updateCart(
           cart: state.cart.copyWith
               .call(cartTests: [...state.cart.cartTests]..removeAt(index)));
@@ -225,6 +229,7 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void updateHardCopy(bool hardCopy) {
+    removeAppliedCouponAndCoins();
     _updateCart(cart: state.cart.copyWith.call(shouldGetHardCopy: hardCopy));
   }
 
@@ -248,5 +253,14 @@ class CartCubit extends Cubit<CartState> {
                 shouldRedeemCoins ? null : state.cart.appliedCouponAmount,
             appliedCoupon:
                 shouldRedeemCoins ? null : state.cart.appliedCoupon));
+  }
+
+  void removeAppliedCouponAndCoins() {
+    _updateCart(
+        cart: state.cart.copyWith.call(
+            appliedCoupon: null,
+            appliedCouponAmount: null,
+            redeemCoins: false,
+            redeemedQrisCoins: 0));
   }
 }

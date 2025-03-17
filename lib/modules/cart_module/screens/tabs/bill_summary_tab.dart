@@ -67,17 +67,20 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
           final pincodes = snapshot.data!;
           final totalQrisCoins =
               BlocProvider.of<QrisCoinsCubit>(context).getTotalCoins();
-          final cartTestPrices =
-              BlocProvider.of<CartCubit>(context).getCartTestPrices().toInt();
           final totalWalletAmount =
               BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
 
           return BlocBuilder<CartCubit, CartState>(builder: (context, state) {
+            print('Cart build');
+
+            final cartCubit = BlocProvider.of<CartCubit>(context);
             final address = state.cart.selectedAddress;
             final pincode = pincodes.firstWhereOrNull(
                 (element) => element.pincode.toString() == address?.pincode);
-            final cartCubit = BlocProvider.of<CartCubit>(context);
             cartCubit.updateCollectionPincode(pincode);
+
+            /// Cart test prices
+            final cartTestPrices = cartCubit.getCartTestPrices().toInt();
 
             /// Cart final value after coupons and wallet amounts
             final cartFinalValue =
@@ -224,7 +227,10 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                               Assets.iconsCouponIcon,
                                               color: AppColors.green),
                                           SizedBox(width: 8),
-                                          Text('Apply coupon',
+                                          Text(
+                                              state.cart.appliedCoupon != null
+                                                  ? '${state.cart.appliedCoupon!.couponCode} Applied'
+                                                  : 'Apply coupon',
                                               style: _textTheme.bodySmall!
                                                   .copyWith(
                                                       fontWeight:
@@ -343,21 +349,25 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                   title: 'Package added',
                                   value: '₹$cartTestPrices'),
                               SizedBox(height: 4),
-                              SummaryInfoRow(
-                                  title: 'Hard copy charges',
-                                  value:
-                                      '₹${state.cart.shouldGetHardCopy ? '${pincode?.hardCopyCharge}' : '0'}'),
-                              SizedBox(height: 4),
-                              SummaryInfoRow(
-                                  title: 'Sample collection charges ',
-                                  value:
-                                      '₹${cartTestPrices >= (pincode?.minOrder ?? 0) ? '0' : '${pincode?.deliveryCharge}'}'),
-                              SizedBox(height: 2),
-                              Text(
-                                  '(applicable when order below ₹${pincode?.minOrder})',
-                                  style: _textTheme.labelSmall!.copyWith(
-                                      fontWeight: FontWeight.w300,
-                                      color: AppColors.primaryBlue)),
+                              if (state.cart.shouldGetHardCopy)
+                                SummaryInfoRow(
+                                    title: 'Hard copy charges',
+                                    value:
+                                        '₹${state.cart.shouldGetHardCopy ? '${pincode?.hardCopyCharge}' : '0'}'),
+                              if (!(cartTestPrices >= (pincode?.minOrder ?? 0)))
+                                Column(children: [
+                                  SizedBox(height: 4),
+                                  SummaryInfoRow(
+                                      title: 'Sample collection charges ',
+                                      value:
+                                          '₹${'${pincode?.deliveryCharge}'}'),
+                                  SizedBox(height: 2),
+                                  Text(
+                                      '(applicable when order below ₹${pincode?.minOrder})',
+                                      style: _textTheme.labelSmall!.copyWith(
+                                          fontWeight: FontWeight.w300,
+                                          color: AppColors.primaryBlue)),
+                                ]),
                               if (state.cart.appliedCoupon != null)
                                 Column(
                                     crossAxisAlignment:
