@@ -34,4 +34,15 @@ class ConfigService {
       rethrow;
     }
   }
+
+  static Future<DateTime> getCurrentServerTime() async {
+    final url = '${AppConstants.baseUrl}/config/current-time';
+
+    try {
+      final response = await Wrapper.get(url);
+      return DateTime.parse(json.decode(response)['body']).toLocal();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

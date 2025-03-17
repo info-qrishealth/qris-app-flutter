@@ -13,6 +13,7 @@ import 'package:qris_health/shared/components/common_cross_icon.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:qris_health/shared/models/qris_config/qris_config.dart';
+import 'package:qris_health/shared/services/config_services.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../orders_modele/models/coupon/coupon.dart';
@@ -151,7 +152,9 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
 
   Future<void> _applyCoupon({required Coupon coupon}) async {
     try {
-      if (coupon.firstOrder == '1' || coupon.oneTime == 1) {
+      if (coupon.firstOrder == '1' ||
+          coupon.oneTime == 1 ||
+          coupon.for120days == '1') {
         final orders = await OrderService.getAllOrdersForUser(
             userId: ApiParams.getInstance()!.userId!.toString());
 
@@ -165,6 +168,16 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
                     coupon.couponCode.toLowerCase()) !=
                 null) {
           throw 'Sorry! You have already used this coupon code before. This coupon is for one time use only';
+        }
+
+        if (coupon.for120days == '1') {
+          orders.sort((a, b) => b.orderDate.compareTo(a.orderDate));
+          final latestOrder = orders.first;
+          final currentDateTime = await ConfigService.getCurrentServerTime();
+
+          if (currentDateTime.difference(latestOrder.orderDate).inDays < 120) {
+            throw 'Sorry! This coupon is not applicable for now';
+          }
         }
       } else {
         await Future.delayed(Duration(milliseconds: 100));
