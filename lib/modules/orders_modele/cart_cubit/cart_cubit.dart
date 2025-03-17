@@ -57,6 +57,19 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
+  bool isPatientAlreadyAddedToThisTest(
+      {required int testId, required int patientId}) {
+    final cartTestIndex =
+        state.cart.cartTests.indexWhere((element) => element.test.id == testId);
+
+    if (cartTestIndex != -1) {
+      final cartTest = state.cart.cartTests[cartTestIndex];
+      return cartTest.patientIds.any((element) => element == patientId);
+    }
+
+    return false;
+  }
+
   void changeAddress(Address? address) {
     _updateCart(cart: state.cart.copyWith.call(selectedAddress: address));
   }

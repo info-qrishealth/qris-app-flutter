@@ -6,7 +6,10 @@ import 'package:qris_health/modules/home_module/components/package_list_tile.dar
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
+import '../../../../constants/app_constants.dart';
+import '../../../../constants/enums/snackbar_type.dart';
 import '../../../../shared/components/heading_text.dart';
+import '../../../orders_modele/cart_cubit/cart_cubit.dart';
 import '../../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 
 class SelectPatientTab extends StatefulWidget {
@@ -45,6 +48,16 @@ class _SelectPatientTabState extends State<SelectPatientTab> {
         SizedBox(height: 32),
         SelectPatientView(
             getSelectedPatient: (patient) {
+              if (BlocProvider.of<CartCubit>(context)
+                  .isPatientAlreadyAddedToThisTest(
+                      testId: widget.testPackageModel!.id,
+                      patientId: patient.id!)) {
+                AppConstants.showSnackbar(
+                    text: '${patient.name} is already added in the same test',
+                    type: SnackbarType.error);
+                return;
+              }
+
               setState(() {
                 _selectedPatient = patient;
               });
