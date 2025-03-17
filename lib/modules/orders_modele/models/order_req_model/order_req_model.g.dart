@@ -29,7 +29,7 @@ _$OrderReqModelImpl _$$OrderReqModelImplFromJson(Map<String, dynamic> json) =>
       pincode: json['pincode'] as String?,
       address: json['address'] as String?,
       sampleType: json['sampleType'] as String?,
-      hardCopyCharges: json['hardCopyCharges'] as String? ?? 0,
+      hardCopyCharges: json['hardCopyCharges'] as String? ?? '0',
       referBy: json['referBy'] as String?,
     );
 

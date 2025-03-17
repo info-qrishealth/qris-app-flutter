@@ -378,7 +378,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
       this.pincode,
       this.address,
       this.sampleType,
-      this.hardCopyCharges = 0,
+      this.hardCopyCharges = '0',
       this.referBy});
 
   factory _$OrderReqModelImpl.fromJson(Map<String, dynamic> json) =>

@@ -3,11 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
-import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
+import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_category_container.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_app_bar.dart';
@@ -18,7 +16,6 @@ import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_p
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/home_module/screens/search_package_screen.dart';
 import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
-import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
 import 'package:qris_health/shared/components/main_drawer.dart';
@@ -40,27 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final _textTheme = Get.textTheme;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    Geolocator.requestPermission().then((permission) async {
-      if (permission == LocationPermission.always ||
-          permission == LocationPermission.whileInUse ||
-          permission == LocationPermission.unableToDetermine) {
-        final currentPosition = await Geolocator.getCurrentPosition();
-        final placeMarks = await GeocodingPlatform.instance
-            ?.placemarkFromCoordinates(
-                currentPosition.latitude, currentPosition.longitude);
-
-        if (placeMarks != null && placeMarks.isNotEmpty) {
-          final firstPlacemark = placeMarks.first;
-          BlocProvider.of<UserCubit>(context)
-              .updateUserLocation(location: firstPlacemark.locality);
-        }
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context) => HealthScoreIntroScreen()));
                   },
                   child: Image.asset(
-                      'assets/images/illustrations/discover_health_score_illustration.png',
+                      Assets.illustrationsDiscoverHealthScoreIllustration,
                       fit: BoxFit.fitWidth)),
               SizedBox(height: 12),
               ContactUsContainer(),
@@ -166,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: 'Popular Imaging Tests and Scans', onTap: null),
               SizedBox(height: 12),
               SizedBox(
-                  height: 130,
+                  height: GetPlatform.isAndroid ? 140 : 150,
                   child: ListView.separated(
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
@@ -185,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: SvgPicture.asset(
-                          'assets/images/illustrations/refer_and_earn_banner.svg',
+                          Assets.illustrationsReferAndEarnBanner,
                           fit: BoxFit.fitWidth))),
               SizedBox(height: 18),
               Text('Our Accreditations',
@@ -194,14 +170,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   textAlign: TextAlign.center),
               SizedBox(height: 18),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                _buildCreditImage(
-                    path: 'assets/images/icons/accreditations/nabl.png'),
+                _buildCreditImage(path: Assets.accreditationsNabl),
                 SizedBox(width: 16),
-                _buildCreditImage(
-                    path: 'assets/images/icons/accreditations/ilac.png'),
+                _buildCreditImage(path: Assets.accreditationsIlac),
                 SizedBox(width: 16),
-                _buildCreditImage(
-                    path: 'assets/images/icons/accreditations/minister.png'),
+                _buildCreditImage(path: Assets.accreditationsMinister),
               ]),
               SizedBox(height: 16),
             ])));

@@ -57,7 +57,7 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                       SizedBox(width: 4),
                       BlocBuilder<UserCubit, UserState>(
                           builder: (context, state) {
-                        return Text(state.user.location ?? '-',
+                        return Text('New Delhi',
                             style: _textTheme.bodySmall!.copyWith(
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.lightSubTextColor));

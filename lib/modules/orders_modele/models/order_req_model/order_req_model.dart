@@ -25,7 +25,7 @@ class OrderReqModel with _$OrderReqModel {
       String? pincode,
       String? address,
       String? sampleType,
-      @Default(0) String hardCopyCharges,
+      @Default('0') String hardCopyCharges,
       String? referBy}) = _OrderReqModel;
 
   factory OrderReqModel.fromJson(Map<String, dynamic> json) =>
