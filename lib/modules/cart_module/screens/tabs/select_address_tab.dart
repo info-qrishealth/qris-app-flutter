@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,12 +10,10 @@ import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/address_module/components/add_address_bottom_sheet.dart';
 import 'package:qris_health/modules/address_module/components/address_list_tile.dart';
 import 'package:qris_health/modules/address_module/services/address_service.dart';
-import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
-import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
+import 'package:qris_health/modules/home_module/screens/search_package_screen.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
-import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
 import 'package:qris_health/styles/app_colors.dart';
@@ -131,7 +130,10 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                 style: OutlinedButton.styleFrom(
                     side: BorderSide(width: 0.6, color: AppColors.primaryPink),
                     backgroundColor: AppColors.primaryPink.withOpacity(0.09)),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => SearchPackageScreen()));
+                },
                 child: Text('Add more test +',
                     style: _textTheme.bodyLarge!.copyWith(
                         fontWeight: FontWeight.w400,
