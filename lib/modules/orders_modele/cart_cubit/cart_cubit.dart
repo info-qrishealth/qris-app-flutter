@@ -2,13 +2,13 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:qris_health/constants/enums/coupon_discount_type.dart';
 import 'package:qris_health/constants/enums/coupon_type.dart';
 import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
+import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 
@@ -194,7 +194,16 @@ class CartCubit extends Cubit<CartState> {
 
     /// Check redeem coins condition
     if (state.cart.redeemCoins) {
-      discountAmount = (config!.qcUsedCoins * getCartTestPrices()) / 100;
+      final totalQrisCoins =
+          BlocProvider.of<QrisCoinsCubit>(context).getTotalCoins();
+
+      final coinsDiscount = (config!.qcUsedCoins * getCartTestPrices()) / 100;
+
+      if (totalQrisCoins > coinsDiscount) {
+        discountAmount = coinsDiscount;
+      } else {
+        discountAmount = totalQrisCoins.roundToDouble();
+      }
     }
 
     /// Wallet money calculations
