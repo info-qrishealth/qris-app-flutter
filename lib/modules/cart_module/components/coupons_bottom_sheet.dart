@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/cart_module/components/coupon_applied_dialog.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/orders_modele/services/coupon_service.dart';
+import 'package:qris_health/modules/orders_modele/services/order_service.dart';
 import 'package:qris_health/shared/components/common_bottom_sheet_template.dart';
 import 'package:qris_health/shared/components/common_cross_icon.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
@@ -148,13 +150,34 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
   }
 
   Future<void> _applyCoupon({required Coupon coupon}) async {
-    Navigator.of(context).pop();
-    await Future.delayed(Duration(milliseconds: 100));
+    try {
+      if (coupon.firstOrder == '1' || coupon.oneTime == 1) {
+        final orders = await OrderService.getAllOrdersForUser(
+            userId: ApiParams.getInstance()!.userId!.toString());
 
-    BlocProvider.of<CartCubit>(context).applyCoupon(coupon: coupon);
+        if (orders.isNotEmpty && coupon.firstOrder == '1') {
+          throw 'Sorry! This coupon is valid on first order only';
+        }
 
-    await showDialog(
-        context: context,
-        builder: (context) => CouponAppliedDialog(appliedCoupon: coupon));
+        if (coupon.oneTime == 1 &&
+            orders.firstWhereOrNull((order) =>
+                    order.couponCode!.toLowerCase() ==
+                    coupon.couponCode.toLowerCase()) !=
+                null) {
+          throw 'Sorry! You have already used this coupon code before. This coupon is for one time use only';
+        }
+      }
+
+      Navigator.of(context).pop();
+      await Future.delayed(Duration(milliseconds: 100));
+
+      BlocProvider.of<CartCubit>(context).applyCoupon(coupon: coupon);
+
+      await showDialog(
+          context: context,
+          builder: (context) => CouponAppliedDialog(appliedCoupon: coupon));
+    } catch (e) {
+      AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    }
   }
 }
