@@ -166,11 +166,11 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
                 null) {
           throw 'Sorry! You have already used this coupon code before. This coupon is for one time use only';
         }
+      } else {
+        await Future.delayed(Duration(milliseconds: 100));
       }
 
       Navigator.of(context).pop();
-      await Future.delayed(Duration(milliseconds: 100));
-
       BlocProvider.of<CartCubit>(context).applyCoupon(coupon: coupon);
 
       await showDialog(
