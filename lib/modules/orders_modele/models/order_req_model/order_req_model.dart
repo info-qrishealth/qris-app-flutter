@@ -1,0 +1,33 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:qris_health/constants/enums/payment_mode.dart';
+import '../coupon/coupon.dart';
+
+part 'order_req_model.freezed.dart';
+part 'order_req_model.g.dart';
+
+@freezed
+class OrderReqModel with _$OrderReqModel {
+  const factory OrderReqModel(
+      {int? userId,
+      @Default(0) int packagesAmount,
+      int? collectionCharges,
+      @Default(0) int cartFinalValue,
+      PaymentMode? paymentMode,
+      String? razorpayPaymentId,
+      String? razorpayOrderId,
+      Coupon? coupon,
+      @Default(0) int redeemedWalletAmount,
+      @Default(0) int redeemedQrisCoins,
+      String? paymentResponse,
+      String? product,
+      String? slotDate,
+      String? slotTime,
+      String? pincode,
+      String? address,
+      String? sampleType,
+      @Default(0) String hardCopyCharges,
+      String? referBy}) = _OrderReqModel;
+
+  factory OrderReqModel.fromJson(Map<String, dynamic> json) =>
+      _$OrderReqModelFromJson(json);
+}

@@ -6,6 +6,8 @@ import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dar
 import 'package:qris_health/modules/orders_modele/models/user_order_report/user_order_report.dart';
 import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
 
+import '../models/order_req_model/order_req_model.dart';
+
 class OrderService {
   static Future<List<Order>> getAllOrdersForUser(
       {required String userId}) async {
@@ -43,13 +45,21 @@ class OrderService {
     final url = '${AppConstants.baseUrl}/orders/valid-time-slot';
 
     try {
-      print(date.toIso8601String());
-
       final response = await Wrapper.post(
           url, json.encode({'requestedDate': date.toIso8601String()}));
       return (json.decode(response)['body'] as List)
           .map((element) => TimeSlot.fromJson(element))
           .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> createOrder(
+      {required OrderReqModel orderReqModel}) async {
+    final url = '${AppConstants.baseUrl}/orders/create';
+    try {
+      await Wrapper.post(url, json.encode(orderReqModel.toJson()));
     } catch (e) {
       rethrow;
     }

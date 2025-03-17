@@ -23,7 +23,9 @@ import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.da
 import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/shared/models/qris_config/qris_config.dart';
 import 'package:qris_health/styles/app_colors.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../../../../constants/api_params.dart';
 import '../../../../constants/enums/payment_mode.dart';
 import '../../../../generated/assets.dart';
 import '../../../patients_module/cubits/patients_cubit/patients_cubit.dart';
@@ -37,6 +39,7 @@ class BillSummaryTab extends StatefulWidget {
 }
 
 class _BillSummaryTabState extends State<BillSummaryTab> {
+  final _razorpay = Razorpay();
   late final Future<List<Pincode>> _pincodeFuture;
   final _textTheme = Get.textTheme;
   PaymentMode? _selectedPaymentMode;
@@ -47,6 +50,9 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
     super.initState();
     _pincodeFuture = AddressService.getValidPinCodes();
     _config = BlocProvider.of<QrisConfigCubit>(context).state.config!;
+
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _onPaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _onPaymentError);
   }
 
   @override
@@ -549,7 +555,8 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                   ])),
                   SizedBox(height: 16),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed:
+                          _selectedPaymentMode == null ? null : _checkout,
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue),
                       child: Text('Pay ₹$cartFinalValue/-')),
@@ -616,5 +623,82 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
     }
 
     return Container();
+  }
+
+  Future<void> _onPaymentSuccess(PaymentSuccessResponse response) async {
+    try {
+      await _createOrder(
+          razorpayPaymentId: response.paymentId,
+          razorpayOrderId: response.orderId);
+    } catch (e) {
+      AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    } finally {}
+  }
+
+  Future<void> _onPaymentError(PaymentFailureResponse response) async {
+    switch (response.code) {
+      case Razorpay.NETWORK_ERROR:
+        AppConstants.showSnackbar(
+            text:
+                'There is a Network Error, Please Ensure that Your Internet Connection is Stable',
+            type: SnackbarType.warning);
+        break;
+
+      case Razorpay.PAYMENT_CANCELLED:
+        AppConstants.showSnackbar(
+            text: 'Payment Cancelled', type: SnackbarType.warning);
+        break;
+
+      case Razorpay.INCOMPATIBLE_PLUGIN:
+        AppConstants.showSnackbar(
+            text: 'Incompatible Plugins', type: SnackbarType.error);
+        break;
+
+      case Razorpay.UNKNOWN_ERROR:
+        AppConstants.showSnackbar(
+            text: 'Unknown Error Please Try Again', type: SnackbarType.error);
+        break;
+
+      default:
+        AppConstants.showSnackbar(
+            text: 'There is an Error Please Try Again',
+            type: SnackbarType.error);
+    }
+  }
+
+  Future<void> _checkout() async {
+    try {
+      final cartCubit = BlocProvider.of<CartCubit>(context);
+      final cartFinalValue = cartCubit.getCartFinalValue(context: context);
+
+      if (cartFinalValue > 0) {
+        var options = {
+          'key': AppConstants.razorpayKey,
+          'amount': cartFinalValue * 100,
+          'name': 'Qris Health',
+          'image':
+              'https://cdn-1.webcatalog.io/catalog/qris-health/qris-health-icon-filled-256.webp?v=1714781957813',
+          'description':
+              "Securely book your health tests with Qris Health using our seamless online payment system.",
+          'prefill': {'contact': ApiParams.getInstance()!.phoneNumber},
+          "theme": {"color": "#B23C97"}
+        };
+
+        _razorpay.open(options);
+      } else {
+        await _createOrder();
+      }
+    } catch (e) {
+      AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    }
+  }
+
+  Future<void> _createOrder(
+      {String? razorpayPaymentId, String? razorpayOrderId}) async {
+    try {
+      // await OrderService.createOrder(orderReqModel: OrderReqModel(userId: ));
+    } catch (e) {
+      AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    }
   }
 }
