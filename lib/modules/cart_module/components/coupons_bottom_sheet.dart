@@ -98,9 +98,15 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
                               type: SnackbarType.error);
                         }
                       } else {
-                        AppConstants.showSnackbar(
-                            text: 'No coupon found with name $searchedText',
-                            type: SnackbarType.error);
+                        try {
+                          final coupon =
+                              await CouponService.getCouponByCouponCode(
+                                  couponCode: _searchController.text);
+                          await _applyCoupon(coupon: coupon);
+                        } catch (e) {
+                          AppConstants.showSnackbar(
+                              text: e.toString(), type: SnackbarType.error);
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -152,6 +158,17 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
 
   Future<void> _applyCoupon({required Coupon coupon}) async {
     try {
+      final currentDateTime = await ConfigService.getCurrentServerTime();
+
+      if (coupon.status != 1) {
+        throw 'Sorry! This coupon is not active';
+      }
+
+      if (!(coupon.couponStartDate.isBefore(currentDateTime) &&
+          coupon.couponEndDate.isAfter(currentDateTime))) {
+        throw 'Sorry! This coupon is expired';
+      }
+
       if (coupon.firstOrder == '1' ||
           coupon.oneTime == 1 ||
           coupon.for120days == '1') {
@@ -173,7 +190,6 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
         if (coupon.for120days == '1') {
           orders.sort((a, b) => b.orderDate.compareTo(a.orderDate));
           final latestOrder = orders.first;
-          final currentDateTime = await ConfigService.getCurrentServerTime();
 
           if (currentDateTime.difference(latestOrder.orderDate).inDays < 120) {
             throw 'Sorry! This coupon is not applicable for now';

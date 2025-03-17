@@ -17,4 +17,16 @@ class CouponService {
       rethrow;
     }
   }
+
+  static Future<Coupon> getCouponByCouponCode(
+      {required String couponCode}) async {
+    final url = '${AppConstants.baseUrl}/coupons/$couponCode';
+
+    try {
+      final response = await Wrapper.get(url);
+      return Coupon.fromJson(json.decode(response)['body']);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
