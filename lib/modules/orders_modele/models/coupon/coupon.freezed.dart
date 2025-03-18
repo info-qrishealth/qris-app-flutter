@@ -60,6 +60,8 @@ mixin _$Coupon {
   double get cdCouponAmt => throw _privateConstructorUsedError;
   @JsonKey(name: 'for120days')
   String get for120days => throw _privateConstructorUsedError;
+  @JsonKey(name: 'applicable')
+  CouponApplicableType get applicable => throw _privateConstructorUsedError;
 
   /// Serializes this Coupon to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -97,7 +99,8 @@ abstract class $CouponCopyWith<$Res> {
       @JsonKey(name: 'sc_cashdiscount') int scCashDiscount,
       @JsonKey(name: 'cd_discount_type') CouponDiscountType cdDiscountType,
       @JsonKey(name: 'cd_coupon_amt') double cdCouponAmt,
-      @JsonKey(name: 'for120days') String for120days});
+      @JsonKey(name: 'for120days') String for120days,
+      @JsonKey(name: 'applicable') CouponApplicableType applicable});
 }
 
 /// @nodoc
@@ -137,6 +140,7 @@ class _$CouponCopyWithImpl<$Res, $Val extends Coupon>
     Object? cdDiscountType = null,
     Object? cdCouponAmt = null,
     Object? for120days = null,
+    Object? applicable = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -227,6 +231,10 @@ class _$CouponCopyWithImpl<$Res, $Val extends Coupon>
           ? _value.for120days
           : for120days // ignore: cast_nullable_to_non_nullable
               as String,
+      applicable: null == applicable
+          ? _value.applicable
+          : applicable // ignore: cast_nullable_to_non_nullable
+              as CouponApplicableType,
     ) as $Val);
   }
 }
@@ -260,7 +268,8 @@ abstract class _$$CouponImplCopyWith<$Res> implements $CouponCopyWith<$Res> {
       @JsonKey(name: 'sc_cashdiscount') int scCashDiscount,
       @JsonKey(name: 'cd_discount_type') CouponDiscountType cdDiscountType,
       @JsonKey(name: 'cd_coupon_amt') double cdCouponAmt,
-      @JsonKey(name: 'for120days') String for120days});
+      @JsonKey(name: 'for120days') String for120days,
+      @JsonKey(name: 'applicable') CouponApplicableType applicable});
 }
 
 /// @nodoc
@@ -298,6 +307,7 @@ class __$$CouponImplCopyWithImpl<$Res>
     Object? cdDiscountType = null,
     Object? cdCouponAmt = null,
     Object? for120days = null,
+    Object? applicable = null,
   }) {
     return _then(_$CouponImpl(
       id: null == id
@@ -388,6 +398,10 @@ class __$$CouponImplCopyWithImpl<$Res>
           ? _value.for120days
           : for120days // ignore: cast_nullable_to_non_nullable
               as String,
+      applicable: null == applicable
+          ? _value.applicable
+          : applicable // ignore: cast_nullable_to_non_nullable
+              as CouponApplicableType,
     ));
   }
 }
@@ -417,7 +431,8 @@ class _$CouponImpl implements _Coupon {
       @JsonKey(name: 'sc_cashdiscount') required this.scCashDiscount,
       @JsonKey(name: 'cd_discount_type') required this.cdDiscountType,
       @JsonKey(name: 'cd_coupon_amt') required this.cdCouponAmt,
-      @JsonKey(name: 'for120days') required this.for120days});
+      @JsonKey(name: 'for120days') required this.for120days,
+      @JsonKey(name: 'applicable') required this.applicable});
 
   factory _$CouponImpl.fromJson(Map<String, dynamic> json) =>
       _$$CouponImplFromJson(json);
@@ -484,10 +499,13 @@ class _$CouponImpl implements _Coupon {
   @override
   @JsonKey(name: 'for120days')
   final String for120days;
+  @override
+  @JsonKey(name: 'applicable')
+  final CouponApplicableType applicable;
 
   @override
   String toString() {
-    return 'Coupon(id: $id, couponCode: $couponCode, couponPrice: $couponPrice, discountMode: $discountMode, couponLimit: $couponLimit, couponStartDate: $couponStartDate, couponEndDate: $couponEndDate, shortDesc: $shortDesc, display: $display, discountAction: $discountAction, cartValue: $cartValue, status: $status, visibility: $visibility, oneTime: $oneTime, firstOrder: $firstOrder, scCashback: $scCashback, cbDiscountType: $cbDiscountType, cbCouponAmt: $cbCouponAmt, scCashDiscount: $scCashDiscount, cdDiscountType: $cdDiscountType, cdCouponAmt: $cdCouponAmt, for120days: $for120days)';
+    return 'Coupon(id: $id, couponCode: $couponCode, couponPrice: $couponPrice, discountMode: $discountMode, couponLimit: $couponLimit, couponStartDate: $couponStartDate, couponEndDate: $couponEndDate, shortDesc: $shortDesc, display: $display, discountAction: $discountAction, cartValue: $cartValue, status: $status, visibility: $visibility, oneTime: $oneTime, firstOrder: $firstOrder, scCashback: $scCashback, cbDiscountType: $cbDiscountType, cbCouponAmt: $cbCouponAmt, scCashDiscount: $scCashDiscount, cdDiscountType: $cdDiscountType, cdCouponAmt: $cdCouponAmt, for120days: $for120days, applicable: $applicable)';
   }
 
   @override
@@ -534,7 +552,9 @@ class _$CouponImpl implements _Coupon {
             (identical(other.cdCouponAmt, cdCouponAmt) ||
                 other.cdCouponAmt == cdCouponAmt) &&
             (identical(other.for120days, for120days) ||
-                other.for120days == for120days));
+                other.for120days == for120days) &&
+            (identical(other.applicable, applicable) ||
+                other.applicable == applicable));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -562,7 +582,8 @@ class _$CouponImpl implements _Coupon {
         scCashDiscount,
         cdDiscountType,
         cdCouponAmt,
-        for120days
+        for120days,
+        applicable
       ]);
 
   /// Create a copy of Coupon
@@ -609,8 +630,9 @@ abstract class _Coupon implements Coupon {
       @JsonKey(name: 'cd_discount_type')
       required final CouponDiscountType cdDiscountType,
       @JsonKey(name: 'cd_coupon_amt') required final double cdCouponAmt,
-      @JsonKey(name: 'for120days')
-      required final String for120days}) = _$CouponImpl;
+      @JsonKey(name: 'for120days') required final String for120days,
+      @JsonKey(name: 'applicable')
+      required final CouponApplicableType applicable}) = _$CouponImpl;
 
   factory _Coupon.fromJson(Map<String, dynamic> json) = _$CouponImpl.fromJson;
 
@@ -676,6 +698,9 @@ abstract class _Coupon implements Coupon {
   @override
   @JsonKey(name: 'for120days')
   String get for120days;
+  @override
+  @JsonKey(name: 'applicable')
+  CouponApplicableType get applicable;
 
   /// Create a copy of Coupon
   /// with the given fields replaced by the non-null parameter values.

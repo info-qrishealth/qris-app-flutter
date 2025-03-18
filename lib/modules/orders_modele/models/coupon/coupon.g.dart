@@ -32,6 +32,8 @@ _$CouponImpl _$$CouponImplFromJson(Map<String, dynamic> json) => _$CouponImpl(
           $enumDecode(_$CouponDiscountTypeEnumMap, json['cd_discount_type']),
       cdCouponAmt: (json['cd_coupon_amt'] as num).toDouble(),
       for120days: json['for120days'] as String,
+      applicable:
+          $enumDecode(_$CouponApplicableTypeEnumMap, json['applicable']),
     );
 
 Map<String, dynamic> _$$CouponImplToJson(_$CouponImpl instance) =>
@@ -58,6 +60,7 @@ Map<String, dynamic> _$$CouponImplToJson(_$CouponImpl instance) =>
       'cd_discount_type': _$CouponDiscountTypeEnumMap[instance.cdDiscountType]!,
       'cd_coupon_amt': instance.cdCouponAmt,
       'for120days': instance.for120days,
+      'applicable': _$CouponApplicableTypeEnumMap[instance.applicable]!,
     };
 
 const _$CouponDiscountTypeEnumMap = {
@@ -70,4 +73,10 @@ const _$CouponTypeEnumMap = {
   CouponType.dc: 'dc',
   CouponType.cb: 'cb',
   CouponType.sc: 'sc',
+};
+
+const _$CouponApplicableTypeEnumMap = {
+  CouponApplicableType.app: 'app',
+  CouponApplicableType.web: 'web',
+  CouponApplicableType.both: 'both',
 };

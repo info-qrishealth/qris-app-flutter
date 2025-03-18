@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/coupon_applicable_type.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/cart_module/components/coupon_applied_dialog.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
@@ -159,6 +160,10 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
   Future<void> _applyCoupon({required Coupon coupon}) async {
     try {
       final currentDateTime = await ConfigService.getCurrentServerTime();
+
+      if (coupon.applicable == CouponApplicableType.web) {
+        throw 'Sorry! This coupon is applicable for website only';
+      }
 
       if (coupon.status != 1) {
         throw 'Sorry! This coupon is not active';

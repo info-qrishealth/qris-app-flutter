@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/coupon_applicable_type.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
 
 class CouponService {
   static Future<List<Coupon>> getAllCoupons() async {
-    final url = '${AppConstants.baseUrl}/coupons';
+    final url =
+        '${AppConstants.baseUrl}/coupons?applicable=${CouponApplicableType.app.name}&applicable=${CouponApplicableType.both.name}';
 
     try {
       final response = await Wrapper.get(url);
