@@ -9,7 +9,7 @@ import 'enums/snackbar_type.dart';
 
 class AppConstants {
   static const String baseUrl =
-      // 'http://192.168.1.38:8080';
+      // 'http://192.168.1.39:8080';
       'http://srv740952.hstgr.cloud:8080';
   static const ubuntuFontFamily = 'Ubuntu';
   static const latoFontFamily = 'Lato';
@@ -95,6 +95,10 @@ class AppConstants {
     } catch (e) {
       return null;
     }
+  }
+
+  static String encodeStringToBase64(String text) {
+    return base64.encode(utf8.encode(text));
   }
 
   static const List<String> stateList = [

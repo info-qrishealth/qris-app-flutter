@@ -31,11 +31,12 @@ mixin _$OrderReqModel {
   int get redeemedWalletAmount => throw _privateConstructorUsedError;
   int get redeemedQrisCoins => throw _privateConstructorUsedError;
   String? get paymentResponse => throw _privateConstructorUsedError;
-  String? get product => throw _privateConstructorUsedError;
+  String? get encodedProductData => throw _privateConstructorUsedError;
   String? get slotDate => throw _privateConstructorUsedError;
   String? get slotTime => throw _privateConstructorUsedError;
   String? get pincode => throw _privateConstructorUsedError;
-  String? get address => throw _privateConstructorUsedError;
+  String? get encodedAddress => throw _privateConstructorUsedError;
+  String? get encodedCouponData => throw _privateConstructorUsedError;
   String? get sampleType => throw _privateConstructorUsedError;
   String get hardCopyCharges => throw _privateConstructorUsedError;
   String? get referBy => throw _privateConstructorUsedError;
@@ -68,11 +69,12 @@ abstract class $OrderReqModelCopyWith<$Res> {
       int redeemedWalletAmount,
       int redeemedQrisCoins,
       String? paymentResponse,
-      String? product,
+      String? encodedProductData,
       String? slotDate,
       String? slotTime,
       String? pincode,
-      String? address,
+      String? encodedAddress,
+      String? encodedCouponData,
       String? sampleType,
       String hardCopyCharges,
       String? referBy});
@@ -106,11 +108,12 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
     Object? redeemedWalletAmount = null,
     Object? redeemedQrisCoins = null,
     Object? paymentResponse = freezed,
-    Object? product = freezed,
+    Object? encodedProductData = freezed,
     Object? slotDate = freezed,
     Object? slotTime = freezed,
     Object? pincode = freezed,
-    Object? address = freezed,
+    Object? encodedAddress = freezed,
+    Object? encodedCouponData = freezed,
     Object? sampleType = freezed,
     Object? hardCopyCharges = null,
     Object? referBy = freezed,
@@ -160,9 +163,9 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
           ? _value.paymentResponse
           : paymentResponse // ignore: cast_nullable_to_non_nullable
               as String?,
-      product: freezed == product
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
+      encodedProductData: freezed == encodedProductData
+          ? _value.encodedProductData
+          : encodedProductData // ignore: cast_nullable_to_non_nullable
               as String?,
       slotDate: freezed == slotDate
           ? _value.slotDate
@@ -176,9 +179,13 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
           ? _value.pincode
           : pincode // ignore: cast_nullable_to_non_nullable
               as String?,
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
+      encodedAddress: freezed == encodedAddress
+          ? _value.encodedAddress
+          : encodedAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      encodedCouponData: freezed == encodedCouponData
+          ? _value.encodedCouponData
+          : encodedCouponData // ignore: cast_nullable_to_non_nullable
               as String?,
       sampleType: freezed == sampleType
           ? _value.sampleType
@@ -230,11 +237,12 @@ abstract class _$$OrderReqModelImplCopyWith<$Res>
       int redeemedWalletAmount,
       int redeemedQrisCoins,
       String? paymentResponse,
-      String? product,
+      String? encodedProductData,
       String? slotDate,
       String? slotTime,
       String? pincode,
-      String? address,
+      String? encodedAddress,
+      String? encodedCouponData,
       String? sampleType,
       String hardCopyCharges,
       String? referBy});
@@ -267,11 +275,12 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
     Object? redeemedWalletAmount = null,
     Object? redeemedQrisCoins = null,
     Object? paymentResponse = freezed,
-    Object? product = freezed,
+    Object? encodedProductData = freezed,
     Object? slotDate = freezed,
     Object? slotTime = freezed,
     Object? pincode = freezed,
-    Object? address = freezed,
+    Object? encodedAddress = freezed,
+    Object? encodedCouponData = freezed,
     Object? sampleType = freezed,
     Object? hardCopyCharges = null,
     Object? referBy = freezed,
@@ -321,9 +330,9 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
           ? _value.paymentResponse
           : paymentResponse // ignore: cast_nullable_to_non_nullable
               as String?,
-      product: freezed == product
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
+      encodedProductData: freezed == encodedProductData
+          ? _value.encodedProductData
+          : encodedProductData // ignore: cast_nullable_to_non_nullable
               as String?,
       slotDate: freezed == slotDate
           ? _value.slotDate
@@ -337,9 +346,13 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
           ? _value.pincode
           : pincode // ignore: cast_nullable_to_non_nullable
               as String?,
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
+      encodedAddress: freezed == encodedAddress
+          ? _value.encodedAddress
+          : encodedAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      encodedCouponData: freezed == encodedCouponData
+          ? _value.encodedCouponData
+          : encodedCouponData // ignore: cast_nullable_to_non_nullable
               as String?,
       sampleType: freezed == sampleType
           ? _value.sampleType
@@ -372,11 +385,12 @@ class _$OrderReqModelImpl implements _OrderReqModel {
       this.redeemedWalletAmount = 0,
       this.redeemedQrisCoins = 0,
       this.paymentResponse,
-      this.product,
+      this.encodedProductData,
       this.slotDate,
       this.slotTime,
       this.pincode,
-      this.address,
+      this.encodedAddress,
+      this.encodedCouponData,
       this.sampleType,
       this.hardCopyCharges = '0',
       this.referBy});
@@ -411,7 +425,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
   @override
   final String? paymentResponse;
   @override
-  final String? product;
+  final String? encodedProductData;
   @override
   final String? slotDate;
   @override
@@ -419,7 +433,9 @@ class _$OrderReqModelImpl implements _OrderReqModel {
   @override
   final String? pincode;
   @override
-  final String? address;
+  final String? encodedAddress;
+  @override
+  final String? encodedCouponData;
   @override
   final String? sampleType;
   @override
@@ -430,7 +446,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
 
   @override
   String toString() {
-    return 'OrderReqModel(userId: $userId, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, razorpayOrderId: $razorpayOrderId, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, product: $product, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, address: $address, sampleType: $sampleType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
+    return 'OrderReqModel(userId: $userId, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, razorpayOrderId: $razorpayOrderId, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, encodedProductData: $encodedProductData, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, encodedAddress: $encodedAddress, encodedCouponData: $encodedCouponData, sampleType: $sampleType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
   }
 
   @override
@@ -458,13 +474,17 @@ class _$OrderReqModelImpl implements _OrderReqModel {
                 other.redeemedQrisCoins == redeemedQrisCoins) &&
             (identical(other.paymentResponse, paymentResponse) ||
                 other.paymentResponse == paymentResponse) &&
-            (identical(other.product, product) || other.product == product) &&
+            (identical(other.encodedProductData, encodedProductData) ||
+                other.encodedProductData == encodedProductData) &&
             (identical(other.slotDate, slotDate) ||
                 other.slotDate == slotDate) &&
             (identical(other.slotTime, slotTime) ||
                 other.slotTime == slotTime) &&
             (identical(other.pincode, pincode) || other.pincode == pincode) &&
-            (identical(other.address, address) || other.address == address) &&
+            (identical(other.encodedAddress, encodedAddress) ||
+                other.encodedAddress == encodedAddress) &&
+            (identical(other.encodedCouponData, encodedCouponData) ||
+                other.encodedCouponData == encodedCouponData) &&
             (identical(other.sampleType, sampleType) ||
                 other.sampleType == sampleType) &&
             (identical(other.hardCopyCharges, hardCopyCharges) ||
@@ -487,11 +507,12 @@ class _$OrderReqModelImpl implements _OrderReqModel {
         redeemedWalletAmount,
         redeemedQrisCoins,
         paymentResponse,
-        product,
+        encodedProductData,
         slotDate,
         slotTime,
         pincode,
-        address,
+        encodedAddress,
+        encodedCouponData,
         sampleType,
         hardCopyCharges,
         referBy
@@ -526,11 +547,12 @@ abstract class _OrderReqModel implements OrderReqModel {
       final int redeemedWalletAmount,
       final int redeemedQrisCoins,
       final String? paymentResponse,
-      final String? product,
+      final String? encodedProductData,
       final String? slotDate,
       final String? slotTime,
       final String? pincode,
-      final String? address,
+      final String? encodedAddress,
+      final String? encodedCouponData,
       final String? sampleType,
       final String hardCopyCharges,
       final String? referBy}) = _$OrderReqModelImpl;
@@ -561,7 +583,7 @@ abstract class _OrderReqModel implements OrderReqModel {
   @override
   String? get paymentResponse;
   @override
-  String? get product;
+  String? get encodedProductData;
   @override
   String? get slotDate;
   @override
@@ -569,7 +591,9 @@ abstract class _OrderReqModel implements OrderReqModel {
   @override
   String? get pincode;
   @override
-  String? get address;
+  String? get encodedAddress;
+  @override
+  String? get encodedCouponData;
   @override
   String? get sampleType;
   @override

@@ -141,15 +141,15 @@ class CartCubit extends Cubit<CartState> {
     double cartFinalValue = getCartTestPrices();
     final config = BlocProvider.of<QrisConfigCubit>(context).state.config;
 
+    /// For sample collection charges
+    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
+      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
+    }
+
     /// For hard copy charges
     if (state.cart.shouldGetHardCopy) {
       cartFinalValue =
           cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
-    }
-
-    /// For sample collection charges
-    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
-      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
     }
 
     double discountAmount = 0;
@@ -285,5 +285,25 @@ class CartCubit extends Cubit<CartState> {
             appliedCouponAmount: null,
             redeemCoins: false,
             redeemedQrisCoins: 0));
+  }
+
+  int getDeliveryCharge() {
+    if (state.cart.pincode == null) {
+      return 0;
+    }
+
+    return getCartTestPrices() >= state.cart.pincode!.minOrder
+        ? 0
+        : state.cart.pincode!.deliveryCharge;
+  }
+
+  int getHardCopyCharges() {
+    if (state.cart.pincode == null) return 0;
+
+    if (state.cart.shouldGetHardCopy) {
+      return state.cart.pincode!.hardCopyCharge;
+    }
+
+    return 0;
   }
 }

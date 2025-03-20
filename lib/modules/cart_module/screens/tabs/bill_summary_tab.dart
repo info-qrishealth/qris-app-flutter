@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,6 +30,8 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../../constants/api_params.dart';
 import '../../../../constants/enums/payment_mode.dart';
 import '../../../../generated/assets.dart';
+import '../../../orders_modele/models/order_req_model/order_req_model.dart';
+import '../../../orders_modele/services/order_service.dart';
 import '../../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 import '../../components/coupons_bottom_sheet.dart';
 
@@ -39,11 +43,14 @@ class BillSummaryTab extends StatefulWidget {
 }
 
 class _BillSummaryTabState extends State<BillSummaryTab> {
+  final _referController = TextEditingController();
   final _razorpay = Razorpay();
-  late final Future<List<Pincode>> _pincodeFuture;
   final _textTheme = Get.textTheme;
-  PaymentMode? _selectedPaymentMode;
+
+  late final Future<List<Pincode>> _pincodeFuture;
   late final QrisConfig _config;
+
+  PaymentMode? _selectedPaymentMode;
 
   @override
   void initState() {
@@ -332,6 +339,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                   SizedBox(
                                       height: 30,
                                       child: TextField(
+                                          controller: _referController,
                                           decoration: InputDecoration(
                                               focusedBorder: OutlineInputBorder(
                                                   borderRadius:
@@ -740,7 +748,39 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
   Future<void> _createOrder(
       {String? razorpayPaymentId, String? razorpayOrderId}) async {
     try {
-      // await OrderService.createOrder(orderReqModel: OrderReqModel(userId: ));
+      final cartCubit = BlocProvider.of<CartCubit>(context);
+      final cart = cartCubit.state.cart;
+
+      final encodedAddress = AppConstants.encodeStringToBase64(
+          json.encode(cart.selectedAddress!.toJson()));
+      final encodedCouponData = cart.appliedCoupon == null
+          ? ''
+          : AppConstants.encodeStringToBase64(
+              json.encode(cart.appliedCoupon!.toJson()));
+      // final encodedProductData = AppConstants.encodeStringToBase64();
+
+      await OrderService.createOrder(
+          orderReqModel: OrderReqModel(
+              userId: ApiParams.getInstance()!.userId,
+              packagesAmount: cartCubit.getCartTestPrices().round(),
+              collectionCharges: cartCubit.getDeliveryCharge(),
+              hardCopyCharges: cartCubit.getHardCopyCharges().toString(),
+              cartFinalValue:
+                  cartCubit.getCartFinalValue(context: context).round(),
+              paymentMode: _selectedPaymentMode,
+              razorpayPaymentId: razorpayPaymentId,
+              razorpayOrderId: razorpayOrderId,
+              coupon: cart.appliedCoupon,
+              redeemedWalletAmount: cart.walletRedeemedAmount,
+              redeemedQrisCoins: cart.redeemedQrisCoins,
+              slotDate: DateFormat('yyyyMMdd').format(cart.collectionDate!),
+              slotTime:
+                  '${cart.timeSlot!.startingTime}-${cart.timeSlot!.endingTime}',
+              pincode: cart.pincode!.pincode.toString(),
+              encodedProductData: '',
+              encodedAddress: encodedAddress,
+              encodedCouponData: encodedCouponData,
+              referBy: _referController.text));
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     }
