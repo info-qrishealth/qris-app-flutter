@@ -125,6 +125,9 @@ class _PatientListTileState extends State<PatientListTile>
                                     setState(() {
                                       _patient = patient;
                                     });
+
+                                    BlocProvider.of<PatientsCubit>(context)
+                                        .updatePatient(patient);
                                   }));
                         },
                         child: SvgPicture.asset(
