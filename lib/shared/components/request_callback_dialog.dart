@@ -82,7 +82,7 @@ class _RequestCallbackDialogState extends State<RequestCallbackDialog> {
                                       });
                                     }
                                   },
-                            child: Text('Confirm',
+                            child: Text(_isLoading ? 'Submitting...' : 'Confirm',
                                 style: textTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white))))
