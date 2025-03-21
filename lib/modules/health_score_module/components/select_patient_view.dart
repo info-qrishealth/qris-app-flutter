@@ -69,7 +69,7 @@ class _SelectPatientViewState extends State<SelectPatientView> {
       if (state is PatientsLoaded) {
         final patients = BlocProvider.of<PatientsCubit>(context)
             .validPatients
-            .where((patient) => !patient.isUnderAge)
+            .where((patient) => widget.onlyAdults ? !patient.isUnderAge : true)
             .toList();
 
         return ListView.separated(
