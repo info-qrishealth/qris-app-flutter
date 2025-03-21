@@ -29,7 +29,7 @@ class CommonNetworkImage extends StatelessWidget {
         },
         placeholder: (context, _) {
           return Image.asset(
-              fit: fit,
+              fit: placeholderPath == null ? BoxFit.contain : fit,
               placeholderPath ?? 'assets/images/logos/full_logo.png',
               height: height,
               width: width);
