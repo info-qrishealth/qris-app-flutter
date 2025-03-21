@@ -54,18 +54,24 @@ class _GenderInputContainerRowState extends State<GenderInputContainerRow> {
         onTap: () {
           widget.onTap(gender);
         },
-        child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 26, vertical: 12),
-            decoration: BoxDecoration(
-                color: isSelected
-                    ? AppColors.primaryBlue.withOpacity(0.1)
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                    width: 0.6,
-                    color: isSelected
-                        ? AppColors.primaryBlue
-                        : AppColors.borderColor)),
-            child: SvgPicture.asset(gender.imagePath)));
+        child: Column(children: [
+          Container(
+              padding: EdgeInsets.symmetric(horizontal: 26, vertical: 12),
+              decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColors.primaryBlue.withOpacity(0.1)
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                      width: 0.6,
+                      color: isSelected
+                          ? AppColors.primaryBlue
+                          : AppColors.borderColor)),
+              child: SvgPicture.asset(gender.imagePath)),
+          SizedBox(height: 8),
+          Text(gender.name.capitalizeFirst!,
+              style: Get.textTheme.bodySmall!
+                  .copyWith(fontWeight: FontWeight.w400)),
+        ]));
   }
 }
