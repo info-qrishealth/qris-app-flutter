@@ -51,10 +51,12 @@ class _OtpScreenState extends State<OtpScreen> with LoginHelperMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: CreateAccountText()),
+        bottomNavigationBar: widget.userToAdd != null
+            ? null
+            : Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: CreateAccountText()),
         body: SafeArea(
             child: ListView(
                 keyboardDismissBehavior:
