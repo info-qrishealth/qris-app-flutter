@@ -185,7 +185,9 @@ class _OtpScreenState extends State<OtpScreen> with LoginHelperMixin {
 
       if (widget.userToAdd != null) {
         await OtpService.verifyOtp(otp: _otp);
-        user = await UserService.createUser(user: widget.userToAdd!);
+        user = await UserService.createUser(
+            user: widget.userToAdd!.copyWith
+                .call(name: widget.userToAdd!.name!.toUpperCase()));
       } else {
         user = await UserService.loginWithOtp(otp: _otp);
       }

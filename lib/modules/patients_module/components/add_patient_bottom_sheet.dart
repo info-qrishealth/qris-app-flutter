@@ -204,7 +204,8 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
         if (widget.patient == null) {
           final patient = await PatientService.addNewPatientForUser(
               userId: ApiParams.getInstance()!.userId!.toString(),
-              patient: _patient);
+              patient:
+                  _patient.copyWith.call(name: _patient.name?.toUpperCase()));
           if (widget.getAddedPatient != null) widget.getAddedPatient!(patient);
         } else {
           final patient = await PatientService.updatePatient(_patient);
