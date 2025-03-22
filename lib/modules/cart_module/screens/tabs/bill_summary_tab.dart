@@ -78,8 +78,6 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
               BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
 
           return BlocBuilder<CartCubit, CartState>(builder: (context, state) {
-            print('Cart build');
-
             final cartCubit = BlocProvider.of<CartCubit>(context);
             final address = state.cart.selectedAddress;
             final pincode = pincodes.firstWhereOrNull(

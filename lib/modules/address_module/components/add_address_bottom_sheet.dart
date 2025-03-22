@@ -156,7 +156,7 @@ class _AddAddressBottomSheetState extends State<AddAddressBottomSheet> {
                 id: null,
                 house: _houseNumberController.text,
                 address1: _addressLine1Controller.text,
-                address2: _addressLine1Controller.text,
+                address2: _addressLine2Controller.text,
                 landmark: _landmarkController.text,
                 pincode: _pincodeController.text,
                 state: _selectedState),

@@ -116,6 +116,7 @@ class Assets {
   static const String includedPackagesIconUrineTestIcon = 'assets/images/icons/included_packages_icon/urine_test_icon.png';
   static const String includedPackagesIconVitaminB12Icon = 'assets/images/icons/included_packages_icon/vitamin_b12_icon.png';
   static const String includedPackagesIconVitaminDIcon = 'assets/images/icons/included_packages_icon/vitamin_d_icon.png';
+  static const String jsonsConfetti = 'assets/images/jsons/confetti.json';
   static const String latoLatoBlack = 'assets/fonts/lato/Lato-Black.ttf';
   static const String latoLatoBold = 'assets/fonts/lato/Lato-Bold.ttf';
   static const String latoLatoLight = 'assets/fonts/lato/Lato-Light.ttf';

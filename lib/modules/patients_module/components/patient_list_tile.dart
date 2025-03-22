@@ -172,7 +172,7 @@ class _PatientListTileState extends State<PatientListTile>
                               borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(12)),
                               title: 'Health Score',
-                              value: !hasData
+                              value: isUnderAge || !hasData
                                   ? 'NA'
                                   : snapshot.data?.healthScore ?? 'NA',
                               customDescription: isUnderAge
