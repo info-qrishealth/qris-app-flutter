@@ -38,10 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   MarriedTitle? _selectedTitle;
   Gender? _selectedGender;
-
-  int? _day;
-  Month? _month;
-  int? _year;
+  DateTime? _selectedDate;
 
   bool _loading = false;
 
@@ -130,22 +127,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           headingText: 'Mobile Number'),
                       SizedBox(height: 16),
                       DobDropdown(
-                          selectedDay: _day,
-                          selectedMonth: _month,
-                          selectedYear: _year,
-                          getSelectedDay: (days) {
+                          selectedDate: _selectedDate,
+                          getSelectedDate: (selectedDate) {
                             setState(() {
-                              _day = days;
-                            });
-                          },
-                          getSelectedMonth: (month) {
-                            setState(() {
-                              _month = month;
-                            });
-                          },
-                          getSelectedYear: (year) {
-                            setState(() {
-                              _year = year;
+                              _selectedDate = selectedDate;
                             });
                           }),
                       SizedBox(height: 16),
@@ -184,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             text: 'Please enter your title first', type: SnackbarType.warning);
       }
 
-      if (_day == null || _month == null || _year == null) {
+      if (_selectedDate == null) {
         return AppConstants.showSnackbar(
             text: 'Please enter DOB first', type: SnackbarType.warning);
       }
@@ -211,7 +196,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             phone: _phoneNumberController.text,
             userId: _emailController.text,
             email: _emailController.text,
-            dob: DateTime(_year!, _month!.number, _day!).toTimestampForServer!,
+            dob: _selectedDate.toTimestampForServer!,
             gender: _selectedGender!.number.toString());
 
         final otp = await OtpService.sendOtp(

@@ -41,10 +41,7 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   final _textTheme = Get.textTheme;
   late Patient _patient;
-
-  int? _selectedDay;
-  Month? _selectedMonth;
-  int? _selectedYear;
+  DateTime? _selectedDate;
 
   bool _loading = false;
 
@@ -58,9 +55,7 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
     final dob = _patient.dob?.toDateTime;
 
     if (dob != null) {
-      _selectedDay = dob.day;
-      _selectedMonth = Month.values[dob.month - 1];
-      _selectedYear = dob.year;
+      _selectedDate = dob;
     }
   }
 
@@ -125,22 +120,10 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
                         SizedBox(height: 18),
                         DobDropdown(
                             isRequired: true,
-                            selectedDay: _selectedDay,
-                            selectedMonth: _selectedMonth,
-                            selectedYear: _selectedYear,
-                            getSelectedDay: (day) {
+                            selectedDate: _selectedDate,
+                            getSelectedDate: (selectedDate) {
                               setState(() {
-                                _selectedDay = day;
-                              });
-                            },
-                            getSelectedMonth: (month) {
-                              setState(() {
-                                _selectedMonth = month;
-                              });
-                            },
-                            getSelectedYear: (year) {
-                              setState(() {
-                                _selectedYear = year;
+                                _selectedDate = selectedDate;
                               });
                             }),
                         SizedBox(height: 18),
@@ -200,9 +183,7 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
             text: 'Please select gender', type: SnackbarType.error);
       }
 
-      if (_selectedDay == null ||
-          _selectedMonth == null ||
-          _selectedYear == null) {
+      if (_selectedDate == null) {
         return AppConstants.showSnackbar(
             text: 'Please enter date of birth of family member',
             type: SnackbarType.error);
@@ -213,8 +194,7 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
           _loading = true;
         });
 
-        final dob =
-            DateTime(_selectedYear!, _selectedMonth!.number, _selectedDay!);
+        final dob = _selectedDate;
         _patient = _patient.copyWith.call(
             dob: dob.toTimestampForServer,
             name: _nameController.text,

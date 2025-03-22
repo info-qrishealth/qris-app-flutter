@@ -7,22 +7,13 @@ import '../../styles/app_colors.dart';
 
 class DobDropdown extends StatefulWidget {
   final bool isRequired;
-  final int? selectedDay;
-  final Month? selectedMonth;
-  final int? selectedYear;
-  final Function(int) getSelectedDay;
-  final Function(Month) getSelectedMonth;
-  final Function(int) getSelectedYear;
-
+  final DateTime? selectedDate;
+  final Function(DateTime) getSelectedDate;
   const DobDropdown(
       {super.key,
       this.isRequired = false,
-      required this.getSelectedDay,
-      required this.getSelectedMonth,
-      required this.getSelectedYear,
-      this.selectedDay,
-      this.selectedMonth,
-      this.selectedYear});
+      this.selectedDate,
+      required this.getSelectedDate});
 
   @override
   State<DobDropdown> createState() => _DobDropdownState();
@@ -44,73 +35,81 @@ class _DobDropdownState extends State<DobDropdown> {
               TextSpan(text: ' *', style: TextStyle(color: AppColors.red)),
           ])),
       SizedBox(height: 12),
-      InputDecorator(
-          decoration: InputDecoration(
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 4)),
-          child: Row(children: [
-            Expanded(
-                child: DropdownButton(
-                    value: widget.selectedDay,
-                    underline: Container(),
-                    icon: Icon(Icons.keyboard_arrow_down_outlined,
-                        size: 20, color: AppColors.lightSubTextColor),
-                    hint: Text('Date',
-                        style: textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black45)),
-                    items: List.generate(31, (index) {
-                      final date = index + 1;
+      GestureDetector(
+          onTap: () async {
+            final pickedDate = await showDatePicker(
+                context: context,
+                initialDate: widget.selectedDate,
+                firstDate: DateTime(1930),
+                lastDate: DateTime.now());
 
-                      return DropdownMenuItem(
-                          value: index + 1, child: Text(date.toString()));
-                    }),
-                    onChanged: (value) {
-                      widget.getSelectedDay(value!);
-                    })),
-            Expanded(
-                child: Align(
-                    alignment: Alignment.center,
-                    child: DropdownButton<Month>(
-                        value: widget.selectedMonth,
+            if (pickedDate != null) {
+              widget.getSelectedDate(pickedDate);
+            }
+          },
+          child: InputDecorator(
+              decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 4)),
+              child: Row(children: [
+                Expanded(
+                    child: DropdownButton(
+                        value: widget.selectedDate?.day,
                         underline: Container(),
                         icon: Icon(Icons.keyboard_arrow_down_outlined,
-                            size: 20, color: AppColors.lightGrey),
-                        hint: Text('Month',
+                            size: 20, color: AppColors.lightSubTextColor),
+                        hint: Text('Date',
                             style: textTheme.bodyLarge!.copyWith(
                                 fontWeight: FontWeight.w400,
                                 color: Colors.black45)),
-                        items: Month.values
-                            .map((month) => DropdownMenuItem(
-                                value: month,
-                                child: Text(month.name.formattedEnumName!)))
-                            .toList(),
-                        onChanged: (value) {
-                          widget.getSelectedMonth(value!);
-                        }))),
-            Expanded(
-                child: Align(
-                    alignment: Alignment.centerRight,
-                    child: DropdownButton<int>(
-                        value: widget.selectedYear,
-                        underline: Container(),
-                        icon: Icon(Icons.keyboard_arrow_down_outlined,
-                            size: 20, color: AppColors.lightGrey),
-                        hint: Text('Year',
-                            style: textTheme.bodyLarge!.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black45)),
-                        items: List.generate(100, (index) {
-                          final currentYear = DateTime.now().year;
-                          final date = currentYear - index;
+                        items: List.generate(31, (index) {
+                          final date = index + 1;
 
-                          return DropdownMenuItem<int>(
-                              value: date, child: Text(date.toString()));
+                          return DropdownMenuItem(
+                              value: index + 1, child: Text(date.toString()));
                         }),
-                        onChanged: (value) {
-                          widget.getSelectedYear(value!);
-                        }))),
-          ])),
+                        onChanged: null)),
+                Expanded(
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: DropdownButton<Month>(
+                            value: widget.selectedDate == null
+                                ? null
+                                : Month.values[widget.selectedDate!.month],
+                            underline: Container(),
+                            icon: Icon(Icons.keyboard_arrow_down_outlined,
+                                size: 20, color: AppColors.lightGrey),
+                            hint: Text('Month',
+                                style: textTheme.bodyLarge!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black45)),
+                            items: Month.values
+                                .map((month) => DropdownMenuItem(
+                                    value: month,
+                                    child: Text(month.name.formattedEnumName!)))
+                                .toList(),
+                            onChanged: null))),
+                Expanded(
+                    child: Align(
+                        alignment: Alignment.centerRight,
+                        child: DropdownButton<int>(
+                            value: widget.selectedDate?.year,
+                            underline: Container(),
+                            icon: Icon(Icons.keyboard_arrow_down_outlined,
+                                size: 20, color: AppColors.lightGrey),
+                            hint: Text('Year',
+                                style: textTheme.bodyLarge!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black45)),
+                            items: List.generate(100, (index) {
+                              final currentYear = DateTime.now().year;
+                              final date = currentYear - index;
+
+                              return DropdownMenuItem<int>(
+                                  value: date, child: Text(date.toString()));
+                            }),
+                            onChanged: null))),
+              ]))),
     ]);
   }
 }
