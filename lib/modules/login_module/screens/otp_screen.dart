@@ -89,6 +89,7 @@ class _OtpScreenState extends State<OtpScreen> with LoginHelperMixin {
                   autoDisposeControllers: false,
                   backgroundColor: Colors.white,
                   enablePinAutofill: true,
+                  onCompleted: (pin) => _login(),
                   separatorBuilder: (context, _) {
                     return const SizedBox(width: 12);
                   },

@@ -90,7 +90,7 @@ class _LoginPhoneNumberScreenState extends State<LoginPhoneNumberScreen> {
                                               _phoneNumberController.text);
 
                                   if (!isExists) {
-                                    throw 'User not exists. Please create a new account first';
+                                    throw 'User does not exist. Please create a new account';
                                   }
 
                                   final otp = await OtpService.sendOtp(
