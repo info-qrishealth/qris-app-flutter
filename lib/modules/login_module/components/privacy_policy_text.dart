@@ -28,6 +28,7 @@ class PrivacyPolicyText extends StatelessWidget {
               style: textTheme.labelSmall!.copyWith(
                   color: AppColors.primaryBlue,
                   fontFamily: AppConstants.metropolisFontFamily,
+                  decoration: TextDecoration.underline,
                   fontWeight: FontWeight.w400),
               recognizer: TapGestureRecognizer()
                 ..onTap = () async {
@@ -43,6 +44,7 @@ class PrivacyPolicyText extends StatelessWidget {
               text: 'T&C ',
               style: textTheme.labelSmall!.copyWith(
                   color: AppColors.primaryBlue,
+                  decoration: TextDecoration.underline,
                   fontFamily: AppConstants.metropolisFontFamily,
                   fontWeight: FontWeight.w400),
               recognizer: TapGestureRecognizer()
