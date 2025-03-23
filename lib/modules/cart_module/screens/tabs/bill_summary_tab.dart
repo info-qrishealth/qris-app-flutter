@@ -761,7 +761,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
       final productsData =
           AppConstants.encodeStringToBase64(_getProductsData());
 
-      await OrderService.createOrder(
+      final createdOrder = await OrderService.createOrder(
           orderReqModel: OrderReqModel(
               userId: ApiParams.getInstance()!.userId!,
               packagesAmount: cartCubit.getCartTestPrices().round(),
@@ -786,6 +786,9 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
               paymentResponse: '',
               sampleType: '',
               appliedCouponAmount: cart.appliedCouponAmount ?? 0));
+
+      AppConstants.showSnackbar(
+          text: 'Order created successfully', type: SnackbarType.success);
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     }

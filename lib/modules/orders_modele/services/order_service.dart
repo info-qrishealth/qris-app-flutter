@@ -55,13 +55,13 @@ class OrderService {
     }
   }
 
-  static Future<void> createOrder(
+  static Future<Order> createOrder(
       {required OrderReqModel orderReqModel}) async {
     final url = '${AppConstants.baseUrl}/orders/create';
     try {
-      print(json.encode(orderReqModel.toJson()));
-
-      await Wrapper.post(url, json.encode(orderReqModel.toJson()));
+      final response =
+          await Wrapper.post(url, json.encode(orderReqModel.toJson()));
+      return Order.fromJson(json.decode(response)['body']);
     } catch (e) {
       rethrow;
     }
