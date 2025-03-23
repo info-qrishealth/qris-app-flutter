@@ -59,6 +59,8 @@ class OrderService {
       {required OrderReqModel orderReqModel}) async {
     final url = '${AppConstants.baseUrl}/orders/create';
     try {
+      print(json.encode(orderReqModel.toJson()));
+
       await Wrapper.post(url, json.encode(orderReqModel.toJson()));
     } catch (e) {
       rethrow;

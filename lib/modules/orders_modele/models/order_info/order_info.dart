@@ -3,7 +3,6 @@ class OrderInfo {
 
   OrderInfo({required this.data});
 
-  // Factory constructor to create an instance from JSON map
   factory OrderInfo.fromJson(Map<String, dynamic> json) {
     final data = <String, OrderData>{};
     json.forEach((key, value) {
@@ -13,7 +12,6 @@ class OrderInfo {
     return OrderInfo(data: data);
   }
 
-  // Method to convert OrderInfo instance to JSON map
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = {};
     data.forEach((key, value) {

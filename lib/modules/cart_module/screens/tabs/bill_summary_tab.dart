@@ -15,6 +15,7 @@ import 'package:qris_health/modules/cart_module/components/patient_tile_layout.d
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
+import 'package:qris_health/modules/orders_modele/models/order_info/order_info.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 import 'package:qris_health/shared/components/billing_amount_row.dart';
@@ -596,7 +597,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                     _buildRadioButtonRow(
                                         title:
                                             'Credit/Debit card, UPI, Net banking, Wallet',
-                                        paymentMode: PaymentMode.razorpay),
+                                        paymentMode: PaymentMode.prepaid),
                                     _buildRadioButtonRow(
                                         title: 'Cash on Delivery',
                                         paymentMode: PaymentMode.cod)
@@ -751,23 +752,26 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
 
       final encodedAddress = AppConstants.encodeStringToBase64(
           json.encode(cart.selectedAddress!.toJson()));
+
       final encodedCouponData = cart.appliedCoupon == null
           ? ''
           : AppConstants.encodeStringToBase64(
               json.encode(cart.appliedCoupon!.toJson()));
-      // final encodedProductData = AppConstants.encodeStringToBase64();
+
+      final productsData =
+          AppConstants.encodeStringToBase64(_getProductsData());
 
       await OrderService.createOrder(
           orderReqModel: OrderReqModel(
-              userId: ApiParams.getInstance()!.userId,
+              userId: ApiParams.getInstance()!.userId!,
               packagesAmount: cartCubit.getCartTestPrices().round(),
               collectionCharges: cartCubit.getDeliveryCharge(),
               hardCopyCharges: cartCubit.getHardCopyCharges().toString(),
               cartFinalValue:
                   cartCubit.getCartFinalValue(context: context).round(),
-              paymentMode: _selectedPaymentMode,
+              paymentMode: _selectedPaymentMode!,
               razorpayPaymentId: razorpayPaymentId,
-              razorpayOrderId: razorpayOrderId,
+              razorpayOrderId: razorpayOrderId ?? '',
               coupon: cart.appliedCoupon,
               redeemedWalletAmount: cart.walletRedeemedAmount,
               redeemedQrisCoins: cart.redeemedQrisCoins,
@@ -775,12 +779,56 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
               slotTime:
                   '${cart.timeSlot!.startingTime}-${cart.timeSlot!.endingTime}',
               pincode: cart.pincode!.pincode.toString(),
-              encodedProductData: '',
+              encodedProductData: productsData,
               encodedAddress: encodedAddress,
               encodedCouponData: encodedCouponData,
-              referBy: _referController.text));
+              referBy: _referController.text,
+              paymentResponse: '',
+              sampleType: '',
+              appliedCouponAmount: cart.appliedCouponAmount ?? 0));
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     }
+  }
+
+  String _getProductsData() {
+    final cart = BlocProvider.of<CartCubit>(context).state.cart;
+    final patientsCubit = BlocProvider.of<PatientsCubit>(context);
+
+    final productMap = <String, OrderData>{};
+
+    for (var cartTest in cart.cartTests) {
+      final patientsMap = {
+        for (var patientId in cartTest.patientIds)
+          patientId.toString(): OrderPatient(
+              name: patientsCubit
+                      .getPatientByPatientId(patientId: patientId)
+                      ?.name ??
+                  '',
+              id: patientId.toString(),
+              gender: patientsCubit
+                      .getPatientByPatientId(patientId: patientId)
+                      ?.gender ??
+                  '',
+              dob: patientsCubit
+                      .getPatientByPatientId(patientId: patientId)
+                      ?.dob ??
+                  '',
+              mobile: patientsCubit
+                      .getPatientByPatientId(patientId: patientId)
+                      ?.mobile ??
+                  '')
+      };
+
+      productMap[cartTest.test.id.toString()] = OrderData(
+          product: Product(
+              title: cartTest.test.title ?? '',
+              id: cartTest.test.id.toString(),
+              price: cartTest.test.specialPrice?.toString() ?? '0',
+              quantity: cartTest.patientIds.length),
+          patients: patientsMap);
+    }
+
+    return json.encode(productMap);
   }
 }

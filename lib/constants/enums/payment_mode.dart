@@ -1,4 +1,4 @@
-enum PaymentMode { razorpay, cod, online, prePaid }
+enum PaymentMode { razorpay, cod, online, prepaid }
 
 extension PaymentModeExtension on PaymentMode {
   String get value {
@@ -7,7 +7,7 @@ extension PaymentModeExtension on PaymentMode {
         return 'cod';
       case PaymentMode.online:
         return 'online';
-      case PaymentMode.prePaid:
+      case PaymentMode.prepaid:
         return 'pre-paid';
       case PaymentMode.razorpay:
         return 'razorpay';
@@ -21,7 +21,7 @@ extension PaymentModeExtension on PaymentMode {
       case 'online':
         return PaymentMode.online;
       case 'pre-paid':
-        return PaymentMode.prePaid;
+        return PaymentMode.prepaid;
       case 'razorpay':
         return PaymentMode.razorpay;
       default:

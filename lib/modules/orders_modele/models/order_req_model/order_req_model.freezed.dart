@@ -20,22 +20,23 @@ OrderReqModel _$OrderReqModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$OrderReqModel {
-  int? get userId => throw _privateConstructorUsedError;
+  int get userId => throw _privateConstructorUsedError;
   int get packagesAmount => throw _privateConstructorUsedError;
-  int? get collectionCharges => throw _privateConstructorUsedError;
+  int get collectionCharges => throw _privateConstructorUsedError;
   int get cartFinalValue => throw _privateConstructorUsedError;
-  PaymentMode? get paymentMode => throw _privateConstructorUsedError;
+  PaymentMode get paymentMode => throw _privateConstructorUsedError;
   String? get razorpayPaymentId => throw _privateConstructorUsedError;
   String? get razorpayOrderId => throw _privateConstructorUsedError;
   Coupon? get coupon => throw _privateConstructorUsedError;
   int get redeemedWalletAmount => throw _privateConstructorUsedError;
   int get redeemedQrisCoins => throw _privateConstructorUsedError;
   String? get paymentResponse => throw _privateConstructorUsedError;
-  String? get encodedProductData => throw _privateConstructorUsedError;
-  String? get slotDate => throw _privateConstructorUsedError;
-  String? get slotTime => throw _privateConstructorUsedError;
-  String? get pincode => throw _privateConstructorUsedError;
-  String? get encodedAddress => throw _privateConstructorUsedError;
+  double get appliedCouponAmount => throw _privateConstructorUsedError;
+  String get encodedProductData => throw _privateConstructorUsedError;
+  String get slotDate => throw _privateConstructorUsedError;
+  String get slotTime => throw _privateConstructorUsedError;
+  String get pincode => throw _privateConstructorUsedError;
+  String get encodedAddress => throw _privateConstructorUsedError;
   String? get encodedCouponData => throw _privateConstructorUsedError;
   String? get sampleType => throw _privateConstructorUsedError;
   String get hardCopyCharges => throw _privateConstructorUsedError;
@@ -58,22 +59,23 @@ abstract class $OrderReqModelCopyWith<$Res> {
       _$OrderReqModelCopyWithImpl<$Res, OrderReqModel>;
   @useResult
   $Res call(
-      {int? userId,
+      {int userId,
       int packagesAmount,
-      int? collectionCharges,
+      int collectionCharges,
       int cartFinalValue,
-      PaymentMode? paymentMode,
+      PaymentMode paymentMode,
       String? razorpayPaymentId,
       String? razorpayOrderId,
       Coupon? coupon,
       int redeemedWalletAmount,
       int redeemedQrisCoins,
       String? paymentResponse,
-      String? encodedProductData,
-      String? slotDate,
-      String? slotTime,
-      String? pincode,
-      String? encodedAddress,
+      double appliedCouponAmount,
+      String encodedProductData,
+      String slotDate,
+      String slotTime,
+      String pincode,
+      String encodedAddress,
       String? encodedCouponData,
       String? sampleType,
       String hardCopyCharges,
@@ -97,48 +99,49 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userId = freezed,
+    Object? userId = null,
     Object? packagesAmount = null,
-    Object? collectionCharges = freezed,
+    Object? collectionCharges = null,
     Object? cartFinalValue = null,
-    Object? paymentMode = freezed,
+    Object? paymentMode = null,
     Object? razorpayPaymentId = freezed,
     Object? razorpayOrderId = freezed,
     Object? coupon = freezed,
     Object? redeemedWalletAmount = null,
     Object? redeemedQrisCoins = null,
     Object? paymentResponse = freezed,
-    Object? encodedProductData = freezed,
-    Object? slotDate = freezed,
-    Object? slotTime = freezed,
-    Object? pincode = freezed,
-    Object? encodedAddress = freezed,
+    Object? appliedCouponAmount = null,
+    Object? encodedProductData = null,
+    Object? slotDate = null,
+    Object? slotTime = null,
+    Object? pincode = null,
+    Object? encodedAddress = null,
     Object? encodedCouponData = freezed,
     Object? sampleType = freezed,
     Object? hardCopyCharges = null,
     Object? referBy = freezed,
   }) {
     return _then(_value.copyWith(
-      userId: freezed == userId
+      userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       packagesAmount: null == packagesAmount
           ? _value.packagesAmount
           : packagesAmount // ignore: cast_nullable_to_non_nullable
               as int,
-      collectionCharges: freezed == collectionCharges
+      collectionCharges: null == collectionCharges
           ? _value.collectionCharges
           : collectionCharges // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       cartFinalValue: null == cartFinalValue
           ? _value.cartFinalValue
           : cartFinalValue // ignore: cast_nullable_to_non_nullable
               as int,
-      paymentMode: freezed == paymentMode
+      paymentMode: null == paymentMode
           ? _value.paymentMode
           : paymentMode // ignore: cast_nullable_to_non_nullable
-              as PaymentMode?,
+              as PaymentMode,
       razorpayPaymentId: freezed == razorpayPaymentId
           ? _value.razorpayPaymentId
           : razorpayPaymentId // ignore: cast_nullable_to_non_nullable
@@ -163,26 +166,30 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
           ? _value.paymentResponse
           : paymentResponse // ignore: cast_nullable_to_non_nullable
               as String?,
-      encodedProductData: freezed == encodedProductData
+      appliedCouponAmount: null == appliedCouponAmount
+          ? _value.appliedCouponAmount
+          : appliedCouponAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      encodedProductData: null == encodedProductData
           ? _value.encodedProductData
           : encodedProductData // ignore: cast_nullable_to_non_nullable
-              as String?,
-      slotDate: freezed == slotDate
+              as String,
+      slotDate: null == slotDate
           ? _value.slotDate
           : slotDate // ignore: cast_nullable_to_non_nullable
-              as String?,
-      slotTime: freezed == slotTime
+              as String,
+      slotTime: null == slotTime
           ? _value.slotTime
           : slotTime // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pincode: freezed == pincode
+              as String,
+      pincode: null == pincode
           ? _value.pincode
           : pincode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      encodedAddress: freezed == encodedAddress
+              as String,
+      encodedAddress: null == encodedAddress
           ? _value.encodedAddress
           : encodedAddress // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       encodedCouponData: freezed == encodedCouponData
           ? _value.encodedCouponData
           : encodedCouponData // ignore: cast_nullable_to_non_nullable
@@ -226,22 +233,23 @@ abstract class _$$OrderReqModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int? userId,
+      {int userId,
       int packagesAmount,
-      int? collectionCharges,
+      int collectionCharges,
       int cartFinalValue,
-      PaymentMode? paymentMode,
+      PaymentMode paymentMode,
       String? razorpayPaymentId,
       String? razorpayOrderId,
       Coupon? coupon,
       int redeemedWalletAmount,
       int redeemedQrisCoins,
       String? paymentResponse,
-      String? encodedProductData,
-      String? slotDate,
-      String? slotTime,
-      String? pincode,
-      String? encodedAddress,
+      double appliedCouponAmount,
+      String encodedProductData,
+      String slotDate,
+      String slotTime,
+      String pincode,
+      String encodedAddress,
       String? encodedCouponData,
       String? sampleType,
       String hardCopyCharges,
@@ -264,48 +272,49 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userId = freezed,
+    Object? userId = null,
     Object? packagesAmount = null,
-    Object? collectionCharges = freezed,
+    Object? collectionCharges = null,
     Object? cartFinalValue = null,
-    Object? paymentMode = freezed,
+    Object? paymentMode = null,
     Object? razorpayPaymentId = freezed,
     Object? razorpayOrderId = freezed,
     Object? coupon = freezed,
     Object? redeemedWalletAmount = null,
     Object? redeemedQrisCoins = null,
     Object? paymentResponse = freezed,
-    Object? encodedProductData = freezed,
-    Object? slotDate = freezed,
-    Object? slotTime = freezed,
-    Object? pincode = freezed,
-    Object? encodedAddress = freezed,
+    Object? appliedCouponAmount = null,
+    Object? encodedProductData = null,
+    Object? slotDate = null,
+    Object? slotTime = null,
+    Object? pincode = null,
+    Object? encodedAddress = null,
     Object? encodedCouponData = freezed,
     Object? sampleType = freezed,
     Object? hardCopyCharges = null,
     Object? referBy = freezed,
   }) {
     return _then(_$OrderReqModelImpl(
-      userId: freezed == userId
+      userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       packagesAmount: null == packagesAmount
           ? _value.packagesAmount
           : packagesAmount // ignore: cast_nullable_to_non_nullable
               as int,
-      collectionCharges: freezed == collectionCharges
+      collectionCharges: null == collectionCharges
           ? _value.collectionCharges
           : collectionCharges // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       cartFinalValue: null == cartFinalValue
           ? _value.cartFinalValue
           : cartFinalValue // ignore: cast_nullable_to_non_nullable
               as int,
-      paymentMode: freezed == paymentMode
+      paymentMode: null == paymentMode
           ? _value.paymentMode
           : paymentMode // ignore: cast_nullable_to_non_nullable
-              as PaymentMode?,
+              as PaymentMode,
       razorpayPaymentId: freezed == razorpayPaymentId
           ? _value.razorpayPaymentId
           : razorpayPaymentId // ignore: cast_nullable_to_non_nullable
@@ -330,26 +339,30 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
           ? _value.paymentResponse
           : paymentResponse // ignore: cast_nullable_to_non_nullable
               as String?,
-      encodedProductData: freezed == encodedProductData
+      appliedCouponAmount: null == appliedCouponAmount
+          ? _value.appliedCouponAmount
+          : appliedCouponAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      encodedProductData: null == encodedProductData
           ? _value.encodedProductData
           : encodedProductData // ignore: cast_nullable_to_non_nullable
-              as String?,
-      slotDate: freezed == slotDate
+              as String,
+      slotDate: null == slotDate
           ? _value.slotDate
           : slotDate // ignore: cast_nullable_to_non_nullable
-              as String?,
-      slotTime: freezed == slotTime
+              as String,
+      slotTime: null == slotTime
           ? _value.slotTime
           : slotTime // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pincode: freezed == pincode
+              as String,
+      pincode: null == pincode
           ? _value.pincode
           : pincode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      encodedAddress: freezed == encodedAddress
+              as String,
+      encodedAddress: null == encodedAddress
           ? _value.encodedAddress
           : encodedAddress // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       encodedCouponData: freezed == encodedCouponData
           ? _value.encodedCouponData
           : encodedCouponData // ignore: cast_nullable_to_non_nullable
@@ -374,22 +387,23 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$OrderReqModelImpl implements _OrderReqModel {
   const _$OrderReqModelImpl(
-      {this.userId,
+      {required this.userId,
       this.packagesAmount = 0,
-      this.collectionCharges,
+      this.collectionCharges = 0,
       this.cartFinalValue = 0,
-      this.paymentMode,
+      required this.paymentMode,
       this.razorpayPaymentId,
       this.razorpayOrderId,
       this.coupon,
       this.redeemedWalletAmount = 0,
       this.redeemedQrisCoins = 0,
       this.paymentResponse,
-      this.encodedProductData,
-      this.slotDate,
-      this.slotTime,
-      this.pincode,
-      this.encodedAddress,
+      required this.appliedCouponAmount,
+      required this.encodedProductData,
+      required this.slotDate,
+      required this.slotTime,
+      required this.pincode,
+      required this.encodedAddress,
       this.encodedCouponData,
       this.sampleType,
       this.hardCopyCharges = '0',
@@ -399,17 +413,18 @@ class _$OrderReqModelImpl implements _OrderReqModel {
       _$$OrderReqModelImplFromJson(json);
 
   @override
-  final int? userId;
+  final int userId;
   @override
   @JsonKey()
   final int packagesAmount;
   @override
-  final int? collectionCharges;
+  @JsonKey()
+  final int collectionCharges;
   @override
   @JsonKey()
   final int cartFinalValue;
   @override
-  final PaymentMode? paymentMode;
+  final PaymentMode paymentMode;
   @override
   final String? razorpayPaymentId;
   @override
@@ -425,15 +440,17 @@ class _$OrderReqModelImpl implements _OrderReqModel {
   @override
   final String? paymentResponse;
   @override
-  final String? encodedProductData;
+  final double appliedCouponAmount;
   @override
-  final String? slotDate;
+  final String encodedProductData;
   @override
-  final String? slotTime;
+  final String slotDate;
   @override
-  final String? pincode;
+  final String slotTime;
   @override
-  final String? encodedAddress;
+  final String pincode;
+  @override
+  final String encodedAddress;
   @override
   final String? encodedCouponData;
   @override
@@ -446,7 +463,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
 
   @override
   String toString() {
-    return 'OrderReqModel(userId: $userId, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, razorpayOrderId: $razorpayOrderId, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, encodedProductData: $encodedProductData, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, encodedAddress: $encodedAddress, encodedCouponData: $encodedCouponData, sampleType: $sampleType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
+    return 'OrderReqModel(userId: $userId, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, razorpayOrderId: $razorpayOrderId, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, appliedCouponAmount: $appliedCouponAmount, encodedProductData: $encodedProductData, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, encodedAddress: $encodedAddress, encodedCouponData: $encodedCouponData, sampleType: $sampleType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
   }
 
   @override
@@ -474,6 +491,8 @@ class _$OrderReqModelImpl implements _OrderReqModel {
                 other.redeemedQrisCoins == redeemedQrisCoins) &&
             (identical(other.paymentResponse, paymentResponse) ||
                 other.paymentResponse == paymentResponse) &&
+            (identical(other.appliedCouponAmount, appliedCouponAmount) ||
+                other.appliedCouponAmount == appliedCouponAmount) &&
             (identical(other.encodedProductData, encodedProductData) ||
                 other.encodedProductData == encodedProductData) &&
             (identical(other.slotDate, slotDate) ||
@@ -507,6 +526,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
         redeemedWalletAmount,
         redeemedQrisCoins,
         paymentResponse,
+        appliedCouponAmount,
         encodedProductData,
         slotDate,
         slotTime,
@@ -536,22 +556,23 @@ class _$OrderReqModelImpl implements _OrderReqModel {
 
 abstract class _OrderReqModel implements OrderReqModel {
   const factory _OrderReqModel(
-      {final int? userId,
+      {required final int userId,
       final int packagesAmount,
-      final int? collectionCharges,
+      final int collectionCharges,
       final int cartFinalValue,
-      final PaymentMode? paymentMode,
+      required final PaymentMode paymentMode,
       final String? razorpayPaymentId,
       final String? razorpayOrderId,
       final Coupon? coupon,
       final int redeemedWalletAmount,
       final int redeemedQrisCoins,
       final String? paymentResponse,
-      final String? encodedProductData,
-      final String? slotDate,
-      final String? slotTime,
-      final String? pincode,
-      final String? encodedAddress,
+      required final double appliedCouponAmount,
+      required final String encodedProductData,
+      required final String slotDate,
+      required final String slotTime,
+      required final String pincode,
+      required final String encodedAddress,
       final String? encodedCouponData,
       final String? sampleType,
       final String hardCopyCharges,
@@ -561,15 +582,15 @@ abstract class _OrderReqModel implements OrderReqModel {
       _$OrderReqModelImpl.fromJson;
 
   @override
-  int? get userId;
+  int get userId;
   @override
   int get packagesAmount;
   @override
-  int? get collectionCharges;
+  int get collectionCharges;
   @override
   int get cartFinalValue;
   @override
-  PaymentMode? get paymentMode;
+  PaymentMode get paymentMode;
   @override
   String? get razorpayPaymentId;
   @override
@@ -583,15 +604,17 @@ abstract class _OrderReqModel implements OrderReqModel {
   @override
   String? get paymentResponse;
   @override
-  String? get encodedProductData;
+  double get appliedCouponAmount;
   @override
-  String? get slotDate;
+  String get encodedProductData;
   @override
-  String? get slotTime;
+  String get slotDate;
   @override
-  String? get pincode;
+  String get slotTime;
   @override
-  String? get encodedAddress;
+  String get pincode;
+  @override
+  String get encodedAddress;
   @override
   String? get encodedCouponData;
   @override
