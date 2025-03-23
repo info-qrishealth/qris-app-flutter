@@ -14,7 +14,6 @@ class OrderReqModel with _$OrderReqModel {
       @Default(0) int cartFinalValue,
       required PaymentMode paymentMode,
       String? razorpayPaymentId,
-      String? razorpayOrderId,
       Coupon? coupon,
       @Default(0) int redeemedWalletAmount,
       @Default(0) int redeemedQrisCoins,

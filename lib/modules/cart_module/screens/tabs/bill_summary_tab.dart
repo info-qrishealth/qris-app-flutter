@@ -682,9 +682,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
 
   Future<void> _onPaymentSuccess(PaymentSuccessResponse response) async {
     try {
-      await _createOrder(
-          razorpayPaymentId: response.paymentId,
-          razorpayOrderId: response.orderId);
+      await _createOrder(razorpayPaymentId: response.paymentId);
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     } finally {}
@@ -744,8 +742,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
     }
   }
 
-  Future<void> _createOrder(
-      {String? razorpayPaymentId, String? razorpayOrderId}) async {
+  Future<void> _createOrder({String? razorpayPaymentId}) async {
     try {
       final cartCubit = BlocProvider.of<CartCubit>(context);
       final cart = cartCubit.state.cart;
@@ -771,7 +768,6 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                   cartCubit.getCartFinalValue(context: context).round(),
               paymentMode: _selectedPaymentMode!,
               razorpayPaymentId: razorpayPaymentId,
-              razorpayOrderId: razorpayOrderId ?? '',
               coupon: cart.appliedCoupon,
               redeemedWalletAmount: cart.walletRedeemedAmount,
               redeemedQrisCoins: cart.redeemedQrisCoins,
