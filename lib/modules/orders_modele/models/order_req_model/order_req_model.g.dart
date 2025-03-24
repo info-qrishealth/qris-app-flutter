@@ -14,7 +14,6 @@ _$OrderReqModelImpl _$$OrderReqModelImplFromJson(Map<String, dynamic> json) =>
       cartFinalValue: (json['cartFinalValue'] as num?)?.toInt() ?? 0,
       paymentMode: $enumDecode(_$PaymentModeEnumMap, json['paymentMode']),
       razorpayPaymentId: json['razorpayPaymentId'] as String?,
-      razorpayOrderId: json['razorpayOrderId'] as String?,
       coupon: json['coupon'] == null
           ? null
           : Coupon.fromJson(json['coupon'] as Map<String, dynamic>),
@@ -42,7 +41,6 @@ Map<String, dynamic> _$$OrderReqModelImplToJson(_$OrderReqModelImpl instance) =>
       'cartFinalValue': instance.cartFinalValue,
       'paymentMode': _$PaymentModeEnumMap[instance.paymentMode]!,
       'razorpayPaymentId': instance.razorpayPaymentId,
-      'razorpayOrderId': instance.razorpayOrderId,
       'coupon': instance.coupon,
       'redeemedWalletAmount': instance.redeemedWalletAmount,
       'redeemedQrisCoins': instance.redeemedQrisCoins,

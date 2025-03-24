@@ -9,7 +9,6 @@ part 'order.g.dart';
 class Order with _$Order {
   const factory Order({
     required int id,
-    @JsonKey(name: 'doctor_id') required String doctorId,
     @JsonKey(name: 'order_date') required DateTime orderDate,
     @JsonKey(name: 'order_total') required double orderTotal,
     @JsonKey(name: 'collection_charge') required String collectionCharge,
@@ -22,21 +21,13 @@ class Order with _$Order {
     )
     required String paymentMode,
     @JsonKey(name: 'txn_id') String? txnId,
-    @JsonKey(name: 'bnk_txn_id') String? bnkTxnId,
-    @JsonKey(name: 'razor_order_id') required String razorOrderId,
     @JsonKey(name: 'coupon_code') String? couponCode,
     @JsonKey(name: 'coupon_data') String? couponData,
     @JsonKey(name: 'coupon_amount') required double couponAmount,
-    @JsonKey(name: 'coupon_type') required String couponType,
     @JsonKey(name: 'coupon_cb_amount') required double couponCbAmount,
-    @JsonKey(name: 'sc_coupon_id') String? scCouponId,
     @JsonKey(name: 'sc_coupon_amount') required double scCouponAmount,
-    @JsonKey(name: 'sc_coupon_done') required int scCouponDone,
-    @JsonKey(name: 'cb_amount_done') required String cbAmountDone,
     @JsonKey(name: 'wallet_paid') required double walletPaid,
     @JsonKey(name: 'qris_coins_paid') required double qrisCoinsPaid,
-    @JsonKey(name: 'qris_coins_done') required String qrisCoinsDone,
-    @JsonKey(name: 'payment_respons') String? paymentRespons,
     @JsonKey(name: 'product_record') String? productRecord,
     @JsonKey(name: 'booking_slot_date') required String bookingSlotDate,
     @JsonKey(name: 'booking_slot_time') String? bookingSlotTime,
@@ -45,14 +36,9 @@ class Order with _$Order {
     @JsonKey(name: 'sample_type') required String sampleType,
     @JsonKey(name: 'tube_type') required String tubeType,
     @JsonKey(name: 'hard_copy') required String hardCopy,
-    @JsonKey(name: 'agent_id') required int agentId,
-    @JsonKey(name: 'agent_discount_amt') required double agentDiscountAmt,
-    @JsonKey(name: 'headoffice_collection')
-    required String headofficeCollection,
     @JsonKey(name: 'referred_by') required String referredBy,
     @JsonKey(name: 'doctor_booking_slot_time') String? doctorBookingSlotTime,
     @JsonKey(name: 'doctor_booking_address')
-    required String doctorBookingAddress,
     required String invoice,
   }) = _Order;
 
