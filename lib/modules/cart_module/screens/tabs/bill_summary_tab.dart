@@ -597,7 +597,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                     _buildRadioButtonRow(
                                         title:
                                             'Credit/Debit card, UPI, Net banking, Wallet',
-                                        paymentMode: PaymentMode.prepaid),
+                                        paymentMode: PaymentMode.online),
                                     _buildRadioButtonRow(
                                         title: 'Cash on Delivery',
                                         paymentMode: PaymentMode.cod)
