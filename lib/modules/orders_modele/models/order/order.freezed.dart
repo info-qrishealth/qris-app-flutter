@@ -40,37 +40,35 @@ mixin _$Order {
   @JsonKey(name: 'coupon_data')
   String? get couponData => throw _privateConstructorUsedError;
   @JsonKey(name: 'coupon_amount')
-  double get couponAmount => throw _privateConstructorUsedError;
+  double? get couponAmount => throw _privateConstructorUsedError;
   @JsonKey(name: 'coupon_cb_amount')
-  double get couponCbAmount => throw _privateConstructorUsedError;
+  double? get couponCbAmount => throw _privateConstructorUsedError;
   @JsonKey(name: 'sc_coupon_amount')
-  double get scCouponAmount => throw _privateConstructorUsedError;
+  double? get scCouponAmount => throw _privateConstructorUsedError;
   @JsonKey(name: 'wallet_paid')
-  double get walletPaid => throw _privateConstructorUsedError;
+  double? get walletPaid => throw _privateConstructorUsedError;
   @JsonKey(name: 'qris_coins_paid')
-  double get qrisCoinsPaid => throw _privateConstructorUsedError;
+  double? get qrisCoinsPaid => throw _privateConstructorUsedError;
   @JsonKey(name: 'product_record')
   String? get productRecord => throw _privateConstructorUsedError;
   @JsonKey(name: 'booking_slot_date')
-  String get bookingSlotDate => throw _privateConstructorUsedError;
+  String? get bookingSlotDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'booking_slot_time')
   String? get bookingSlotTime => throw _privateConstructorUsedError;
   @JsonKey(name: 'booking_pin')
-  String get bookingPin => throw _privateConstructorUsedError;
+  String? get bookingPin => throw _privateConstructorUsedError;
   @JsonKey(name: 'booking_address')
-  String get bookingAddress => throw _privateConstructorUsedError;
+  String? get bookingAddress => throw _privateConstructorUsedError;
   @JsonKey(name: 'sample_type')
-  String get sampleType => throw _privateConstructorUsedError;
+  String? get sampleType => throw _privateConstructorUsedError;
   @JsonKey(name: 'tube_type')
-  String get tubeType => throw _privateConstructorUsedError;
+  String? get tubeType => throw _privateConstructorUsedError;
   @JsonKey(name: 'hard_copy')
-  String get hardCopy => throw _privateConstructorUsedError;
+  String? get hardCopy => throw _privateConstructorUsedError;
   @JsonKey(name: 'referred_by')
-  String get referredBy => throw _privateConstructorUsedError;
-  @JsonKey(name: 'doctor_booking_slot_time')
-  String? get doctorBookingSlotTime => throw _privateConstructorUsedError;
+  String? get referredBy => throw _privateConstructorUsedError;
   @JsonKey(name: 'doctor_booking_address')
-  String get invoice => throw _privateConstructorUsedError;
+  String? get invoice => throw _privateConstructorUsedError;
 
   /// Serializes this Order to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -97,22 +95,21 @@ abstract class $OrderCopyWith<$Res> {
       @JsonKey(name: 'txn_id') String? txnId,
       @JsonKey(name: 'coupon_code') String? couponCode,
       @JsonKey(name: 'coupon_data') String? couponData,
-      @JsonKey(name: 'coupon_amount') double couponAmount,
-      @JsonKey(name: 'coupon_cb_amount') double couponCbAmount,
-      @JsonKey(name: 'sc_coupon_amount') double scCouponAmount,
-      @JsonKey(name: 'wallet_paid') double walletPaid,
-      @JsonKey(name: 'qris_coins_paid') double qrisCoinsPaid,
+      @JsonKey(name: 'coupon_amount') double? couponAmount,
+      @JsonKey(name: 'coupon_cb_amount') double? couponCbAmount,
+      @JsonKey(name: 'sc_coupon_amount') double? scCouponAmount,
+      @JsonKey(name: 'wallet_paid') double? walletPaid,
+      @JsonKey(name: 'qris_coins_paid') double? qrisCoinsPaid,
       @JsonKey(name: 'product_record') String? productRecord,
-      @JsonKey(name: 'booking_slot_date') String bookingSlotDate,
+      @JsonKey(name: 'booking_slot_date') String? bookingSlotDate,
       @JsonKey(name: 'booking_slot_time') String? bookingSlotTime,
-      @JsonKey(name: 'booking_pin') String bookingPin,
-      @JsonKey(name: 'booking_address') String bookingAddress,
-      @JsonKey(name: 'sample_type') String sampleType,
-      @JsonKey(name: 'tube_type') String tubeType,
-      @JsonKey(name: 'hard_copy') String hardCopy,
-      @JsonKey(name: 'referred_by') String referredBy,
-      @JsonKey(name: 'doctor_booking_slot_time') String? doctorBookingSlotTime,
-      @JsonKey(name: 'doctor_booking_address') String invoice});
+      @JsonKey(name: 'booking_pin') String? bookingPin,
+      @JsonKey(name: 'booking_address') String? bookingAddress,
+      @JsonKey(name: 'sample_type') String? sampleType,
+      @JsonKey(name: 'tube_type') String? tubeType,
+      @JsonKey(name: 'hard_copy') String? hardCopy,
+      @JsonKey(name: 'referred_by') String? referredBy,
+      @JsonKey(name: 'doctor_booking_address') String? invoice});
 }
 
 /// @nodoc
@@ -140,22 +137,21 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? txnId = freezed,
     Object? couponCode = freezed,
     Object? couponData = freezed,
-    Object? couponAmount = null,
-    Object? couponCbAmount = null,
-    Object? scCouponAmount = null,
-    Object? walletPaid = null,
-    Object? qrisCoinsPaid = null,
+    Object? couponAmount = freezed,
+    Object? couponCbAmount = freezed,
+    Object? scCouponAmount = freezed,
+    Object? walletPaid = freezed,
+    Object? qrisCoinsPaid = freezed,
     Object? productRecord = freezed,
-    Object? bookingSlotDate = null,
+    Object? bookingSlotDate = freezed,
     Object? bookingSlotTime = freezed,
-    Object? bookingPin = null,
-    Object? bookingAddress = null,
-    Object? sampleType = null,
-    Object? tubeType = null,
-    Object? hardCopy = null,
-    Object? referredBy = null,
-    Object? doctorBookingSlotTime = freezed,
-    Object? invoice = null,
+    Object? bookingPin = freezed,
+    Object? bookingAddress = freezed,
+    Object? sampleType = freezed,
+    Object? tubeType = freezed,
+    Object? hardCopy = freezed,
+    Object? referredBy = freezed,
+    Object? invoice = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -198,70 +194,66 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.couponData
           : couponData // ignore: cast_nullable_to_non_nullable
               as String?,
-      couponAmount: null == couponAmount
+      couponAmount: freezed == couponAmount
           ? _value.couponAmount
           : couponAmount // ignore: cast_nullable_to_non_nullable
-              as double,
-      couponCbAmount: null == couponCbAmount
+              as double?,
+      couponCbAmount: freezed == couponCbAmount
           ? _value.couponCbAmount
           : couponCbAmount // ignore: cast_nullable_to_non_nullable
-              as double,
-      scCouponAmount: null == scCouponAmount
+              as double?,
+      scCouponAmount: freezed == scCouponAmount
           ? _value.scCouponAmount
           : scCouponAmount // ignore: cast_nullable_to_non_nullable
-              as double,
-      walletPaid: null == walletPaid
+              as double?,
+      walletPaid: freezed == walletPaid
           ? _value.walletPaid
           : walletPaid // ignore: cast_nullable_to_non_nullable
-              as double,
-      qrisCoinsPaid: null == qrisCoinsPaid
+              as double?,
+      qrisCoinsPaid: freezed == qrisCoinsPaid
           ? _value.qrisCoinsPaid
           : qrisCoinsPaid // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       productRecord: freezed == productRecord
           ? _value.productRecord
           : productRecord // ignore: cast_nullable_to_non_nullable
               as String?,
-      bookingSlotDate: null == bookingSlotDate
+      bookingSlotDate: freezed == bookingSlotDate
           ? _value.bookingSlotDate
           : bookingSlotDate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       bookingSlotTime: freezed == bookingSlotTime
           ? _value.bookingSlotTime
           : bookingSlotTime // ignore: cast_nullable_to_non_nullable
               as String?,
-      bookingPin: null == bookingPin
+      bookingPin: freezed == bookingPin
           ? _value.bookingPin
           : bookingPin // ignore: cast_nullable_to_non_nullable
-              as String,
-      bookingAddress: null == bookingAddress
+              as String?,
+      bookingAddress: freezed == bookingAddress
           ? _value.bookingAddress
           : bookingAddress // ignore: cast_nullable_to_non_nullable
-              as String,
-      sampleType: null == sampleType
+              as String?,
+      sampleType: freezed == sampleType
           ? _value.sampleType
           : sampleType // ignore: cast_nullable_to_non_nullable
-              as String,
-      tubeType: null == tubeType
+              as String?,
+      tubeType: freezed == tubeType
           ? _value.tubeType
           : tubeType // ignore: cast_nullable_to_non_nullable
-              as String,
-      hardCopy: null == hardCopy
+              as String?,
+      hardCopy: freezed == hardCopy
           ? _value.hardCopy
           : hardCopy // ignore: cast_nullable_to_non_nullable
-              as String,
-      referredBy: null == referredBy
+              as String?,
+      referredBy: freezed == referredBy
           ? _value.referredBy
           : referredBy // ignore: cast_nullable_to_non_nullable
-              as String,
-      doctorBookingSlotTime: freezed == doctorBookingSlotTime
-          ? _value.doctorBookingSlotTime
-          : doctorBookingSlotTime // ignore: cast_nullable_to_non_nullable
               as String?,
-      invoice: null == invoice
+      invoice: freezed == invoice
           ? _value.invoice
           : invoice // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -284,22 +276,21 @@ abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
       @JsonKey(name: 'txn_id') String? txnId,
       @JsonKey(name: 'coupon_code') String? couponCode,
       @JsonKey(name: 'coupon_data') String? couponData,
-      @JsonKey(name: 'coupon_amount') double couponAmount,
-      @JsonKey(name: 'coupon_cb_amount') double couponCbAmount,
-      @JsonKey(name: 'sc_coupon_amount') double scCouponAmount,
-      @JsonKey(name: 'wallet_paid') double walletPaid,
-      @JsonKey(name: 'qris_coins_paid') double qrisCoinsPaid,
+      @JsonKey(name: 'coupon_amount') double? couponAmount,
+      @JsonKey(name: 'coupon_cb_amount') double? couponCbAmount,
+      @JsonKey(name: 'sc_coupon_amount') double? scCouponAmount,
+      @JsonKey(name: 'wallet_paid') double? walletPaid,
+      @JsonKey(name: 'qris_coins_paid') double? qrisCoinsPaid,
       @JsonKey(name: 'product_record') String? productRecord,
-      @JsonKey(name: 'booking_slot_date') String bookingSlotDate,
+      @JsonKey(name: 'booking_slot_date') String? bookingSlotDate,
       @JsonKey(name: 'booking_slot_time') String? bookingSlotTime,
-      @JsonKey(name: 'booking_pin') String bookingPin,
-      @JsonKey(name: 'booking_address') String bookingAddress,
-      @JsonKey(name: 'sample_type') String sampleType,
-      @JsonKey(name: 'tube_type') String tubeType,
-      @JsonKey(name: 'hard_copy') String hardCopy,
-      @JsonKey(name: 'referred_by') String referredBy,
-      @JsonKey(name: 'doctor_booking_slot_time') String? doctorBookingSlotTime,
-      @JsonKey(name: 'doctor_booking_address') String invoice});
+      @JsonKey(name: 'booking_pin') String? bookingPin,
+      @JsonKey(name: 'booking_address') String? bookingAddress,
+      @JsonKey(name: 'sample_type') String? sampleType,
+      @JsonKey(name: 'tube_type') String? tubeType,
+      @JsonKey(name: 'hard_copy') String? hardCopy,
+      @JsonKey(name: 'referred_by') String? referredBy,
+      @JsonKey(name: 'doctor_booking_address') String? invoice});
 }
 
 /// @nodoc
@@ -325,22 +316,21 @@ class __$$OrderImplCopyWithImpl<$Res>
     Object? txnId = freezed,
     Object? couponCode = freezed,
     Object? couponData = freezed,
-    Object? couponAmount = null,
-    Object? couponCbAmount = null,
-    Object? scCouponAmount = null,
-    Object? walletPaid = null,
-    Object? qrisCoinsPaid = null,
+    Object? couponAmount = freezed,
+    Object? couponCbAmount = freezed,
+    Object? scCouponAmount = freezed,
+    Object? walletPaid = freezed,
+    Object? qrisCoinsPaid = freezed,
     Object? productRecord = freezed,
-    Object? bookingSlotDate = null,
+    Object? bookingSlotDate = freezed,
     Object? bookingSlotTime = freezed,
-    Object? bookingPin = null,
-    Object? bookingAddress = null,
-    Object? sampleType = null,
-    Object? tubeType = null,
-    Object? hardCopy = null,
-    Object? referredBy = null,
-    Object? doctorBookingSlotTime = freezed,
-    Object? invoice = null,
+    Object? bookingPin = freezed,
+    Object? bookingAddress = freezed,
+    Object? sampleType = freezed,
+    Object? tubeType = freezed,
+    Object? hardCopy = freezed,
+    Object? referredBy = freezed,
+    Object? invoice = freezed,
   }) {
     return _then(_$OrderImpl(
       id: null == id
@@ -383,70 +373,66 @@ class __$$OrderImplCopyWithImpl<$Res>
           ? _value.couponData
           : couponData // ignore: cast_nullable_to_non_nullable
               as String?,
-      couponAmount: null == couponAmount
+      couponAmount: freezed == couponAmount
           ? _value.couponAmount
           : couponAmount // ignore: cast_nullable_to_non_nullable
-              as double,
-      couponCbAmount: null == couponCbAmount
+              as double?,
+      couponCbAmount: freezed == couponCbAmount
           ? _value.couponCbAmount
           : couponCbAmount // ignore: cast_nullable_to_non_nullable
-              as double,
-      scCouponAmount: null == scCouponAmount
+              as double?,
+      scCouponAmount: freezed == scCouponAmount
           ? _value.scCouponAmount
           : scCouponAmount // ignore: cast_nullable_to_non_nullable
-              as double,
-      walletPaid: null == walletPaid
+              as double?,
+      walletPaid: freezed == walletPaid
           ? _value.walletPaid
           : walletPaid // ignore: cast_nullable_to_non_nullable
-              as double,
-      qrisCoinsPaid: null == qrisCoinsPaid
+              as double?,
+      qrisCoinsPaid: freezed == qrisCoinsPaid
           ? _value.qrisCoinsPaid
           : qrisCoinsPaid // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       productRecord: freezed == productRecord
           ? _value.productRecord
           : productRecord // ignore: cast_nullable_to_non_nullable
               as String?,
-      bookingSlotDate: null == bookingSlotDate
+      bookingSlotDate: freezed == bookingSlotDate
           ? _value.bookingSlotDate
           : bookingSlotDate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       bookingSlotTime: freezed == bookingSlotTime
           ? _value.bookingSlotTime
           : bookingSlotTime // ignore: cast_nullable_to_non_nullable
               as String?,
-      bookingPin: null == bookingPin
+      bookingPin: freezed == bookingPin
           ? _value.bookingPin
           : bookingPin // ignore: cast_nullable_to_non_nullable
-              as String,
-      bookingAddress: null == bookingAddress
+              as String?,
+      bookingAddress: freezed == bookingAddress
           ? _value.bookingAddress
           : bookingAddress // ignore: cast_nullable_to_non_nullable
-              as String,
-      sampleType: null == sampleType
+              as String?,
+      sampleType: freezed == sampleType
           ? _value.sampleType
           : sampleType // ignore: cast_nullable_to_non_nullable
-              as String,
-      tubeType: null == tubeType
+              as String?,
+      tubeType: freezed == tubeType
           ? _value.tubeType
           : tubeType // ignore: cast_nullable_to_non_nullable
-              as String,
-      hardCopy: null == hardCopy
+              as String?,
+      hardCopy: freezed == hardCopy
           ? _value.hardCopy
           : hardCopy // ignore: cast_nullable_to_non_nullable
-              as String,
-      referredBy: null == referredBy
+              as String?,
+      referredBy: freezed == referredBy
           ? _value.referredBy
           : referredBy // ignore: cast_nullable_to_non_nullable
-              as String,
-      doctorBookingSlotTime: freezed == doctorBookingSlotTime
-          ? _value.doctorBookingSlotTime
-          : doctorBookingSlotTime // ignore: cast_nullable_to_non_nullable
               as String?,
-      invoice: null == invoice
+      invoice: freezed == invoice
           ? _value.invoice
           : invoice // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -465,22 +451,21 @@ class _$OrderImpl implements _Order {
       @JsonKey(name: 'txn_id') this.txnId,
       @JsonKey(name: 'coupon_code') this.couponCode,
       @JsonKey(name: 'coupon_data') this.couponData,
-      @JsonKey(name: 'coupon_amount') required this.couponAmount,
-      @JsonKey(name: 'coupon_cb_amount') required this.couponCbAmount,
-      @JsonKey(name: 'sc_coupon_amount') required this.scCouponAmount,
-      @JsonKey(name: 'wallet_paid') required this.walletPaid,
-      @JsonKey(name: 'qris_coins_paid') required this.qrisCoinsPaid,
+      @JsonKey(name: 'coupon_amount') this.couponAmount,
+      @JsonKey(name: 'coupon_cb_amount') this.couponCbAmount,
+      @JsonKey(name: 'sc_coupon_amount') this.scCouponAmount,
+      @JsonKey(name: 'wallet_paid') this.walletPaid,
+      @JsonKey(name: 'qris_coins_paid') this.qrisCoinsPaid,
       @JsonKey(name: 'product_record') this.productRecord,
-      @JsonKey(name: 'booking_slot_date') required this.bookingSlotDate,
+      @JsonKey(name: 'booking_slot_date') this.bookingSlotDate,
       @JsonKey(name: 'booking_slot_time') this.bookingSlotTime,
-      @JsonKey(name: 'booking_pin') required this.bookingPin,
-      @JsonKey(name: 'booking_address') required this.bookingAddress,
-      @JsonKey(name: 'sample_type') required this.sampleType,
-      @JsonKey(name: 'tube_type') required this.tubeType,
-      @JsonKey(name: 'hard_copy') required this.hardCopy,
-      @JsonKey(name: 'referred_by') required this.referredBy,
-      @JsonKey(name: 'doctor_booking_slot_time') this.doctorBookingSlotTime,
-      @JsonKey(name: 'doctor_booking_address') required this.invoice});
+      @JsonKey(name: 'booking_pin') this.bookingPin,
+      @JsonKey(name: 'booking_address') this.bookingAddress,
+      @JsonKey(name: 'sample_type') this.sampleType,
+      @JsonKey(name: 'tube_type') this.tubeType,
+      @JsonKey(name: 'hard_copy') this.hardCopy,
+      @JsonKey(name: 'referred_by') this.referredBy,
+      @JsonKey(name: 'doctor_booking_address') this.invoice});
 
   factory _$OrderImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrderImplFromJson(json);
@@ -516,56 +501,53 @@ class _$OrderImpl implements _Order {
   final String? couponData;
   @override
   @JsonKey(name: 'coupon_amount')
-  final double couponAmount;
+  final double? couponAmount;
   @override
   @JsonKey(name: 'coupon_cb_amount')
-  final double couponCbAmount;
+  final double? couponCbAmount;
   @override
   @JsonKey(name: 'sc_coupon_amount')
-  final double scCouponAmount;
+  final double? scCouponAmount;
   @override
   @JsonKey(name: 'wallet_paid')
-  final double walletPaid;
+  final double? walletPaid;
   @override
   @JsonKey(name: 'qris_coins_paid')
-  final double qrisCoinsPaid;
+  final double? qrisCoinsPaid;
   @override
   @JsonKey(name: 'product_record')
   final String? productRecord;
   @override
   @JsonKey(name: 'booking_slot_date')
-  final String bookingSlotDate;
+  final String? bookingSlotDate;
   @override
   @JsonKey(name: 'booking_slot_time')
   final String? bookingSlotTime;
   @override
   @JsonKey(name: 'booking_pin')
-  final String bookingPin;
+  final String? bookingPin;
   @override
   @JsonKey(name: 'booking_address')
-  final String bookingAddress;
+  final String? bookingAddress;
   @override
   @JsonKey(name: 'sample_type')
-  final String sampleType;
+  final String? sampleType;
   @override
   @JsonKey(name: 'tube_type')
-  final String tubeType;
+  final String? tubeType;
   @override
   @JsonKey(name: 'hard_copy')
-  final String hardCopy;
+  final String? hardCopy;
   @override
   @JsonKey(name: 'referred_by')
-  final String referredBy;
-  @override
-  @JsonKey(name: 'doctor_booking_slot_time')
-  final String? doctorBookingSlotTime;
+  final String? referredBy;
   @override
   @JsonKey(name: 'doctor_booking_address')
-  final String invoice;
+  final String? invoice;
 
   @override
   String toString() {
-    return 'Order(id: $id, orderDate: $orderDate, orderTotal: $orderTotal, collectionCharge: $collectionCharge, paidAmount: $paidAmount, orderStatus: $orderStatus, paymentMode: $paymentMode, txnId: $txnId, couponCode: $couponCode, couponData: $couponData, couponAmount: $couponAmount, couponCbAmount: $couponCbAmount, scCouponAmount: $scCouponAmount, walletPaid: $walletPaid, qrisCoinsPaid: $qrisCoinsPaid, productRecord: $productRecord, bookingSlotDate: $bookingSlotDate, bookingSlotTime: $bookingSlotTime, bookingPin: $bookingPin, bookingAddress: $bookingAddress, sampleType: $sampleType, tubeType: $tubeType, hardCopy: $hardCopy, referredBy: $referredBy, doctorBookingSlotTime: $doctorBookingSlotTime, invoice: $invoice)';
+    return 'Order(id: $id, orderDate: $orderDate, orderTotal: $orderTotal, collectionCharge: $collectionCharge, paidAmount: $paidAmount, orderStatus: $orderStatus, paymentMode: $paymentMode, txnId: $txnId, couponCode: $couponCode, couponData: $couponData, couponAmount: $couponAmount, couponCbAmount: $couponCbAmount, scCouponAmount: $scCouponAmount, walletPaid: $walletPaid, qrisCoinsPaid: $qrisCoinsPaid, productRecord: $productRecord, bookingSlotDate: $bookingSlotDate, bookingSlotTime: $bookingSlotTime, bookingPin: $bookingPin, bookingAddress: $bookingAddress, sampleType: $sampleType, tubeType: $tubeType, hardCopy: $hardCopy, referredBy: $referredBy, invoice: $invoice)';
   }
 
   @override
@@ -619,8 +601,6 @@ class _$OrderImpl implements _Order {
                 other.hardCopy == hardCopy) &&
             (identical(other.referredBy, referredBy) ||
                 other.referredBy == referredBy) &&
-            (identical(other.doctorBookingSlotTime, doctorBookingSlotTime) ||
-                other.doctorBookingSlotTime == doctorBookingSlotTime) &&
             (identical(other.invoice, invoice) || other.invoice == invoice));
   }
 
@@ -652,7 +632,6 @@ class _$OrderImpl implements _Order {
         tubeType,
         hardCopy,
         referredBy,
-        doctorBookingSlotTime,
         invoice
       ]);
 
@@ -674,35 +653,33 @@ class _$OrderImpl implements _Order {
 
 abstract class _Order implements Order {
   const factory _Order(
-      {required final int id,
-      @JsonKey(name: 'order_date') required final DateTime orderDate,
-      @JsonKey(name: 'order_total') required final double orderTotal,
-      @JsonKey(name: 'collection_charge')
-      required final String collectionCharge,
-      @JsonKey(name: 'paid_amount') required final double paidAmount,
-      @JsonKey(name: 'order_status') required final OrderStatus orderStatus,
-      @JsonKey(name: 'payment_mode') required final String paymentMode,
-      @JsonKey(name: 'txn_id') final String? txnId,
-      @JsonKey(name: 'coupon_code') final String? couponCode,
-      @JsonKey(name: 'coupon_data') final String? couponData,
-      @JsonKey(name: 'coupon_amount') required final double couponAmount,
-      @JsonKey(name: 'coupon_cb_amount') required final double couponCbAmount,
-      @JsonKey(name: 'sc_coupon_amount') required final double scCouponAmount,
-      @JsonKey(name: 'wallet_paid') required final double walletPaid,
-      @JsonKey(name: 'qris_coins_paid') required final double qrisCoinsPaid,
-      @JsonKey(name: 'product_record') final String? productRecord,
-      @JsonKey(name: 'booking_slot_date') required final String bookingSlotDate,
-      @JsonKey(name: 'booking_slot_time') final String? bookingSlotTime,
-      @JsonKey(name: 'booking_pin') required final String bookingPin,
-      @JsonKey(name: 'booking_address') required final String bookingAddress,
-      @JsonKey(name: 'sample_type') required final String sampleType,
-      @JsonKey(name: 'tube_type') required final String tubeType,
-      @JsonKey(name: 'hard_copy') required final String hardCopy,
-      @JsonKey(name: 'referred_by') required final String referredBy,
-      @JsonKey(name: 'doctor_booking_slot_time')
-      final String? doctorBookingSlotTime,
-      @JsonKey(name: 'doctor_booking_address')
-      required final String invoice}) = _$OrderImpl;
+          {required final int id,
+          @JsonKey(name: 'order_date') required final DateTime orderDate,
+          @JsonKey(name: 'order_total') required final double orderTotal,
+          @JsonKey(name: 'collection_charge')
+          required final String collectionCharge,
+          @JsonKey(name: 'paid_amount') required final double paidAmount,
+          @JsonKey(name: 'order_status') required final OrderStatus orderStatus,
+          @JsonKey(name: 'payment_mode') required final String paymentMode,
+          @JsonKey(name: 'txn_id') final String? txnId,
+          @JsonKey(name: 'coupon_code') final String? couponCode,
+          @JsonKey(name: 'coupon_data') final String? couponData,
+          @JsonKey(name: 'coupon_amount') final double? couponAmount,
+          @JsonKey(name: 'coupon_cb_amount') final double? couponCbAmount,
+          @JsonKey(name: 'sc_coupon_amount') final double? scCouponAmount,
+          @JsonKey(name: 'wallet_paid') final double? walletPaid,
+          @JsonKey(name: 'qris_coins_paid') final double? qrisCoinsPaid,
+          @JsonKey(name: 'product_record') final String? productRecord,
+          @JsonKey(name: 'booking_slot_date') final String? bookingSlotDate,
+          @JsonKey(name: 'booking_slot_time') final String? bookingSlotTime,
+          @JsonKey(name: 'booking_pin') final String? bookingPin,
+          @JsonKey(name: 'booking_address') final String? bookingAddress,
+          @JsonKey(name: 'sample_type') final String? sampleType,
+          @JsonKey(name: 'tube_type') final String? tubeType,
+          @JsonKey(name: 'hard_copy') final String? hardCopy,
+          @JsonKey(name: 'referred_by') final String? referredBy,
+          @JsonKey(name: 'doctor_booking_address') final String? invoice}) =
+      _$OrderImpl;
 
   factory _Order.fromJson(Map<String, dynamic> json) = _$OrderImpl.fromJson;
 
@@ -737,52 +714,49 @@ abstract class _Order implements Order {
   String? get couponData;
   @override
   @JsonKey(name: 'coupon_amount')
-  double get couponAmount;
+  double? get couponAmount;
   @override
   @JsonKey(name: 'coupon_cb_amount')
-  double get couponCbAmount;
+  double? get couponCbAmount;
   @override
   @JsonKey(name: 'sc_coupon_amount')
-  double get scCouponAmount;
+  double? get scCouponAmount;
   @override
   @JsonKey(name: 'wallet_paid')
-  double get walletPaid;
+  double? get walletPaid;
   @override
   @JsonKey(name: 'qris_coins_paid')
-  double get qrisCoinsPaid;
+  double? get qrisCoinsPaid;
   @override
   @JsonKey(name: 'product_record')
   String? get productRecord;
   @override
   @JsonKey(name: 'booking_slot_date')
-  String get bookingSlotDate;
+  String? get bookingSlotDate;
   @override
   @JsonKey(name: 'booking_slot_time')
   String? get bookingSlotTime;
   @override
   @JsonKey(name: 'booking_pin')
-  String get bookingPin;
+  String? get bookingPin;
   @override
   @JsonKey(name: 'booking_address')
-  String get bookingAddress;
+  String? get bookingAddress;
   @override
   @JsonKey(name: 'sample_type')
-  String get sampleType;
+  String? get sampleType;
   @override
   @JsonKey(name: 'tube_type')
-  String get tubeType;
+  String? get tubeType;
   @override
   @JsonKey(name: 'hard_copy')
-  String get hardCopy;
+  String? get hardCopy;
   @override
   @JsonKey(name: 'referred_by')
-  String get referredBy;
-  @override
-  @JsonKey(name: 'doctor_booking_slot_time')
-  String? get doctorBookingSlotTime;
+  String? get referredBy;
   @override
   @JsonKey(name: 'doctor_booking_address')
-  String get invoice;
+  String? get invoice;
 
   /// Create a copy of Order
   /// with the given fields replaced by the non-null parameter values.

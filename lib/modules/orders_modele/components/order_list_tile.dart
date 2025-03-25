@@ -148,7 +148,7 @@ class _OrderListTileState extends State<OrderListTile> {
               FeatureRow(
                   svgPath: 'assets/images/icons/clock_icon.svg',
                   title:
-                      '${DateTime.tryParse(widget.order.bookingSlotDate)?.toLocal().getFormattedDatedMMMy} (${from.toDateTime?.toLocal().getTimeStringFromDateTimeString} - ${to.toDateTime?.toLocal().getTimeStringFromDateTimeString})',
+                      '${DateTime.tryParse(widget.order.bookingSlotDate!)?.toLocal().getFormattedDatedMMMy} (${from.toDateTime?.toLocal().getTimeStringFromDateTimeString} - ${to.toDateTime?.toLocal().getTimeStringFromDateTimeString})',
                   fontColor: AppColors.textColor),
               SizedBox(height: 10),
               if (orderInfo != null)
