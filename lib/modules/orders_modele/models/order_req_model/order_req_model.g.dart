@@ -10,7 +10,7 @@ _$OrderReqModelImpl _$$OrderReqModelImplFromJson(Map<String, dynamic> json) =>
     _$OrderReqModelImpl(
       userId: (json['userId'] as num).toInt(),
       packagesAmount: (json['packagesAmount'] as num?)?.toInt() ?? 0,
-      collectionCharges: (json['collectionCharges'] as num?)?.toInt() ?? 0,
+      collectionCharges: json['collectionCharges'] as String? ?? '0',
       cartFinalValue: (json['cartFinalValue'] as num?)?.toInt() ?? 0,
       paymentMode: $enumDecode(_$PaymentModeEnumMap, json['paymentMode']),
       razorpayPaymentId: json['razorpayPaymentId'] as String?,

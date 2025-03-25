@@ -762,7 +762,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
           orderReqModel: OrderReqModel(
               userId: ApiParams.getInstance()!.userId!,
               packagesAmount: cartCubit.getCartTestPrices().round(),
-              collectionCharges: cartCubit.getDeliveryCharge(),
+              collectionCharges: cartCubit.getDeliveryCharge().toString(),
               hardCopyCharges: cartCubit.getHardCopyCharges().toString(),
               cartFinalValue:
                   cartCubit.getCartFinalValue(context: context).round(),

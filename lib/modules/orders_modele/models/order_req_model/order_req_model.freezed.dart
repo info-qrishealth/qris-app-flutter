@@ -22,7 +22,7 @@ OrderReqModel _$OrderReqModelFromJson(Map<String, dynamic> json) {
 mixin _$OrderReqModel {
   int get userId => throw _privateConstructorUsedError;
   int get packagesAmount => throw _privateConstructorUsedError;
-  int get collectionCharges => throw _privateConstructorUsedError;
+  String get collectionCharges => throw _privateConstructorUsedError;
   int get cartFinalValue => throw _privateConstructorUsedError;
   PaymentMode get paymentMode => throw _privateConstructorUsedError;
   String? get razorpayPaymentId => throw _privateConstructorUsedError;
@@ -60,7 +60,7 @@ abstract class $OrderReqModelCopyWith<$Res> {
   $Res call(
       {int userId,
       int packagesAmount,
-      int collectionCharges,
+      String collectionCharges,
       int cartFinalValue,
       PaymentMode paymentMode,
       String? razorpayPaymentId,
@@ -130,7 +130,7 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
       collectionCharges: null == collectionCharges
           ? _value.collectionCharges
           : collectionCharges // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       cartFinalValue: null == cartFinalValue
           ? _value.cartFinalValue
           : cartFinalValue // ignore: cast_nullable_to_non_nullable
@@ -228,7 +228,7 @@ abstract class _$$OrderReqModelImplCopyWith<$Res>
   $Res call(
       {int userId,
       int packagesAmount,
-      int collectionCharges,
+      String collectionCharges,
       int cartFinalValue,
       PaymentMode paymentMode,
       String? razorpayPaymentId,
@@ -297,7 +297,7 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
       collectionCharges: null == collectionCharges
           ? _value.collectionCharges
           : collectionCharges // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       cartFinalValue: null == cartFinalValue
           ? _value.cartFinalValue
           : cartFinalValue // ignore: cast_nullable_to_non_nullable
@@ -376,7 +376,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
   const _$OrderReqModelImpl(
       {required this.userId,
       this.packagesAmount = 0,
-      this.collectionCharges = 0,
+      this.collectionCharges = '0',
       this.cartFinalValue = 0,
       required this.paymentMode,
       this.razorpayPaymentId,
@@ -405,7 +405,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
   final int packagesAmount;
   @override
   @JsonKey()
-  final int collectionCharges;
+  final String collectionCharges;
   @override
   @JsonKey()
   final int cartFinalValue;
@@ -539,7 +539,7 @@ abstract class _OrderReqModel implements OrderReqModel {
   const factory _OrderReqModel(
       {required final int userId,
       final int packagesAmount,
-      final int collectionCharges,
+      final String collectionCharges,
       final int cartFinalValue,
       required final PaymentMode paymentMode,
       final String? razorpayPaymentId,
@@ -566,7 +566,7 @@ abstract class _OrderReqModel implements OrderReqModel {
   @override
   int get packagesAmount;
   @override
-  int get collectionCharges;
+  String get collectionCharges;
   @override
   int get cartFinalValue;
   @override

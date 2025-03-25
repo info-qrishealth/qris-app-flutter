@@ -10,7 +10,7 @@ class OrderReqModel with _$OrderReqModel {
   const factory OrderReqModel(
       {required int userId,
       @Default(0) int packagesAmount,
-      @Default(0) int collectionCharges,
+      @Default('0') String collectionCharges,
       @Default(0) int cartFinalValue,
       required PaymentMode paymentMode,
       String? razorpayPaymentId,
