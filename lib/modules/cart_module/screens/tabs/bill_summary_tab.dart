@@ -781,7 +781,8 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
               referBy: _referController.text,
               paymentResponse: '',
               sampleType: '',
-              appliedCouponAmount: cart.appliedCouponAmount ?? 0));
+              appliedCouponAmount: cart.appliedCouponAmount ?? 0,
+              phoneNumber: ApiParams.getInstance()!.phoneNumber!));
 
       AppConstants.showSnackbar(
           text: 'Order created successfully', type: SnackbarType.success);

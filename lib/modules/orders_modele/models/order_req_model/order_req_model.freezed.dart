@@ -21,6 +21,7 @@ OrderReqModel _$OrderReqModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$OrderReqModel {
   int get userId => throw _privateConstructorUsedError;
+  String get phoneNumber => throw _privateConstructorUsedError;
   int get packagesAmount => throw _privateConstructorUsedError;
   String get collectionCharges => throw _privateConstructorUsedError;
   int get cartFinalValue => throw _privateConstructorUsedError;
@@ -59,6 +60,7 @@ abstract class $OrderReqModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int userId,
+      String phoneNumber,
       int packagesAmount,
       String collectionCharges,
       int cartFinalValue,
@@ -98,6 +100,7 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
   @override
   $Res call({
     Object? userId = null,
+    Object? phoneNumber = null,
     Object? packagesAmount = null,
     Object? collectionCharges = null,
     Object? cartFinalValue = null,
@@ -123,6 +126,10 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as int,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String,
       packagesAmount: null == packagesAmount
           ? _value.packagesAmount
           : packagesAmount // ignore: cast_nullable_to_non_nullable
@@ -227,6 +234,7 @@ abstract class _$$OrderReqModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {int userId,
+      String phoneNumber,
       int packagesAmount,
       String collectionCharges,
       int cartFinalValue,
@@ -265,6 +273,7 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userId = null,
+    Object? phoneNumber = null,
     Object? packagesAmount = null,
     Object? collectionCharges = null,
     Object? cartFinalValue = null,
@@ -290,6 +299,10 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as int,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String,
       packagesAmount: null == packagesAmount
           ? _value.packagesAmount
           : packagesAmount // ignore: cast_nullable_to_non_nullable
@@ -375,6 +388,7 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
 class _$OrderReqModelImpl implements _OrderReqModel {
   const _$OrderReqModelImpl(
       {required this.userId,
+      required this.phoneNumber,
       this.packagesAmount = 0,
       this.collectionCharges = '0',
       this.cartFinalValue = 0,
@@ -400,6 +414,8 @@ class _$OrderReqModelImpl implements _OrderReqModel {
 
   @override
   final int userId;
+  @override
+  final String phoneNumber;
   @override
   @JsonKey()
   final int packagesAmount;
@@ -447,7 +463,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
 
   @override
   String toString() {
-    return 'OrderReqModel(userId: $userId, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, appliedCouponAmount: $appliedCouponAmount, encodedProductData: $encodedProductData, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, encodedAddress: $encodedAddress, encodedCouponData: $encodedCouponData, sampleType: $sampleType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
+    return 'OrderReqModel(userId: $userId, phoneNumber: $phoneNumber, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, appliedCouponAmount: $appliedCouponAmount, encodedProductData: $encodedProductData, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, encodedAddress: $encodedAddress, encodedCouponData: $encodedCouponData, sampleType: $sampleType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
   }
 
   @override
@@ -456,6 +472,8 @@ class _$OrderReqModelImpl implements _OrderReqModel {
         (other.runtimeType == runtimeType &&
             other is _$OrderReqModelImpl &&
             (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
             (identical(other.packagesAmount, packagesAmount) ||
                 other.packagesAmount == packagesAmount) &&
             (identical(other.collectionCharges, collectionCharges) ||
@@ -498,6 +516,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
   int get hashCode => Object.hashAll([
         runtimeType,
         userId,
+        phoneNumber,
         packagesAmount,
         collectionCharges,
         cartFinalValue,
@@ -538,6 +557,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
 abstract class _OrderReqModel implements OrderReqModel {
   const factory _OrderReqModel(
       {required final int userId,
+      required final String phoneNumber,
       final int packagesAmount,
       final String collectionCharges,
       final int cartFinalValue,
@@ -563,6 +583,8 @@ abstract class _OrderReqModel implements OrderReqModel {
 
   @override
   int get userId;
+  @override
+  String get phoneNumber;
   @override
   int get packagesAmount;
   @override

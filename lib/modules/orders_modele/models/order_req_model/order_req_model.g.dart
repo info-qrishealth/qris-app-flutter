@@ -9,6 +9,7 @@ part of 'order_req_model.dart';
 _$OrderReqModelImpl _$$OrderReqModelImplFromJson(Map<String, dynamic> json) =>
     _$OrderReqModelImpl(
       userId: (json['userId'] as num).toInt(),
+      phoneNumber: json['phoneNumber'] as String,
       packagesAmount: (json['packagesAmount'] as num?)?.toInt() ?? 0,
       collectionCharges: json['collectionCharges'] as String? ?? '0',
       cartFinalValue: (json['cartFinalValue'] as num?)?.toInt() ?? 0,
@@ -36,6 +37,7 @@ _$OrderReqModelImpl _$$OrderReqModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$OrderReqModelImplToJson(_$OrderReqModelImpl instance) =>
     <String, dynamic>{
       'userId': instance.userId,
+      'phoneNumber': instance.phoneNumber,
       'packagesAmount': instance.packagesAmount,
       'collectionCharges': instance.collectionCharges,
       'cartFinalValue': instance.cartFinalValue,

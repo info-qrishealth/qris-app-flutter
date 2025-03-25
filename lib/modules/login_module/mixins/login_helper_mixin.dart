@@ -28,6 +28,7 @@ mixin LoginHelperMixin {
           PrefConstants.authToken, ApiParams.getInstance()!.authorization!);
       await prefs.setString(PrefConstants.phoneNumber, user.phone!);
       ApiParams.getInstance()!.userId = user.id;
+      ApiParams.getInstance()!.phoneNumber = user.phone;
 
       BlocProvider.of<QrisCoinsCubit>(context).getQrisCoins();
       BlocProvider.of<QrisWalletCubit>(context).getWalletEntries();

@@ -9,6 +9,7 @@ part 'order_req_model.g.dart';
 class OrderReqModel with _$OrderReqModel {
   const factory OrderReqModel(
       {required int userId,
+      required String phoneNumber,
       @Default(0) int packagesAmount,
       @Default('0') String collectionCharges,
       @Default(0) int cartFinalValue,
