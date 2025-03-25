@@ -5,6 +5,7 @@ import 'package:qris_health/constants/enums/scan_type.dart';
 import 'package:qris_health/constants/enums/subscan_type.dart';
 import 'package:qris_health/modules/all_scans_module/components/scan_category_container.dart';
 import 'package:qris_health/modules/all_scans_module/components/subscan_list_tile_horizontal.dart';
+import 'package:qris_health/modules/all_scans_module/models/faq/faq.dart';
 import 'package:qris_health/modules/all_scans_module/models/subscan_model.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/faq_list_tile.dart';
@@ -152,7 +153,13 @@ class _SubscanInfoScreenState extends State<SubscanInfoScreen> {
                   child: Column(
                       children: _subscanModel.faqs
                           .map((faq) => FaqListTile(
-                              question: faq.question, answer: faq.answer))
+                              faq: Faq(
+                                  id: 0,
+                                  testId: 0,
+                                  question: faq.question,
+                                  answer: faq.answer,
+                                  disOrder: 0,
+                                  status: '0')))
                           .toList())),
               SizedBox(height: 20),
               WhyChooseUsContainer(),

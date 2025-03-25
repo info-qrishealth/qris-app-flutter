@@ -6,10 +6,8 @@ import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class FaqListTile extends StatefulWidget {
-  final String? question;
-  final String? answer;
   final Faq? faq;
-  const FaqListTile({super.key, this.question, this.answer, this.faq});
+  const FaqListTile({super.key, this.faq});
 
   @override
   State<FaqListTile> createState() => _FaqListTileState();
