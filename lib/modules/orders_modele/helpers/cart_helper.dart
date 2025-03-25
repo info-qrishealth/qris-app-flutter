@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
+import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 
@@ -13,8 +14,11 @@ class CartHelper {
       {required TestPackageModel testPackageModel}) async {
     try {
       final context = Get.context!;
+      final fullTest =
+          await TestService.getTestByTestId(id: testPackageModel.id);
+
       BlocProvider.of<CartCubit>(context).removeInvalidTestsFromCart();
-      BlocProvider.of<CartCubit>(context).addToCart(testPackageModel);
+      BlocProvider.of<CartCubit>(context).addToCart(fullTest);
       BlocProvider.of<CartCubit>(context).removeAppliedCouponAndCoins();
 
       Navigator.of(context).push(CupertinoPageRoute(

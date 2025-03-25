@@ -53,21 +53,26 @@ class Product {
   final String id;
   final String price;
   final int quantity;
+  final String sampleType;
+  final String tubeType;
 
   Product(
       {required this.title,
       required this.id,
       required this.price,
-      required this.quantity});
+      required this.quantity,
+      required this.sampleType,
+      required this.tubeType});
 
   // Factory constructor to create Product from JSON
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      title: json['title'],
-      id: json['id'],
-      price: json['price'],
-      quantity: json['quantity'],
-    );
+        title: json['title'],
+        id: json['id'],
+        price: json['price'],
+        quantity: json['quantity'],
+        sampleType: json['sample_type'],
+        tubeType: json['tube_type']);
   }
 
   // Convert Product instance to JSON
@@ -77,6 +82,8 @@ class Product {
       'id': id,
       'price': price,
       'quantity': quantity,
+      'sample_type': sampleType,
+      'tube_type': tubeType
     };
   }
 }
