@@ -39,6 +39,7 @@ mixin _$OrderReqModel {
   String get encodedAddress => throw _privateConstructorUsedError;
   String? get encodedCouponData => throw _privateConstructorUsedError;
   String? get sampleType => throw _privateConstructorUsedError;
+  String? get tubeType => throw _privateConstructorUsedError;
   String get hardCopyCharges => throw _privateConstructorUsedError;
   String? get referBy => throw _privateConstructorUsedError;
 
@@ -78,6 +79,7 @@ abstract class $OrderReqModelCopyWith<$Res> {
       String encodedAddress,
       String? encodedCouponData,
       String? sampleType,
+      String? tubeType,
       String hardCopyCharges,
       String? referBy});
 
@@ -118,6 +120,7 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
     Object? encodedAddress = null,
     Object? encodedCouponData = freezed,
     Object? sampleType = freezed,
+    Object? tubeType = freezed,
     Object? hardCopyCharges = null,
     Object? referBy = freezed,
   }) {
@@ -198,6 +201,10 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
           ? _value.sampleType
           : sampleType // ignore: cast_nullable_to_non_nullable
               as String?,
+      tubeType: freezed == tubeType
+          ? _value.tubeType
+          : tubeType // ignore: cast_nullable_to_non_nullable
+              as String?,
       hardCopyCharges: null == hardCopyCharges
           ? _value.hardCopyCharges
           : hardCopyCharges // ignore: cast_nullable_to_non_nullable
@@ -252,6 +259,7 @@ abstract class _$$OrderReqModelImplCopyWith<$Res>
       String encodedAddress,
       String? encodedCouponData,
       String? sampleType,
+      String? tubeType,
       String hardCopyCharges,
       String? referBy});
 
@@ -291,6 +299,7 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
     Object? encodedAddress = null,
     Object? encodedCouponData = freezed,
     Object? sampleType = freezed,
+    Object? tubeType = freezed,
     Object? hardCopyCharges = null,
     Object? referBy = freezed,
   }) {
@@ -371,6 +380,10 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
           ? _value.sampleType
           : sampleType // ignore: cast_nullable_to_non_nullable
               as String?,
+      tubeType: freezed == tubeType
+          ? _value.tubeType
+          : tubeType // ignore: cast_nullable_to_non_nullable
+              as String?,
       hardCopyCharges: null == hardCopyCharges
           ? _value.hardCopyCharges
           : hardCopyCharges // ignore: cast_nullable_to_non_nullable
@@ -406,6 +419,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
       required this.encodedAddress,
       this.encodedCouponData,
       this.sampleType,
+      this.tubeType,
       this.hardCopyCharges = '0',
       this.referBy});
 
@@ -456,6 +470,8 @@ class _$OrderReqModelImpl implements _OrderReqModel {
   @override
   final String? sampleType;
   @override
+  final String? tubeType;
+  @override
   @JsonKey()
   final String hardCopyCharges;
   @override
@@ -463,7 +479,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
 
   @override
   String toString() {
-    return 'OrderReqModel(userId: $userId, phoneNumber: $phoneNumber, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, appliedCouponAmount: $appliedCouponAmount, encodedProductData: $encodedProductData, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, encodedAddress: $encodedAddress, encodedCouponData: $encodedCouponData, sampleType: $sampleType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
+    return 'OrderReqModel(userId: $userId, phoneNumber: $phoneNumber, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, appliedCouponAmount: $appliedCouponAmount, encodedProductData: $encodedProductData, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, encodedAddress: $encodedAddress, encodedCouponData: $encodedCouponData, sampleType: $sampleType, tubeType: $tubeType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
   }
 
   @override
@@ -506,6 +522,8 @@ class _$OrderReqModelImpl implements _OrderReqModel {
                 other.encodedCouponData == encodedCouponData) &&
             (identical(other.sampleType, sampleType) ||
                 other.sampleType == sampleType) &&
+            (identical(other.tubeType, tubeType) ||
+                other.tubeType == tubeType) &&
             (identical(other.hardCopyCharges, hardCopyCharges) ||
                 other.hardCopyCharges == hardCopyCharges) &&
             (identical(other.referBy, referBy) || other.referBy == referBy));
@@ -534,6 +552,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
         encodedAddress,
         encodedCouponData,
         sampleType,
+        tubeType,
         hardCopyCharges,
         referBy
       ]);
@@ -575,6 +594,7 @@ abstract class _OrderReqModel implements OrderReqModel {
       required final String encodedAddress,
       final String? encodedCouponData,
       final String? sampleType,
+      final String? tubeType,
       final String hardCopyCharges,
       final String? referBy}) = _$OrderReqModelImpl;
 
@@ -619,6 +639,8 @@ abstract class _OrderReqModel implements OrderReqModel {
   String? get encodedCouponData;
   @override
   String? get sampleType;
+  @override
+  String? get tubeType;
   @override
   String get hardCopyCharges;
   @override

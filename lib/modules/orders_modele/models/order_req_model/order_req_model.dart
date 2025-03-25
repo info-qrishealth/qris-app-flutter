@@ -27,6 +27,7 @@ class OrderReqModel with _$OrderReqModel {
       required String encodedAddress,
       String? encodedCouponData,
       String? sampleType,
+      String? tubeType,
       @Default('0') String hardCopyCharges,
       String? referBy}) = _OrderReqModel;
 

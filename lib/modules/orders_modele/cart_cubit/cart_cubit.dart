@@ -306,4 +306,34 @@ class CartCubit extends Cubit<CartState> {
 
     return 0;
   }
+
+  String getCollectiveSampleType() {
+    return _getUniqueNames(
+        names: state.cart.cartTests
+            .map((test) => '${test.test.sampleType}')
+            .toList());
+  }
+
+  String getCollectiveTubeType() {
+    return _getUniqueNames(
+        names: state.cart.cartTests
+            .map((test) => '${test.test.tubeType}')
+            .toList());
+  }
+
+  String _getUniqueNames({required List<String> names}) {
+    Set<String> uniqueNormalizedSet = names.map((item) {
+      List<String> items = item.split(',');
+      items.sort();
+      return items.join(',');
+    }).toSet();
+
+    String finalResult = uniqueNormalizedSet.firstWhere(
+      (element) => element.contains(','),
+      orElse: () =>
+          uniqueNormalizedSet.isNotEmpty ? uniqueNormalizedSet.first : '',
+    );
+
+    return finalResult;
+  }
 }

@@ -780,7 +780,8 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
               encodedCouponData: encodedCouponData,
               referBy: _referController.text,
               paymentResponse: '',
-              sampleType: '',
+              tubeType: cartCubit.getCollectiveTubeType(),
+              sampleType: cartCubit.getCollectiveSampleType(),
               appliedCouponAmount: cart.appliedCouponAmount ?? 0,
               phoneNumber: ApiParams.getInstance()!.phoneNumber!));
 

@@ -30,6 +30,7 @@ _$OrderReqModelImpl _$$OrderReqModelImplFromJson(Map<String, dynamic> json) =>
       encodedAddress: json['encodedAddress'] as String,
       encodedCouponData: json['encodedCouponData'] as String?,
       sampleType: json['sampleType'] as String?,
+      tubeType: json['tubeType'] as String?,
       hardCopyCharges: json['hardCopyCharges'] as String? ?? '0',
       referBy: json['referBy'] as String?,
     );
@@ -55,6 +56,7 @@ Map<String, dynamic> _$$OrderReqModelImplToJson(_$OrderReqModelImpl instance) =>
       'encodedAddress': instance.encodedAddress,
       'encodedCouponData': instance.encodedCouponData,
       'sampleType': instance.sampleType,
+      'tubeType': instance.tubeType,
       'hardCopyCharges': instance.hardCopyCharges,
       'referBy': instance.referBy,
     };
