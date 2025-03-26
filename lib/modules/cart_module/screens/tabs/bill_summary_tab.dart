@@ -788,6 +788,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
               phoneNumber: ApiParams.getInstance()!.phoneNumber!,
               wellnessAnswers: widget.wellnessAnswers
                   ?.map((answer) => answer.copyWith.call(
+                      answer: answer.answer.trim(),
                       ptntId: cart.cartTests.firstOrNull?.patientIds.firstOrNull
                           .toString()))
                   .toList()));
