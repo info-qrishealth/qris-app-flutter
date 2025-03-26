@@ -28,6 +28,9 @@ _$OrderReqModelImpl _$$OrderReqModelImplFromJson(Map<String, dynamic> json) =>
       slotTime: json['slotTime'] as String,
       pincode: json['pincode'] as String,
       encodedAddress: json['encodedAddress'] as String,
+      wellnessAnswers: (json['wellnessAnswers'] as List<dynamic>?)
+          ?.map((e) => WellnessAnswer.fromJson(e as Map<String, dynamic>))
+          .toList(),
       encodedCouponData: json['encodedCouponData'] as String?,
       sampleType: json['sampleType'] as String?,
       tubeType: json['tubeType'] as String?,
@@ -54,6 +57,7 @@ Map<String, dynamic> _$$OrderReqModelImplToJson(_$OrderReqModelImpl instance) =>
       'slotTime': instance.slotTime,
       'pincode': instance.pincode,
       'encodedAddress': instance.encodedAddress,
+      'wellnessAnswers': instance.wellnessAnswers,
       'encodedCouponData': instance.encodedCouponData,
       'sampleType': instance.sampleType,
       'tubeType': instance.tubeType,

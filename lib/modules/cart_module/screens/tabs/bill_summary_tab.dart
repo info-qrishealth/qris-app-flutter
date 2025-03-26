@@ -12,6 +12,7 @@ import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/modules/address_module/services/address_service.dart';
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
+import 'package:qris_health/modules/health_module/models/wellness_answer/wellness_answer.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
@@ -37,7 +38,8 @@ import '../../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 import '../../components/coupons_bottom_sheet.dart';
 
 class BillSummaryTab extends StatefulWidget {
-  const BillSummaryTab({super.key});
+  final List<WellnessAnswer>? wellnessAnswers;
+  const BillSummaryTab({super.key, this.wellnessAnswers});
 
   @override
   State<BillSummaryTab> createState() => _BillSummaryTabState();
@@ -783,7 +785,12 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
               tubeType: cartCubit.getCollectiveTubeType(),
               sampleType: cartCubit.getCollectiveSampleType(),
               appliedCouponAmount: cart.appliedCouponAmount ?? 0,
-              phoneNumber: ApiParams.getInstance()!.phoneNumber!));
+              phoneNumber: ApiParams.getInstance()!.phoneNumber!,
+              wellnessAnswers: widget.wellnessAnswers
+                  ?.map((answer) => answer.copyWith.call(
+                      ptntId: cart.cartTests.firstOrNull?.patientIds.firstOrNull
+                          .toString()))
+                  .toList()));
 
       AppConstants.showSnackbar(
           text: 'Order created successfully', type: SnackbarType.success);

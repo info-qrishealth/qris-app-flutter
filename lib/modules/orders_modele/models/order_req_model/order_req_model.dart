@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:qris_health/constants/enums/payment_mode.dart';
+import 'package:qris_health/modules/health_module/models/wellness_answer/wellness_answer.dart';
 import '../coupon/coupon.dart';
 
 part 'order_req_model.freezed.dart';
@@ -25,6 +26,7 @@ class OrderReqModel with _$OrderReqModel {
       required String slotTime,
       required String pincode,
       required String encodedAddress,
+      List<WellnessAnswer>? wellnessAnswers,
       String? encodedCouponData,
       String? sampleType,
       String? tubeType,

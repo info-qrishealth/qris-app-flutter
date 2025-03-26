@@ -1,27 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/enums/questionnaire_type.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
-import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
+import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/health_module/models/wellness_answer/wellness_answer.dart';
 import 'package:qris_health/modules/health_module/models/wellness_question/wellness_question.dart';
 import 'package:qris_health/modules/health_module/services/wellness_service.dart';
+import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
+import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_html_text.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/components/common_textfield.dart';
-import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/app_constants.dart';
 
 class QuestionnaireScreen extends StatefulWidget {
-  final String testId;
-  const QuestionnaireScreen({super.key, required this.testId});
+  final TestPackageModel testPackageModel;
+  const QuestionnaireScreen({super.key, required this.testPackageModel});
 
   @override
   State<QuestionnaireScreen> createState() => _QuestionnaireScreenState();
@@ -42,7 +42,8 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   @override
   void initState() {
     super.initState();
-    _future = WellnessService.getWellnessQuestions(testId: widget.testId);
+    _future = WellnessService.getWellnessQuestions(
+        testId: widget.testPackageModel.id.toString());
   }
 
   @override
@@ -299,7 +300,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor:
                                                 AppColors.primaryBlue),
-                                        onPressed: () {
+                                        onPressed: () async {
                                           if (_answers[_currentQuestionIndex!]
                                               .answer
                                               .isEmpty) {
@@ -313,12 +314,23 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
 
                                           if (_currentQuestionIndex ==
                                               _questions.length - 1) {
-                                            Navigator.of(context).push(
-                                                CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        CartScreen(
-                                                            testPackageModel:
-                                                                null)));
+                                            BlocProvider.of<CartCubit>(context)
+                                                .clearCart();
+
+                                            final wellnessAnswers = _answers
+                                                .map((answer) => answer.copyWith
+                                                    .call(
+                                                        prdId: widget
+                                                            .testPackageModel.id
+                                                            .toString()))
+                                                .toList();
+
+                                            await CartHelper
+                                                .addToCartAndNavigate(
+                                                    testPackageModel:
+                                                        widget.testPackageModel,
+                                                    wellnessAnswers:
+                                                        wellnessAnswers);
                                           } else {
                                             _pageController.nextPage(
                                                 duration:

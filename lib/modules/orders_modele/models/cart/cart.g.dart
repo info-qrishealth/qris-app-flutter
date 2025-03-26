@@ -30,6 +30,9 @@ _$CartImpl _$$CartImplFromJson(Map<String, dynamic> json) => _$CartImpl(
       walletRedeemedAmount:
           (json['walletRedeemedAmount'] as num?)?.toInt() ?? 0,
       redeemedQrisCoins: (json['redeemedQrisCoins'] as num?)?.toInt() ?? 0,
+      wellnessAnswers: (json['wellnessAnswers'] as List<dynamic>?)
+          ?.map((e) => WellnessAnswer.fromJson(e as Map<String, dynamic>))
+          .toList(),
       redeemCoins: json['redeemCoins'] as bool? ?? false,
     );
 
@@ -45,6 +48,7 @@ Map<String, dynamic> _$$CartImplToJson(_$CartImpl instance) =>
       'pincode': instance.pincode,
       'walletRedeemedAmount': instance.walletRedeemedAmount,
       'redeemedQrisCoins': instance.redeemedQrisCoins,
+      'wellnessAnswers': instance.wellnessAnswers,
       'redeemCoins': instance.redeemCoins,
     };
 

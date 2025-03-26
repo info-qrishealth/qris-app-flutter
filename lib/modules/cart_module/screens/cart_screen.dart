@@ -9,6 +9,7 @@ import 'package:qris_health/modules/cart_module/screens/tabs/bill_summary_tab.da
 import 'package:qris_health/modules/cart_module/screens/tabs/select_address_tab.dart';
 import 'package:qris_health/modules/cart_module/screens/tabs/select_patient_tab.dart';
 import 'package:qris_health/modules/cart_module/screens/tabs/time_slot_tab.dart';
+import 'package:qris_health/modules/health_module/models/wellness_answer/wellness_answer.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/styles/app_colors.dart';
@@ -16,9 +17,13 @@ import 'package:qris_health/styles/app_colors.dart';
 class CartScreen extends StatefulWidget {
   final int? initialPage;
   final TestPackageModel? testPackageModel;
+  final List<WellnessAnswer>? wellnessAnswers;
 
   const CartScreen(
-      {super.key, required this.testPackageModel, this.initialPage});
+      {super.key,
+      required this.testPackageModel,
+      this.initialPage,
+      this.wellnessAnswers});
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -97,7 +102,8 @@ class _CartScreenState extends State<CartScreen> {
                                   TimeSlotTab(onContinue: () {
                                     _animateToPage(pageIndex: 3);
                                   }),
-                                  BillSummaryTab()
+                                  BillSummaryTab(
+                                      wellnessAnswers: widget.wellnessAnswers)
                                 ])),
                           ]));
                 })));

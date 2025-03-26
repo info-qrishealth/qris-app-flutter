@@ -30,6 +30,8 @@ mixin _$Cart {
   Pincode? get pincode => throw _privateConstructorUsedError;
   int get walletRedeemedAmount => throw _privateConstructorUsedError;
   int get redeemedQrisCoins => throw _privateConstructorUsedError;
+  List<WellnessAnswer>? get wellnessAnswers =>
+      throw _privateConstructorUsedError;
   bool get redeemCoins => throw _privateConstructorUsedError;
 
   /// Serializes this Cart to a JSON map.
@@ -57,6 +59,7 @@ abstract class $CartCopyWith<$Res> {
       Pincode? pincode,
       int walletRedeemedAmount,
       int redeemedQrisCoins,
+      List<WellnessAnswer>? wellnessAnswers,
       bool redeemCoins});
 
   $AddressCopyWith<$Res>? get selectedAddress;
@@ -90,6 +93,7 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
     Object? pincode = freezed,
     Object? walletRedeemedAmount = null,
     Object? redeemedQrisCoins = null,
+    Object? wellnessAnswers = freezed,
     Object? redeemCoins = null,
   }) {
     return _then(_value.copyWith(
@@ -133,6 +137,10 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
           ? _value.redeemedQrisCoins
           : redeemedQrisCoins // ignore: cast_nullable_to_non_nullable
               as int,
+      wellnessAnswers: freezed == wellnessAnswers
+          ? _value.wellnessAnswers
+          : wellnessAnswers // ignore: cast_nullable_to_non_nullable
+              as List<WellnessAnswer>?,
       redeemCoins: null == redeemCoins
           ? _value.redeemCoins
           : redeemCoins // ignore: cast_nullable_to_non_nullable
@@ -215,6 +223,7 @@ abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
       Pincode? pincode,
       int walletRedeemedAmount,
       int redeemedQrisCoins,
+      List<WellnessAnswer>? wellnessAnswers,
       bool redeemCoins});
 
   @override
@@ -249,6 +258,7 @@ class __$$CartImplCopyWithImpl<$Res>
     Object? pincode = freezed,
     Object? walletRedeemedAmount = null,
     Object? redeemedQrisCoins = null,
+    Object? wellnessAnswers = freezed,
     Object? redeemCoins = null,
   }) {
     return _then(_$CartImpl(
@@ -292,6 +302,10 @@ class __$$CartImplCopyWithImpl<$Res>
           ? _value.redeemedQrisCoins
           : redeemedQrisCoins // ignore: cast_nullable_to_non_nullable
               as int,
+      wellnessAnswers: freezed == wellnessAnswers
+          ? _value._wellnessAnswers
+          : wellnessAnswers // ignore: cast_nullable_to_non_nullable
+              as List<WellnessAnswer>?,
       redeemCoins: null == redeemCoins
           ? _value.redeemCoins
           : redeemCoins // ignore: cast_nullable_to_non_nullable
@@ -314,8 +328,10 @@ class _$CartImpl implements _Cart {
       this.pincode,
       this.walletRedeemedAmount = 0,
       this.redeemedQrisCoins = 0,
+      final List<WellnessAnswer>? wellnessAnswers,
       this.redeemCoins = false})
-      : _cartTests = cartTests;
+      : _cartTests = cartTests,
+        _wellnessAnswers = wellnessAnswers;
 
   factory _$CartImpl.fromJson(Map<String, dynamic> json) =>
       _$$CartImplFromJson(json);
@@ -349,13 +365,23 @@ class _$CartImpl implements _Cart {
   @override
   @JsonKey()
   final int redeemedQrisCoins;
+  final List<WellnessAnswer>? _wellnessAnswers;
+  @override
+  List<WellnessAnswer>? get wellnessAnswers {
+    final value = _wellnessAnswers;
+    if (value == null) return null;
+    if (_wellnessAnswers is EqualUnmodifiableListView) return _wellnessAnswers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   @JsonKey()
   final bool redeemCoins;
 
   @override
   String toString() {
-    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate, appliedCoupon: $appliedCoupon, appliedCouponAmount: $appliedCouponAmount, shouldGetHardCopy: $shouldGetHardCopy, pincode: $pincode, walletRedeemedAmount: $walletRedeemedAmount, redeemedQrisCoins: $redeemedQrisCoins, redeemCoins: $redeemCoins)';
+    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate, appliedCoupon: $appliedCoupon, appliedCouponAmount: $appliedCouponAmount, shouldGetHardCopy: $shouldGetHardCopy, pincode: $pincode, walletRedeemedAmount: $walletRedeemedAmount, redeemedQrisCoins: $redeemedQrisCoins, wellnessAnswers: $wellnessAnswers, redeemCoins: $redeemCoins)';
   }
 
   @override
@@ -382,6 +408,8 @@ class _$CartImpl implements _Cart {
                 other.walletRedeemedAmount == walletRedeemedAmount) &&
             (identical(other.redeemedQrisCoins, redeemedQrisCoins) ||
                 other.redeemedQrisCoins == redeemedQrisCoins) &&
+            const DeepCollectionEquality()
+                .equals(other._wellnessAnswers, _wellnessAnswers) &&
             (identical(other.redeemCoins, redeemCoins) ||
                 other.redeemCoins == redeemCoins));
   }
@@ -400,6 +428,7 @@ class _$CartImpl implements _Cart {
       pincode,
       walletRedeemedAmount,
       redeemedQrisCoins,
+      const DeepCollectionEquality().hash(_wellnessAnswers),
       redeemCoins);
 
   /// Create a copy of Cart
@@ -430,6 +459,7 @@ abstract class _Cart implements Cart {
       final Pincode? pincode,
       final int walletRedeemedAmount,
       final int redeemedQrisCoins,
+      final List<WellnessAnswer>? wellnessAnswers,
       final bool redeemCoins}) = _$CartImpl;
 
   factory _Cart.fromJson(Map<String, dynamic> json) = _$CartImpl.fromJson;
@@ -454,6 +484,8 @@ abstract class _Cart implements Cart {
   int get walletRedeemedAmount;
   @override
   int get redeemedQrisCoins;
+  @override
+  List<WellnessAnswer>? get wellnessAnswers;
   @override
   bool get redeemCoins;
 

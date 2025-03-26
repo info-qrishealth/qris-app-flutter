@@ -47,7 +47,7 @@ class MentalWellnessBottomNavigationBar extends StatelessWidget {
                     if (testPackageModel != null) {
                       Navigator.of(context).push(CupertinoPageRoute(
                           builder: (context) => QuestionnaireScreen(
-                              testId: testPackageModel!.id.toString())));
+                              testPackageModel: testPackageModel!)));
                     }
                   },
                   child: Container(
@@ -83,9 +83,8 @@ class MentalWellnessBottomNavigationBar extends StatelessWidget {
                                             CupertinoPageRoute(
                                                 builder: (context) =>
                                                     QuestionnaireScreen(
-                                                        testId:
-                                                            testPackageModel!.id
-                                                                .toString())));
+                                                        testPackageModel:
+                                                            testPackageModel!)));
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(

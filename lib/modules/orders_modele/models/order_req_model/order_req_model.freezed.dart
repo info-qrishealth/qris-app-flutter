@@ -37,6 +37,8 @@ mixin _$OrderReqModel {
   String get slotTime => throw _privateConstructorUsedError;
   String get pincode => throw _privateConstructorUsedError;
   String get encodedAddress => throw _privateConstructorUsedError;
+  List<WellnessAnswer>? get wellnessAnswers =>
+      throw _privateConstructorUsedError;
   String? get encodedCouponData => throw _privateConstructorUsedError;
   String? get sampleType => throw _privateConstructorUsedError;
   String? get tubeType => throw _privateConstructorUsedError;
@@ -77,6 +79,7 @@ abstract class $OrderReqModelCopyWith<$Res> {
       String slotTime,
       String pincode,
       String encodedAddress,
+      List<WellnessAnswer>? wellnessAnswers,
       String? encodedCouponData,
       String? sampleType,
       String? tubeType,
@@ -118,6 +121,7 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
     Object? slotTime = null,
     Object? pincode = null,
     Object? encodedAddress = null,
+    Object? wellnessAnswers = freezed,
     Object? encodedCouponData = freezed,
     Object? sampleType = freezed,
     Object? tubeType = freezed,
@@ -193,6 +197,10 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
           ? _value.encodedAddress
           : encodedAddress // ignore: cast_nullable_to_non_nullable
               as String,
+      wellnessAnswers: freezed == wellnessAnswers
+          ? _value.wellnessAnswers
+          : wellnessAnswers // ignore: cast_nullable_to_non_nullable
+              as List<WellnessAnswer>?,
       encodedCouponData: freezed == encodedCouponData
           ? _value.encodedCouponData
           : encodedCouponData // ignore: cast_nullable_to_non_nullable
@@ -257,6 +265,7 @@ abstract class _$$OrderReqModelImplCopyWith<$Res>
       String slotTime,
       String pincode,
       String encodedAddress,
+      List<WellnessAnswer>? wellnessAnswers,
       String? encodedCouponData,
       String? sampleType,
       String? tubeType,
@@ -297,6 +306,7 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
     Object? slotTime = null,
     Object? pincode = null,
     Object? encodedAddress = null,
+    Object? wellnessAnswers = freezed,
     Object? encodedCouponData = freezed,
     Object? sampleType = freezed,
     Object? tubeType = freezed,
@@ -372,6 +382,10 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
           ? _value.encodedAddress
           : encodedAddress // ignore: cast_nullable_to_non_nullable
               as String,
+      wellnessAnswers: freezed == wellnessAnswers
+          ? _value._wellnessAnswers
+          : wellnessAnswers // ignore: cast_nullable_to_non_nullable
+              as List<WellnessAnswer>?,
       encodedCouponData: freezed == encodedCouponData
           ? _value.encodedCouponData
           : encodedCouponData // ignore: cast_nullable_to_non_nullable
@@ -417,11 +431,13 @@ class _$OrderReqModelImpl implements _OrderReqModel {
       required this.slotTime,
       required this.pincode,
       required this.encodedAddress,
+      final List<WellnessAnswer>? wellnessAnswers,
       this.encodedCouponData,
       this.sampleType,
       this.tubeType,
       this.hardCopyCharges = '0',
-      this.referBy});
+      this.referBy})
+      : _wellnessAnswers = wellnessAnswers;
 
   factory _$OrderReqModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrderReqModelImplFromJson(json);
@@ -465,6 +481,16 @@ class _$OrderReqModelImpl implements _OrderReqModel {
   final String pincode;
   @override
   final String encodedAddress;
+  final List<WellnessAnswer>? _wellnessAnswers;
+  @override
+  List<WellnessAnswer>? get wellnessAnswers {
+    final value = _wellnessAnswers;
+    if (value == null) return null;
+    if (_wellnessAnswers is EqualUnmodifiableListView) return _wellnessAnswers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final String? encodedCouponData;
   @override
@@ -479,7 +505,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
 
   @override
   String toString() {
-    return 'OrderReqModel(userId: $userId, phoneNumber: $phoneNumber, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, appliedCouponAmount: $appliedCouponAmount, encodedProductData: $encodedProductData, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, encodedAddress: $encodedAddress, encodedCouponData: $encodedCouponData, sampleType: $sampleType, tubeType: $tubeType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
+    return 'OrderReqModel(userId: $userId, phoneNumber: $phoneNumber, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, appliedCouponAmount: $appliedCouponAmount, encodedProductData: $encodedProductData, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, encodedAddress: $encodedAddress, wellnessAnswers: $wellnessAnswers, encodedCouponData: $encodedCouponData, sampleType: $sampleType, tubeType: $tubeType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
   }
 
   @override
@@ -518,6 +544,8 @@ class _$OrderReqModelImpl implements _OrderReqModel {
             (identical(other.pincode, pincode) || other.pincode == pincode) &&
             (identical(other.encodedAddress, encodedAddress) ||
                 other.encodedAddress == encodedAddress) &&
+            const DeepCollectionEquality()
+                .equals(other._wellnessAnswers, _wellnessAnswers) &&
             (identical(other.encodedCouponData, encodedCouponData) ||
                 other.encodedCouponData == encodedCouponData) &&
             (identical(other.sampleType, sampleType) ||
@@ -550,6 +578,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
         slotTime,
         pincode,
         encodedAddress,
+        const DeepCollectionEquality().hash(_wellnessAnswers),
         encodedCouponData,
         sampleType,
         tubeType,
@@ -592,6 +621,7 @@ abstract class _OrderReqModel implements OrderReqModel {
       required final String slotTime,
       required final String pincode,
       required final String encodedAddress,
+      final List<WellnessAnswer>? wellnessAnswers,
       final String? encodedCouponData,
       final String? sampleType,
       final String? tubeType,
@@ -635,6 +665,8 @@ abstract class _OrderReqModel implements OrderReqModel {
   String get pincode;
   @override
   String get encodedAddress;
+  @override
+  List<WellnessAnswer>? get wellnessAnswers;
   @override
   String? get encodedCouponData;
   @override

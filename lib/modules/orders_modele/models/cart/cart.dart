@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
+import 'package:qris_health/modules/health_module/models/wellness_answer/wellness_answer.dart';
 
 import '../../../address_module/models/address/address.dart';
 import '../../../address_module/models/pincode/pincode.dart';
@@ -22,6 +23,7 @@ class Cart with _$Cart {
       Pincode? pincode,
       @Default(0) int walletRedeemedAmount,
       @Default(0) int redeemedQrisCoins,
+      List<WellnessAnswer>? wellnessAnswers,
       @Default(false) bool redeemCoins}) = _Cart;
 
   factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
