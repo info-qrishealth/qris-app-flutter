@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,9 +15,11 @@ import 'package:qris_health/modules/address_module/services/address_service.dart
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
 import 'package:qris_health/modules/health_module/models/wellness_answer/wellness_answer.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
+import 'package:qris_health/modules/home_module/screens/home_screen.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/models/order_info/order_info.dart';
+import 'package:qris_health/modules/orders_modele/screens/order_processing_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 import 'package:qris_health/shared/components/billing_amount_row.dart';
@@ -610,7 +613,9 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                       onPressed: cartFinalValue > 0
                           ? _selectedPaymentMode == null
                               ? null
-                              : _checkout
+                              : _selectedPaymentMode == PaymentMode.cod
+                                  ? () => _createOrder()
+                                  : _checkout
                           : () => _createOrder(),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue),
@@ -695,7 +700,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
       case Razorpay.NETWORK_ERROR:
         AppConstants.showSnackbar(
             text:
-                'There is a Network Error, Please Ensure that Your Internet Connection is Stable',
+                'Order was cancelled due to some network problem or cancelled by user',
             type: SnackbarType.warning);
         break;
 
@@ -760,41 +765,40 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
       final productsData =
           AppConstants.encodeStringToBase64(_getProductsData());
 
-      final createdOrder = await OrderService.createOrder(
-          orderReqModel: OrderReqModel(
-              userId: ApiParams.getInstance()!.userId!,
-              packagesAmount: cartCubit.getCartTestPrices().round(),
-              collectionCharges: cartCubit.getDeliveryCharge().toString(),
-              hardCopyCharges: cartCubit.getHardCopyCharges().toString(),
-              cartFinalValue:
-                  cartCubit.getCartFinalValue(context: context).round(),
-              paymentMode: _selectedPaymentMode!,
-              razorpayPaymentId: razorpayPaymentId,
-              coupon: cart.appliedCoupon,
-              redeemedWalletAmount: cart.walletRedeemedAmount,
-              redeemedQrisCoins: cart.redeemedQrisCoins,
-              slotDate: DateFormat('yyyyMMdd').format(cart.collectionDate!),
-              slotTime:
-                  '${cart.timeSlot!.startingTime}-${cart.timeSlot!.endingTime}',
-              pincode: cart.pincode!.pincode.toString(),
-              encodedProductData: productsData,
-              encodedAddress: encodedAddress,
-              encodedCouponData: encodedCouponData,
-              referBy: _referController.text,
-              paymentResponse: '',
-              tubeType: cartCubit.getCollectiveTubeType(),
-              sampleType: cartCubit.getCollectiveSampleType(),
-              appliedCouponAmount: cart.appliedCouponAmount ?? 0,
-              phoneNumber: ApiParams.getInstance()!.phoneNumber!,
-              wellnessAnswers: widget.wellnessAnswers
-                  ?.map((answer) => answer.copyWith.call(
-                      answer: answer.answer.trim(),
-                      ptntId: cart.cartTests.firstOrNull?.patientIds.firstOrNull
-                          .toString()))
-                  .toList()));
+      final orderReqModel = OrderReqModel(
+          userId: ApiParams.getInstance()!.userId!,
+          packagesAmount: cartCubit.getCartTestPrices().round(),
+          collectionCharges: cartCubit.getDeliveryCharge().toString(),
+          hardCopyCharges: cartCubit.getHardCopyCharges().toString(),
+          cartFinalValue: cartCubit.getCartFinalValue(context: context).round(),
+          paymentMode: _selectedPaymentMode!,
+          razorpayPaymentId: razorpayPaymentId,
+          coupon: cart.appliedCoupon,
+          redeemedWalletAmount: cart.walletRedeemedAmount,
+          redeemedQrisCoins: cart.redeemedQrisCoins,
+          slotDate: DateFormat('yyyyMMdd').format(cart.collectionDate!),
+          slotTime:
+              '${cart.timeSlot!.startingTime}-${cart.timeSlot!.endingTime}',
+          pincode: cart.pincode!.pincode.toString(),
+          encodedProductData: productsData,
+          encodedAddress: encodedAddress,
+          encodedCouponData: encodedCouponData,
+          referBy: _referController.text,
+          paymentResponse: '',
+          tubeType: cartCubit.getCollectiveTubeType(),
+          sampleType: cartCubit.getCollectiveSampleType(),
+          appliedCouponAmount: cart.appliedCouponAmount ?? 0,
+          phoneNumber: ApiParams.getInstance()!.phoneNumber!,
+          wellnessAnswers: widget.wellnessAnswers
+              ?.map((answer) => answer.copyWith.call(
+                  answer: answer.answer.trim(),
+                  ptntId: cart.cartTests.firstOrNull?.patientIds.firstOrNull
+                      .toString()))
+              .toList());
 
-      AppConstants.showSnackbar(
-          text: 'Order created successfully', type: SnackbarType.success);
+      await Navigator.of(context).push(CupertinoPageRoute(
+          builder: (context) =>
+              OrderProcessingScreen(orderReqModel: orderReqModel)));
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     }
