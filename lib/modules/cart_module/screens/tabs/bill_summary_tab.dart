@@ -620,7 +620,9 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue),
                       child: Text(cartFinalValue > 0
-                          ? 'Pay ₹$cartFinalValue/-'
+                          ? _selectedPaymentMode == PaymentMode.cod
+                              ? 'Confirm Booking'
+                              : 'Pay ₹$cartFinalValue/-'
                           : 'Complete Booking')),
                   SizedBox(height: 16),
                 ]);
