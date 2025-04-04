@@ -181,7 +181,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (_formKey.currentState?.validate() == true) {
         final isUserAlreadyExists = await OtpService.isUserExists(
-            phoneNumber: _phoneNumberController.text);
+            phoneNumber: _phoneNumberController.text,
+            email: _emailController.text);
 
         if (isUserAlreadyExists) {
           return AppConstants.showSnackbar(
