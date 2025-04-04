@@ -261,10 +261,24 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                                           color: AppColors
                                                               .lightSubTextColor)),
                                               Spacer(),
-                                              Icon(Icons.keyboard_arrow_right,
-                                                  size: 18,
-                                                  color: AppColors
-                                                      .lightSubTextColor),
+                                              if (state.cart.appliedCoupon !=
+                                                  null)
+                                                InkWell(
+                                                    onTap: () {
+                                                      BlocProvider.of<
+                                                                  CartCubit>(
+                                                              context)
+                                                          .removeAppliedCouponAndCoins();
+                                                    },
+                                                    child: Icon(Icons.clear,
+                                                        color:
+                                                            AppColors.black60,
+                                                        size: 18))
+                                              else
+                                                Icon(Icons.keyboard_arrow_right,
+                                                    size: 18,
+                                                    color: AppColors
+                                                        .lightSubTextColor),
                                             ]))
                                       ]))),
                         SizedBox(height: 10),
