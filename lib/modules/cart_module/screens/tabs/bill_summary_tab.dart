@@ -853,7 +853,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
           product: Product(
               title: cartTest.test.title ?? '',
               id: cartTest.test.id.toString(),
-              price: cartTest.test.specialPrice?.toString() ?? '0',
+              price: cartTest.test.price?.toString() ?? '0',
               quantity: cartTest.patientIds.length,
               sampleType: cartTest.test.sampleType ?? '',
               tubeType: cartTest.test.tubeType ?? ''),
