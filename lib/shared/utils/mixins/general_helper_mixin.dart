@@ -5,7 +5,7 @@ import '../../../constants/enums/snackbar_type.dart';
 
 mixin GeneralHelperMixin {
   List<int> getIntsFromString({required String? string}) {
-    if (string == null) {
+    if (string == null || string.isEmpty) {
       return [];
     }
 

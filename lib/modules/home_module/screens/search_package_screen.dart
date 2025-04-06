@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
+import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
@@ -12,6 +13,8 @@ import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
 import 'package:qris_health/shared/components/no_item_found_container.dart';
+import 'package:qris_health/shared/extensions/string_extension.dart';
+import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 
 import '../../../shared/components/common_app_bar.dart';
 
@@ -22,20 +25,16 @@ class SearchPackageScreen extends StatefulWidget {
   State<SearchPackageScreen> createState() => _SearchPackageScreenState();
 }
 
-class _SearchPackageScreenState extends State<SearchPackageScreen> {
-  final _textTheme = Get.textTheme;
+class _SearchPackageScreenState extends State<SearchPackageScreen>
+    with GeneralHelperMixin {
+  late final Future<List<TestPackageModel>> _testsFuture;
   final _searchController = TextEditingController();
-  List<TestPackageModel> _packagesToShow = [];
+  List<TestPackageModel>? _testsToShow;
 
   @override
   void initState() {
     super.initState();
-    final popularPackagesCubit = BlocProvider.of<PopularPackagesCubit>(context);
-    if (popularPackagesCubit.state is! PopularPackagesLoaded) {
-      popularPackagesCubit.getPopularPackages();
-    }
-
-    _packagesToShow = popularPackagesCubit.state.popularPackages;
+    _testsFuture = TestService.getAllTests();
   }
 
   @override
@@ -46,83 +45,132 @@ class _SearchPackageScreenState extends State<SearchPackageScreen> {
             child: Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: AppConstants.scaffoldPadding),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 16),
-                      BlocBuilder<PopularPackagesCubit, PopularPackagesState>(
-                          builder: (context, state) {
-                        return FilterTextField(
-                            onFieldSubmitted: (value) {},
-                            controller: _searchController,
-                            onChanged: (value) {
-                              _packagesToShow = value.isEmpty
-                                  ? state.popularPackages
-                                  : state.popularPackages
-                                      .where((element) => element.title!
+                child: FutureBuilder<List<TestPackageModel>>(
+                    future: _testsFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CommonListviewShimmer();
+                      }
+
+                      if (snapshot.hasData && _testsToShow == null) {
+                        _testsToShow = snapshot.data!
+                            .where((element) =>
+                                element.status == '1' &&
+                                element.disallowed == 0 &&
+                                element.wellness != '1' &&
+                                element.price != 0)
+                            .toList();
+                      }
+
+                      return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 16),
+                            BlocBuilder<PopularPackagesCubit,
+                                    PopularPackagesState>(
+                                builder: (context, state) {
+                              return FilterTextField(
+                                  onFieldSubmitted: (value) {},
+                                  controller: _searchController,
+                                  onChanged: (value) {
+                                    if (value.isEmpty) {
+                                      _testsToShow = null;
+                                      setState(() {});
+                                      return;
+                                    }
+
+                                    final allPackages = snapshot.data!;
+                                    final List<TestPackageModel> packages = [];
+
+                                    if (value.isNumeric) {
+                                      packages.addAll(allPackages
+                                          .where((element) =>
+                                              element.id.toString() == value)
+                                          .toList());
+
+                                      for (var package in allPackages) {
+                                        final parentIds = getIntsFromString(
+                                            string: package.parent);
+
+                                        if (parentIds.isNotEmpty) {
+                                          for (var id in parentIds) {
+                                            final test = allPackages
+                                                .firstWhereOrNull((element) =>
+                                                    element.id == id);
+
+                                            if (test != null) {
+                                              packages.add(test);
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+
+                                    packages
+                                        .addAll(allPackages.where((element) {
+                                      return element.title!
                                           .toLowerCase()
-                                          .contains(value))
-                                      .toList();
-                              setState(() {});
-                            },
-                            hintText: 'Search for Blood tests / Packages...',
-                            suffixIcon: null);
-                      }),
-                      SizedBox(height: 14),
-                      ContactUsContainer(),
-                      SizedBox(height: 19),
-                      Text('Popular tests & Packages',
-                          style: _textTheme.titleMedium!
-                              .copyWith(fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.start),
-                      SizedBox(height: 8),
-                      Expanded(child: BlocBuilder<PopularPackagesCubit,
-                          PopularPackagesState>(
-                        builder: (context, state) {
-                          if (state is PopularPackagesLoading) {
-                            return CommonListviewShimmer();
-                          }
+                                          .contains(value.toLowerCase());
+                                    }).toList());
 
-                          if (_searchController.text.isEmpty) {
-                            _packagesToShow =
-                                state.popularPackages.reversed.toList();
-                          }
+                                    _testsToShow = packages.toSet().toList();
+                                    _testsToShow!.sort(
+                                        (a, b) => a.title!.compareTo(b.title!));
 
-                          if (_packagesToShow.isEmpty) {
-                            return Center(
-                                child: NoItemFoundContainer(
-                                    title: 'No packages found'));
-                          }
-
-                          return ListView.separated(
-                              keyboardDismissBehavior:
-                                  ScrollViewKeyboardDismissBehavior.onDrag,
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return SizedBox(height: 10);
-                              },
-                              separatorBuilder: (context, index) {
-                                return PackageListTile(
-                                    testPackage: _packagesToShow[index],
-                                    onSeeDetailsTap: () {
-                                      Navigator.of(context).push(
-                                          CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  BloodTestDetailScreen(
-                                                      testId:
-                                                          _packagesToShow[index]
-                                                              .id)));
-                                    },
-                                    onBookNowTap: () async {
-                                      await CartHelper.addToCartAndNavigate(
-                                          testPackageModel:
-                                              _packagesToShow[index]);
-                                    });
-                              },
-                              itemCount: _packagesToShow.length);
-                        },
-                      )),
-                    ]))));
+                                    setState(() {});
+                                  },
+                                  hintText:
+                                      'Search for Blood tests / Packages...',
+                                  suffixIcon: null);
+                            }),
+                            SizedBox(height: 14),
+                            ContactUsContainer(),
+                            SizedBox(height: 19),
+                            if (snapshot.hasData)
+                              if (_testsToShow!.isEmpty)
+                                Expanded(
+                                    child: Center(
+                                        child: NoItemFoundContainer(
+                                            title: 'No item found')))
+                              else
+                                Expanded(child: BlocBuilder<
+                                        PopularPackagesCubit,
+                                        PopularPackagesState>(
+                                    builder: (context, state) {
+                                  return ListView.separated(
+                                      keyboardDismissBehavior:
+                                          ScrollViewKeyboardDismissBehavior
+                                              .onDrag,
+                                      physics: BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return PackageListTile(
+                                            testPackage: _testsToShow![index],
+                                            onSeeDetailsTap: () {
+                                              Navigator.of(context).push(
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          BloodTestDetailScreen(
+                                                              testId:
+                                                                  _testsToShow![
+                                                                          index]
+                                                                      .id)));
+                                            },
+                                            onBookNowTap: () async {
+                                              await CartHelper
+                                                  .addToCartAndNavigate(
+                                                      testPackageModel:
+                                                          _testsToShow![index]);
+                                            });
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return SizedBox(height: 10);
+                                      },
+                                      itemCount: _testsToShow!.length);
+                                }))
+                            else
+                              CommonListviewShimmer()
+                          ]);
+                    }))));
   }
 }
