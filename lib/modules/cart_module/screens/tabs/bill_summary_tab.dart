@@ -812,9 +812,13 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                       .toString()))
               .toList());
 
-      await Navigator.of(context).push(CupertinoPageRoute(
+      await showModalBottomSheet(
+          enableDrag: false,
+          isScrollControlled: true,
+          isDismissible: false,
+          context: context,
           builder: (context) =>
-              OrderProcessingScreen(orderReqModel: orderReqModel)));
+              OrderProcessingBottomSheet(orderReqModel: orderReqModel));
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     }

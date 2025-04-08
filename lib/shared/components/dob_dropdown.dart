@@ -75,7 +75,7 @@ class _DobDropdownState extends State<DobDropdown> {
                         child: DropdownButton<Month>(
                             value: widget.selectedDate == null
                                 ? null
-                                : Month.values[widget.selectedDate!.month],
+                                : Month.values[widget.selectedDate!.month - 1],
                             underline: Container(),
                             icon: Icon(Icons.keyboard_arrow_down_outlined,
                                 size: 20, color: AppColors.lightGrey),
