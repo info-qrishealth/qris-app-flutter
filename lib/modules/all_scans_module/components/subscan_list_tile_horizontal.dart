@@ -40,7 +40,8 @@ class SubscanListTileHorizontal extends StatelessWidget {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(subScanType.formattedName,
+                                Text(
+                                    '${subScanType.formattedName} (${subScanType.subScanModel.scanType.name.formattedEnumName})',
                                     style: textTheme.bodySmall!.copyWith(
                                         fontWeight: FontWeight.w500,
                                         fontFamily:

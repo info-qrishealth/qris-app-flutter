@@ -82,7 +82,7 @@ class _AllScansScreenState extends State<AllScansScreen> {
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(4, (index) {
-                    final scanType = ScanType.values[index];
+                    final scanType = ScanType.values[index + 2];
 
                     return ScanCategoryContainer(scanType: scanType);
                   })),
@@ -91,7 +91,7 @@ class _AllScansScreenState extends State<AllScansScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(4, (i) {
                     final index = i + 4;
-                    final scanType = ScanType.values[index];
+                    final scanType = ScanType.values[index + 2];
 
                     return ScanCategoryContainer(scanType: scanType);
                   })),

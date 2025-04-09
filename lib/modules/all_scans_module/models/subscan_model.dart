@@ -1,3 +1,5 @@
+import 'package:qris_health/constants/enums/scan_type.dart';
+
 class SubscanModel {
   final String appBarTitle;
   final String imagePath;
@@ -10,20 +12,21 @@ class SubscanModel {
   final List<String> whyToChoose;
   final String thirdHeading;
   final List<HardcodedFaq> faqs;
+  final ScanType scanType;
 
-  SubscanModel({
-    required this.appBarTitle,
-    required this.imagePath,
-    required this.firstHeading,
-    required this.firstHeadingDescription,
-    required this.prices,
-    required this.secondTitle,
-    required this.secondDescription,
-    required this.whyToChooseTitle,
-    required this.whyToChoose,
-    required this.thirdHeading,
-    required this.faqs,
-  });
+  SubscanModel(
+      {required this.appBarTitle,
+      required this.imagePath,
+      required this.firstHeading,
+      required this.firstHeadingDescription,
+      required this.prices,
+      required this.secondTitle,
+      required this.secondDescription,
+      required this.whyToChooseTitle,
+      required this.whyToChoose,
+      required this.thirdHeading,
+      required this.faqs,
+      required this.scanType});
 }
 
 class HardcodedFaq {
