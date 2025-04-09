@@ -48,7 +48,7 @@ class PackageListTile extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text('${testPackage?.title}',
+                      Text('${testPackage?.title.clean}',
                           style: _textTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.w500,
                               color: AppColors.primaryBlue,
