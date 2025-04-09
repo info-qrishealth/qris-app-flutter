@@ -32,6 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneNumberController = TextEditingController();
+  final _referCodeController = TextEditingController();
 
   final _textTheme = Get.textTheme;
   final _formKey = GlobalKey<FormState>();
@@ -134,6 +135,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             });
                           }),
                       SizedBox(height: 16),
+                      CommonTextField(
+                          controller: _referCodeController,
+                          textInputType: TextInputType.text,
+                          headingText: 'Refer code (If any)',
+                          hintText: 'Enter your refer code if any'),
+                      SizedBox(height: 16),
                       GenderInputContainerRow(
                           onTap: (selectedGender) {
                             setState(() {
@@ -179,6 +186,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
             text: 'Please enter your gender first', type: SnackbarType.warning);
       }
 
+      if (_referCodeController.text.isNotEmpty &&
+          _referCodeController.text.length != 8) {
+        AppConstants.showSnackbar(
+            text: 'Please enter valid referral code',
+            type: SnackbarType.warning);
+      }
+
       if (_formKey.currentState?.validate() == true) {
         final isUserAlreadyExists = await OtpService.isUserExists(
             phoneNumber: _phoneNumberController.text,
@@ -198,7 +212,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             userId: _emailController.text,
             email: _emailController.text,
             dob: _selectedDate.toTimestampForServer!,
-            gender: _selectedGender!.number.toString());
+            gender: _selectedGender!.number.toString(),
+            referralCode: _referCodeController.text);
 
         final otp = await OtpService.sendOtp(
             phoneNumber: _phoneNumberController.text,
