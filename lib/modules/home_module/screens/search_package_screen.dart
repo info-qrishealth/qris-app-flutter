@@ -53,13 +53,7 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                       }
 
                       if (snapshot.hasData && _testsToShow == null) {
-                        _testsToShow = snapshot.data!
-                            .where((element) =>
-                                element.status == '1' &&
-                                element.disallowed == 0 &&
-                                element.wellness != '1' &&
-                                element.price != 0)
-                            .toList();
+                        _testsToShow = _getValidPackages(tests: snapshot.data!);
                       }
 
                       return Column(
@@ -79,7 +73,8 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                                       return;
                                     }
 
-                                    final allPackages = snapshot.data!;
+                                    final allPackages = _getValidPackages(
+                                        tests: snapshot.data!);
                                     final List<TestPackageModel> packages = [];
 
                                     if (value.isNumeric) {
@@ -87,23 +82,6 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                                           .where((element) =>
                                               element.id.toString() == value)
                                           .toList());
-
-                                      for (var package in allPackages) {
-                                        final parentIds = getIntsFromString(
-                                            string: package.parent);
-
-                                        if (parentIds.isNotEmpty) {
-                                          for (var id in parentIds) {
-                                            final test = allPackages
-                                                .firstWhereOrNull((element) =>
-                                                    element.id == id);
-
-                                            if (test != null) {
-                                              packages.add(test);
-                                            }
-                                          }
-                                        }
-                                      }
                                     }
 
                                     packages
@@ -114,9 +92,6 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                                     }).toList());
 
                                     _testsToShow = packages.toSet().toList();
-                                    _testsToShow!.sort(
-                                        (a, b) => a.title!.compareTo(b.title!));
-
                                     setState(() {});
                                   },
                                   hintText:
@@ -130,8 +105,10 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                               if (_testsToShow!.isEmpty)
                                 Expanded(
                                     child: Center(
-                                        child: NoItemFoundContainer(
-                                            title: 'No item found')))
+                                        child: FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            child: NoItemFoundContainer(
+                                                title: 'No item found'))))
                               else
                                 Expanded(child: BlocBuilder<
                                         PopularPackagesCubit,
@@ -172,5 +149,22 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                               CommonListviewShimmer()
                           ]);
                     }))));
+  }
+
+  List<TestPackageModel> _getValidPackages(
+      {required List<TestPackageModel> tests}) {
+    return tests.where((element) {
+      if (element.status == '1' && element.disallowed == 0) {
+        if (element.wellness == '1') {
+          return false;
+        }
+
+        if (element.scanType == '0') {
+          return true;
+        }
+      }
+
+      return false;
+    }).toList();
   }
 }
