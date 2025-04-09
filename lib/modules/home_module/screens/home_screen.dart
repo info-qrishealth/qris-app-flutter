@@ -16,6 +16,7 @@ import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_p
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/home_module/screens/search_package_screen.dart';
 import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
+import 'package:qris_health/modules/refer_and_earn_module/screens/refer_and_earn_screen.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
 import 'package:qris_health/shared/components/main_drawer.dart';
@@ -157,7 +158,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: SubScanType.values.length)),
               SizedBox(height: 18),
               GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => ReferAndEarnScreen()));
+                  },
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: SvgPicture.asset(
