@@ -53,8 +53,8 @@ class Product {
   final String id;
   final String price;
   final int quantity;
-  final String sampleType;
-  final String tubeType;
+  final String? sampleType;
+  final String? tubeType;
 
   Product(
       {required this.title,
