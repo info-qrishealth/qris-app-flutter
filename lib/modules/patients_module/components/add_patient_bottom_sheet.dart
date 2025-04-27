@@ -4,7 +4,6 @@ import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/gender.dart';
 import 'package:qris_health/constants/enums/married_title.dart';
-import 'package:qris_health/constants/enums/month.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/modules/patients_module/services/patient_service.dart';
@@ -131,20 +130,13 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
                             onTap: (selectedGender) {
                               setState(() {
                                 _patient = _patient.copyWith.call(
-                                    gender: selectedGender == Gender.OTHERS
-                                        ? '0'
-                                        : selectedGender == Gender.MALE
-                                            ? '2'
-                                            : '1');
+                                    gender: selectedGender.number.toString());
                               });
                             },
                             selectedGender: _patient.gender == null
                                 ? null
-                                : _patient.gender == '0'
-                                    ? Gender.OTHERS
-                                    : _patient.gender == '1'
-                                        ? Gender.FEMALE
-                                        : Gender.MALE,
+                                : EnumUtils.getGenderFromNumberString(
+                                    number: _patient.gender),
                             isRequired: true),
                         SizedBox(height: 18),
                         CommonTextField(

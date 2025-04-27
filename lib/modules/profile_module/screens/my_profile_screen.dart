@@ -148,13 +148,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         });
 
         if (_selfPatient != null) {
-          final updatedSelf =
-              await PatientService.updatePatient(_selfPatient!.copyWith.call(
-                  gender: _selectedGender == Gender.MALE
-                      ? '2'
-                      : _selectedGender == Gender.FEMALE
-                          ? '1'
-                          : '0',
+          final updatedSelf = await PatientService.updatePatient(
+              _selfPatient!.copyWith.call(
+                  gender: _selectedGender?.number.toString() ?? '2',
                   height: int.tryParse(_heightController.text),
                   weight: int.tryParse(_weightController.text),
                   name: _nameController.text,
@@ -168,7 +164,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             user: userCubit.state.user.copyWith.call(
                 name: _nameController.text,
                 email: _emailController.text,
-                gender: _selectedGender?.number.toString() ?? '0'));
+                gender: _selectedGender?.number.toString() ?? '2'));
         userCubit.updateUser(user: updatedUser);
 
         AppConstants.showSnackbar(
