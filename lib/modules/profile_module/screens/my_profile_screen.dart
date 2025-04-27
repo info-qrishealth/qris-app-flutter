@@ -51,7 +51,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     final userCubit = BlocProvider.of<UserCubit>(context);
     final user = userCubit.state.user;
 
-    _nameController.text = user.name ?? '';
+    _nameController.text = user.name?.toUpperCase() ?? '';
     _phoneNumberController.text = user.phone ?? '';
     _emailController.text = user.email ?? '';
     _selectedGender = EnumUtils.getGenderFromNumberString(number: user.gender);
@@ -91,6 +91,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     },
                     hintText: 'Enter your name',
                     controller: _nameController,
+                    onChanged: (name) {
+                      _nameController.text = name.toUpperCase();
+                    },
                     textInputType: TextInputType.name,
                     headingText: 'Name'),
                 SizedBox(height: 16),
@@ -153,7 +156,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   gender: _selectedGender?.number.toString() ?? '2',
                   height: int.tryParse(_heightController.text),
                   weight: int.tryParse(_weightController.text),
-                  name: _nameController.text,
+                  name: _nameController.text.toUpperCase(),
                   email: _emailController.text));
           _selfPatient = updatedSelf;
         }
@@ -162,7 +165,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
         final updatedUser = await UserService.updateUser(
             user: userCubit.state.user.copyWith.call(
-                name: _nameController.text,
+                name: _nameController.text.toUpperCase(),
                 email: _emailController.text,
                 gender: _selectedGender?.number.toString() ?? '2'));
         userCubit.updateUser(user: updatedUser);
