@@ -156,8 +156,12 @@ class _DoctorConsultationScreenState extends State<DoctorConsultationScreen> {
                                                             testPackage.id)));
                                       },
                                       onBookNowTap: () async {
-                                        await CartHelper.addToCartAndNavigate(
-                                            testPackageModel: testPackage);
+                                        Navigator.of(context).push(
+                                            CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    BloodTestDetailScreen(
+                                                        testId:
+                                                            testPackage.id)));
                                       });
                                 },
                                 separatorBuilder: (context, index) {

@@ -131,8 +131,11 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                                         testId: test.id)));
                                       },
                                       onBookNowTap: () async {
-                                        await CartHelper.addToCartAndNavigate(
-                                            testPackageModel: test);
+                                        Navigator.of(context).push(
+                                            CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    BloodTestDetailScreen(
+                                                        testId: test.id)));
                                       });
                                 },
                                 separatorBuilder: (context, index) {
@@ -174,9 +177,12 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                                                   test.id)));
                                             },
                                             onBookNowTap: () async {
-                                              await CartHelper
-                                                  .addToCartAndNavigate(
-                                                      testPackageModel: test);
+                                              Navigator.of(context).push(
+                                                  CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          BloodTestDetailScreen(
+                                                              testId:
+                                                                  test.id)));
                                             });
                                       },
                                       separatorBuilder: (context, index) {

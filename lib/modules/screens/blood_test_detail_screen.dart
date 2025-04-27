@@ -120,8 +120,10 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                               onSeeDetailsTap: null,
                               onBookNowTap: () async {
                                 if (_testPackageModel != null) {
-                                  await CartHelper.addToCartAndNavigate(
-                                      testPackageModel: _testPackageModel!);
+                                  Navigator.of(context).push(CupertinoPageRoute(
+                                      builder: (context) =>
+                                          BloodTestDetailScreen(
+                                              testId: _testPackageModel!.id)));
                                 }
                               }),
                           SizedBox(height: 18),

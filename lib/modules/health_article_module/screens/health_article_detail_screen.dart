@@ -1,4 +1,5 @@
 import 'package:fade_shimmer/fade_shimmer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ import 'package:qris_health/shared/extensions/date_time_extension.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
+import '../../screens/blood_test_detail_screen.dart';
 import '../components/health_article_list_tile_horizontal.dart';
 
 class HealthArticleDetailScreen extends StatefulWidget {
@@ -70,8 +72,14 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
               CommonHtmlText(text: widget.healthArticle.description!),
               SizedBox(height: 16),
               ContactUsContainer(),
-              SizedBox(height: 16),
-              PackageListTile(onSeeDetailsTap: () {}, onBookNowTap: () {}),
+              // SizedBox(height: 16),
+              // PackageListTile(
+              //     onSeeDetailsTap: () {},
+              //     onBookNowTap: () {
+              //       Navigator.of(context).push(CupertinoPageRoute(
+              //           builder: (context) =>
+              //               BloodTestDetailScreen(testId: )));
+              //     }),
               SizedBox(height: 16),
               if (!widget.healthArticle.relatedPackage.isNullOrEmpty)
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
