@@ -98,7 +98,7 @@ class _HealthScoreScreenState extends State<HealthScoreScreen> {
                           _healthScoreReqModel.physicalActivity =
                               exerciseOption.marks.toString();
 
-                          Navigator.of(context).push(CupertinoPageRoute(
+                          Navigator.of(context).pushReplacement(CupertinoPageRoute(
                               builder: (context) => HealthScoreLoadingScreen(
                                   healthScoreReqBody: _healthScoreReqModel)));
                         })
