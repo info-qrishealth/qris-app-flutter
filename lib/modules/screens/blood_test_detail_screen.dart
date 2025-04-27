@@ -75,7 +75,7 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                                         decoration:
                                             TextDecoration.lineThrough))),
                             SizedBox(width: 18),
-                            Text('₹ ${_testPackageModel?.basePrice} *',
+                            Text('₹ ${_testPackageModel?.price} *',
                                 style: _textTheme.headlineLarge!.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white)),

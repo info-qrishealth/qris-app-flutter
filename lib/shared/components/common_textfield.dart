@@ -90,7 +90,8 @@ class _CommonTextFieldState extends State<CommonTextField> {
           onChanged: widget.onChanged,
           style: Get.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w500),
           inputFormatters: [
-            if (widget.textInputType == TextInputType.phone)
+            if (widget.textInputType == TextInputType.phone ||
+                widget.textInputType == TextInputType.number)
               FilteringTextInputFormatter.digitsOnly
           ],
           maxLength: widget.textInputType == TextInputType.phone

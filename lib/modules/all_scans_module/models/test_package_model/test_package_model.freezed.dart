@@ -65,8 +65,6 @@ mixin _$TestPackageModel {
   String? get fastingTime => throw _privateConstructorUsedError;
   @JsonKey(name: 'pic')
   String? get pic => throw _privateConstructorUsedError;
-  @JsonKey(name: 'base_price')
-  String? get basePrice => throw _privateConstructorUsedError;
   @JsonKey(name: 'custom_parameter_count')
   int? get customParameterCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'questions')
@@ -145,7 +143,6 @@ abstract class $TestPackageModelCopyWith<$Res> {
       @JsonKey(name: 'risk_area') String? riskArea,
       @JsonKey(name: 'fasting_time') String? fastingTime,
       @JsonKey(name: 'pic') String? pic,
-      @JsonKey(name: 'base_price') String? basePrice,
       @JsonKey(name: 'custom_parameter_count') int? customParameterCount,
       @JsonKey(name: 'questions') String? questions,
       @JsonKey(name: 'meta_title') String? metaTitle,
@@ -205,7 +202,6 @@ class _$TestPackageModelCopyWithImpl<$Res, $Val extends TestPackageModel>
     Object? riskArea = freezed,
     Object? fastingTime = freezed,
     Object? pic = freezed,
-    Object? basePrice = freezed,
     Object? customParameterCount = freezed,
     Object? questions = freezed,
     Object? metaTitle = freezed,
@@ -318,10 +314,6 @@ class _$TestPackageModelCopyWithImpl<$Res, $Val extends TestPackageModel>
           ? _value.pic
           : pic // ignore: cast_nullable_to_non_nullable
               as String?,
-      basePrice: freezed == basePrice
-          ? _value.basePrice
-          : basePrice // ignore: cast_nullable_to_non_nullable
-              as String?,
       customParameterCount: freezed == customParameterCount
           ? _value.customParameterCount
           : customParameterCount // ignore: cast_nullable_to_non_nullable
@@ -430,7 +422,6 @@ abstract class _$$TestPackageModelImplCopyWith<$Res>
       @JsonKey(name: 'risk_area') String? riskArea,
       @JsonKey(name: 'fasting_time') String? fastingTime,
       @JsonKey(name: 'pic') String? pic,
-      @JsonKey(name: 'base_price') String? basePrice,
       @JsonKey(name: 'custom_parameter_count') int? customParameterCount,
       @JsonKey(name: 'questions') String? questions,
       @JsonKey(name: 'meta_title') String? metaTitle,
@@ -488,7 +479,6 @@ class __$$TestPackageModelImplCopyWithImpl<$Res>
     Object? riskArea = freezed,
     Object? fastingTime = freezed,
     Object? pic = freezed,
-    Object? basePrice = freezed,
     Object? customParameterCount = freezed,
     Object? questions = freezed,
     Object? metaTitle = freezed,
@@ -601,10 +591,6 @@ class __$$TestPackageModelImplCopyWithImpl<$Res>
           ? _value.pic
           : pic // ignore: cast_nullable_to_non_nullable
               as String?,
-      basePrice: freezed == basePrice
-          ? _value.basePrice
-          : basePrice // ignore: cast_nullable_to_non_nullable
-              as String?,
       customParameterCount: freezed == customParameterCount
           ? _value.customParameterCount
           : customParameterCount // ignore: cast_nullable_to_non_nullable
@@ -708,7 +694,6 @@ class _$TestPackageModelImpl implements _TestPackageModel {
       @JsonKey(name: 'risk_area') required this.riskArea,
       @JsonKey(name: 'fasting_time') required this.fastingTime,
       @JsonKey(name: 'pic') required this.pic,
-      @JsonKey(name: 'base_price') required this.basePrice,
       @JsonKey(name: 'custom_parameter_count')
       required this.customParameterCount,
       @JsonKey(name: 'questions') required this.questions,
@@ -803,9 +788,6 @@ class _$TestPackageModelImpl implements _TestPackageModel {
   @JsonKey(name: 'pic')
   final String? pic;
   @override
-  @JsonKey(name: 'base_price')
-  final String? basePrice;
-  @override
   @JsonKey(name: 'custom_parameter_count')
   final int? customParameterCount;
   @override
@@ -869,7 +851,7 @@ class _$TestPackageModelImpl implements _TestPackageModel {
 
   @override
   String toString() {
-    return 'TestPackageModel(id: $id, bookingTestId: $bookingTestId, parent: $parent, type: $type, package: $package, test: $test, title: $title, productH1: $productH1, parameters: $parameters, productH3: $productH3, shortDesc: $shortDesc, description: $description, demoVideo: $demoVideo, courseType: $courseType, price: $price, specialPrice: $specialPrice, discount: $discount, disallowed: $disallowed, popular: $popular, relatedPro: $relatedPro, riskArea: $riskArea, fastingTime: $fastingTime, pic: $pic, basePrice: $basePrice, customParameterCount: $customParameterCount, questions: $questions, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, canonical: $canonical, slug: $slug, sampleType: $sampleType, tubeType: $tubeType, wellness: $wellness, teamIds: $teamIds, status: $status, disOrder: $disOrder, scanType: $scanType, rpDescription: $rpDescription, reviewCount: $reviewCount, includedPackages: $includedPackages, rating: $rating)';
+    return 'TestPackageModel(id: $id, bookingTestId: $bookingTestId, parent: $parent, type: $type, package: $package, test: $test, title: $title, productH1: $productH1, parameters: $parameters, productH3: $productH3, shortDesc: $shortDesc, description: $description, demoVideo: $demoVideo, courseType: $courseType, price: $price, specialPrice: $specialPrice, discount: $discount, disallowed: $disallowed, popular: $popular, relatedPro: $relatedPro, riskArea: $riskArea, fastingTime: $fastingTime, pic: $pic, customParameterCount: $customParameterCount, questions: $questions, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, canonical: $canonical, slug: $slug, sampleType: $sampleType, tubeType: $tubeType, wellness: $wellness, teamIds: $teamIds, status: $status, disOrder: $disOrder, scanType: $scanType, rpDescription: $rpDescription, reviewCount: $reviewCount, includedPackages: $includedPackages, rating: $rating)';
   }
 
   @override
@@ -914,8 +896,6 @@ class _$TestPackageModelImpl implements _TestPackageModel {
             (identical(other.fastingTime, fastingTime) ||
                 other.fastingTime == fastingTime) &&
             (identical(other.pic, pic) || other.pic == pic) &&
-            (identical(other.basePrice, basePrice) ||
-                other.basePrice == basePrice) &&
             (identical(other.customParameterCount, customParameterCount) ||
                 other.customParameterCount == customParameterCount) &&
             (identical(other.questions, questions) ||
@@ -976,7 +956,6 @@ class _$TestPackageModelImpl implements _TestPackageModel {
         riskArea,
         fastingTime,
         pic,
-        basePrice,
         customParameterCount,
         questions,
         metaTitle,
@@ -1039,7 +1018,6 @@ abstract class _TestPackageModel implements TestPackageModel {
       @JsonKey(name: 'risk_area') required final String? riskArea,
       @JsonKey(name: 'fasting_time') required final String? fastingTime,
       @JsonKey(name: 'pic') required final String? pic,
-      @JsonKey(name: 'base_price') required final String? basePrice,
       @JsonKey(name: 'custom_parameter_count')
       required final int? customParameterCount,
       @JsonKey(name: 'questions') required final String? questions,
@@ -1133,9 +1111,6 @@ abstract class _TestPackageModel implements TestPackageModel {
   @override
   @JsonKey(name: 'pic')
   String? get pic;
-  @override
-  @JsonKey(name: 'base_price')
-  String? get basePrice;
   @override
   @JsonKey(name: 'custom_parameter_count')
   int? get customParameterCount;

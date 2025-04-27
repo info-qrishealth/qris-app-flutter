@@ -29,7 +29,6 @@ class TestPackageModel with _$TestPackageModel {
       @JsonKey(name: 'risk_area') required String? riskArea,
       @JsonKey(name: 'fasting_time') required String? fastingTime,
       @JsonKey(name: 'pic') required String? pic,
-      @JsonKey(name: 'base_price') required String? basePrice,
       @JsonKey(name: 'custom_parameter_count')
       required int? customParameterCount,
       @JsonKey(name: 'questions') required String? questions,
