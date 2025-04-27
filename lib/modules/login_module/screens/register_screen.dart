@@ -152,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ElevatedButton(
                           onPressed: _loading ? null : _sendOtp,
                           child: Text('Create Account')),
-                      SizedBox(height: 28),
+                      SizedBox(height: 20),
                       PrivacyPolicyText(),
                       SizedBox(height: 16),
                       CreateAccountText(

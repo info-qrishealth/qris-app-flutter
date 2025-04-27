@@ -98,7 +98,7 @@ class _LoginUsernameAndPasswordScreenState
                     }
                   },
                   child: Text('Login')),
-              SizedBox(height: 20),
+              SizedBox(height: 12),
               PrivacyPolicyText(),
               SizedBox(height: 35),
               Text('-OR-',

@@ -129,7 +129,7 @@ class _OtpScreenState extends State<OtpScreen> with LoginHelperMixin {
                           : _login
                       : null,
                   child: Text('Login')),
-              SizedBox(height: 21),
+              SizedBox(height: 12),
               PrivacyPolicyText(),
               SizedBox(height: 40),
               GestureDetector(

@@ -111,7 +111,7 @@ class _LoginPhoneNumberScreenState extends State<LoginPhoneNumberScreen> {
                               }
                             },
                       child: Text('Get OTP')),
-                  SizedBox(height: 21),
+                  SizedBox(height: 12),
                   PrivacyPolicyText(),
                   SizedBox(height: 38),
                   Text('-OR-',
