@@ -1,0 +1,2 @@
+/Users/keshavrathore/StudioProjects/qris/android/app/.cxx/RelWithDebInfo/2a6v2a2t/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/keshavrathore/StudioProjects/qris/android/app/.cxx/RelWithDebInfo/2a6v2a2t/armeabi-v7a/CMakeFiles/rebuild_cache.dir

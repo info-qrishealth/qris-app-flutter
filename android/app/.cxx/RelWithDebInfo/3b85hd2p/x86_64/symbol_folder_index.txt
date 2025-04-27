@@ -1,0 +1,1 @@
+/Users/keshavrathore/StudioProjects/qris/build/app/intermediates/cxx/RelWithDebInfo/3b85hd2p/obj/x86_64
