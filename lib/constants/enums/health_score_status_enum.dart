@@ -11,9 +11,9 @@ extension HealthScoreStatusExtension on HealthScoreStatusEnum {
       case HealthScoreStatusEnum.Poor:
         return AppColors.red;
       case HealthScoreStatusEnum.Average:
-        return Colors.amber;
-      case HealthScoreStatusEnum.Good:
         return Colors.orange;
+      case HealthScoreStatusEnum.Good:
+        return Colors.yellow;
       case HealthScoreStatusEnum.Excellent:
         return AppColors.green;
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/health_score_status_enum.dart';
+import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/health_score_module/models/health_score_res_model/health_score_res_model.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
 import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
@@ -15,6 +16,8 @@ class HealthScoreResultCard extends StatelessWidget with GeneralHelperMixin {
 
   @override
   Widget build(BuildContext context) {
+    final bmiInfo = getBmiInfo(bmi: double.tryParse(healthScoreResModel.bmi!)!);
+
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         decoration: BoxDecoration(
@@ -73,17 +76,20 @@ class HealthScoreResultCard extends StatelessWidget with GeneralHelperMixin {
                                 Container(
                                     padding: EdgeInsets.all(4),
                                     decoration: BoxDecoration(
-                                        color: Color(0xFFABFE78),
+                                        color: bmiInfo.color,
                                         borderRadius: BorderRadius.circular(8)),
                                     child: Text(
                                         healthScoreResModel.bmi == null
                                             ? 'N/A'
-                                            : getBmiText(
-                                                bmi: double.tryParse(
-                                                    healthScoreResModel.bmi!)!),
+                                            : bmiInfo.text,
                                         style: _textTheme.labelSmall!.copyWith(
                                             fontSize: 9,
-                                            color: AppColors.black,
+                                            color: ThemeData
+                                                        .estimateBrightnessForColor(
+                                                            bmiInfo.color) ==
+                                                    Brightness.dark
+                                                ? Colors.white
+                                                : Colors.black,
                                             fontWeight: FontWeight.w400)))
                               ])))
                     ])),
@@ -115,7 +121,11 @@ class HealthScoreResultCard extends StatelessWidget with GeneralHelperMixin {
                               borderRadius: BorderRadius.circular(6)),
                           child: Text('${healthScoreResModel.scoreStatus}',
                               style: _textTheme.labelSmall!.copyWith(
-                                  color: AppColors.black,
+                                  color: ThemeData.estimateBrightnessForColor(
+                                              bmiInfo.color) ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400)))
                     ]))
@@ -137,8 +147,7 @@ class HealthScoreResultCard extends StatelessWidget with GeneralHelperMixin {
                   fontSize: 10)),
           SizedBox(width: 6),
           Column(children: [
-            Image.asset('assets/images/icons/health_score_icons/scale_icon.png',
-                height: 12),
+            Image.asset(Assets.healthScoreIconsScaleIcon, height: 12),
             SizedBox(height: 2),
             Text(value,
                 style: _textTheme.labelSmall!.copyWith(

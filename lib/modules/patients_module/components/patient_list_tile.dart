@@ -161,7 +161,7 @@ class _PatientListTileState extends State<PatientListTile>
                                   ? '(Underage to calculate BMI)'
                                   : bmi == null
                                       ? null
-                                      : '(${getBmiText(bmi: bmi)})',
+                                      : '(${getBmiInfo(bmi: bmi).text})',
                               onTap: () => _navigate(isUnderAge: isUnderAge))),
                       VerticalDivider(
                           width: 1,

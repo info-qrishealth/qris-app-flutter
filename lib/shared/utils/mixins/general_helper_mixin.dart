@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:qris_health/shared/models/bmi_info.dart';
+import 'package:qris_health/styles/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants/app_constants.dart';
@@ -26,15 +29,15 @@ mixin GeneralHelperMixin {
     }
   }
 
-  String getBmiText({required double bmi}) {
+  BmiInfo getBmiInfo({required double bmi}) {
     if (bmi < 18.5) {
-      return 'Under Weight';
+      return BmiInfo(text: 'Under Weight', color: Colors.orange);
     } else if (bmi > 18.5 && bmi < 24.9) {
-      return 'Normal Weight';
+      return BmiInfo(text: 'Normal Weight', color: AppColors.green);
     } else if (bmi > 24.9 && bmi < 29.9) {
-      return 'Overweight';
+      return BmiInfo(text: 'Overweight', color: Colors.orange);
     } else {
-      return 'Obesity';
+      return BmiInfo(text: 'Obesity', color: AppColors.red);
     }
   }
 
