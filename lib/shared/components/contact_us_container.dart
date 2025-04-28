@@ -43,7 +43,7 @@ class ContactUsContainer extends StatelessWidget with GeneralHelperMixin {
                         title: 'Call us',
                         onTap: () async {
                           await openDialPad(
-                              phoneNumber: state.config!.phoneNumber);
+                              phoneNumber: AppConstants.supportNumber);
                         },
                         svgPath: 'assets/images/icons/call_icon.svg'),
                     SizedBox(width: 6),
@@ -52,7 +52,7 @@ class ContactUsContainer extends StatelessWidget with GeneralHelperMixin {
                         onTap: () {
                           sendWhatsappMessage(
                               message: '',
-                              toNumber: state.config!.whatsappNumber);
+                              toNumber: AppConstants.supportNumber);
                         },
                         svgPath: 'assets/images/icons/whatsapp_icon.svg'),
                   ]);
