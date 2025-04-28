@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/constants/enums/scan_type.dart';
 import 'package:qris_health/constants/enums/subscan_type.dart';
 import 'package:qris_health/modules/all_scans_module/screens/subscan_info_screen.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
@@ -41,7 +42,7 @@ class SubscanListTileHorizontal extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    '${subScanType.formattedName} (${subScanType.subScanModel.scanType.name.formattedEnumName})',
+                                    '${subScanType.formattedName} (${subScanType.subScanModel.scanType.formattedName})',
                                     style: textTheme.bodySmall!.copyWith(
                                         fontWeight: FontWeight.w500,
                                         fontFamily:

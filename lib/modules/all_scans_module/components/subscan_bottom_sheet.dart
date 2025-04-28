@@ -28,7 +28,7 @@ class _SubScanBottomSheetState extends State<SubScanBottomSheet> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(height: 32),
-              Text(widget.scanType.name.formattedEnumName!,
+              Text(widget.scanType.formattedName,
                   style: _textTheme.headlineLarge!.copyWith(
                       fontWeight: FontWeight.w700, color: AppColors.black)),
               SizedBox(height: 16),

@@ -17,6 +17,31 @@ enum ScanType {
 }
 
 extension ScanTypeExtension on ScanType {
+  String get formattedName {
+    switch (this) {
+      case ScanType.CT_SCAN:
+        return 'CT Scan';
+      case ScanType.ULTRASOUND:
+        return 'Ultrasound';
+      case ScanType.ECHO_TEST:
+        return 'ECHO Test';
+      case ScanType.EEG_TEST:
+        return 'EEG Test';
+      case ScanType.DEXA_TEST:
+        return 'DEXA Test';
+      case ScanType.PFT_TEST:
+        return 'PFT Test';
+      case ScanType.MRI:
+        return 'MRI';
+      case ScanType.ECG_TEST:
+        return 'ECG Test';
+      case ScanType.HOLTER_TEST:
+        return 'Holter Test';
+      case ScanType.COLOR_DOPPLER:
+        return 'Color Doppler';
+    }
+  }
+
   String get iconPath {
     switch (this) {
       case ScanType.CT_SCAN:

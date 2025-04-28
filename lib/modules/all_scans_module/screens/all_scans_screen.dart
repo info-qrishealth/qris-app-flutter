@@ -131,7 +131,7 @@ class _AllScansScreenState extends State<AllScansScreen> {
               Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  child: Text(scanType.name.formattedEnumName!,
+                  child: Text(scanType.formattedName,
                       style: _textTheme.bodySmall!.copyWith(
                           fontWeight: FontWeight.w400,
                           color: AppColors.primaryBlue))),

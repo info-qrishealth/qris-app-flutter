@@ -29,6 +29,6 @@ class ScanCategoryContainer extends StatelessWidget {
         },
         backgroundColor: scanType.backgroundColor,
         imagePath: scanType.iconPath,
-        title: scanType.name.formattedEnumName!);
+        title: scanType.formattedName);
   }
 }
