@@ -12,7 +12,7 @@ _$TestPackageModelImpl _$$TestPackageModelImplFromJson(
       id: (json['id'] as num).toInt(),
       bookingTestId: json['booking_test_id'] as String?,
       parent: json['parent'] as String?,
-      type: json['type'] as String?,
+      type: $enumDecode(_$TestPackageTypeEnumMap, json['type']),
       package: json['package'] as String?,
       test: json['test'] as String?,
       title: json['title'] as String?,
@@ -61,7 +61,7 @@ Map<String, dynamic> _$$TestPackageModelImplToJson(
       'id': instance.id,
       'booking_test_id': instance.bookingTestId,
       'parent': instance.parent,
-      'type': instance.type,
+      'type': _$TestPackageTypeEnumMap[instance.type]!,
       'package': instance.package,
       'test': instance.test,
       'title': instance.title,
@@ -100,6 +100,12 @@ Map<String, dynamic> _$$TestPackageModelImplToJson(
       'included_packages': instance.includedPackages,
       'rating': instance.rating,
     };
+
+const _$TestPackageTypeEnumMap = {
+  TestPackageType.test: 'test',
+  TestPackageType.package: 'package',
+  TestPackageType.sub_package: 'sub_package',
+};
 
 _$IncludedPackageImpl _$$IncludedPackageImplFromJson(
         Map<String, dynamic> json) =>

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/test_package_type.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
@@ -55,6 +56,24 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                       if (snapshot.hasData && _testsToShow == null) {
                         _testsToShow = _getValidPackages(tests: snapshot.data!);
                       }
+
+                      final List<TestPackageModel> packages = [];
+                      final List<TestPackageModel> subPackages = [];
+                      final List<TestPackageModel> tests = [];
+
+                      for (var test in _testsToShow!) {
+                        switch (test.type) {
+                          case TestPackageType.test:
+                            tests.add(test);
+                          case TestPackageType.package:
+                            packages.add(test);
+                          case TestPackageType.sub_package:
+                            subPackages.add(test);
+                        }
+                      }
+
+                      _testsToShow!
+                          .assignAll([...packages, ...subPackages, ...tests]);
 
                       return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

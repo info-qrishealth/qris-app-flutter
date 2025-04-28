@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:qris_health/constants/enums/test_package_type.dart';
 
 part 'test_package_model.freezed.dart';
 part 'test_package_model.g.dart';
@@ -9,7 +10,7 @@ class TestPackageModel with _$TestPackageModel {
       {required int id,
       @JsonKey(name: 'booking_test_id') required String? bookingTestId,
       @JsonKey(name: 'parent') required String? parent,
-      @JsonKey(name: 'type') required String? type,
+      @JsonKey(name: 'type') required TestPackageType type,
       @JsonKey(name: 'package') required String? package,
       @JsonKey(name: 'test') required String? test,
       @JsonKey(name: 'title') required String? title,

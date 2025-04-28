@@ -26,7 +26,7 @@ mixin _$TestPackageModel {
   @JsonKey(name: 'parent')
   String? get parent => throw _privateConstructorUsedError;
   @JsonKey(name: 'type')
-  String? get type => throw _privateConstructorUsedError;
+  TestPackageType get type => throw _privateConstructorUsedError;
   @JsonKey(name: 'package')
   String? get package => throw _privateConstructorUsedError;
   @JsonKey(name: 'test')
@@ -123,7 +123,7 @@ abstract class $TestPackageModelCopyWith<$Res> {
       {int id,
       @JsonKey(name: 'booking_test_id') String? bookingTestId,
       @JsonKey(name: 'parent') String? parent,
-      @JsonKey(name: 'type') String? type,
+      @JsonKey(name: 'type') TestPackageType type,
       @JsonKey(name: 'package') String? package,
       @JsonKey(name: 'test') String? test,
       @JsonKey(name: 'title') String? title,
@@ -182,7 +182,7 @@ class _$TestPackageModelCopyWithImpl<$Res, $Val extends TestPackageModel>
     Object? id = null,
     Object? bookingTestId = freezed,
     Object? parent = freezed,
-    Object? type = freezed,
+    Object? type = null,
     Object? package = freezed,
     Object? test = freezed,
     Object? title = freezed,
@@ -234,10 +234,10 @@ class _$TestPackageModelCopyWithImpl<$Res, $Val extends TestPackageModel>
           ? _value.parent
           : parent // ignore: cast_nullable_to_non_nullable
               as String?,
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as TestPackageType,
       package: freezed == package
           ? _value.package
           : package // ignore: cast_nullable_to_non_nullable
@@ -402,7 +402,7 @@ abstract class _$$TestPackageModelImplCopyWith<$Res>
       {int id,
       @JsonKey(name: 'booking_test_id') String? bookingTestId,
       @JsonKey(name: 'parent') String? parent,
-      @JsonKey(name: 'type') String? type,
+      @JsonKey(name: 'type') TestPackageType type,
       @JsonKey(name: 'package') String? package,
       @JsonKey(name: 'test') String? test,
       @JsonKey(name: 'title') String? title,
@@ -459,7 +459,7 @@ class __$$TestPackageModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? bookingTestId = freezed,
     Object? parent = freezed,
-    Object? type = freezed,
+    Object? type = null,
     Object? package = freezed,
     Object? test = freezed,
     Object? title = freezed,
@@ -511,10 +511,10 @@ class __$$TestPackageModelImplCopyWithImpl<$Res>
           ? _value.parent
           : parent // ignore: cast_nullable_to_non_nullable
               as String?,
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as TestPackageType,
       package: freezed == package
           ? _value.package
           : package // ignore: cast_nullable_to_non_nullable
@@ -729,7 +729,7 @@ class _$TestPackageModelImpl implements _TestPackageModel {
   final String? parent;
   @override
   @JsonKey(name: 'type')
-  final String? type;
+  final TestPackageType type;
   @override
   @JsonKey(name: 'package')
   final String? package;
@@ -998,7 +998,7 @@ abstract class _TestPackageModel implements TestPackageModel {
       {required final int id,
       @JsonKey(name: 'booking_test_id') required final String? bookingTestId,
       @JsonKey(name: 'parent') required final String? parent,
-      @JsonKey(name: 'type') required final String? type,
+      @JsonKey(name: 'type') required final TestPackageType type,
       @JsonKey(name: 'package') required final String? package,
       @JsonKey(name: 'test') required final String? test,
       @JsonKey(name: 'title') required final String? title,
@@ -1053,7 +1053,7 @@ abstract class _TestPackageModel implements TestPackageModel {
   String? get parent;
   @override
   @JsonKey(name: 'type')
-  String? get type;
+  TestPackageType get type;
   @override
   @JsonKey(name: 'package')
   String? get package;
