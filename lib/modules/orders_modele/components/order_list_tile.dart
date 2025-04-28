@@ -7,6 +7,7 @@ import 'package:qris_health/constants/enums/order_status.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/address_module/models/address/address.dart';
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
+import 'package:qris_health/modules/orders_modele/components/order_cancellation_dialog.dart';
 import 'package:qris_health/modules/orders_modele/models/order/order.dart';
 import 'package:qris_health/modules/orders_modele/models/order_info/order_info.dart';
 import 'package:qris_health/modules/orders_modele/models/user_order_report/user_order_report.dart';
@@ -190,7 +191,12 @@ class _OrderListTileState extends State<OrderListTile> {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryBlue),
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => OrderCancellationDialog(
+                                      order: widget.order));
+                            },
                             child: Text('Request Cancellation',
                                 style: _textTheme.bodySmall!.copyWith(
                                     color: Colors.white,

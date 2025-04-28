@@ -6,6 +6,7 @@ import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dar
 import 'package:qris_health/modules/orders_modele/models/user_order_report/user_order_report.dart';
 import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
 
+import '../models/order_cancellation_model/order_cancellation_model.dart';
 import '../models/order_req_model/order_req_model.dart';
 
 class OrderService {
@@ -64,6 +65,17 @@ class OrderService {
       final response =
           await Wrapper.post(url, json.encode(orderReqModel.toJson()));
       return Order.fromJson(json.decode(response)['body']);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> requestCancellation(
+      {required OrderCancellationModel orderCancellationModel}) async {
+    final url = '${AppConstants.baseUrl}/orders/cancel';
+
+    try {
+      await Wrapper.put(url, json.encode(orderCancellationModel.toJson()));
     } catch (e) {
       rethrow;
     }

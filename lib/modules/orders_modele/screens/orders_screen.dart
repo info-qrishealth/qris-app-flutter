@@ -99,9 +99,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   future: _ordersFuture,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      AppConstants.showSnackbar(
-                          text: snapshot.error.toString(),
-                          type: SnackbarType.error);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        AppConstants.showSnackbar(
+                            text: snapshot.error.toString(),
+                            type: SnackbarType.error);
+                      });
                     }
 
                     if (snapshot.hasData) {
