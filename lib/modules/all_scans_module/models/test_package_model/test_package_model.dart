@@ -10,7 +10,7 @@ class TestPackageModel with _$TestPackageModel {
       {required int id,
       @JsonKey(name: 'booking_test_id') required String? bookingTestId,
       @JsonKey(name: 'parent') required String? parent,
-      @JsonKey(name: 'type') required TestPackageType type,
+      @JsonKey(name: 'type') TestPackageType? type,
       @JsonKey(name: 'package') required String? package,
       @JsonKey(name: 'test') required String? test,
       @JsonKey(name: 'title') required String? title,

@@ -60,6 +60,7 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                       final List<TestPackageModel> packages = [];
                       final List<TestPackageModel> subPackages = [];
                       final List<TestPackageModel> tests = [];
+                      final List<TestPackageModel> otherTests = [];
 
                       for (var test in _testsToShow!) {
                         switch (test.type) {
@@ -69,11 +70,17 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                             packages.add(test);
                           case TestPackageType.sub_package:
                             subPackages.add(test);
+                          case null:
+                            otherTests.add(test);
                         }
                       }
 
-                      _testsToShow!
-                          .assignAll([...packages, ...subPackages, ...tests]);
+                      _testsToShow!.assignAll([
+                        ...packages,
+                        ...subPackages,
+                        ...tests,
+                        ...otherTests
+                      ]);
 
                       return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
