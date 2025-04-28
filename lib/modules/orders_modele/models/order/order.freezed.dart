@@ -69,6 +69,8 @@ mixin _$Order {
   String? get referredBy => throw _privateConstructorUsedError;
   @JsonKey(name: 'doctor_booking_address')
   String? get invoice => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_cancellation_processed')
+  bool? get isCancellationProcessed => throw _privateConstructorUsedError;
 
   /// Serializes this Order to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -109,7 +111,9 @@ abstract class $OrderCopyWith<$Res> {
       @JsonKey(name: 'tube_type') String? tubeType,
       @JsonKey(name: 'hard_copy') String? hardCopy,
       @JsonKey(name: 'referred_by') String? referredBy,
-      @JsonKey(name: 'doctor_booking_address') String? invoice});
+      @JsonKey(name: 'doctor_booking_address') String? invoice,
+      @JsonKey(name: 'is_cancellation_processed')
+      bool? isCancellationProcessed});
 }
 
 /// @nodoc
@@ -152,6 +156,7 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? hardCopy = freezed,
     Object? referredBy = freezed,
     Object? invoice = freezed,
+    Object? isCancellationProcessed = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -254,6 +259,10 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.invoice
           : invoice // ignore: cast_nullable_to_non_nullable
               as String?,
+      isCancellationProcessed: freezed == isCancellationProcessed
+          ? _value.isCancellationProcessed
+          : isCancellationProcessed // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -290,7 +299,9 @@ abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
       @JsonKey(name: 'tube_type') String? tubeType,
       @JsonKey(name: 'hard_copy') String? hardCopy,
       @JsonKey(name: 'referred_by') String? referredBy,
-      @JsonKey(name: 'doctor_booking_address') String? invoice});
+      @JsonKey(name: 'doctor_booking_address') String? invoice,
+      @JsonKey(name: 'is_cancellation_processed')
+      bool? isCancellationProcessed});
 }
 
 /// @nodoc
@@ -331,6 +342,7 @@ class __$$OrderImplCopyWithImpl<$Res>
     Object? hardCopy = freezed,
     Object? referredBy = freezed,
     Object? invoice = freezed,
+    Object? isCancellationProcessed = freezed,
   }) {
     return _then(_$OrderImpl(
       id: null == id
@@ -433,6 +445,10 @@ class __$$OrderImplCopyWithImpl<$Res>
           ? _value.invoice
           : invoice // ignore: cast_nullable_to_non_nullable
               as String?,
+      isCancellationProcessed: freezed == isCancellationProcessed
+          ? _value.isCancellationProcessed
+          : isCancellationProcessed // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -465,7 +481,9 @@ class _$OrderImpl implements _Order {
       @JsonKey(name: 'tube_type') this.tubeType,
       @JsonKey(name: 'hard_copy') this.hardCopy,
       @JsonKey(name: 'referred_by') this.referredBy,
-      @JsonKey(name: 'doctor_booking_address') this.invoice});
+      @JsonKey(name: 'doctor_booking_address') this.invoice,
+      @JsonKey(name: 'is_cancellation_processed')
+      this.isCancellationProcessed});
 
   factory _$OrderImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrderImplFromJson(json);
@@ -544,10 +562,13 @@ class _$OrderImpl implements _Order {
   @override
   @JsonKey(name: 'doctor_booking_address')
   final String? invoice;
+  @override
+  @JsonKey(name: 'is_cancellation_processed')
+  final bool? isCancellationProcessed;
 
   @override
   String toString() {
-    return 'Order(id: $id, orderDate: $orderDate, orderTotal: $orderTotal, collectionCharge: $collectionCharge, paidAmount: $paidAmount, orderStatus: $orderStatus, paymentMode: $paymentMode, txnId: $txnId, couponCode: $couponCode, couponData: $couponData, couponAmount: $couponAmount, couponCbAmount: $couponCbAmount, scCouponAmount: $scCouponAmount, walletPaid: $walletPaid, qrisCoinsPaid: $qrisCoinsPaid, productRecord: $productRecord, bookingSlotDate: $bookingSlotDate, bookingSlotTime: $bookingSlotTime, bookingPin: $bookingPin, bookingAddress: $bookingAddress, sampleType: $sampleType, tubeType: $tubeType, hardCopy: $hardCopy, referredBy: $referredBy, invoice: $invoice)';
+    return 'Order(id: $id, orderDate: $orderDate, orderTotal: $orderTotal, collectionCharge: $collectionCharge, paidAmount: $paidAmount, orderStatus: $orderStatus, paymentMode: $paymentMode, txnId: $txnId, couponCode: $couponCode, couponData: $couponData, couponAmount: $couponAmount, couponCbAmount: $couponCbAmount, scCouponAmount: $scCouponAmount, walletPaid: $walletPaid, qrisCoinsPaid: $qrisCoinsPaid, productRecord: $productRecord, bookingSlotDate: $bookingSlotDate, bookingSlotTime: $bookingSlotTime, bookingPin: $bookingPin, bookingAddress: $bookingAddress, sampleType: $sampleType, tubeType: $tubeType, hardCopy: $hardCopy, referredBy: $referredBy, invoice: $invoice, isCancellationProcessed: $isCancellationProcessed)';
   }
 
   @override
@@ -601,7 +622,10 @@ class _$OrderImpl implements _Order {
                 other.hardCopy == hardCopy) &&
             (identical(other.referredBy, referredBy) ||
                 other.referredBy == referredBy) &&
-            (identical(other.invoice, invoice) || other.invoice == invoice));
+            (identical(other.invoice, invoice) || other.invoice == invoice) &&
+            (identical(
+                    other.isCancellationProcessed, isCancellationProcessed) ||
+                other.isCancellationProcessed == isCancellationProcessed));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -632,7 +656,8 @@ class _$OrderImpl implements _Order {
         tubeType,
         hardCopy,
         referredBy,
-        invoice
+        invoice,
+        isCancellationProcessed
       ]);
 
   /// Create a copy of Order
@@ -653,33 +678,34 @@ class _$OrderImpl implements _Order {
 
 abstract class _Order implements Order {
   const factory _Order(
-          {required final int id,
-          @JsonKey(name: 'order_date') required final DateTime orderDate,
-          @JsonKey(name: 'order_total') required final double orderTotal,
-          @JsonKey(name: 'collection_charge')
-          required final String collectionCharge,
-          @JsonKey(name: 'paid_amount') required final double paidAmount,
-          @JsonKey(name: 'order_status') required final OrderStatus orderStatus,
-          @JsonKey(name: 'payment_mode') required final String paymentMode,
-          @JsonKey(name: 'txn_id') final String? txnId,
-          @JsonKey(name: 'coupon_code') final String? couponCode,
-          @JsonKey(name: 'coupon_data') final String? couponData,
-          @JsonKey(name: 'coupon_amount') final double? couponAmount,
-          @JsonKey(name: 'coupon_cb_amount') final double? couponCbAmount,
-          @JsonKey(name: 'sc_coupon_amount') final double? scCouponAmount,
-          @JsonKey(name: 'wallet_paid') final double? walletPaid,
-          @JsonKey(name: 'qris_coins_paid') final double? qrisCoinsPaid,
-          @JsonKey(name: 'product_record') final String? productRecord,
-          @JsonKey(name: 'booking_slot_date') final String? bookingSlotDate,
-          @JsonKey(name: 'booking_slot_time') final String? bookingSlotTime,
-          @JsonKey(name: 'booking_pin') final String? bookingPin,
-          @JsonKey(name: 'booking_address') final String? bookingAddress,
-          @JsonKey(name: 'sample_type') final String? sampleType,
-          @JsonKey(name: 'tube_type') final String? tubeType,
-          @JsonKey(name: 'hard_copy') final String? hardCopy,
-          @JsonKey(name: 'referred_by') final String? referredBy,
-          @JsonKey(name: 'doctor_booking_address') final String? invoice}) =
-      _$OrderImpl;
+      {required final int id,
+      @JsonKey(name: 'order_date') required final DateTime orderDate,
+      @JsonKey(name: 'order_total') required final double orderTotal,
+      @JsonKey(name: 'collection_charge')
+      required final String collectionCharge,
+      @JsonKey(name: 'paid_amount') required final double paidAmount,
+      @JsonKey(name: 'order_status') required final OrderStatus orderStatus,
+      @JsonKey(name: 'payment_mode') required final String paymentMode,
+      @JsonKey(name: 'txn_id') final String? txnId,
+      @JsonKey(name: 'coupon_code') final String? couponCode,
+      @JsonKey(name: 'coupon_data') final String? couponData,
+      @JsonKey(name: 'coupon_amount') final double? couponAmount,
+      @JsonKey(name: 'coupon_cb_amount') final double? couponCbAmount,
+      @JsonKey(name: 'sc_coupon_amount') final double? scCouponAmount,
+      @JsonKey(name: 'wallet_paid') final double? walletPaid,
+      @JsonKey(name: 'qris_coins_paid') final double? qrisCoinsPaid,
+      @JsonKey(name: 'product_record') final String? productRecord,
+      @JsonKey(name: 'booking_slot_date') final String? bookingSlotDate,
+      @JsonKey(name: 'booking_slot_time') final String? bookingSlotTime,
+      @JsonKey(name: 'booking_pin') final String? bookingPin,
+      @JsonKey(name: 'booking_address') final String? bookingAddress,
+      @JsonKey(name: 'sample_type') final String? sampleType,
+      @JsonKey(name: 'tube_type') final String? tubeType,
+      @JsonKey(name: 'hard_copy') final String? hardCopy,
+      @JsonKey(name: 'referred_by') final String? referredBy,
+      @JsonKey(name: 'doctor_booking_address') final String? invoice,
+      @JsonKey(name: 'is_cancellation_processed')
+      final bool? isCancellationProcessed}) = _$OrderImpl;
 
   factory _Order.fromJson(Map<String, dynamic> json) = _$OrderImpl.fromJson;
 
@@ -757,6 +783,9 @@ abstract class _Order implements Order {
   @override
   @JsonKey(name: 'doctor_booking_address')
   String? get invoice;
+  @override
+  @JsonKey(name: 'is_cancellation_processed')
+  bool? get isCancellationProcessed;
 
   /// Create a copy of Order
   /// with the given fields replaced by the non-null parameter values.

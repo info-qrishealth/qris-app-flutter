@@ -32,6 +32,7 @@ _$OrderImpl _$$OrderImplFromJson(Map<String, dynamic> json) => _$OrderImpl(
       hardCopy: json['hard_copy'] as String?,
       referredBy: json['referred_by'] as String?,
       invoice: json['doctor_booking_address'] as String?,
+      isCancellationProcessed: json['is_cancellation_processed'] as bool?,
     );
 
 Map<String, dynamic> _$$OrderImplToJson(_$OrderImpl instance) =>
@@ -61,6 +62,7 @@ Map<String, dynamic> _$$OrderImplToJson(_$OrderImpl instance) =>
       'hard_copy': instance.hardCopy,
       'referred_by': instance.referredBy,
       'doctor_booking_address': instance.invoice,
+      'is_cancellation_processed': instance.isCancellationProcessed,
     };
 
 const _$OrderStatusEnumMap = {

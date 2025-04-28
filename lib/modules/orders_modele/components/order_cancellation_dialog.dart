@@ -10,7 +10,9 @@ import 'package:qris_health/styles/app_colors.dart';
 
 class OrderCancellationDialog extends StatefulWidget {
   final Order order;
-  const OrderCancellationDialog({super.key, required this.order});
+  final Function(Order) onSuccess;
+  const OrderCancellationDialog(
+      {super.key, required this.order, required this.onSuccess});
 
   @override
   State<OrderCancellationDialog> createState() =>
@@ -85,6 +87,8 @@ class _OrderCancellationDialogState extends State<OrderCancellationDialog> {
                                                       'Cancellation request by app'));
 
                                       Navigator.of(context).pop();
+                                      widget.onSuccess(widget.order.copyWith
+                                          .call(isCancellationProcessed: true));
                                       AppConstants.showSnackbar(
                                           text:
                                               'Order cancellation requested successfully.',

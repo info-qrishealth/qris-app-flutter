@@ -33,10 +33,13 @@ class OrderListTile extends StatefulWidget {
 class _OrderListTileState extends State<OrderListTile> {
   final _textTheme = Get.textTheme;
   List<UserOrderReport> _reports = [];
+  late Order _order;
 
   @override
   void initState() {
     super.initState();
+    _order = widget.order;
+
     final patientCubit = BlocProvider.of<PatientsCubit>(context);
     if (patientCubit.state is! PatientsLoaded) {
       patientCubit.getAllPatientsForUser();
@@ -45,15 +48,14 @@ class _OrderListTileState extends State<OrderListTile> {
 
   @override
   Widget build(BuildContext context) {
-    final isCancelled = widget.order.orderStatus == OrderStatus.cancel;
+    final isCancelled = _order.orderStatus == OrderStatus.cancel;
     final address = Address.fromJson(
-        AppConstants.decodeBase64(encodedString: widget.order.bookingAddress) ??
-            {});
-    final slots = widget.order.bookingSlotTime?.split('-');
+        AppConstants.decodeBase64(encodedString: _order.bookingAddress) ?? {});
+    final slots = _order.bookingSlotTime?.split('-');
     final from = slots?.firstOrNull;
     final to = slots != null && slots.length > 1 ? slots[1] : null;
     final decodedOrderInfo =
-        AppConstants.decodeBase64(encodedString: widget.order.productRecord);
+        AppConstants.decodeBase64(encodedString: _order.productRecord);
     final orderInfo =
         decodedOrderInfo == null ? null : OrderInfo.fromJson(decodedOrderInfo);
 
@@ -72,12 +74,12 @@ class _OrderListTileState extends State<OrderListTile> {
             iconColor: AppColors.primaryBlue,
             childrenPadding: EdgeInsets.symmetric(horizontal: 10),
             title: Row(children: [
-              _buildRichText(key: 'Order ID:', value: ' QRS${widget.order.id}'),
+              _buildRichText(key: 'Order ID:', value: ' QRS${_order.id}'),
               if (isCancelled)
                 Padding(
                     padding: const EdgeInsets.only(left: 4),
                     child: Text(
-                        '(${widget.order.orderStatus.name.formattedEnumName})',
+                        '(${_order.orderStatus.name.formattedEnumName})',
                         style: _textTheme.bodySmall!.copyWith(
                             fontWeight: FontWeight.w500, color: AppColors.red)))
             ]),
@@ -88,12 +90,12 @@ class _OrderListTileState extends State<OrderListTile> {
                     value: DateFormat()
                         .add_yMMMEd()
                         .add_jm()
-                        .format(widget.order.orderDate.toLocal()),
+                        .format(_order.orderDate.toLocal()),
                     valueColor: AppColors.black)),
             onExpansionChanged: (isExpanded) async {
               if (isExpanded) {
                 _reports = await OrderService.getUserReportsByOrderId(
-                    orderId: widget.order.id.toString());
+                    orderId: _order.id.toString());
                 setState(() {});
               }
             },
@@ -109,12 +111,12 @@ class _OrderListTileState extends State<OrderListTile> {
                           style: _textTheme.labelSmall!
                               .copyWith(fontWeight: FontWeight.w300)),
                       SizedBox(height: 4),
-                      Text('${widget.order.txnId}',
+                      Text('${_order.txnId}',
                           style: _textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.w500,
                               color: AppColors.lightText))
                     ])),
-                if (!isCancelled && !widget.order.invoice.isNullOrEmpty)
+                if (!isCancelled && !_order.invoice.isNullOrEmpty)
                   SizedBox(
                       height: 35,
                       child: ElevatedButton(
@@ -149,7 +151,7 @@ class _OrderListTileState extends State<OrderListTile> {
               FeatureRow(
                   svgPath: 'assets/images/icons/clock_icon.svg',
                   title:
-                      '${DateTime.tryParse(widget.order.bookingSlotDate!)?.toLocal().getFormattedDatedMMMy} (${from.toDateTime?.toLocal().getTimeStringFromDateTimeString} - ${to.toDateTime?.toLocal().getTimeStringFromDateTimeString})',
+                      '${DateTime.tryParse(_order.bookingSlotDate!)?.toLocal().getFormattedDatedMMMy} (${from.toDateTime?.toLocal().getTimeStringFromDateTimeString} - ${to.toDateTime?.toLocal().getTimeStringFromDateTimeString})',
                   fontColor: AppColors.textColor),
               SizedBox(height: 10),
               if (orderInfo != null)
@@ -166,52 +168,63 @@ class _OrderListTileState extends State<OrderListTile> {
                 SizedBox(height: 8),
                 SummaryInfoRow(
                     title: 'Base amount',
-                    value: '₹${widget.order.orderTotal.toInt()}'),
+                    value: '₹${_order.orderTotal.toInt()}'),
                 SizedBox(height: 4),
                 SummaryInfoRow(title: 'Total amount ', value: '₹1099'),
                 SizedBox(height: 4),
                 Row(children: [
                   Expanded(
-                      child: Text('Amount paid (${widget.order.paymentMode})',
+                      child: Text('Amount paid (${_order.paymentMode})',
                           style: _textTheme.bodySmall!
                               .copyWith(fontWeight: FontWeight.w700))),
-                  Text('₹${widget.order.paidAmount.toInt()}',
+                  Text('₹${_order.paidAmount.toInt()}',
                       style: _textTheme.bodyLarge!.copyWith(
                           fontWeight: FontWeight.w700,
                           color: AppColors.primaryPink))
                 ])
               ]),
-              SizedBox(height: 12),
-              CommonDivider(),
-              SizedBox(height: 6),
-              SizedBox(
-                  height: 36,
-                  child: Row(children: [
-                    Expanded(
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primaryBlue),
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => OrderCancellationDialog(
-                                      order: widget.order));
-                            },
-                            child: Text('Request Cancellation',
-                                style: _textTheme.bodySmall!.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400)))),
-                    SizedBox(width: 8),
-                    Expanded(
-                        child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: AppColors.primaryBlue)),
-                            onPressed: () {},
-                            child: Text('Read cancellation policy',
-                                style: _textTheme.bodySmall!.copyWith(
-                                    color: AppColors.primaryBlue,
-                                    fontWeight: FontWeight.w400))))
-                  ])),
+              if (_order.isCancellationProcessed == false)
+                Column(
+                  children: [
+                    SizedBox(height: 12),
+                    CommonDivider(),
+                    SizedBox(height: 6),
+                    SizedBox(
+                        height: 36,
+                        child: Row(children: [
+                          Expanded(
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primaryBlue),
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            OrderCancellationDialog(
+                                                order: _order,
+                                                onSuccess: (updatedOrder) {
+                                                  _order = updatedOrder;
+                                                  setState(() {});
+                                                }));
+                                  },
+                                  child: Text('Request Cancellation',
+                                      style: _textTheme.bodySmall!.copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400)))),
+                          SizedBox(width: 8),
+                          Expanded(
+                              child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                      side: BorderSide(
+                                          color: AppColors.primaryBlue)),
+                                  onPressed: () {},
+                                  child: Text('Read cancellation policy',
+                                      style: _textTheme.bodySmall!.copyWith(
+                                          color: AppColors.primaryBlue,
+                                          fontWeight: FontWeight.w400))))
+                        ])),
+                  ],
+                ),
               SizedBox(height: 16),
             ]));
   }
@@ -303,7 +316,7 @@ class _OrderListTileState extends State<OrderListTile> {
 
   Future<void> _downloadInvoice() async {
     try {
-      final url = '${AppConstants.invoiceUrl}/${widget.order.invoice}';
+      final url = '${AppConstants.invoiceUrl}/${_order.invoice}';
 
       if (await canLaunch(url)) {
         await launch(url);

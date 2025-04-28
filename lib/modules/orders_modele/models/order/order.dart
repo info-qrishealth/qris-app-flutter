@@ -38,6 +38,7 @@ class Order with _$Order {
     @JsonKey(name: 'hard_copy') String? hardCopy,
     @JsonKey(name: 'referred_by') String? referredBy,
     @JsonKey(name: 'doctor_booking_address') String? invoice,
+    @JsonKey(name: 'is_cancellation_processed') bool? isCancellationProcessed,
   }) = _Order;
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
