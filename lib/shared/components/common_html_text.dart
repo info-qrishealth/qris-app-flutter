@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../styles/app_colors.dart';
 
 class CommonHtmlText extends StatelessWidget {
@@ -18,22 +18,30 @@ class CommonHtmlText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Html(data: text.htmlString, style: {
-      'p': pStyle ??
-          Style(
-              fontWeight: FontWeight.w400,
-              color: AppColors.lightText,
-              fontSize: FontSize.medium),
-      'strong': stringStyle ??
-          Style(
-              color: AppColors.textColor,
-              margin: Margins.only(bottom: 8, top: 8),
-              display: Display.block),
-      'li': liStyle ??
-          Style(
-              color: AppColors.lightText,
-              fontWeight: FontWeight.w400,
-              margin: Margins.symmetric(horizontal: 8, vertical: 5)),
-    });
+    return Html(
+        data: text.htmlString,
+        style: {
+          'p': pStyle ??
+              Style(
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.lightText,
+                  fontSize: FontSize.medium),
+          'strong': stringStyle ??
+              Style(
+                  color: AppColors.textColor,
+                  margin: Margins.only(bottom: 8, top: 8),
+                  display: Display.block),
+          'li': liStyle ??
+              Style(
+                  color: AppColors.lightText,
+                  fontWeight: FontWeight.w400,
+                  margin: Margins.symmetric(horizontal: 8, vertical: 5)),
+        },
+        onLinkTap: (url, _, __) async {
+          if (url != null && await canLaunchUrl(Uri.parse(url))) {
+            await launchUrl(Uri.parse(url),
+                mode: LaunchMode.externalApplication);
+          }
+        });
   }
 }

@@ -2,6 +2,7 @@ import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
@@ -20,6 +21,7 @@ import 'package:qris_health/shared/extensions/date_time_extension.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../screens/blood_test_detail_screen.dart';
 import '../components/health_article_list_tile_horizontal.dart';
 
@@ -46,6 +48,8 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
 
   @override
   Widget build(BuildContext context) {
+    final commonFontSize = FontSize.small;
+
     return Scaffold(
         appBar: CommonAppBar(title: 'Article'),
         body: SafeArea(
@@ -69,7 +73,75 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
                       fit: BoxFit.fill,
                       height: null)),
               SizedBox(height: 16),
-              CommonHtmlText(text: widget.healthArticle.description!),
+              Html(
+                data: widget.healthArticle.description.htmlString,
+                style: {
+                  'p': Style(
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.lightText,
+                      fontSize: commonFontSize),
+                  'strong': Style(
+                      color: AppColors.textColor,
+                      margin: Margins.only(bottom: 8, top: 8),
+                      display: Display.block,
+                      fontSize: commonFontSize),
+                  'li': Style(
+                      color: AppColors.lightText,
+                      fontWeight: FontWeight.w400,
+                      margin: Margins.symmetric(horizontal: 8, vertical: 5),
+                      fontSize: commonFontSize),
+                  'ul': Style(
+                      padding: HtmlPaddings.only(left: 16),
+                      fontSize: commonFontSize),
+                  'ol': Style(
+                    padding: HtmlPaddings.only(left: 16),
+                    fontSize: commonFontSize,
+                  ),
+                  'em': Style(
+                    fontStyle: FontStyle.italic,
+                    color: AppColors.textColor,
+                    fontSize: commonFontSize,
+                  ),
+                  'h1': Style(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textColor,
+                    margin: Margins.only(bottom: 12),
+                    fontSize: commonFontSize,
+                  ),
+                  'h2': Style(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textColor,
+                    margin: Margins.only(bottom: 10),
+                    fontSize: commonFontSize,
+                  ),
+                  'h3': Style(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor,
+                    margin: Margins.only(bottom: 8),
+                    fontSize: commonFontSize,
+                  ),
+                  'a': Style(
+                    color: Colors.blue,
+                    textDecoration: TextDecoration.underline,
+                    fontSize: commonFontSize,
+                  ),
+                  'blockquote': Style(
+                    fontStyle: FontStyle.italic,
+                    backgroundColor: Colors.grey.shade200,
+                    padding: HtmlPaddings.all(12),
+                    margin: Margins.symmetric(vertical: 12),
+                    border:
+                        Border(left: BorderSide(color: Colors.grey, width: 4)),
+                    fontSize: commonFontSize,
+                  ),
+                },
+                onLinkTap: (url, _, __) async {
+                  if (url != null && await canLaunchUrl(Uri.parse(url))) {
+                    await launchUrl(Uri.parse(url),
+                        mode: LaunchMode.externalApplication);
+                  }
+                },
+              ),
               SizedBox(height: 16),
               ContactUsContainer(),
               // SizedBox(height: 16),
