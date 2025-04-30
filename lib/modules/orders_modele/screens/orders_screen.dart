@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,139 +28,180 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> {
   late final Future<List<Patient>> _patientsFuture;
   late final Future<List<Order>> _ordersFuture;
+
   Patient? _selectedPatient;
-  List<Order>? _ordersToShow;
+  bool _hasShownError = false;
 
   @override
   void initState() {
     super.initState();
-    _patientsFuture = PatientService.getPatientsOfUser(
-        userId: ApiParams.getInstance()!.userId.toString());
-    _ordersFuture = OrderService.getAllOrdersForUser(
-        userId: ApiParams.getInstance()!.userId.toString());
+    final userId = ApiParams.getInstance()!.userId.toString();
+    _patientsFuture = PatientService.getPatientsOfUser(userId: userId);
+    _ordersFuture = OrderService.getAllOrdersForUser(userId: userId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CommonAppBar(title: 'Bookings/Reports'),
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SizedBox(height: 16),
-          FutureBuilder<List<Patient>>(
-              future: _patientsFuture,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final patients = snapshot.data!;
+      appBar: const CommonAppBar(title: 'Bookings/Reports'),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 16),
+          _buildPatientChips(),
+          const SizedBox(height: 18),
+          Expanded(child: _buildOrdersList()),
+        ],
+      ),
+    );
+  }
 
-                  return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: AppConstants.scaffoldPadding),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        _selectedPatient = null;
-                                      });
-                                    },
-                                    child: CommonFilledChip(
-                                        isSelected: _selectedPatient == null,
-                                        title: 'All')),
-                                SizedBox(width: 4),
-                                ...patients.map((patient) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 4),
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _selectedPatient = patient;
-                                          });
-                                        },
-                                        child: CommonFilledChip(
-                                            isSelected: _selectedPatient?.id ==
-                                                patient.id,
-                                            title:
-                                                '${patient.name?.capitalize}')))),
-                              ])));
-                }
+  Widget _buildPatientChips() {
+    return FutureBuilder<List<Patient>>(
+      future: _patientsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return _buildShimmerChipPlaceholder();
+        }
 
-                return Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: AppConstants.scaffoldPadding),
-                    child: FadeShimmer(
-                        width: double.infinity,
-                        height: 30,
-                        fadeTheme: FadeTheme.light));
-              }),
-          SizedBox(height: 18),
-          Expanded(
-              child: FutureBuilder<List<Order>>(
-                  future: _ordersFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        AppConstants.showSnackbar(
-                            text: snapshot.error.toString(),
-                            type: SnackbarType.error);
-                      });
-                    }
+        if (snapshot.hasError) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppConstants.scaffoldPadding),
+            child: Text('Failed to load patients',
+                style: TextStyle(color: Colors.red)),
+          );
+        }
 
-                    if (snapshot.hasData) {
-                      final orders = snapshot.data!.reversed.toList();
-                      if (_selectedPatient == null) {
-                        _ordersToShow = orders;
-                      } else {
-                        _ordersToShow = _filterOrders(orders: orders);
-                      }
+        final patients = snapshot.data ?? [];
 
-                      if (_ordersToShow!.isEmpty) {
-                        return Center(
-                            child: NoItemFoundContainer(
-                                title: 'No bookings found for the patient'));
-                      }
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppConstants.scaffoldPadding),
+          child: Row(
+            children: [
+              _buildChip(
+                title: 'All',
+                isSelected: _selectedPatient == null,
+                onTap: () => setState(() => _selectedPatient = null),
+              ),
+              const SizedBox(width: 4),
+              ...patients.map((patient) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: _buildChip(
+                      title: (patient.name ?? '').capitalize!,
+                      isSelected: _selectedPatient?.id == patient.id,
+                      onTap: () => setState(() => _selectedPatient = patient),
+                    ),
+                  )),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-                      return ListView.separated(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: AppConstants.scaffoldPadding),
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return OrderListTile(order: _ordersToShow![index]);
-                          },
-                          separatorBuilder: (context, index) {
-                            return SizedBox(height: 10);
-                          },
-                          itemCount: _ordersToShow!.length);
-                    }
+  Widget _buildChip({
+    required String title,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: CommonFilledChip(
+        title: title,
+        isSelected: isSelected,
+      ),
+    );
+  }
 
-                    return CommonListviewShimmer();
-                  }))
-        ]));
+  Widget _buildShimmerChipPlaceholder() {
+    return Padding(
+      padding:
+          const EdgeInsets.symmetric(horizontal: AppConstants.scaffoldPadding),
+      child: FadeShimmer(
+        width: double.infinity,
+        height: 30,
+        fadeTheme: FadeTheme.light,
+      ),
+    );
+  }
+
+  Widget _buildOrdersList() {
+    return FutureBuilder<List<Order>>(
+      future: _ordersFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError && !_hasShownError) {
+          _hasShownError = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            AppConstants.showSnackbar(
+              text: snapshot.error.toString(),
+              type: SnackbarType.error,
+            );
+          });
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CommonListviewShimmer();
+        }
+
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(
+            child: NoItemFoundContainer(title: 'No bookings found'),
+          );
+        }
+
+        final orders = snapshot.data!.reversed.toList();
+        final filteredOrders =
+            _selectedPatient == null ? orders : _filterOrders(orders: orders);
+
+        if (filteredOrders.isEmpty) {
+          return const Center(
+            child: NoItemFoundContainer(
+                title: 'No bookings found for the patient'),
+          );
+        }
+
+        return ListView.separated(
+          key: ValueKey(Random().nextInt(10000)),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppConstants.scaffoldPadding),
+          physics: const BouncingScrollPhysics(),
+          itemCount: filteredOrders.length,
+          itemBuilder: (context, index) {
+            return OrderListTile(order: filteredOrders[index]);
+          },
+          separatorBuilder: (_, __) => const SizedBox(height: 10),
+        );
+      },
+    );
   }
 
   List<Order> _filterOrders({required List<Order> orders}) {
-    final List<Order> filteredOrders = [];
+    if (_selectedPatient == null) return orders;
 
-    for (var order in orders) {
-      final decodedOrderInfo =
-          AppConstants.decodeBase64(encodedString: order.productRecord);
+    final selectedPatientId = _selectedPatient!.id.toString();
+    final filteredOrders = <Order>[];
 
-      final orderInfo = decodedOrderInfo == null
-          ? null
-          : OrderInfo.fromJson(decodedOrderInfo);
+    for (final order in orders) {
+      try {
+        final decodedOrderInfo =
+            AppConstants.decodeBase64(encodedString: order.productRecord);
+        if (decodedOrderInfo == null) continue;
 
-      orderInfo?.data.entries.forEach((entry) {
-        for (var entry in entry.value.patients.entries) {
-          final patient = entry.value;
+        final orderInfo = OrderInfo.fromJson(decodedOrderInfo);
+        final containsPatient = orderInfo.data.entries.any((dataEntry) =>
+            dataEntry.value.patients.entries.any(
+                (patientEntry) => patientEntry.value.id == selectedPatientId));
 
-          if (_selectedPatient?.dob.toString() == patient.dob) {
-            filteredOrders.add(order);
-          }
+        if (containsPatient) {
+          filteredOrders.add(order);
         }
-      });
+      } catch (e) {
+        debugPrint('Error decoding order: $e');
+        continue;
+      }
     }
 
     return filteredOrders;
