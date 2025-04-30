@@ -22,6 +22,8 @@ import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'cancel_order_policy_dialog.dart';
+
 class OrderListTile extends StatefulWidget {
   final Order order;
   const OrderListTile({super.key, required this.order});
@@ -196,47 +198,50 @@ class _OrderListTileState extends State<OrderListTile> {
               ]),
               if (_order.isCancellationProcessed == false)
                 if (_order.orderStatus == OrderStatus.success)
-                  Column(
-                    children: [
-                      SizedBox(height: 12),
-                      CommonDivider(),
-                      SizedBox(height: 6),
-                      SizedBox(
-                          height: 36,
-                          child: Row(children: [
-                            Expanded(
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColors.primaryBlue),
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              OrderCancellationDialog(
-                                                  order: _order,
-                                                  onSuccess: (updatedOrder) {
-                                                    _order = updatedOrder;
-                                                    setState(() {});
-                                                  }));
-                                    },
-                                    child: Text('Request Cancellation',
-                                        style: _textTheme.bodySmall!.copyWith(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w400)))),
-                            SizedBox(width: 8),
-                            Expanded(
-                                child: OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                        side: BorderSide(
-                                            color: AppColors.primaryBlue)),
-                                    onPressed: () {},
-                                    child: Text('Read cancellation policy',
-                                        style: _textTheme.bodySmall!.copyWith(
-                                            color: AppColors.primaryBlue,
-                                            fontWeight: FontWeight.w400))))
-                          ])),
-                    ],
-                  ),
+                  Column(children: [
+                    SizedBox(height: 12),
+                    CommonDivider(),
+                    SizedBox(height: 6),
+                    SizedBox(
+                        height: 36,
+                        child: Row(children: [
+                          Expanded(
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primaryBlue),
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            OrderCancellationDialog(
+                                                order: _order,
+                                                onSuccess: (updatedOrder) {
+                                                  _order = updatedOrder;
+                                                  setState(() {});
+                                                }));
+                                  },
+                                  child: Text('Request Cancellation',
+                                      style: _textTheme.bodySmall!.copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400)))),
+                          SizedBox(width: 8),
+                          Expanded(
+                              child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                      side: BorderSide(
+                                          color: AppColors.primaryBlue)),
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            CancelOrderPolicyDialog());
+                                  },
+                                  child: Text('Read cancellation policy',
+                                      style: _textTheme.bodySmall!.copyWith(
+                                          color: AppColors.primaryBlue,
+                                          fontWeight: FontWeight.w400))))
+                        ])),
+                  ]),
               SizedBox(height: 16),
             ]));
   }
