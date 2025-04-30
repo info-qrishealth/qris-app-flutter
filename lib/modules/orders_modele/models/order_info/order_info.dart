@@ -1,3 +1,5 @@
+import '../order_patient/order_patient.dart';
+
 class OrderInfo {
   final Map<String, OrderData> data;
 
@@ -75,7 +77,6 @@ class Product {
         tubeType: json['tube_type']);
   }
 
-  // Convert Product instance to JSON
   Map<String, dynamic> toJson() {
     return {
       'title': title,
@@ -84,41 +85,6 @@ class Product {
       'quantity': quantity,
       'sample_type': sampleType,
       'tube_type': tubeType
-    };
-  }
-}
-
-class OrderPatient {
-  final String name;
-  final String id;
-  final String gender;
-  final String dob;
-  final String mobile;
-
-  OrderPatient(
-      {required this.name,
-      required this.id,
-      required this.gender,
-      required this.dob,
-      required this.mobile});
-
-  // Factory constructor to create Patient from JSON
-  factory OrderPatient.fromJson(Map<String, dynamic> json) {
-    return OrderPatient(
-        name: json['name'],
-        id: json['id'],
-        gender: json['gender'],
-        dob: json['dob'],
-        mobile: json['mobile'] ?? '');
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'id': id,
-      'gender': gender,
-      'dob': dob,
-      'mobile': mobile
     };
   }
 }

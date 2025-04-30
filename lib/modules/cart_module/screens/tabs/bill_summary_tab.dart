@@ -35,8 +35,8 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../../constants/api_params.dart';
 import '../../../../constants/enums/payment_mode.dart';
 import '../../../../generated/assets.dart';
+import '../../../orders_modele/models/order_patient/order_patient.dart';
 import '../../../orders_modele/models/order_req_model/order_req_model.dart';
-import '../../../orders_modele/services/order_service.dart';
 import '../../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 import '../../components/coupons_bottom_sheet.dart';
 

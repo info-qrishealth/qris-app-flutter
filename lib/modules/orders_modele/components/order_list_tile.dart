@@ -22,6 +22,7 @@ import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/styles/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../models/order_patient/order_patient.dart';
 import 'cancel_order_policy_dialog.dart';
 
 class OrderListTile extends StatefulWidget {
@@ -60,6 +61,20 @@ class _OrderListTileState extends State<OrderListTile> {
         AppConstants.decodeBase64(encodedString: _order.productRecord);
     final orderInfo =
         decodedOrderInfo == null ? null : OrderInfo.fromJson(decodedOrderInfo);
+    final Map<OrderPatient, List<Product>> patientAndTestsMap = {};
+
+    for (var orderInfoEntry in orderInfo!.data.entries) {
+      final patients = orderInfoEntry.value.patients;
+      for (var patientEntry in patients.entries) {
+        final patient = patientEntry.value;
+
+        if (patientAndTestsMap.containsKey(patient)) {
+          patientAndTestsMap[patient]!.add(orderInfoEntry.value.product);
+        } else {
+          patientAndTestsMap[patient] = [orderInfoEntry.value.product];
+        }
+      }
+    }
 
     return Container(
         decoration: BoxDecoration(
@@ -165,9 +180,9 @@ class _OrderListTileState extends State<OrderListTile> {
                       '${DateTime.tryParse(_order.bookingSlotDate!)?.toLocal().getFormattedDatedMMMy} (${from.toDateTime?.toLocal().getTimeStringFromDateTimeString} - ${to.toDateTime?.toLocal().getTimeStringFromDateTimeString})',
                   fontColor: AppColors.textColor),
               SizedBox(height: 10),
-              if (orderInfo != null)
-                ...orderInfo.data.entries.map(
-                    (entry) => _buildPatientLayout(orderData: entry.value)),
+              ...patientAndTestsMap.entries.map((entry) {
+                return _buildPatientLayout(entry: entry);
+              }),
               SizedBox(height: 12),
               CommonDivider(),
               SizedBox(height: 5),
@@ -263,67 +278,71 @@ class _OrderListTileState extends State<OrderListTile> {
     ]));
   }
 
-  Widget _buildPatientLayout({required OrderData orderData}) {
+  Widget _buildPatientLayout(
+      {required MapEntry<OrderPatient, List<Product>> entry}) {
+    final patient = entry.key;
+    final products = entry.value;
+    final report =
+        _reports.firstWhereOrNull((element) => element.patientId == patient.id);
+
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      ...orderData.patients.entries.map((patientEntry) {
-        final patient = patientEntry.value;
-        final report = _reports
-            .firstWhereOrNull((element) => element.patientId == patient.id);
+      Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: PatientTileLayout(
+              patient: Patient(
+                  name: patient.name.capitalize,
+                  dob: patient.dob,
+                  gender: patient.gender),
+              actions: [
+                SizedBox(
+                    height: 28,
+                    child: ElevatedButton(
+                        onPressed: report?.reportFile == null ||
+                                report!.reportFile.isEmpty
+                            ? null
+                            : () async {
+                                try {
+                                  final url =
+                                      '${AppConstants.reportUrl}/${report.reportFile}';
 
-        return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: PatientTileLayout(
-                patient: Patient(
-                    name: patient.name.capitalize,
-                    dob: patient.dob,
-                    gender: patient.gender),
-                actions: [
-                  SizedBox(
-                      height: 28,
-                      child: ElevatedButton(
-                          onPressed: report?.reportFile == null ||
-                                  report!.reportFile.isEmpty
-                              ? null
-                              : () async {
-                                  try {
-                                    final url =
-                                        '${AppConstants.reportUrl}/${report.reportFile}';
-
-                                    if (await canLaunch(url)) {
-                                      await launch(url);
-                                    } else {
-                                      AppConstants.showSnackbar(
-                                          text:
-                                              'Unable to generate report. Please try again later',
-                                          type: SnackbarType.error);
-                                    }
-                                  } catch (e) {
+                                  if (await canLaunch(url)) {
+                                    await launch(url);
+                                  } else {
                                     AppConstants.showSnackbar(
-                                        text: e.toString(),
+                                        text:
+                                            'Unable to generate report. Please try again later',
                                         type: SnackbarType.error);
                                   }
-                                },
-                          child: Row(children: [
-                            Icon(Icons.save_alt, size: 18),
-                            SizedBox(width: 4),
-                            Text(
-                                report?.reportFile == null ||
-                                        report!.reportFile.isEmpty
-                                    ? 'Pending'
-                                    : 'Download',
-                                style: _textTheme.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white)),
-                          ]))),
-                ]));
-      }),
+                                } catch (e) {
+                                  AppConstants.showSnackbar(
+                                      text: e.toString(),
+                                      type: SnackbarType.error);
+                                }
+                              },
+                        child: Row(children: [
+                          Icon(Icons.save_alt, size: 18),
+                          SizedBox(width: 4),
+                          Text(
+                              report?.reportFile == null ||
+                                      report!.reportFile.isEmpty
+                                  ? 'Pending'
+                                  : 'Download',
+                              style: _textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white)),
+                        ]))),
+              ])),
       SizedBox(height: 10),
       Container(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           decoration: BoxDecoration(
               border: Border.all(color: AppColors.borderColor),
               borderRadius: BorderRadius.circular(12)),
-          child: Text(orderData.product.title.htmlString.clean,
+          child: Text(
+              products
+                  .map((element) => element.title.clean)
+                  .toList()
+                  .join(', '),
               style: _textTheme.labelSmall!.copyWith(
                   fontWeight: FontWeight.w500,
                   color: AppColors.primaryBlue,
