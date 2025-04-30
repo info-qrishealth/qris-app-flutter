@@ -77,53 +77,91 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
                 data: widget.healthArticle.description.htmlString,
                 style: {
                   'p': Style(
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.lightText,
-                      fontSize: commonFontSize),
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.lightText,
+                    fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
+                    margin: Margins.zero,
+                  ),
                   'strong': Style(
-                      color: AppColors.textColor,
-                      margin: Margins.only(bottom: 8, top: 8),
-                      display: Display.block,
-                      fontSize: commonFontSize),
+                    color: AppColors.textColor,
+                    margin: Margins.only(bottom: 8, top: 8),
+                    display: Display.block,
+                    fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
+                  ),
                   'li': Style(
-                      color: AppColors.lightText,
-                      fontWeight: FontWeight.w400,
-                      margin: Margins.symmetric(horizontal: 8, vertical: 5),
-                      fontSize: commonFontSize),
+                    color: AppColors.lightText,
+                    fontWeight: FontWeight.w400,
+                    margin: Margins.symmetric(horizontal: 8, vertical: 5),
+                    fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
+                  ),
                   'ul': Style(
-                      padding: HtmlPaddings.only(left: 16),
-                      fontSize: commonFontSize),
+                    padding: HtmlPaddings.only(left: 16),
+                    fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
+                    margin: Margins.only(bottom: 8),
+                  ),
                   'ol': Style(
                     padding: HtmlPaddings.only(left: 16),
                     fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
+                    margin: Margins.only(bottom: 8),
                   ),
                   'em': Style(
                     fontStyle: FontStyle.italic,
                     color: AppColors.textColor,
                     fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
                   ),
                   'h1': Style(
                     fontWeight: FontWeight.bold,
                     color: AppColors.textColor,
                     margin: Margins.only(bottom: 12),
                     fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
                   ),
                   'h2': Style(
                     fontWeight: FontWeight.bold,
                     color: AppColors.textColor,
                     margin: Margins.only(bottom: 10),
                     fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
                   ),
                   'h3': Style(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textColor,
                     margin: Margins.only(bottom: 8),
                     fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
+                  ),
+                  'h4': Style(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor,
+                    margin: Margins.only(bottom: 6),
+                    fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
+                  ),
+                  'h5': Style(
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textColor,
+                    margin: Margins.only(bottom: 4),
+                    fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
+                  ),
+                  'h6': Style(
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textColor,
+                    margin: Margins.only(bottom: 2),
+                    fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
                   ),
                   'a': Style(
                     color: Colors.blue,
                     textDecoration: TextDecoration.underline,
                     fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
                   ),
                   'blockquote': Style(
                     fontStyle: FontStyle.italic,
@@ -133,6 +171,52 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
                     border:
                         Border(left: BorderSide(color: Colors.grey, width: 4)),
                     fontSize: commonFontSize,
+                    lineHeight: LineHeight.number(1.4),
+                  ),
+                  'code': Style(
+                    fontFamily: 'monospace',
+                    backgroundColor: Colors.grey.shade200,
+                    padding: HtmlPaddings.all(4),
+                    color: Colors.deepPurple,
+                  ),
+                  'pre': Style(
+                      fontFamily: 'monospace',
+                      backgroundColor: Colors.black87,
+                      color: Colors.white,
+                      padding: HtmlPaddings.all(12),
+                      margin: Margins.symmetric(vertical: 12)),
+                  'table': Style(
+                    border: Border.all(color: Colors.grey),
+                    padding: HtmlPaddings.all(8),
+                    margin: Margins.symmetric(vertical: 8),
+                  ),
+                  'thead': Style(
+                    backgroundColor: Colors.grey.shade200,
+                  ),
+                  'tbody': Style(),
+                  'tr': Style(
+                    border:
+                        Border(bottom: BorderSide(color: Colors.grey.shade300)),
+                  ),
+                  'td': Style(
+                    padding: HtmlPaddings.all(8),
+                  ),
+                  'th': Style(
+                    padding: HtmlPaddings.all(8),
+                    fontWeight: FontWeight.bold,
+                  ),
+                  'img': Style(
+                    margin: Margins.symmetric(vertical: 8),
+                  ),
+                  'hr': Style(
+                    border: Border(
+                        bottom:
+                            BorderSide(color: Colors.grey.shade400, width: 1)),
+                    margin: Margins.symmetric(vertical: 12),
+                  ),
+                  'br': Style(
+                    display: Display.block,
+                    height: Height(8),
                   ),
                 },
                 onLinkTap: (url, _, __) async {
@@ -166,7 +250,7 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
                           final packages = snapshot.data!;
 
                           return SizedBox(
-                              height: 145,
+                              height: 150,
                               child: ListView.separated(
                                   physics: BouncingScrollPhysics(),
                                   scrollDirection: Axis.horizontal,
