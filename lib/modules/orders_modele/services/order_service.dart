@@ -29,7 +29,7 @@ class OrderService {
 
   static Future<List<UserOrderReport>> getUserReportsByOrderId(
       {required String orderId}) async {
-    final url = '${AppConstants.baseUrl}/orders/reports/$orderId';
+    final url = '${AppConstants.baseUrl}/orders/reports/$orderId?all=true';
 
     try {
       final response = await Wrapper.get(url);

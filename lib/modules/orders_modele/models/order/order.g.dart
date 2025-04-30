@@ -31,7 +31,7 @@ _$OrderImpl _$$OrderImplFromJson(Map<String, dynamic> json) => _$OrderImpl(
       tubeType: json['tube_type'] as String?,
       hardCopy: json['hard_copy'] as String?,
       referredBy: json['referred_by'] as String?,
-      invoice: json['doctor_booking_address'] as String?,
+      invoice: json['invoice'] as String?,
       isCancellationProcessed: json['is_cancellation_processed'] as bool?,
     );
 
@@ -61,11 +61,12 @@ Map<String, dynamic> _$$OrderImplToJson(_$OrderImpl instance) =>
       'tube_type': instance.tubeType,
       'hard_copy': instance.hardCopy,
       'referred_by': instance.referredBy,
-      'doctor_booking_address': instance.invoice,
+      'invoice': instance.invoice,
       'is_cancellation_processed': instance.isCancellationProcessed,
     };
 
 const _$OrderStatusEnumMap = {
+  OrderStatus.pending: 'pending',
   OrderStatus.success: 'success',
   OrderStatus.complete: 'complete',
   OrderStatus.cancel: 'cancel',

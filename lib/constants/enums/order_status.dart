@@ -1,1 +1,1 @@
-enum OrderStatus { success, complete, cancel }
+enum OrderStatus { pending, success, complete, cancel }

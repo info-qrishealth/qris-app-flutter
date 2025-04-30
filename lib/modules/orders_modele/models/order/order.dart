@@ -37,7 +37,7 @@ class Order with _$Order {
     @JsonKey(name: 'tube_type') String? tubeType,
     @JsonKey(name: 'hard_copy') String? hardCopy,
     @JsonKey(name: 'referred_by') String? referredBy,
-    @JsonKey(name: 'doctor_booking_address') String? invoice,
+    @JsonKey(name: 'invoice') String? invoice,
     @JsonKey(name: 'is_cancellation_processed') bool? isCancellationProcessed,
   }) = _Order;
 

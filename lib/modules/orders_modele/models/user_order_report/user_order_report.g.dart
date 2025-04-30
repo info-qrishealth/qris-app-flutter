@@ -61,6 +61,7 @@ Map<String, dynamic> _$$UserOrderReportImplToJson(
     };
 
 const _$OrderStatusEnumMap = {
+  OrderStatus.pending: 'pending',
   OrderStatus.success: 'success',
   OrderStatus.complete: 'complete',
   OrderStatus.cancel: 'cancel',

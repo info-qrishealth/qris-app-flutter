@@ -67,7 +67,7 @@ mixin _$Order {
   String? get hardCopy => throw _privateConstructorUsedError;
   @JsonKey(name: 'referred_by')
   String? get referredBy => throw _privateConstructorUsedError;
-  @JsonKey(name: 'doctor_booking_address')
+  @JsonKey(name: 'invoice')
   String? get invoice => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_cancellation_processed')
   bool? get isCancellationProcessed => throw _privateConstructorUsedError;
@@ -111,7 +111,7 @@ abstract class $OrderCopyWith<$Res> {
       @JsonKey(name: 'tube_type') String? tubeType,
       @JsonKey(name: 'hard_copy') String? hardCopy,
       @JsonKey(name: 'referred_by') String? referredBy,
-      @JsonKey(name: 'doctor_booking_address') String? invoice,
+      @JsonKey(name: 'invoice') String? invoice,
       @JsonKey(name: 'is_cancellation_processed')
       bool? isCancellationProcessed});
 }
@@ -299,7 +299,7 @@ abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
       @JsonKey(name: 'tube_type') String? tubeType,
       @JsonKey(name: 'hard_copy') String? hardCopy,
       @JsonKey(name: 'referred_by') String? referredBy,
-      @JsonKey(name: 'doctor_booking_address') String? invoice,
+      @JsonKey(name: 'invoice') String? invoice,
       @JsonKey(name: 'is_cancellation_processed')
       bool? isCancellationProcessed});
 }
@@ -481,7 +481,7 @@ class _$OrderImpl implements _Order {
       @JsonKey(name: 'tube_type') this.tubeType,
       @JsonKey(name: 'hard_copy') this.hardCopy,
       @JsonKey(name: 'referred_by') this.referredBy,
-      @JsonKey(name: 'doctor_booking_address') this.invoice,
+      @JsonKey(name: 'invoice') this.invoice,
       @JsonKey(name: 'is_cancellation_processed')
       this.isCancellationProcessed});
 
@@ -560,7 +560,7 @@ class _$OrderImpl implements _Order {
   @JsonKey(name: 'referred_by')
   final String? referredBy;
   @override
-  @JsonKey(name: 'doctor_booking_address')
+  @JsonKey(name: 'invoice')
   final String? invoice;
   @override
   @JsonKey(name: 'is_cancellation_processed')
@@ -703,7 +703,7 @@ abstract class _Order implements Order {
       @JsonKey(name: 'tube_type') final String? tubeType,
       @JsonKey(name: 'hard_copy') final String? hardCopy,
       @JsonKey(name: 'referred_by') final String? referredBy,
-      @JsonKey(name: 'doctor_booking_address') final String? invoice,
+      @JsonKey(name: 'invoice') final String? invoice,
       @JsonKey(name: 'is_cancellation_processed')
       final bool? isCancellationProcessed}) = _$OrderImpl;
 
@@ -781,7 +781,7 @@ abstract class _Order implements Order {
   @JsonKey(name: 'referred_by')
   String? get referredBy;
   @override
-  @JsonKey(name: 'doctor_booking_address')
+  @JsonKey(name: 'invoice')
   String? get invoice;
   @override
   @JsonKey(name: 'is_cancellation_processed')

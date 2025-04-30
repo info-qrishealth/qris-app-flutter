@@ -94,9 +94,14 @@ class _OrderListTileState extends State<OrderListTile> {
                     valueColor: AppColors.black)),
             onExpansionChanged: (isExpanded) async {
               if (isExpanded) {
-                _reports = await OrderService.getUserReportsByOrderId(
-                    orderId: _order.id.toString());
-                setState(() {});
+                try {
+                  _reports = await OrderService.getUserReportsByOrderId(
+                      orderId: _order.id.toString());
+                  setState(() {});
+                } catch (e) {
+                  AppConstants.showSnackbar(
+                      text: e.toString(), type: SnackbarType.error);
+                }
               }
             },
             children: [
@@ -116,7 +121,11 @@ class _OrderListTileState extends State<OrderListTile> {
                               fontWeight: FontWeight.w500,
                               color: AppColors.lightText))
                     ])),
-                if (!isCancelled && !_order.invoice.isNullOrEmpty)
+                if (!isCancelled &&
+                    !_order.invoice.isNullOrEmpty &&
+                    _reports.isNotEmpty &&
+                    _reports.every(
+                        (element) => element.reportFile.trim().isNotEmpty))
                   SizedBox(
                       height: 35,
                       child: ElevatedButton(
