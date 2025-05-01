@@ -101,6 +101,7 @@ class Assets {
   static const String illustrationsNoItemFoundIllustration = 'assets/images/illustrations/no_item_found_illustration.png';
   static const String illustrationsReferAndEarnBanner = 'assets/images/illustrations/refer_and_earn_banner.svg';
   static const String illustrationsReferAndEarnIllustration = 'assets/images/illustrations/refer_and_earn_illustration.png';
+  static const String illustrationsStarsIllustration = 'assets/images/illustrations/stars_illustration.png';
   static const String illustrationsWomenHealthIllustration = 'assets/images/illustrations/women_health_illustration.png';
   static const String imagesIconsCallIcon = 'assets/images/icons/call_icon.svg';
   static const String imagesIconsHome = 'assets/images/icons/home.svg';

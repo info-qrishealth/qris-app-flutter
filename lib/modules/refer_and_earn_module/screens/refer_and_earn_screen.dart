@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
+import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants/enums/snackbar_type.dart';
@@ -33,8 +35,46 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                 padding: EdgeInsets.symmetric(
                     horizontal: AppConstants.scaffoldPadding, vertical: 24),
                 children: [
-                  Image.asset(
-                      'assets/images/illustrations/refer_and_earn_illustration.png'),
+                  Container(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment(0.50, -0.00),
+                              end: Alignment(0.50, 1.00),
+                              colors: [
+                                const Color(0xF4411E75),
+                                const Color(0xFFB23C97)
+                              ]),
+                          borderRadius: BorderRadius.circular(13)),
+                      child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: AppConstants.scaffoldPadding,
+                              vertical: 4),
+                          child: Stack(alignment: Alignment.center, children: [
+                            Image.asset(Assets.illustrationsStarsIllustration),
+                            BlocBuilder<QrisConfigCubit, QrisConfigState>(
+                                builder: (context, state) {
+                              return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(Assets.drawerIconsCoinIcon,
+                                        color: Colors.white, height: 40),
+                                    SizedBox(height: 10),
+                                    Text(
+                                        'Earn ₹${state.config?.wcbAmount.toInt()}!',
+                                        style: _textTheme.headlineSmall!
+                                            .copyWith(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w400)),
+                                    SizedBox(height: 10),
+                                    Text(
+                                        'Invite your friend to Qris Health and get Rs.${state.config?.wcbAmount.toInt()} wallet cashback when they do their first order.',
+                                        textAlign: TextAlign.center,
+                                        style: _textTheme.bodyLarge!.copyWith(
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white)),
+                                  ]);
+                            })
+                          ]))),
                   SizedBox(height: 28),
                   UnconstrainedBox(
                       child: GestureDetector(
