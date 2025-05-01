@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/all_scans_module/cubits/tests_category_cubit.dart';
+import 'package:qris_health/modules/all_scans_module/models/risk_area_category/risk_area_category.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_category_model/test_category_model.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
-import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/components/common_network_image.dart';
@@ -30,6 +31,7 @@ class PopularPackageScreen extends StatefulWidget {
 class _PopularPackageScreenState extends State<PopularPackageScreen> {
   final _textTheme = Get.textTheme;
   TestCategoryModel? _selectedTestCategory;
+  RiskAreaCategory? _selectedRiskAreaCategory;
 
   @override
   void initState() {
@@ -51,7 +53,10 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
     return Scaffold(
         bottomNavigationBar:
             widget.showBottomStrip ? DiscountCouponContainer() : null,
-        appBar: CommonAppBar(title: _selectedTestCategory?.title ?? 'Popular'),
+        appBar: CommonAppBar(
+            title: _selectedTestCategory?.title ??
+                _selectedRiskAreaCategory?.title ??
+                'Popular'),
         body: SafeArea(child:
             BlocBuilder<TestsCategoryCubit, TestsCategoryState>(
                 builder: (context, state) {
@@ -66,23 +71,26 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                     GestureDetector(
                         onTap: () {
                           _selectedTestCategory = null;
+                          _selectedRiskAreaCategory = null;
                           setState(() {});
                         },
                         child: Column(children: [
                           Container(
                               decoration: BoxDecoration(
-                                  color: _selectedTestCategory == null
+                                  color: _selectedTestCategory == null &&
+                                          _selectedRiskAreaCategory == null
                                       ? Color(0x14B23C97)
                                       : Colors.white,
                                   border: Border.all(
                                       width: 0.9,
-                                      color: _selectedTestCategory == null
+                                      color: _selectedTestCategory == null &&
+                                              _selectedRiskAreaCategory == null
                                           ? AppColors.primaryPink
                                           : Colors.black.withOpacity(0.09)),
                                   borderRadius: BorderRadius.circular(17)),
                               padding: EdgeInsets.all(14),
                               child: Image.asset(
-                                  'assets/images/icons/popular_packages_type/popular_icon.png',
+                                  Assets.popularPackagesTypePopularIcon,
                                   height: 32,
                                   width: 32)),
                           SizedBox(height: 4),
@@ -91,16 +99,30 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                   .copyWith(fontWeight: FontWeight.w500))
                         ])),
                     SizedBox(width: 18),
-                    ...state.categories.map((category) => GestureDetector(
+                    ...[
+                      ...state.res.testCategories,
+                      ...state.res.riskCategories
+                    ].map((category) => GestureDetector(
                         onTap: () async {
-                          setState(() {
+                          if (category is RiskAreaCategory) {
+                            _selectedRiskAreaCategory = category;
+                            _selectedTestCategory = null;
+                          } else if (category is TestCategoryModel) {
                             _selectedTestCategory = category;
-                          });
+                            _selectedRiskAreaCategory = null;
+                          }
+
+                          setState(() {});
                         },
                         child: Padding(
                             padding: const EdgeInsets.only(right: 18),
                             child: _buildCategoryContainer(
-                                testCategoryModel: category)))),
+                                testCategoryModel: category is TestCategoryModel
+                                    ? category
+                                    : null,
+                                riskAreaCategory: category is RiskAreaCategory
+                                    ? category
+                                    : null)))),
                   ])),
               SizedBox(height: 28),
               Expanded(
@@ -109,7 +131,8 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                       buildWhen: (p, c) =>
                           p.popularPackages != c.popularPackages,
                       builder: (context, state) {
-                        if (_selectedTestCategory == null) {
+                        if (_selectedTestCategory == null &&
+                            _selectedRiskAreaCategory == null) {
                           if (state is PopularPackagesLoaded) {
                             final tests = state.popularPackages;
 
@@ -147,7 +170,8 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                         } else {
                           return FutureBuilder<List<TestPackageModel>>(
                               future: TestService.getPackagesByCategory(
-                                  categoryId: _selectedTestCategory!.id),
+                                  categoryId: _selectedTestCategory?.id ??
+                                      _selectedRiskAreaCategory!.id),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -206,12 +230,22 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
   }
 
   Widget _buildCategoryContainer(
-      {required TestCategoryModel testCategoryModel}) {
-    final isSelected = testCategoryModel.id == _selectedTestCategory?.id;
+      {required TestCategoryModel? testCategoryModel,
+      required RiskAreaCategory? riskAreaCategory}) {
+    final isSelected = testCategoryModel != null
+        ? testCategoryModel.id == _selectedTestCategory?.id
+        : riskAreaCategory?.id == _selectedRiskAreaCategory?.id;
 
     return GestureDetector(
         onTap: () {
-          _selectedTestCategory = testCategoryModel;
+          if (testCategoryModel != null) {
+            _selectedTestCategory = testCategoryModel;
+            _selectedRiskAreaCategory = null;
+          } else {
+            _selectedRiskAreaCategory = riskAreaCategory;
+            _selectedTestCategory = null;
+          }
+
           setState(() {});
         },
         child: Column(children: [
@@ -226,9 +260,11 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                   borderRadius: BorderRadius.circular(17)),
               padding: EdgeInsets.all(14),
               child: CommonNetworkImage(
-                  name: testCategoryModel.pic, height: 32, width: 32)),
+                  name: testCategoryModel?.pic ?? riskAreaCategory!.pic,
+                  height: 32,
+                  width: 32)),
           SizedBox(height: 4),
-          Text(testCategoryModel.title,
+          Text(testCategoryModel?.title ?? riskAreaCategory!.title,
               style:
                   _textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w500))
         ]));

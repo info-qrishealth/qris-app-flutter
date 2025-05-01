@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:qris_health/modules/all_scans_module/models/category_res/test_and_risk_category_res.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_category_model/test_category_model.dart';
 import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 
@@ -11,11 +12,11 @@ class TestsCategoryCubit extends Cubit<TestsCategoryState> {
   Future<void> getTestsCategories() async {
     try {
       emit(TestsCategoryLoading());
-      final categories = await TestService.getTestCategories();
-      emit(TestsCategoryLoaded(categories: categories));
+      final res = await TestService.getTestCategories();
+      emit(TestsCategoryLoaded(res: res));
     } catch (e) {
       emit(TestsCategoryLoadingError(
-          categories: state.categories, errorMessage: e.toString()));
+          res: state.res, errorMessage: e.toString()));
     }
   }
 }
