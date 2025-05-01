@@ -9,7 +9,7 @@ import 'enums/snackbar_type.dart';
 
 class AppConstants {
   static const String baseUrl =
-      // 'http://192.168.1.45:8080';
+      // 'http://192.168.1.35:8080';
       'http://srv740952.hstgr.cloud:8080';
   static const ubuntuFontFamily = 'Ubuntu';
   static const latoFontFamily = 'Lato';
@@ -20,6 +20,7 @@ class AppConstants {
   static const imageBaseUrl = 'https://qrishealth.com/cms/uploads';
   static const invoiceUrl = 'https://qrishealth.com/payment/invoice';
   static const reportUrl = 'https://qrishealth.com/mylab/report_file';
+  static const supportNumber = '9289589692';
   static const privacyPolicyUrl =
       'https://qrishealth.com/privacy-and-policy.php';
   static const termsAndConditionsUrl =
