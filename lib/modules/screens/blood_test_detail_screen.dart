@@ -24,6 +24,7 @@ import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
+import '../../generated/assets.dart';
 import '../cart_module/screens/cart_screen.dart';
 
 class BloodTestDetailScreen extends StatefulWidget {
@@ -142,14 +143,12 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                                   child: Row(children: [
                                     Expanded(
                                         child: InfoRow(
-                                            svgPath:
-                                                'assets/images/icons/food_icon.svg',
+                                            svgPath: Assets.iconsFoodIcon,
                                             title: 'Fasting Time : ',
                                             description:
                                                 '${_testPackageModel!.fastingTime}')),
                                     InfoRow(
-                                        svgPath:
-                                            'assets/images/icons/clock_icon.svg',
+                                        svgPath: Assets.iconsClockIcon,
                                         title: 'Report Time : ',
                                         description:
                                             _testPackageModel?.productH3 ??
@@ -208,7 +207,7 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                           ContactUsContainer(),
                           SizedBox(height: 18),
                           Text(
-                              'Parameters Included - ${_testPackageModel?.includedPackages.fold(0, (a, b) => (a + b.customParameterCount).toInt())}',
+                              'Parameters Included - ${_testPackageModel?.customParameterCount}',
                               style: _textTheme.titleMedium!
                                   .copyWith(fontWeight: FontWeight.w700)),
                           SizedBox(height: 8),
@@ -246,27 +245,27 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                                         title:
                                             'Free Home Sample Collection by Vaccinated Professionals',
                                         assetPath:
-                                            'assets/images/icons/test_benefit_icons/cycle_icon.svg'),
+                                            Assets.testBenefitIconsCycleIcon),
                                     _buildBenefitRow(
                                         title:
                                             'Free Doctor Consultation from Expert Team',
                                         assetPath:
-                                            'assets/images/icons/test_benefit_icons/doctor_icon.svg'),
+                                            Assets.testBenefitIconsDoctorIcon),
                                     _buildBenefitRow(
                                         title:
                                             'Doctor verified reports with 3-step review process',
-                                        assetPath:
-                                            'assets/images/icons/test_benefit_icons/verified_benefit_icon.svg'),
+                                        assetPath: Assets
+                                            .testBenefitIconsVerifiedBenefitIcon),
                                     _buildBenefitRow(
                                         title:
                                             'Smart Reporting - Detailed information on each test',
                                         assetPath:
-                                            'assets/images/icons/test_benefit_icons/sim_icon.svg'),
+                                            Assets.testBenefitIconsSimIcon),
                                     _buildBenefitRow(
                                         title:
                                             'Expert Team of Medical Professionals',
                                         assetPath:
-                                            'assets/images/icons/test_benefit_icons/users_icon.svg'),
+                                            Assets.testBenefitIconsUsersIcon),
                                   ])),
                           SizedBox(height: 18),
                           Text('Frequently Asked Questions',
@@ -357,7 +356,7 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                   height: 22, width: 22)),
           SizedBox(width: 10),
           Text(
-              '${includedPackage.title!} (${includedPackage.customParameterCount})',
+              '${includedPackage.title!.clean} (${includedPackage.customParameterCount})',
               style:
                   _textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w400)),
         ]),
