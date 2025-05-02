@@ -18,6 +18,7 @@ import 'package:qris_health/shared/components/discount_coupon_container.dart';
 import 'package:qris_health/shared/components/shimmer_tile.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
+import '../../../constants/enums/test_package_type.dart';
 import '../../screens/blood_test_detail_screen.dart';
 
 class PopularPackageScreen extends StatefulWidget {
@@ -170,8 +171,8 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                         } else {
                           return FutureBuilder<List<TestPackageModel>>(
                               future: TestService.getPackagesByCategory(
-                                  categoryId: _selectedTestCategory?.id ??
-                                      _selectedRiskAreaCategory!.id),
+                                  categoryId: _selectedTestCategory?.id,
+                                  riskId: _selectedRiskAreaCategory?.id),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -179,8 +180,32 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                 }
 
                                 if (snapshot.hasData) {
-                                  final tests =
-                                      snapshot.data!.reversed.toList();
+                                  final tests = snapshot.data!;
+
+                                  final List<TestPackageModel> packages = [];
+                                  final List<TestPackageModel> subPackages = [];
+                                  final List<TestPackageModel> testsTests = [];
+                                  final List<TestPackageModel> otherTests = [];
+
+                                  for (var test in tests) {
+                                    switch (test.type) {
+                                      case TestPackageType.test:
+                                        testsTests.add(test);
+                                      case TestPackageType.package:
+                                        packages.add(test);
+                                      case TestPackageType.sub_package:
+                                        subPackages.add(test);
+                                      case null:
+                                        otherTests.add(test);
+                                    }
+                                  }
+
+                                  tests.assignAll([
+                                    ...packages,
+                                    ...subPackages,
+                                    ...testsTests,
+                                    ...otherTests
+                                  ]);
 
                                   return ListView.separated(
                                       physics: BouncingScrollPhysics(),
