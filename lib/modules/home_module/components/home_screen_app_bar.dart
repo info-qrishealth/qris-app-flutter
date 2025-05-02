@@ -3,19 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/cart_module/screens/cart_screen.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
-import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
-import 'package:qris_health/modules/refer_and_earn_module/models/wallet_entry/qris_wallet_entry.dart';
 import 'package:qris_health/modules/refer_and_earn_module/screens/wallet_screen.dart';
-import 'package:qris_health/modules/refer_and_earn_module/services/qris_wallet_service.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-import '../../../constants/enums/transaction_type.dart';
 import '../../../generated/assets.dart';
 import '../../notification_module/screens/notification_screen.dart';
 
@@ -106,14 +101,14 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                             fontSize: 7)),
                     child: SvgPicture.asset(Assets.homeScreenIconsCartIcon));
               })),
-              SizedBox(width: 10),
-              InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(CupertinoPageRoute(
-                        builder: (context) => NotificationScreen()));
-                  },
-                  child:
-                      SvgPicture.asset(Assets.homeScreenIconsNotificationIcon)),
+              // SizedBox(width: 10),
+              // InkWell(
+              //     onTap: () {
+              //       Navigator.of(context).push(CupertinoPageRoute(
+              //           builder: (context) => NotificationScreen()));
+              //     },
+              //     child:
+              //         SvgPicture.asset(Assets.homeScreenIconsNotificationIcon)),
             ])));
   }
 
