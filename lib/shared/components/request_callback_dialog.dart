@@ -70,7 +70,7 @@ class _RequestCallbackDialogState extends State<RequestCallbackDialog> {
                                       Navigator.of(context).pop();
                                       AppConstants.showSnackbar(
                                           text:
-                                              'Callback requested! You would get a callback from qris team ASAP',
+                                              'Callback Requested Successfully! You’ll get a callback from Qris Health soon.',
                                           type: SnackbarType.success);
                                     } catch (e) {
                                       AppConstants.showSnackbar(
@@ -82,7 +82,8 @@ class _RequestCallbackDialogState extends State<RequestCallbackDialog> {
                                       });
                                     }
                                   },
-                            child: Text(_isLoading ? 'Submitting...' : 'Confirm',
+                            child: Text(
+                                _isLoading ? 'Submitting...' : 'Confirm',
                                 style: textTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white))))
