@@ -355,10 +355,11 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
               child: Image.asset(includedPackage.imagePath,
                   height: 22, width: 22)),
           SizedBox(width: 10),
-          Text(
-              '${includedPackage.title!.clean} (${includedPackage.customParameterCount})',
-              style:
-                  _textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w400)),
+          Expanded(
+              child: Text(
+                  '${includedPackage.title!.clean} (${includedPackage.customParameterCount})',
+                  style: _textTheme.bodySmall!
+                      .copyWith(fontWeight: FontWeight.w400))),
         ]),
         childrenPadding: EdgeInsets.symmetric(horizontal: 9),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
