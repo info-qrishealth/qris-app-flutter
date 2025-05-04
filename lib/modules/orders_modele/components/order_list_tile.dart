@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/order_status.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
+import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/address_module/models/address/address.dart';
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
 import 'package:qris_health/modules/orders_modele/components/order_cancellation_dialog.dart';
@@ -169,13 +170,13 @@ class _OrderListTileState extends State<OrderListTile> {
               ]),
               SizedBox(height: 8),
               FeatureRow(
-                  svgPath: 'assets/images/icons/drawer_icons/location_icon.svg',
+                  svgPath: Assets.drawerIconsLocationIcon,
                   title:
                       '${address.house}, ${address.address1} ${address.address2 != null && address.address2!.isNotEmpty ? ', ${address.address2}' : ''} ${address.landmark != null && address.landmark!.isNotEmpty ? ', ${address.landmark}' : ''} ${address.pincode != null && address.pincode!.isNotEmpty ? ', ${address.pincode}' : ''}, ${address.state ?? ''}',
                   fontColor: AppColors.textColor),
               SizedBox(height: 6),
               FeatureRow(
-                  svgPath: 'assets/images/icons/clock_icon.svg',
+                  svgPath: Assets.iconsClockIcon,
                   title:
                       '${DateTime.tryParse(_order.bookingSlotDate!)?.toLocal().getFormattedDatedMMMy} (${from.toDateTime?.toLocal().getTimeStringFromDateTimeString} - ${to.toDateTime?.toLocal().getTimeStringFromDateTimeString})',
                   fontColor: AppColors.textColor),
@@ -193,16 +194,54 @@ class _OrderListTileState extends State<OrderListTile> {
                         fontFamily: AppConstants.ubuntuFontFamily)),
                 SizedBox(height: 8),
                 SummaryInfoRow(
-                    title: 'Base amount',
+                    title: 'Order Total',
                     value: '₹${_order.orderTotal.toInt()}'),
+                if (_order.couponCode != null && _order.couponCode!.isNotEmpty)
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 4),
+                        SummaryInfoRow(
+                            title: 'Coupon Code',
+                            value: '${_order.couponCode}'),
+                      ]),
+                if (_order.couponAmount != null && _order.couponAmount != 0)
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 4),
+                        SummaryInfoRow(
+                            title: 'Coupon Amount',
+                            value: '-₹${_order.couponAmount}',
+                            color: Colors.green),
+                      ]),
                 SizedBox(height: 4),
                 SummaryInfoRow(
-                    title: 'Total amount ',
-                    value: '₹${_order.paidAmount.toInt()}'),
+                    title: 'Collection Charges',
+                    value: '₹${_order.collectionCharge}'),
+                SizedBox(height: 4),
+                SummaryInfoRow(
+                    title: 'Hard Copy Charges',
+                    value: '₹${_order.hardCopy ?? '0'}'),
+                if (_order.qrisCoinsPaid != 0)
+                  Column(children: [
+                    SizedBox(height: 4),
+                    SummaryInfoRow(
+                        title: 'Qris Coins Paid',
+                        value: '₹${_order.qrisCoinsPaid ?? '0'}'),
+                  ]),
+                if (_order.walletPaid != 0)
+                  Column(children: [
+                    SizedBox(height: 4),
+                    SummaryInfoRow(
+                        title: 'Wallet Paid',
+                        value: '₹${_order.walletPaid ?? '0'}'),
+                  ]),
                 SizedBox(height: 4),
                 Row(children: [
                   Expanded(
-                      child: Text('Amount paid (${_order.paymentMode})',
+                      child: Text(
+                          'Amount paid (${_order.paymentMode.toUpperCase()})',
                           style: _textTheme.bodySmall!
                               .copyWith(fontWeight: FontWeight.w700))),
                   Text('₹${_order.paidAmount.toInt()}',
