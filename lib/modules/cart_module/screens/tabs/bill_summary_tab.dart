@@ -630,7 +630,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                               : _selectedPaymentMode == PaymentMode.cod
                                   ? () => _createOrder()
                                   : _checkout
-                          : () => _createOrder(),
+                          : () => _createOrder(walletPaid: true),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue),
                       child: Text(cartFinalValue > 0
@@ -765,7 +765,8 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
     }
   }
 
-  Future<void> _createOrder({String? razorpayPaymentId}) async {
+  Future<void> _createOrder(
+      {String? razorpayPaymentId, bool walletPaid = false}) async {
     try {
       final cartCubit = BlocProvider.of<CartCubit>(context);
       final cart = cartCubit.state.cart;
@@ -787,7 +788,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
           collectionCharges: cartCubit.getDeliveryCharge().toString(),
           hardCopyCharges: cartCubit.getHardCopyCharges().toString(),
           cartFinalValue: cartCubit.getCartFinalValue(context: context).round(),
-          paymentMode: _selectedPaymentMode!,
+          paymentMode: walletPaid ? PaymentMode.prepaid : _selectedPaymentMode!,
           razorpayPaymentId: razorpayPaymentId,
           coupon: cart.appliedCoupon,
           redeemedWalletAmount: cart.walletRedeemedAmount,
