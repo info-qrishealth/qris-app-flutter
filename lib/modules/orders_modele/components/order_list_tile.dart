@@ -218,11 +218,13 @@ class _OrderListTileState extends State<OrderListTile> {
                 SizedBox(height: 4),
                 SummaryInfoRow(
                     title: 'Collection Charges',
-                    value: '₹${_order.collectionCharge}'),
+                    value:
+                        '₹${_order.collectionCharge.isEmpty ? 0 : _order.collectionCharge}'),
                 SizedBox(height: 4),
                 SummaryInfoRow(
                     title: 'Hard Copy Charges',
-                    value: '₹${_order.hardCopy ?? '0'}'),
+                    value:
+                        '₹${_order.hardCopy == null || _order.hardCopy!.isEmpty ? 0 : _order.hardCopy}'),
                 if (_order.qrisCoinsPaid != 0)
                   Column(children: [
                     SizedBox(height: 4),
