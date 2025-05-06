@@ -40,7 +40,7 @@ class QrisCoinListTile extends StatelessWidget {
                     .add_yMMMEd()
                     .add_jm()
                     .format(coinEntry.dated.toDateTime!)
-                : 'Date N/A',
+                : coinEntry.dated,
             style: textTheme.bodySmall!.copyWith(
                 fontWeight: FontWeight.w300,
                 color: AppColors.lightSubTextColor))
