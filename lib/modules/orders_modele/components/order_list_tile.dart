@@ -97,7 +97,7 @@ class _OrderListTileState extends State<OrderListTile> {
                 Padding(
                     padding: const EdgeInsets.only(left: 4),
                     child: Text(
-                        '(${_order.orderStatus.name.formattedEnumName})',
+                        '(${_order.orderStatus == OrderStatus.cancel ? 'Cancelled' : _order.orderStatus.name.formattedEnumName})',
                         style: _textTheme.bodySmall!.copyWith(
                             fontWeight: FontWeight.w500, color: AppColors.red)))
             ]),
