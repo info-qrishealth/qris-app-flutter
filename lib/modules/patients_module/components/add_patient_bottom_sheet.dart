@@ -200,7 +200,8 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
                   _patient.copyWith.call(name: _patient.name?.toUpperCase()));
           if (widget.getAddedPatient != null) widget.getAddedPatient!(patient);
         } else {
-          final patient = await PatientService.updatePatient(_patient);
+          final patient = await PatientService.updatePatient(
+              _patient.copyWith.call(name: _patient.name?.toUpperCase()));
           if (widget.getUpdatedPatient != null) {
             widget.getUpdatedPatient!(patient);
           }
