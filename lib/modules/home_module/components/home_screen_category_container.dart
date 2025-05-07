@@ -23,7 +23,7 @@ class HomeScreenCategoryContainer extends StatelessWidget {
               .push(CupertinoPageRoute(builder: (context) => _getScreen()));
         },
         backgroundColor: testCategory.backgroundColor,
-        imagePath: testCategory.svgPath,
+        assetImagePath: testCategory.svgPath,
         title: testCategory.formattedName);
   }
 

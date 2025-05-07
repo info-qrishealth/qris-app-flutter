@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/shared/components/common_network_image.dart';
 
 import '../../constants/app_constants.dart';
 import '../../styles/app_colors.dart';
@@ -8,14 +9,16 @@ import '../../styles/app_styles.dart';
 class CommonCategoryContainer extends StatelessWidget {
   final Function() onTap;
   final Color backgroundColor;
-  final String imagePath;
+  final String? assetImagePath;
+  final String? networkImagePath;
   final String title;
   const CommonCategoryContainer(
       {super.key,
       required this.onTap,
       required this.backgroundColor,
-      required this.imagePath,
-      required this.title});
+      this.assetImagePath,
+      required this.title,
+      this.networkImagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,10 @@ class CommonCategoryContainer extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: backgroundColor,
                       borderRadius: BorderRadius.circular(12)),
-                  child: Image.asset(imagePath, height: 30, width: 30)),
+                  child: assetImagePath != null
+                      ? Image.asset(assetImagePath!, height: 30, width: 30)
+                      : CommonNetworkImage(
+                          name: '$networkImagePath', height: 30, width: 30)),
               Positioned(
                   top: 62,
                   child: Container(

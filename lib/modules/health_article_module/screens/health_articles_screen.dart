@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/health_article_module/cubits/health_article_category_cubit/health_article_category_cubit.dart';
 import 'package:qris_health/modules/health_article_module/cubits/health_articles_cubit/health_article_cubit.dart';
-import 'package:qris_health/modules/health_article_module/services/health_article_service.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_outlined_chip.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
@@ -12,11 +10,11 @@ import 'package:qris_health/shared/components/shimmer_tile.dart';
 
 import '../components/health_article_list_tile.dart';
 import '../components/health_article_list_tile_horizontal.dart';
-import '../models/health_article/health_article.dart';
 import '../models/health_article_category/health_article_category.dart';
 
 class HealthArticlesScreen extends StatefulWidget {
-  const HealthArticlesScreen({super.key});
+  final HealthArticleCategory? selectedCategory;
+  const HealthArticlesScreen({super.key, this.selectedCategory});
 
   @override
   State<HealthArticlesScreen> createState() => _HealthArticlesScreenState();
@@ -30,6 +28,10 @@ class _HealthArticlesScreenState extends State<HealthArticlesScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.selectedCategory != null) {
+      _selectedCategory = widget.selectedCategory;
+    }
+
     _healthArticleCubit = BlocProvider.of<HealthArticleCubit>(context);
     _healthArticleCategoryCubit =
         BlocProvider.of<HealthArticleCategoryCubit>(context);

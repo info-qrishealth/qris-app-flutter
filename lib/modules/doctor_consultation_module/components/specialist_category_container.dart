@@ -12,7 +12,7 @@ class SpecialistCategoryContainer extends StatelessWidget {
     return CommonCategoryContainer(
         onTap: () async {},
         backgroundColor: specialistType.backgroundColor,
-        imagePath: specialistType.imagePath,
+        assetImagePath: specialistType.imagePath,
         title: specialistType.name.formattedEnumName!);
   }
 }

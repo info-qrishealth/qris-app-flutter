@@ -37,6 +37,10 @@ mixin _$HealthArticleCategory {
   String get pic => throw _privateConstructorUsedError;
   @JsonKey(name: 'alt_tag')
   String get altTag => throw _privateConstructorUsedError;
+  @JsonKey(name: 'icon')
+  String? get icon => throw _privateConstructorUsedError;
+  @JsonKey(name: 'icon_bg')
+  String? get iconBg => throw _privateConstructorUsedError;
 
   /// Serializes this HealthArticleCategory to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -65,7 +69,9 @@ abstract class $HealthArticleCategoryCopyWith<$Res> {
       String canonical,
       String slug,
       String pic,
-      @JsonKey(name: 'alt_tag') String altTag});
+      @JsonKey(name: 'alt_tag') String altTag,
+      @JsonKey(name: 'icon') String? icon,
+      @JsonKey(name: 'icon_bg') String? iconBg});
 }
 
 /// @nodoc
@@ -95,6 +101,8 @@ class _$HealthArticleCategoryCopyWithImpl<$Res,
     Object? slug = null,
     Object? pic = null,
     Object? altTag = null,
+    Object? icon = freezed,
+    Object? iconBg = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -141,6 +149,14 @@ class _$HealthArticleCategoryCopyWithImpl<$Res,
           ? _value.altTag
           : altTag // ignore: cast_nullable_to_non_nullable
               as String,
+      icon: freezed == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as String?,
+      iconBg: freezed == iconBg
+          ? _value.iconBg
+          : iconBg // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -165,7 +181,9 @@ abstract class _$$HealthArticleCategoryImplCopyWith<$Res>
       String canonical,
       String slug,
       String pic,
-      @JsonKey(name: 'alt_tag') String altTag});
+      @JsonKey(name: 'alt_tag') String altTag,
+      @JsonKey(name: 'icon') String? icon,
+      @JsonKey(name: 'icon_bg') String? iconBg});
 }
 
 /// @nodoc
@@ -193,6 +211,8 @@ class __$$HealthArticleCategoryImplCopyWithImpl<$Res>
     Object? slug = null,
     Object? pic = null,
     Object? altTag = null,
+    Object? icon = freezed,
+    Object? iconBg = freezed,
   }) {
     return _then(_$HealthArticleCategoryImpl(
       id: null == id
@@ -239,6 +259,14 @@ class __$$HealthArticleCategoryImplCopyWithImpl<$Res>
           ? _value.altTag
           : altTag // ignore: cast_nullable_to_non_nullable
               as String,
+      icon: freezed == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as String?,
+      iconBg: freezed == iconBg
+          ? _value.iconBg
+          : iconBg // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -257,7 +285,9 @@ class _$HealthArticleCategoryImpl implements _HealthArticleCategory {
       required this.canonical,
       required this.slug,
       required this.pic,
-      @JsonKey(name: 'alt_tag') required this.altTag});
+      @JsonKey(name: 'alt_tag') required this.altTag,
+      @JsonKey(name: 'icon') this.icon,
+      @JsonKey(name: 'icon_bg') this.iconBg});
 
   factory _$HealthArticleCategoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$HealthArticleCategoryImplFromJson(json);
@@ -289,10 +319,16 @@ class _$HealthArticleCategoryImpl implements _HealthArticleCategory {
   @override
   @JsonKey(name: 'alt_tag')
   final String altTag;
+  @override
+  @JsonKey(name: 'icon')
+  final String? icon;
+  @override
+  @JsonKey(name: 'icon_bg')
+  final String? iconBg;
 
   @override
   String toString() {
-    return 'HealthArticleCategory(id: $id, title: $title, disOrder: $disOrder, status: $status, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, canonical: $canonical, slug: $slug, pic: $pic, altTag: $altTag)';
+    return 'HealthArticleCategory(id: $id, title: $title, disOrder: $disOrder, status: $status, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, canonical: $canonical, slug: $slug, pic: $pic, altTag: $altTag, icon: $icon, iconBg: $iconBg)';
   }
 
   @override
@@ -314,13 +350,15 @@ class _$HealthArticleCategoryImpl implements _HealthArticleCategory {
                 other.canonical == canonical) &&
             (identical(other.slug, slug) || other.slug == slug) &&
             (identical(other.pic, pic) || other.pic == pic) &&
-            (identical(other.altTag, altTag) || other.altTag == altTag));
+            (identical(other.altTag, altTag) || other.altTag == altTag) &&
+            (identical(other.icon, icon) || other.icon == icon) &&
+            (identical(other.iconBg, iconBg) || other.iconBg == iconBg));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, title, disOrder, status,
-      metaTitle, metaKey, metaDesc, canonical, slug, pic, altTag);
+      metaTitle, metaKey, metaDesc, canonical, slug, pic, altTag, icon, iconBg);
 
   /// Create a copy of HealthArticleCategory
   /// with the given fields replaced by the non-null parameter values.
@@ -351,7 +389,9 @@ abstract class _HealthArticleCategory implements HealthArticleCategory {
           required final String canonical,
           required final String slug,
           required final String pic,
-          @JsonKey(name: 'alt_tag') required final String altTag}) =
+          @JsonKey(name: 'alt_tag') required final String altTag,
+          @JsonKey(name: 'icon') final String? icon,
+          @JsonKey(name: 'icon_bg') final String? iconBg}) =
       _$HealthArticleCategoryImpl;
 
   factory _HealthArticleCategory.fromJson(Map<String, dynamic> json) =
@@ -384,6 +424,12 @@ abstract class _HealthArticleCategory implements HealthArticleCategory {
   @override
   @JsonKey(name: 'alt_tag')
   String get altTag;
+  @override
+  @JsonKey(name: 'icon')
+  String? get icon;
+  @override
+  @JsonKey(name: 'icon_bg')
+  String? get iconBg;
 
   /// Create a copy of HealthArticleCategory
   /// with the given fields replaced by the non-null parameter values.

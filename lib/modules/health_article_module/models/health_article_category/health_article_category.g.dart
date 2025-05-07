@@ -20,6 +20,8 @@ _$HealthArticleCategoryImpl _$$HealthArticleCategoryImplFromJson(
       slug: json['slug'] as String,
       pic: json['pic'] as String,
       altTag: json['alt_tag'] as String,
+      icon: json['icon'] as String?,
+      iconBg: json['icon_bg'] as String?,
     );
 
 Map<String, dynamic> _$$HealthArticleCategoryImplToJson(
@@ -36,4 +38,6 @@ Map<String, dynamic> _$$HealthArticleCategoryImplToJson(
       'slug': instance.slug,
       'pic': instance.pic,
       'alt_tag': instance.altTag,
+      'icon': instance.icon,
+      'icon_bg': instance.iconBg,
     };

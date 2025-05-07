@@ -7,18 +7,20 @@ import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
+import 'package:qris_health/modules/health_article_module/cubits/health_article_category_cubit/health_article_category_cubit.dart';
 import 'package:qris_health/modules/health_article_module/cubits/health_articles_cubit/health_article_cubit.dart';
 import 'package:qris_health/modules/health_article_module/models/health_article/health_article.dart';
-import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
+import 'package:qris_health/modules/health_article_module/screens/health_articles_screen.dart';
 import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
-import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
-import 'package:qris_health/shared/components/common_html_text.dart';
+import 'package:qris_health/shared/components/common_category_container.dart';
 import 'package:qris_health/shared/components/common_network_image.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
+import 'package:qris_health/shared/components/navigation_row.dart';
 import 'package:qris_health/shared/extensions/date_time_extension.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
+import 'package:qris_health/shared/utils/hex_color.dart';
 import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -37,6 +39,7 @@ class HealthArticleDetailScreen extends StatefulWidget {
 class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
     with GeneralHelperMixin {
   final _textTheme = Get.textTheme;
+  final _categoryScrollController = ScrollController();
   List<HealthArticle> _relatedArticles = [];
 
   @override
@@ -306,6 +309,57 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
                     return CircularProgressIndicator.adaptive();
                   })),
               SizedBox(height: 16),
+              Row(children: [
+                Expanded(child: HeadingText(text: 'Other Categories')),
+                NavigationRow(
+                    onPreviousTap: () async {
+                      await _categoryScrollController.animateTo(
+                          _categoryScrollController.position.pixels - 150,
+                          duration: Duration(milliseconds: 200),
+                          curve: Curves.easeIn);
+                    },
+                    onNextTap: () async {
+                      await _categoryScrollController.animateTo(
+                          _categoryScrollController.position.pixels + 150,
+                          duration: Duration(milliseconds: 200),
+                          curve: Curves.easeIn);
+                    },
+                    activeColor: AppColors.primaryBlue)
+              ]),
+              SizedBox(height: 12),
+              BlocBuilder<HealthArticleCategoryCubit,
+                  HealthArticleCategoryState>(builder: (context, state) {
+                return SingleChildScrollView(
+                    controller: _categoryScrollController,
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                        height: 100,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: state.categories
+                                .map((category) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6),
+                                    child: CommonCategoryContainer(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      HealthArticlesScreen(
+                                                          selectedCategory:
+                                                              category)));
+                                        },
+                                        backgroundColor:
+                                            category.iconBg == null ||
+                                                    category.iconBg!.isEmpty
+                                                ? Colors.white
+                                                : HexColor.hexToColor(
+                                                    category.iconBg!),
+                                        networkImagePath: '${category.icon}',
+                                        title: category.title)))
+                                .toList())));
+              })
             ])));
   }
 }
