@@ -31,8 +31,9 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onTap: () {
                     scaffoldKey.currentState?.openDrawer();
                   },
-                  child: SvgPicture.asset(Assets.iconsDrawerIcon)),
-              SizedBox(width: 24),
+                  child: Padding(
+                      padding: const EdgeInsets.only(right: 24),
+                      child: SvgPicture.asset(Assets.iconsDrawerIcon))),
               Expanded(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
