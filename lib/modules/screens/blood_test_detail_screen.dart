@@ -121,10 +121,8 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                               onSeeDetailsTap: null,
                               onBookNowTap: () async {
                                 if (_testPackageModel != null) {
-                                  Navigator.of(context).push(CupertinoPageRoute(
-                                      builder: (context) =>
-                                          BloodTestDetailScreen(
-                                              testId: _testPackageModel!.id)));
+                                  await CartHelper.addToCartAndNavigate(
+                                      testPackageModel: _testPackageModel!);
                                 }
                               }),
                           SizedBox(height: 18),
@@ -325,10 +323,15 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
 
                                           return PackageTileHorizontal(
                                               testPackageModel: test,
-                                              onBookNowTap: () async {
-                                                await CartHelper
-                                                    .addToCartAndNavigate(
-                                                        testPackageModel: test);
+                                              onSeeDetailsTap: () async {
+                                                Navigator.of(context).push(
+                                                    CupertinoPageRoute(
+                                                        builder: (context) =>
+                                                            BloodTestDetailScreen(
+                                                                testId:
+                                                                    _relatedTests[
+                                                                            index]
+                                                                        .id)));
                                               });
                                         },
                                         separatorBuilder: (context, index) {

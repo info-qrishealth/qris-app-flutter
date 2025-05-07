@@ -160,14 +160,10 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                                                                       .id)));
                                             },
                                             onBookNowTap: () async {
-                                              Navigator.of(context).push(
-                                                  CupertinoPageRoute(
-                                                      builder: (context) =>
-                                                          BloodTestDetailScreen(
-                                                              testId:
-                                                                  _testsToShow![
-                                                                          index]
-                                                                      .id)));
+                                              await CartHelper
+                                                  .addToCartAndNavigate(
+                                                      testPackageModel:
+                                                          _testsToShow![index]);
                                             });
                                       },
                                       separatorBuilder: (context, index) {

@@ -15,8 +15,8 @@ import 'package:qris_health/modules/home_module/enum/test_category.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/home_module/screens/search_package_screen.dart';
-import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/modules/refer_and_earn_module/screens/refer_and_earn_screen.dart';
+import 'package:qris_health/modules/screens/blood_test_detail_screen.dart';
 import 'package:qris_health/shared/components/contact_us_container.dart';
 import 'package:qris_health/shared/components/filter_textfield.dart';
 import 'package:qris_health/shared/components/main_drawer.dart';
@@ -114,9 +114,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemBuilder: (context, index) {
                             return PackageTileHorizontal(
                                 testPackageModel: packages[index],
-                                onBookNowTap: () async {
-                                  await CartHelper.addToCartAndNavigate(
-                                      testPackageModel: packages[index]);
+                                onSeeDetailsTap: () async {
+                                  Navigator.of(context).push(CupertinoPageRoute(
+                                      builder: (context) =>
+                                          BloodTestDetailScreen(
+                                              testId: packages[index].id)));
                                 });
                           }));
                 }

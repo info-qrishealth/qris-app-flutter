@@ -9,10 +9,10 @@ import 'package:qris_health/shared/components/offered_price_container.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class PackageTileHorizontal extends StatelessWidget {
-  final Function()? onBookNowTap;
+  final Function()? onSeeDetailsTap;
   final TestPackageModel? testPackageModel;
   PackageTileHorizontal(
-      {super.key, required this.onBookNowTap, this.testPackageModel});
+      {super.key, required this.onSeeDetailsTap, this.testPackageModel});
   final _textTheme = Get.textTheme;
 
   @override
@@ -65,9 +65,9 @@ class PackageTileHorizontal extends StatelessWidget {
                   OfferedPriceContainer(
                       mrp: testPackageModel?.specialPrice,
                       offeredPrice: testPackageModel?.price),
-                  if (onBookNowTap != null)
+                  if (onSeeDetailsTap != null)
                     InkWell(
-                        onTap: onBookNowTap,
+                        onTap: onSeeDetailsTap,
                         child: Container(
                             padding: EdgeInsets.symmetric(vertical: 8),
                             width: double.infinity,
@@ -77,7 +77,7 @@ class PackageTileHorizontal extends StatelessWidget {
                                 borderRadius: BorderRadius.only(
                                     bottomRight: Radius.circular(10),
                                     bottomLeft: Radius.circular(10))),
-                            child: Text('Book Now',
+                            child: Text('See Details',
                                 textAlign: TextAlign.center,
                                 style: _textTheme.bodySmall!.copyWith(
                                     color: Colors.white,

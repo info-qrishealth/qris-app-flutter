@@ -257,10 +257,14 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
                                   itemBuilder: (context, index) {
                                     return PackageTileHorizontal(
                                         testPackageModel: packages[index],
-                                        onBookNowTap: () async {
-                                          await CartHelper.addToCartAndNavigate(
-                                              testPackageModel:
-                                                  packages[index]);
+                                        onSeeDetailsTap: () async {
+                                          await Navigator.of(context).push(
+                                              CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      BloodTestDetailScreen(
+                                                          testId:
+                                                              packages[index]
+                                                                  .id)));
                                         });
                                   },
                                   separatorBuilder: (context, index) {
