@@ -141,7 +141,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                   GestureDetector(
                     onTap: () async {
                       await Share.share(
-                          'Hey!\nDownload Qris Health App and get Rs.${BlocProvider.of<QrisConfigCubit>(context).state.config?.wcbAmount.toInt()} by using my referral code - ${state.user.referCode}');
+                          'Hey!\nSign up using my invite link to get started:\n👉 https://qrishealth.com/signup.php?arg=true&invitecode=${state.user.referCode}');
                     },
                     child: Padding(
                         padding: EdgeInsets.symmetric(
