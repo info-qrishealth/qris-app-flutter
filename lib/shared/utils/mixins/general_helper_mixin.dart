@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:qris_health/shared/models/bmi_info.dart';
 import 'package:qris_health/styles/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,12 +21,13 @@ mixin GeneralHelperMixin {
   }
 
   Future<void> openDialPad({required String phoneNumber}) async {
-    final url = 'tel:$phoneNumber';
+    final isOpened = await FlutterPhoneDirectCaller.callNumber(phoneNumber);
 
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      throw 'Couldn\'t launch url';
+    if (isOpened != true) {
+      AppConstants.showSnackbar(
+        text: 'Unable to call',
+        type: SnackbarType.error,
+      );
     }
   }
 
