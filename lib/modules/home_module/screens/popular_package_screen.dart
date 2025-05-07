@@ -285,7 +285,7 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                   borderRadius: BorderRadius.circular(17)),
               padding: EdgeInsets.all(14),
               child: CommonNetworkImage(
-                  name: testCategoryModel?.pic ?? riskAreaCategory!.pic,
+                  name: testCategoryModel?.icon ?? '${riskAreaCategory?.icon}',
                   height: 32,
                   width: 32)),
           SizedBox(height: 4),

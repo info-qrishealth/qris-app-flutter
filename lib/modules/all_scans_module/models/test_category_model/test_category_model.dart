@@ -22,6 +22,7 @@ class TestCategoryModel with _$TestCategoryModel {
     @JsonKey(name: 'meta_desc') required String metaDesc,
     @JsonKey(name: 'canonical') required String canonical,
     @JsonKey(name: 'slug') required String slug,
+    @JsonKey(name: 'icon') required String? icon,
   }) = _TestCategoryModel;
 
   factory TestCategoryModel.fromJson(Map<String, dynamic> json) =>

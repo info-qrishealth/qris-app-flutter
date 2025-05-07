@@ -25,6 +25,7 @@ _$TestCategoryModelImpl _$$TestCategoryModelImplFromJson(
       metaDesc: json['meta_desc'] as String,
       canonical: json['canonical'] as String,
       slug: json['slug'] as String,
+      icon: json['icon'] as String?,
     );
 
 Map<String, dynamic> _$$TestCategoryModelImplToJson(
@@ -46,4 +47,5 @@ Map<String, dynamic> _$$TestCategoryModelImplToJson(
       'meta_desc': instance.metaDesc,
       'canonical': instance.canonical,
       'slug': instance.slug,
+      'icon': instance.icon,
     };

@@ -51,6 +51,8 @@ mixin _$TestCategoryModel {
   String get canonical => throw _privateConstructorUsedError;
   @JsonKey(name: 'slug')
   String get slug => throw _privateConstructorUsedError;
+  @JsonKey(name: 'icon')
+  String? get icon => throw _privateConstructorUsedError;
 
   /// Serializes this TestCategoryModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -84,7 +86,8 @@ abstract class $TestCategoryModelCopyWith<$Res> {
       @JsonKey(name: 'meta_key') String metaKey,
       @JsonKey(name: 'meta_desc') String metaDesc,
       @JsonKey(name: 'canonical') String canonical,
-      @JsonKey(name: 'slug') String slug});
+      @JsonKey(name: 'slug') String slug,
+      @JsonKey(name: 'icon') String? icon});
 }
 
 /// @nodoc
@@ -118,6 +121,7 @@ class _$TestCategoryModelCopyWithImpl<$Res, $Val extends TestCategoryModel>
     Object? metaDesc = null,
     Object? canonical = null,
     Object? slug = null,
+    Object? icon = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -184,6 +188,10 @@ class _$TestCategoryModelCopyWithImpl<$Res, $Val extends TestCategoryModel>
           ? _value.slug
           : slug // ignore: cast_nullable_to_non_nullable
               as String,
+      icon: freezed == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -212,7 +220,8 @@ abstract class _$$TestCategoryModelImplCopyWith<$Res>
       @JsonKey(name: 'meta_key') String metaKey,
       @JsonKey(name: 'meta_desc') String metaDesc,
       @JsonKey(name: 'canonical') String canonical,
-      @JsonKey(name: 'slug') String slug});
+      @JsonKey(name: 'slug') String slug,
+      @JsonKey(name: 'icon') String? icon});
 }
 
 /// @nodoc
@@ -244,6 +253,7 @@ class __$$TestCategoryModelImplCopyWithImpl<$Res>
     Object? metaDesc = null,
     Object? canonical = null,
     Object? slug = null,
+    Object? icon = freezed,
   }) {
     return _then(_$TestCategoryModelImpl(
       id: null == id
@@ -310,6 +320,10 @@ class __$$TestCategoryModelImplCopyWithImpl<$Res>
           ? _value.slug
           : slug // ignore: cast_nullable_to_non_nullable
               as String,
+      icon: freezed == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -333,7 +347,8 @@ class _$TestCategoryModelImpl implements _TestCategoryModel {
       @JsonKey(name: 'meta_key') required this.metaKey,
       @JsonKey(name: 'meta_desc') required this.metaDesc,
       @JsonKey(name: 'canonical') required this.canonical,
-      @JsonKey(name: 'slug') required this.slug});
+      @JsonKey(name: 'slug') required this.slug,
+      @JsonKey(name: 'icon') required this.icon});
 
   factory _$TestCategoryModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TestCategoryModelImplFromJson(json);
@@ -385,10 +400,13 @@ class _$TestCategoryModelImpl implements _TestCategoryModel {
   @override
   @JsonKey(name: 'slug')
   final String slug;
+  @override
+  @JsonKey(name: 'icon')
+  final String? icon;
 
   @override
   String toString() {
-    return 'TestCategoryModel(id: $id, title: $title, heading: $heading, shortDesc: $shortDesc, description: $description, headerDescription: $headerDescription, faq: $faq, pic: $pic, disOrder: $disOrder, status: $status, testByHabits: $testByHabits, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, canonical: $canonical, slug: $slug)';
+    return 'TestCategoryModel(id: $id, title: $title, heading: $heading, shortDesc: $shortDesc, description: $description, headerDescription: $headerDescription, faq: $faq, pic: $pic, disOrder: $disOrder, status: $status, testByHabits: $testByHabits, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, canonical: $canonical, slug: $slug, icon: $icon)';
   }
 
   @override
@@ -419,7 +437,8 @@ class _$TestCategoryModelImpl implements _TestCategoryModel {
                 other.metaDesc == metaDesc) &&
             (identical(other.canonical, canonical) ||
                 other.canonical == canonical) &&
-            (identical(other.slug, slug) || other.slug == slug));
+            (identical(other.slug, slug) || other.slug == slug) &&
+            (identical(other.icon, icon) || other.icon == icon));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -441,7 +460,8 @@ class _$TestCategoryModelImpl implements _TestCategoryModel {
       metaKey,
       metaDesc,
       canonical,
-      slug);
+      slug,
+      icon);
 
   /// Create a copy of TestCategoryModel
   /// with the given fields replaced by the non-null parameter values.
@@ -478,7 +498,8 @@ abstract class _TestCategoryModel implements TestCategoryModel {
           @JsonKey(name: 'meta_key') required final String metaKey,
           @JsonKey(name: 'meta_desc') required final String metaDesc,
           @JsonKey(name: 'canonical') required final String canonical,
-          @JsonKey(name: 'slug') required final String slug}) =
+          @JsonKey(name: 'slug') required final String slug,
+          @JsonKey(name: 'icon') required final String? icon}) =
       _$TestCategoryModelImpl;
 
   factory _TestCategoryModel.fromJson(Map<String, dynamic> json) =
@@ -531,6 +552,9 @@ abstract class _TestCategoryModel implements TestCategoryModel {
   @override
   @JsonKey(name: 'slug')
   String get slug;
+  @override
+  @JsonKey(name: 'icon')
+  String? get icon;
 
   /// Create a copy of TestCategoryModel
   /// with the given fields replaced by the non-null parameter values.
