@@ -51,7 +51,7 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
 
   @override
   Widget build(BuildContext context) {
-    final commonFontSize = FontSize.small;
+    final commonFontSize = FontSize.medium;
 
     return Scaffold(
         appBar: CommonAppBar(title: 'Article'),

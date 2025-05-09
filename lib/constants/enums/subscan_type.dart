@@ -160,7 +160,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'Well, the contrast materials used in the scan are safe but some individuals may suffer from allergic issues or more serious issues. It is necessary to inform cect abdomen in Delhi before conducting your scan test.')
             ],
-            scanType: ScanType.CT_SCAN);
+            scanType: ScanType.CT_SCAN,
+            price: 1999);
       case SubScanType.CT_SCAN_JOINT_AND_LIMBS:
         return SubscanModel(
             appBarTitle: 'Joint & Limb CT Scan',
@@ -217,7 +218,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'The CT scan for joints and limbs is known to be a very valuable diagnostic tool which helps in accessing the bone and joint imaging in delhi. In case of issues like limited liability, joint pains etc, it is a good idea to get in touch with a qualified orthopedic surgeon who could suggest CT scan joints.')
             ],
-            scanType: ScanType.CT_SCAN);
+            scanType: ScanType.CT_SCAN,
+            price: 1999);
 
       case SubScanType.CT_SCAN_CHEST:
         return SubscanModel(
@@ -274,7 +276,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'Usually, one is not required to prepare for the chest CT scan. But during the scan, there are chances experts will ask you to remove things like metal objects, any jewelry, or clothes that have metal that could interfere with the scans.')
             ],
-            scanType: ScanType.CT_SCAN);
+            scanType: ScanType.CT_SCAN,
+            price: 1999);
       case SubScanType.CT_SCAN_HEAD_AND_NECK:
         return SubscanModel(
             appBarTitle: 'Head & Neck CT Scan',
@@ -325,7 +328,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'Although the head and neck CT scan is considered to be safe, the ct scan in Delhi is known to be exposed to ionizing radiation. But pregnant individuals should avoid taking these scans, due to the exposure of the radiation.')
             ],
-            scanType: ScanType.CT_SCAN);
+            scanType: ScanType.CT_SCAN,
+            price: 1999);
       case SubScanType.CT_SCAN_SINUS:
         return SubscanModel(
             appBarTitle: 'Sinus CT Scan',
@@ -389,7 +393,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'When it comes to preparation, there are no special requirements. A few things to keep in mind are that patients should avoid wearing any kind of metal objects such as jewelry and priorly inform the experts about the medical implants they have.')
             ],
-            scanType: ScanType.CT_SCAN);
+            scanType: ScanType.CT_SCAN,
+            price: 1999);
       case SubScanType.CT_SCAN_ANGIO:
         return SubscanModel(
             appBarTitle: 'Angio CT Scan',
@@ -455,7 +460,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'Post CT Angiogram, the individuals can resume their daily activities unless stated by the expert. It is very important to be drinking fluids and keep themselves hydrated. The expert interprets the images and accordingly discusses the recommendations.')
             ],
-            scanType: ScanType.CT_SCAN);
+            scanType: ScanType.CT_SCAN,
+            price: 1999);
 
       case SubScanType.ULTRASOUND_ABDOMEN:
         return SubscanModel(
@@ -503,7 +509,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'The abdominal ultrasound in Delhi duration takes about 20 to 30 minutes. The actual time of the ultrasound depends on the examinations of the complexity and the specific organs which are assessed. Finding the right ultrasound near me in Delhi is super easy.')
             ],
-            scanType: ScanType.ULTRASOUND);
+            scanType: ScanType.ULTRASOUND,
+            price: 999);
       case SubScanType.ULTRASOUND_PREGNANCY:
         return SubscanModel(
             appBarTitle: 'Pregnancy Ultrasound',
@@ -573,7 +580,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'The pregnancy ultrasound provides vital information such as the position of the baby, size, age etc.')
             ],
-            scanType: ScanType.ULTRASOUND);
+            scanType: ScanType.ULTRASOUND,
+            price: 999);
       case SubScanType.ULTRASOUND_CHEST:
         return SubscanModel(
             appBarTitle: 'Chest/Breast Ultrasound',
@@ -619,7 +627,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'Yes, a breast ultrasound can detect breast cancer which identifies the masses or any kind of abnormalities in the breast tissue.')
             ],
-            scanType: ScanType.ULTRASOUND);
+            scanType: ScanType.ULTRASOUND,
+            price: 999);
       case SubScanType.ULTRASOUND_FNAC:
         return SubscanModel(
             appBarTitle: 'FNAC Ultrasound',
@@ -660,8 +669,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'Generally during pregnancy, FNAC is considered to be safe, when used for diagnosis of the treatment. But it is always a good idea to consult with the experts if you are pregnant.')
             ],
-            scanType: ScanType.ULTRASOUND);
-
+            scanType: ScanType.ULTRASOUND,
+            price: 1199);
       case SubScanType.COLOR_DOPPLER_ABDOMEN:
         return SubscanModel(
             appBarTitle: 'Abdominal Color Doppler Ultrasound',
@@ -710,7 +719,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       "The ultrasound duration varies between 40-60 minutes, & it depends on the examination's complexity & patients' condition.")
             ],
-            scanType: ScanType.ULTRASOUND);
+            scanType: ScanType.COLOR_DOPPLER,
+            price: 1499);
       case SubScanType.COLOR_DOPPLER_PREGNANCY:
         return SubscanModel(
             appBarTitle: 'Pregnancy Color Doppler Ultrasound',
@@ -753,7 +763,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'Yes, having a full bladder helps with creating better images during the ultrasound. It is always recommended for drinking water before the procedure.'),
             ],
-            scanType: ScanType.ULTRASOUND);
+            scanType: ScanType.COLOR_DOPPLER,
+            price: 1499);
       case SubScanType.COLOR_DOPPLER_LIMB:
         return SubscanModel(
             appBarTitle: 'Limb Color Doppler Ultrasound',
@@ -806,7 +817,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'As such there is no pre-preparation required. The individual is advised to wear loose clothes which could make it easy to carry out the ultrasound.')
             ],
-            scanType: ScanType.ULTRASOUND);
+            scanType: ScanType.COLOR_DOPPLER,
+            price: 1499);
       case SubScanType.COLOR_DOPPLER_CAROTID:
         return SubscanModel(
             appBarTitle: 'Carotid Color Doppler Ultrasound',
@@ -844,7 +856,9 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       "The carotid doppler ultrasound in Delhi is considered to be a safe process, as there is no exposure to radiation and is performed without any complications.")
             ],
-            scanType: ScanType.ULTRASOUND);
+            scanType: ScanType.COLOR_DOPPLER,
+            price: 1499);
+
       case SubScanType.MRI_HEAD_AND_NECK:
         return SubscanModel(
             appBarTitle: 'Head and Neck MRI',
@@ -896,7 +910,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'There are no side effects which are associated with the mri scan in Delhi, but individuals with cochlear implants or pacemakers could be at risk and should take advice from the professionals.')
             ],
-            scanType: ScanType.MRI);
+            scanType: ScanType.MRI,
+            price: 3499);
       case SubScanType.MRI_SPINE_AND_JOINT:
         return SubscanModel(
             appBarTitle: 'Spine and Joint MRI',
@@ -960,7 +975,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'Yes, generally pregnant women can undergo the joint and spine MRI can, but it is always a good idea to consult with the expert before going through the MRI scans. Also the MRI scan cost in Delhi is not very expensive.'),
             ],
-            scanType: ScanType.MRI);
+            scanType: ScanType.MRI,
+            price: 3799);
       case SubScanType.MRI_ABDOMEN_AND_PELVIS:
         return SubscanModel(
             appBarTitle: 'Abdominal and Pelvis MRI',
@@ -1017,7 +1033,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'No, as such MRI pelvis in Delhi is very age friendly and can be undertaken by people of all age groups. Also the MRI pelvis cost in Delhi is super affordable.')
             ],
-            scanType: ScanType.MRI);
+            scanType: ScanType.MRI,
+            price: 3999);
       case SubScanType.MRI_FULL_BODY_MRI:
         return SubscanModel(
             appBarTitle: 'Full Body MRI',
@@ -1057,7 +1074,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       ' Just prior to the full body scan, individuals are asked to remove all the metal objects, as it hampers the quality of the image. In terms of knowing about the MRI scan price in Delhi, it is a good idea to consult with an expert.')
             ],
-            scanType: ScanType.MRI);
+            scanType: ScanType.MRI,
+            price: 8999);
       case SubScanType.ECHO_TEST:
         return SubscanModel(
             appBarTitle: 'ECHO Test',
@@ -1101,7 +1119,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'Yes, echo test is known to be an excellent diagnosis of heart valve issues such as stenosis, regurgitation or valve abnormalities which provide crucial insights for the planning of treatment.')
             ],
-            scanType: ScanType.ECHO_TEST);
+            scanType: ScanType.ECHO_TEST,
+            price: 1799);
       case SubScanType.EEG_TEST:
         return SubscanModel(
             appBarTitle: 'EEG Test',
@@ -1166,7 +1185,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'The duration of the EEG test generally ranges from 30 minutes to an hour. The timeline does vary depending on the niche protocols followed by various testing facilities.')
             ],
-            scanType: ScanType.EEG_TEST);
+            scanType: ScanType.EEG_TEST,
+            price: 999);
       case SubScanType.DEXA_TEST:
         return SubscanModel(
             appBarTitle: 'Dexa Scan',
@@ -1211,7 +1231,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'Yes, finding a dexa scan near me in Delhi is very easy. It is essential to consult the expert before taking any steps further.')
             ],
-            scanType: ScanType.DEXA_TEST);
+            scanType: ScanType.DEXA_TEST,
+            price: 1499);
       case SubScanType.PFT_TEST:
         return SubscanModel(
             appBarTitle: 'PFT Test',
@@ -1256,7 +1277,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'PFT is a non-invasive test and is also painless. The process of the test is supposed to be very easy and comfortable, which includes no needles.'),
             ],
-            scanType: ScanType.PFT_TEST);
+            scanType: ScanType.PFT_TEST,
+            price: 1299);
       case SubScanType.ECG_TEST:
         return SubscanModel(
             appBarTitle: 'ECG Test',
@@ -1294,7 +1316,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'The normal ECG report, indicates the regular heart rhythm. This shows that electrical signals which get transmitted properly and there are no abnormalities in the heart conditions.')
             ],
-            scanType: ScanType.ECG_TEST);
+            scanType: ScanType.ECG_TEST,
+            price: 299);
       case SubScanType.HOLTER_TEST:
         return SubscanModel(
             appBarTitle: 'Holter Test',
@@ -1335,7 +1358,8 @@ extension SubscanTypeExtension on SubScanType {
                   answer:
                       'The holter monitors are known to be water-resistant, hence it is possible to wear the holter monitor when having a shower. But one should note, that it is not possible for submerging the monitor inside the water, to prevent the damage')
             ],
-            scanType: ScanType.HOLTER_TEST);
+            scanType: ScanType.HOLTER_TEST,
+            price: 1999);
     }
   }
 }

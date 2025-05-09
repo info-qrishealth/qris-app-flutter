@@ -116,13 +116,14 @@ class _SubscanInfoScreenState extends State<SubscanInfoScreen> {
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
+                        final subscanType = SubScanType.values[index];
                         return SubscanListTileHorizontal(
-                            subScanType: SubScanType.MRI_ABDOMEN_AND_PELVIS);
+                            subScanType: subscanType);
                       },
                       separatorBuilder: (context, index) {
                         return SizedBox(width: 8);
                       },
-                      itemCount: 10)),
+                      itemCount: SubScanType.values.length)),
               SizedBox(height: 20),
               Row(children: [
                 Expanded(child: HeadingText(text: 'Everything You Need')),

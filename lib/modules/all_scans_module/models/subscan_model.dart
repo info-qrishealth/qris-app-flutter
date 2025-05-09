@@ -13,6 +13,7 @@ class SubscanModel {
   final String thirdHeading;
   final List<HardcodedFaq> faqs;
   final ScanType scanType;
+  final double price;
 
   SubscanModel(
       {required this.appBarTitle,
@@ -26,7 +27,8 @@ class SubscanModel {
       required this.whyToChoose,
       required this.thirdHeading,
       required this.faqs,
-      required this.scanType});
+      required this.scanType,
+      required this.price});
 }
 
 class HardcodedFaq {

@@ -50,7 +50,8 @@ class SubscanListTileHorizontal extends StatelessWidget {
                                         color: AppColors.primaryBlue)),
                                 SizedBox(height: 6),
                                 Text(
-                                    'The CT Scan chest is commonly known as the thoracic CT or...'
+                                    subScanType
+                                        .subScanModel.firstHeadingDescription
                                         .getEllipticText(
                                             charactersAfterTrim: 50)!,
                                     style: textTheme.labelSmall!.copyWith(
@@ -58,7 +59,8 @@ class SubscanListTileHorizontal extends StatelessWidget {
                                         fontWeight: FontWeight.w400))
                               ]))),
                   OfferedPriceContainer(
-                      customWidget: Text('Starts @ ₹1099',
+                      customWidget: Text(
+                          'Starts @ ₹${subScanType.subScanModel.price.toInt()}',
                           style: textTheme.bodyLarge!.copyWith(
                               color: AppColors.primaryBlue,
                               fontWeight: FontWeight.w700))),
