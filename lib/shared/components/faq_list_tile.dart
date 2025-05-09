@@ -39,7 +39,7 @@ class _FaqListTileState extends State<FaqListTile> {
             height: _isExpanded ? 20 : 24),
         children: [
           Text('${widget.faq?.answer.clean}',
-              style: textTheme.bodySmall!.copyWith(
+              style: textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w400,
                   color: AppColors.lightSubTextColor)),
           SizedBox(height: 16),

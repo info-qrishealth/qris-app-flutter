@@ -34,7 +34,12 @@ extension StringExtension on String? {
 
   String get clean {
     String cleanedString = this!
-        .replaceAll(RegExp(r'&lt;/?p&gt;'), '')
+        .replaceAll('&amp;nbsp;', '')
+        .replaceAll('&lt;b&gt;', ' ')
+        .replaceAll('&lt;p&gt;', '')
+        .replaceAll('&lt;/p&gt;', '')
+        .replaceAll('&amp;amp;', '&')
+        .replaceAll('&lt;/b&gt;', '')
         .replaceAll(RegExp(r'&lt;br\s*/?&gt;'), '')
         .replaceAll(RegExp(r'&lt;/?'), '')
         .replaceAll(RegExp(r'&gt;'), '')

@@ -211,7 +211,7 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                                                     '${_showMoreText ? _testPackageModel!.description : _testPackageModel!.description.getEllipticText(charactersAfterTrim: 250)}',
                                                 pStyle: Style(
                                                     color: AppColors.textColor,
-                                                    fontSize: FontSize.small,
+                                                    fontSize: FontSize.medium,
                                                     fontWeight:
                                                         FontWeight.w400)),
                                             Padding(
