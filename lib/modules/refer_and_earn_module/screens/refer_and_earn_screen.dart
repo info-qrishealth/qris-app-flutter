@@ -122,12 +122,12 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                                                 color: AppColors.lightGrey),
                                             const SizedBox(width: 8),
                                             SvgPicture.asset(
-                                                Assets.iconsCallIcon,
+                                                Assets.iconsCopyIcon,
                                                 height: 26),
                                           ])))))),
                   SizedBox(height: 12),
-                  Text('Tap to copy link',
-                      style: _textTheme.bodySmall!.copyWith(
+                  Text('Tap to copy code',
+                      style: _textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w400,
                           color: AppColors.primaryBlue),
                       textAlign: TextAlign.center),
