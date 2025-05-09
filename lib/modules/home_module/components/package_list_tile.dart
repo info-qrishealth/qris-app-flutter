@@ -63,10 +63,10 @@ class PackageListTile extends StatelessWidget {
                         Padding(
                             padding: const EdgeInsets.only(top: 6),
                             child: Text(
-                                'Included : ${testPackage?.includedPackages.map((element) => element.title).join(', ').htmlString}',
+                                'Included : ${testPackage?.includedPackages.map((element) => element.title).join(', ').htmlString.getEllipticText(charactersAfterTrim: 125)}',
                                 style: _textTheme.labelSmall!.copyWith(
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 10))),
+                                    fontSize: 11))),
                     ])),
             SizedBox(height: 2),
             OfferedPriceContainer(
