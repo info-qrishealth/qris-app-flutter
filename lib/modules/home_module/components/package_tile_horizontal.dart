@@ -11,8 +11,12 @@ import 'package:qris_health/styles/app_colors.dart';
 class PackageTileHorizontal extends StatelessWidget {
   final Function()? onSeeDetailsTap;
   final TestPackageModel? testPackageModel;
+  final String? customButtonText;
   PackageTileHorizontal(
-      {super.key, required this.onSeeDetailsTap, this.testPackageModel});
+      {super.key,
+      required this.onSeeDetailsTap,
+      this.testPackageModel,
+      this.customButtonText});
   final _textTheme = Get.textTheme;
 
   @override
@@ -77,7 +81,7 @@ class PackageTileHorizontal extends StatelessWidget {
                                 borderRadius: BorderRadius.only(
                                     bottomRight: Radius.circular(10),
                                     bottomLeft: Radius.circular(10))),
-                            child: Text('See Details',
+                            child: Text(customButtonText ?? 'See Details',
                                 textAlign: TextAlign.center,
                                 style: _textTheme.bodySmall!.copyWith(
                                     color: Colors.white,

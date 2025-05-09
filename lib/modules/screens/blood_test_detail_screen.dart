@@ -26,6 +26,7 @@ import 'package:qris_health/styles/app_colors.dart';
 
 import '../../constants/enums/test_package_type.dart';
 import '../../generated/assets.dart';
+import '../../shared/components/feature_row.dart';
 
 class BloodTestDetailScreen extends StatefulWidget {
   final int testId;
@@ -142,6 +143,27 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                         children: [
                           SizedBox(height: 16),
                           PackageListTile(
+                              customDescription: Column(children: [
+                                FeatureRow(
+                                    fontSize: 12,
+                                    imagePath:
+                                        'assets/images/icons/test_tube.png',
+                                    title:
+                                        '${_testPackageModel?.customParameterCount} Parameters'),
+                                SizedBox(height: 2),
+                                FeatureRow(
+                                    fontSize: 12,
+                                    applyImageColor: false,
+                                    imagePath: 'assets/images/icons/home.png',
+                                    title: 'Home collection'),
+                                SizedBox(height: 2),
+                                FeatureRow(
+                                    fontSize: 12,
+                                    applyImageColor: false,
+                                    imagePath: Assets.iconsBatteryIcon,
+                                    title:
+                                        'Test Code: QRS${_testPackageModel?.id}'),
+                              ]),
                               testPackage: _testPackageModel,
                               onSeeDetailsTap: null,
                               onBookNowTap: () async {

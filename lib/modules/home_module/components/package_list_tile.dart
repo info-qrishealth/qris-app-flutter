@@ -16,8 +16,8 @@ class PackageListTile extends StatelessWidget {
   final Function()? onSeeDetailsTap;
   final Function()? onBookNowTap;
   final Widget? suffix;
-
   final TestPackageModel? testPackage;
+  final Widget? customDescription;
 
   PackageListTile(
       {super.key,
@@ -25,7 +25,8 @@ class PackageListTile extends StatelessWidget {
       required this.onSeeDetailsTap,
       required this.onBookNowTap,
       this.suffix,
-      this.testPackage});
+      this.testPackage,
+      this.customDescription});
 
   final _textTheme = Get.textTheme;
 
@@ -54,19 +55,27 @@ class PackageListTile extends StatelessWidget {
                               color: AppColors.primaryBlue,
                               fontFamily: AppConstants.ubuntuFontFamily)),
                       SizedBox(height: 4),
-                      FeatureRow(
-                          imagePath: 'assets/images/icons/test_tube.png',
-                          title:
-                              '${testPackage?.customParameterCount ?? 0} Parameters'),
-                      if (testPackage != null &&
-                          !testPackage!.includedPackages.isNullOrEmpty)
-                        Padding(
-                            padding: const EdgeInsets.only(top: 6),
-                            child: Text(
-                                'Included : ${testPackage?.includedPackages.map((element) => element.title).join(', ').htmlString.getEllipticText(charactersAfterTrim: 125)}',
-                                style: _textTheme.labelSmall!.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 11))),
+                      if (customDescription != null)
+                        customDescription!
+                      else
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              FeatureRow(
+                                  imagePath:
+                                      'assets/images/icons/test_tube.png',
+                                  title:
+                                      '${testPackage?.customParameterCount ?? 0} Parameters'),
+                              if (testPackage != null &&
+                                  !testPackage!.includedPackages.isNullOrEmpty)
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 6),
+                                    child: Text(
+                                        'Included : ${testPackage?.includedPackages.map((element) => element.title).join(', ').htmlString.getEllipticText(charactersAfterTrim: 125)}',
+                                        style: _textTheme.labelSmall!.copyWith(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 11))),
+                            ])
                     ])),
             SizedBox(height: 2),
             OfferedPriceContainer(

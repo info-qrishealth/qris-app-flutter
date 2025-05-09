@@ -58,6 +58,7 @@ class Assets {
   static const String howToBookIconsHowToBookIcon2 = 'assets/images/icons/how_to_book_icons/how_to_book_icon_2.png';
   static const String howToBookIconsHowToBookIcon3 = 'assets/images/icons/how_to_book_icons/how_to_book_icon_3.png';
   static const String howToBookIconsHowToBookIcon4 = 'assets/images/icons/how_to_book_icons/how_to_book_icon_4.png';
+  static const String iconsBatteryIcon = 'assets/images/icons/battery_icon.png';
   static const String iconsCallIcon = 'assets/images/icons/call_icon.png';
   static const String iconsCallbackIcon = 'assets/images/icons/callback_icon.png';
   static const String iconsClockIcon = 'assets/images/icons/clock_icon.svg';

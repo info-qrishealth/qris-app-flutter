@@ -11,6 +11,8 @@ class FeatureRow extends StatelessWidget {
   final Color? fontColor;
   final Color? imageColor;
   final bool applyImageColor;
+  final double? fontSize;
+  final double? iconSize;
 
   const FeatureRow(
       {super.key,
@@ -19,7 +21,9 @@ class FeatureRow extends StatelessWidget {
       this.svgPath,
       this.fontColor,
       this.imageColor,
-      this.applyImageColor = true});
+      this.applyImageColor = true,
+      this.fontSize,
+      this.iconSize});
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +34,12 @@ class FeatureRow extends StatelessWidget {
           padding: EdgeInsets.only(top: 1.5),
           child: imagePath != null
               ? Image.asset(imagePath!,
-                  height: 12,
+                  height: iconSize ?? 12,
                   color: !applyImageColor
                       ? null
                       : imageColor ?? AppColors.primaryBlue)
               : SvgPicture.asset(svgPath!,
-                  height: 12,
+                  height: iconSize ?? 12,
                   color: !applyImageColor
                       ? null
                       : imageColor ?? AppColors.primaryBlue)),
@@ -44,6 +48,7 @@ class FeatureRow extends StatelessWidget {
           child: Text(title,
               style: textTheme.labelSmall!.copyWith(
                   fontWeight: FontWeight.w400,
+                  fontSize: fontSize ?? 11,
                   color: fontColor ?? AppColors.primaryPink)))
     ]);
   }
