@@ -145,12 +145,15 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                                             title: 'Fasting Time : ',
                                             description:
                                                 '${_testPackageModel!.fastingTime}')),
-                                    InfoRow(
-                                        svgPath: Assets.iconsClockIcon,
-                                        title: 'Report Time : ',
-                                        description:
-                                            _testPackageModel?.productH3 ??
-                                                'N/A'),
+                                    Expanded(
+                                        child: InfoRow(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            svgPath: Assets.iconsClockIcon,
+                                            title: 'Report Time : ',
+                                            description:
+                                                _testPackageModel?.productH3 ??
+                                                    'N/A')),
                                   ]))),
                           SizedBox(height: 18),
                           CashbackContainer(),
