@@ -146,13 +146,13 @@ class _MainDrawerState extends State<MainDrawer> {
                   Navigator.of(context).push(CupertinoPageRoute(
                       builder: (context) => PopularPackageScreen()));
                 }),
-            // _buildListTile(
-            //     svgPath: Assets.drawerIconsDoctorIcon,
-            //     title: 'Find Doctors',
-            //     onTap: () {
-            //       Navigator.of(context).push(CupertinoPageRoute(
-            //           builder: (context) => DoctorConsultationScreen()));
-            //     }),
+            _buildListTile(
+                svgPath: Assets.drawerIconsDoctorIcon,
+                title: 'Find Doctors',
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => DoctorConsultationScreen()));
+                }),
             _buildListTile(
                 svgPath: Assets.drawerIconsArticleIcon,
                 title: 'Health Articles',

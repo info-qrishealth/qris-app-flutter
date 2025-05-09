@@ -99,12 +99,7 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                             children: [
                               Flexible(
                                   child: Text(
-                                      widget.doctor.docSpeciality
-                                              ?.split('|')
-                                              .firstOrNull
-                                              ?.split('/')
-                                              .firstOrNull ??
-                                          '',
+                                      '${widget.selectedCategory.title}',
                                       style: _textTheme.bodyLarge!.copyWith(
                                           fontWeight: FontWeight.w600,
                                           color: AppColors.black60))),
@@ -130,8 +125,9 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
 
                                 return Text(
                                     _educations!
-                                        .map((education) => education)
-                                        .join(', '),
+                                        .map((education) => education
+                                            .education?.capitalizeFirst)
+                                        .join(' | '),
                                     style: _textTheme.bodySmall!.copyWith(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black.withOpacity(0.6)));

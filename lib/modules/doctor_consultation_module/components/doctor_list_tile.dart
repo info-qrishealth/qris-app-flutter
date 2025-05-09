@@ -62,13 +62,7 @@ class DoctorListTile extends StatelessWidget with GeneralHelperMixin {
                           ])),
                     ]),
                     SizedBox(height: 4),
-                    Text(
-                        doctor.docSpeciality
-                                ?.split('|')
-                                .firstOrNull
-                                ?.split('/')
-                                .firstOrNull ??
-                            '',
+                    Text('${doctorCategory.title}',
                         textAlign: TextAlign.center,
                         style: _textTheme.bodySmall!.copyWith(
                             fontWeight: FontWeight.w500,
