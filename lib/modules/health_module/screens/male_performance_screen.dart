@@ -123,7 +123,7 @@ class _MalePerformanceScreenState extends State<MalePerformanceScreen>
                       borderRadius: BorderRadius.circular(15)),
                   child: Column(children: [
                     Text(
-                        "It consist primarily of erectile problem or Impotence Erectile Dysfunction:- It is inability to allow or maintain erection of Penis for intercourse. Male impotence & impotence symptoms vary from inability to maintain erection to premature ejaculation\nMajor Causes for Mens Health:-",
+                        "It consist primarily of erectile problem or Impotence\n\nErectile Dysfunction:- It is inability to allow or maintain erection of Penis for intercourse. Male impotence & impotence symptoms vary from inability to maintain erection to premature ejaculation\nMajor Causes for Mens Health:-",
                         style: textTheme.bodySmall!.copyWith(
                             fontWeight: FontWeight.w400,
                             color: AppColors.lightText)),

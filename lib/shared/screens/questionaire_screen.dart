@@ -56,6 +56,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     _questions = snapshot.data!;
+                    _questions.sort((a, b) => a.disOrder.compareTo(b.disOrder));
 
                     if (_answers.isEmpty) {
                       for (var question in _questions) {
@@ -112,6 +113,8 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                                     final question = _questions[index];
                                     final options = AppConstants.decodeBase64(
                                         encodedString: question.options);
+                                    options?.removeWhere((key, value) =>
+                                        value.toString().isEmpty);
 
                                     return ListView(
                                         physics: BouncingScrollPhysics(),

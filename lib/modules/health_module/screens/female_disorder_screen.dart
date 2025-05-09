@@ -141,8 +141,9 @@ class _FemaleDisorderScreenState extends State<FemaleDisorderScreen>
                             'Menstrual disorders like Oligomenorrhea (irregular periods) or Secondary Amenorrhoea (absence of menstruation)'),
                     SizedBox(height: 4),
                     BulletPoint(
-                        text:
-                            'Hyperandrogenism or excess terminal body hair Obesity'),
+                        text: 'Hyperandrogenism or excess terminal body hair'),
+                    SizedBox(height: 4),
+                    BulletPoint(text: 'Obesity'),
                     SizedBox(height: 4),
                     BulletPoint(text: 'Damaged lipid profile'),
                     SizedBox(height: 4),
@@ -154,7 +155,6 @@ class _FemaleDisorderScreenState extends State<FemaleDisorderScreen>
                         text:
                             'Acanthosis nigricans or hyperpigmentation (Darkening of skin or neck)'),
                     SizedBox(height: 4),
-                    BulletPoint(text: 'Headache'),
                   ])),
               SizedBox(height: 18),
               HowItWorksContainer(),

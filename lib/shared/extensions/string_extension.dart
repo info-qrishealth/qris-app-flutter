@@ -34,12 +34,21 @@ extension StringExtension on String? {
 
   String get clean {
     String cleanedString = this!
-        .replaceAll('&amp;nbsp;', '')
-        .replaceAll('&lt;b&gt;', ' ')
-        .replaceAll('&lt;p&gt;', '')
-        .replaceAll('&lt;/p&gt;', '')
-        .replaceAll('&amp;amp;', '&')
-        .replaceAll('&lt;/b&gt;', '')
+        .replaceAll(RegExp(r'&amp;nbsp;'), '')
+        .replaceAll(RegExp(r'&amp;#39;'), "'")
+        .replaceAll(RegExp(r'&lt;b&gt;'), ' ')
+        .replaceAll(RegExp(r'&lt;p&gt;'), '')
+        .replaceAll(RegExp(r'&lt;/p&gt;'), '')
+        .replaceAll(RegExp(r'&lt;strong&gt;'), '')
+        .replaceAll(RegExp(r'&lt;/strong&gt;'), '')
+        .replaceAll(RegExp(r'&lt;ul&gt;'), '')
+        .replaceAll(RegExp(r'&lt;li&gt;'), '- ')
+        .replaceAll(RegExp(r'&lt;/ul&gt;'), '')
+        .replaceAll(RegExp(r'&lt;/li&gt;'), '')
+        .replaceAll(RegExp(r'&lt;ol&gt;'), '')
+        .replaceAll(RegExp(r'&lt;/ol&gt;'), '')
+        .replaceAll(RegExp(r'&amp;amp;'), '&')
+        .replaceAll(RegExp(r'&lt;/b&gt;'), '')
         .replaceAll(RegExp(r'&lt;br\s*/?&gt;'), '')
         .replaceAll(RegExp(r'&lt;/?'), '')
         .replaceAll(RegExp(r'&gt;'), '')
@@ -49,7 +58,6 @@ extension StringExtension on String? {
         .replaceAll(RegExp(r'#39;'), '')
         .replaceAll(RegExp(r'nbsp;'), '')
         .replaceAll(RegExp(r'amp;'), '')
-        .replaceAll(RegExp(r'&amp;#39;'), "'")
         .replaceAll(RegExp(r'_LOC_'), '')
         .replaceAll(RegExp(r'_PRICE_'), '');
 
