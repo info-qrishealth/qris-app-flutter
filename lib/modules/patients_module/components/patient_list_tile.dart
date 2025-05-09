@@ -109,29 +109,32 @@ class _PatientListTileState extends State<PatientListTile>
                                     color: AppColors.lightSubTextColor)),
                           ]),
                         ])),
-                    VerticalDivider(
-                        color: Colors.black.withOpacity(0.7), width: 1),
+                    if (_patient?.self != '1')
+                      VerticalDivider(
+                          color: Colors.black.withOpacity(0.7), width: 1),
                     SizedBox(width: 8),
-                    InkWell(
-                        onTap: () async {
-                          await showModalBottomSheet(
-                              isScrollControlled: true,
-                              constraints: AppConstants.bottomSheetConstraints,
-                              context: context,
-                              builder: (context) => AddPatientBottomSheet(
-                                  patient: _patient,
-                                  getAddedPatient: null,
-                                  getUpdatedPatient: (patient) {
-                                    setState(() {
-                                      _patient = patient;
-                                    });
+                    if (_patient?.self != '1')
+                      InkWell(
+                          onTap: () async {
+                            await showModalBottomSheet(
+                                isScrollControlled: true,
+                                constraints:
+                                    AppConstants.bottomSheetConstraints,
+                                context: context,
+                                builder: (context) => AddPatientBottomSheet(
+                                    patient: _patient,
+                                    getAddedPatient: null,
+                                    getUpdatedPatient: (patient) {
+                                      setState(() {
+                                        _patient = patient;
+                                      });
 
-                                    BlocProvider.of<PatientsCubit>(context)
-                                        .updatePatient(patient);
-                                  }));
-                        },
-                        child: SvgPicture.asset(
-                            'assets/images/icons/edit_icon.svg')),
+                                      BlocProvider.of<PatientsCubit>(context)
+                                          .updatePatient(patient);
+                                    }));
+                          },
+                          child: SvgPicture.asset(
+                              'assets/images/icons/edit_icon.svg')),
                   ]))),
           FutureBuilder<HealthScoreResModel?>(
               future: _healthScoreFuture,
