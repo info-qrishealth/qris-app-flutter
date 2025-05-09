@@ -5,13 +5,17 @@ import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/gender.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
+import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/modules/patients_module/services/patient_service.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/modules/users_module/services/user_service.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_textfield.dart';
+import 'package:qris_health/shared/components/dob_dropdown.dart';
 import 'package:qris_health/shared/components/gender_input_container_row.dart';
+import 'package:qris_health/shared/extensions/date_time_extension.dart';
+import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/shared/utils/enum_utils.dart';
 import 'package:qris_health/shared/utils/search_pattern.dart';
 
@@ -36,6 +40,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   Gender? _selectedGender;
   Patient? _selfPatient;
   bool _loading = false;
+  DateTime? _dob;
 
   @override
   void initState() {
@@ -55,6 +60,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     _phoneNumberController.text = user.phone ?? '';
     _emailController.text = user.email ?? '';
     _selectedGender = EnumUtils.getGenderFromNumberString(number: user.gender);
+    _dob = user.dob.toDateTime;
   }
 
   @override
@@ -119,6 +125,16 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     headingText: 'Email'),
                 SizedBox(height: 16),
                 BlocBuilder<UserCubit, UserState>(builder: (context, state) {
+                  return DobDropdown(
+                      getSelectedDate: (selectedDate) {
+                        setState(() {
+                          _dob = selectedDate;
+                        });
+                      },
+                      selectedDate: _dob);
+                }),
+                SizedBox(height: 16),
+                BlocBuilder<UserCubit, UserState>(builder: (context, state) {
                   return GenderInputContainerRow(
                       onTap: (gender) {
                         setState(() {
@@ -157,8 +173,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   height: int.tryParse(_heightController.text),
                   weight: int.tryParse(_weightController.text),
                   name: _nameController.text.toUpperCase(),
-                  email: _emailController.text));
+                  email: _emailController.text,
+                  dob: _dob.toTimestampForServer));
           _selfPatient = updatedSelf;
+          BlocProvider.of<PatientsCubit>(context).updatePatient(updatedSelf);
         }
 
         final userCubit = BlocProvider.of<UserCubit>(context);
@@ -167,6 +185,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             user: userCubit.state.user.copyWith.call(
                 name: _nameController.text.toUpperCase(),
                 email: _emailController.text,
+                dob: '${_dob.toTimestampForServer}',
                 gender: _selectedGender?.number.toString() ?? '2'));
         userCubit.updateUser(user: updatedUser);
 
