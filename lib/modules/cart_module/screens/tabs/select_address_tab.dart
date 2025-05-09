@@ -65,6 +65,7 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                         children: state.cart.cartTests
                             .map((cartTest) => Column(children: [
                                   PackageListTile(
+                                      customDescription: Container(),
                                       testPackage: cartTest.test,
                                       onSeeDetailsTap: null,
                                       onBookNowTap: null,

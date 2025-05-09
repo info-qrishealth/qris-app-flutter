@@ -42,6 +42,7 @@ class _SelectPatientTabState extends State<SelectPatientTab> {
         HeadingText(text: 'Package Details'),
         SizedBox(height: 18),
         PackageListTile(
+            customDescription: Container(),
             testPackage: widget.testPackageModel,
             onSeeDetailsTap: null,
             onBookNowTap: null),

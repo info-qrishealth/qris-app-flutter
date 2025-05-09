@@ -140,6 +140,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                   ...state.cart.cartTests.map((cartTest) {
                                     return Column(children: [
                                       PackageListTile(
+                                          customDescription: Container(),
                                           testPackage: cartTest.test,
                                           onSeeDetailsTap: null,
                                           onBookNowTap: null,
