@@ -27,8 +27,6 @@ mixin _$DoctorLocation {
   int? get cityId => throw _privateConstructorUsedError;
   @JsonKey(name: 'slug')
   String? get slug => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'deleted_at')
@@ -57,7 +55,6 @@ abstract class $DoctorLocationCopyWith<$Res> {
       @JsonKey(name: 'title') String? title,
       @JsonKey(name: 'city_id') int? cityId,
       @JsonKey(name: 'slug') String? slug,
-      @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
       @JsonKey(name: 'deleted_at') String? deletedAt,
       @JsonKey(name: 'status') String status});
@@ -82,7 +79,6 @@ class _$DoctorLocationCopyWithImpl<$Res, $Val extends DoctorLocation>
     Object? title = freezed,
     Object? cityId = freezed,
     Object? slug = freezed,
-    Object? createdAt = null,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
     Object? status = null,
@@ -104,10 +100,6 @@ class _$DoctorLocationCopyWithImpl<$Res, $Val extends DoctorLocation>
           ? _value.slug
           : slug // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -137,7 +129,6 @@ abstract class _$$DoctorLocationImplCopyWith<$Res>
       @JsonKey(name: 'title') String? title,
       @JsonKey(name: 'city_id') int? cityId,
       @JsonKey(name: 'slug') String? slug,
-      @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
       @JsonKey(name: 'deleted_at') String? deletedAt,
       @JsonKey(name: 'status') String status});
@@ -160,7 +151,6 @@ class __$$DoctorLocationImplCopyWithImpl<$Res>
     Object? title = freezed,
     Object? cityId = freezed,
     Object? slug = freezed,
-    Object? createdAt = null,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
     Object? status = null,
@@ -182,10 +172,6 @@ class __$$DoctorLocationImplCopyWithImpl<$Res>
           ? _value.slug
           : slug // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -210,7 +196,6 @@ class _$DoctorLocationImpl implements _DoctorLocation {
       @JsonKey(name: 'title') this.title,
       @JsonKey(name: 'city_id') this.cityId,
       @JsonKey(name: 'slug') this.slug,
-      @JsonKey(name: 'created_at') required this.createdAt,
       @JsonKey(name: 'updated_at') this.updatedAt,
       @JsonKey(name: 'deleted_at') this.deletedAt,
       @JsonKey(name: 'status') required this.status});
@@ -230,9 +215,6 @@ class _$DoctorLocationImpl implements _DoctorLocation {
   @JsonKey(name: 'slug')
   final String? slug;
   @override
-  @JsonKey(name: 'created_at')
-  final DateTime createdAt;
-  @override
   @JsonKey(name: 'updated_at')
   final String? updatedAt;
   @override
@@ -244,7 +226,7 @@ class _$DoctorLocationImpl implements _DoctorLocation {
 
   @override
   String toString() {
-    return 'DoctorLocation(id: $id, title: $title, cityId: $cityId, slug: $slug, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, status: $status)';
+    return 'DoctorLocation(id: $id, title: $title, cityId: $cityId, slug: $slug, updatedAt: $updatedAt, deletedAt: $deletedAt, status: $status)';
   }
 
   @override
@@ -256,8 +238,6 @@ class _$DoctorLocationImpl implements _DoctorLocation {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.cityId, cityId) || other.cityId == cityId) &&
             (identical(other.slug, slug) || other.slug == slug) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.deletedAt, deletedAt) ||
@@ -267,8 +247,8 @@ class _$DoctorLocationImpl implements _DoctorLocation {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, cityId, slug,
-      createdAt, updatedAt, deletedAt, status);
+  int get hashCode => Object.hash(
+      runtimeType, id, title, cityId, slug, updatedAt, deletedAt, status);
 
   /// Create a copy of DoctorLocation
   /// with the given fields replaced by the non-null parameter values.
@@ -293,7 +273,6 @@ abstract class _DoctorLocation implements DoctorLocation {
           @JsonKey(name: 'title') final String? title,
           @JsonKey(name: 'city_id') final int? cityId,
           @JsonKey(name: 'slug') final String? slug,
-          @JsonKey(name: 'created_at') required final DateTime createdAt,
           @JsonKey(name: 'updated_at') final String? updatedAt,
           @JsonKey(name: 'deleted_at') final String? deletedAt,
           @JsonKey(name: 'status') required final String status}) =
@@ -313,9 +292,6 @@ abstract class _DoctorLocation implements DoctorLocation {
   @override
   @JsonKey(name: 'slug')
   String? get slug;
-  @override
-  @JsonKey(name: 'created_at')
-  DateTime get createdAt;
   @override
   @JsonKey(name: 'updated_at')
   String? get updatedAt;
