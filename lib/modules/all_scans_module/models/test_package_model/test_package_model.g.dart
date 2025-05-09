@@ -113,6 +113,7 @@ _$IncludedPackageImpl _$$IncludedPackageImplFromJson(
       title: json['title'] as String?,
       customParameterCount:
           (json['custom_parameter_count'] as num?)?.toInt() ?? 0,
+      type: $enumDecodeNullable(_$TestPackageTypeEnumMap, json['type']),
       testNames: (json['test_names'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -124,5 +125,6 @@ Map<String, dynamic> _$$IncludedPackageImplToJson(
     <String, dynamic>{
       'title': instance.title,
       'custom_parameter_count': instance.customParameterCount,
+      'type': _$TestPackageTypeEnumMap[instance.type],
       'test_names': instance.testNames,
     };

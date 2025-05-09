@@ -24,8 +24,8 @@ import 'package:qris_health/shared/extensions/string_extension.dart';
 import 'package:qris_health/shared/utils/mixins/general_helper_mixin.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
+import '../../constants/enums/test_package_type.dart';
 import '../../generated/assets.dart';
-import '../cart_module/screens/cart_screen.dart';
 
 class BloodTestDetailScreen extends StatefulWidget {
   final int testId;
@@ -51,6 +51,31 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
 
   @override
   Widget build(BuildContext context) {
+    final List<IncludedPackage> includedPackages = [];
+
+    if (_testPackageModel?.includedPackages != null) {
+      final List<IncludedPackage> packages = [];
+      final List<IncludedPackage> subPackages = [];
+      final List<IncludedPackage> testsTests = [];
+      final List<IncludedPackage> otherTests = [];
+
+      for (var test in _testPackageModel!.includedPackages) {
+        switch (test.type) {
+          case TestPackageType.test:
+            testsTests.add(test);
+          case TestPackageType.package:
+            packages.add(test);
+          case TestPackageType.sub_package:
+            subPackages.add(test);
+          case null:
+            otherTests.add(test);
+        }
+      }
+
+      includedPackages.assignAll(
+          [...packages, ...subPackages, ...testsTests, ...otherTests]);
+    }
+
     return Scaffold(
         bottomNavigationBar: _testPackageModel == null
             ? null
@@ -212,7 +237,7 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                               style: _textTheme.titleMedium!
                                   .copyWith(fontWeight: FontWeight.w700)),
                           SizedBox(height: 8),
-                          if (_testPackageModel!.includedPackages.isNotEmpty)
+                          if (includedPackages.isNotEmpty)
                             Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(
@@ -220,8 +245,7 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                                         width: 0.7),
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Column(
-                                    children: _testPackageModel!
-                                        .includedPackages
+                                    children: includedPackages
                                         .map((includedPackage) =>
                                             _buildExpansionTile(
                                                 includedPackage:

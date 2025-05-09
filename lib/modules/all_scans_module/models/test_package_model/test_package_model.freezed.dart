@@ -1183,6 +1183,7 @@ mixin _$IncludedPackage {
   String? get title => throw _privateConstructorUsedError;
   @JsonKey(name: 'custom_parameter_count')
   int get customParameterCount => throw _privateConstructorUsedError;
+  TestPackageType? get type => throw _privateConstructorUsedError;
   @JsonKey(name: 'test_names')
   List<String> get testNames => throw _privateConstructorUsedError;
 
@@ -1205,6 +1206,7 @@ abstract class $IncludedPackageCopyWith<$Res> {
   $Res call(
       {String? title,
       @JsonKey(name: 'custom_parameter_count') int customParameterCount,
+      TestPackageType? type,
       @JsonKey(name: 'test_names') List<String> testNames});
 }
 
@@ -1225,6 +1227,7 @@ class _$IncludedPackageCopyWithImpl<$Res, $Val extends IncludedPackage>
   $Res call({
     Object? title = freezed,
     Object? customParameterCount = null,
+    Object? type = freezed,
     Object? testNames = null,
   }) {
     return _then(_value.copyWith(
@@ -1236,6 +1239,10 @@ class _$IncludedPackageCopyWithImpl<$Res, $Val extends IncludedPackage>
           ? _value.customParameterCount
           : customParameterCount // ignore: cast_nullable_to_non_nullable
               as int,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as TestPackageType?,
       testNames: null == testNames
           ? _value.testNames
           : testNames // ignore: cast_nullable_to_non_nullable
@@ -1255,6 +1262,7 @@ abstract class _$$IncludedPackageImplCopyWith<$Res>
   $Res call(
       {String? title,
       @JsonKey(name: 'custom_parameter_count') int customParameterCount,
+      TestPackageType? type,
       @JsonKey(name: 'test_names') List<String> testNames});
 }
 
@@ -1273,6 +1281,7 @@ class __$$IncludedPackageImplCopyWithImpl<$Res>
   $Res call({
     Object? title = freezed,
     Object? customParameterCount = null,
+    Object? type = freezed,
     Object? testNames = null,
   }) {
     return _then(_$IncludedPackageImpl(
@@ -1284,6 +1293,10 @@ class __$$IncludedPackageImplCopyWithImpl<$Res>
           ? _value.customParameterCount
           : customParameterCount // ignore: cast_nullable_to_non_nullable
               as int,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as TestPackageType?,
       testNames: null == testNames
           ? _value._testNames
           : testNames // ignore: cast_nullable_to_non_nullable
@@ -1298,6 +1311,7 @@ class _$IncludedPackageImpl implements _IncludedPackage {
   const _$IncludedPackageImpl(
       {this.title,
       @JsonKey(name: 'custom_parameter_count') this.customParameterCount = 0,
+      this.type,
       @JsonKey(name: 'test_names') final List<String> testNames = const []})
       : _testNames = testNames;
 
@@ -1309,6 +1323,8 @@ class _$IncludedPackageImpl implements _IncludedPackage {
   @override
   @JsonKey(name: 'custom_parameter_count')
   final int customParameterCount;
+  @override
+  final TestPackageType? type;
   final List<String> _testNames;
   @override
   @JsonKey(name: 'test_names')
@@ -1320,7 +1336,7 @@ class _$IncludedPackageImpl implements _IncludedPackage {
 
   @override
   String toString() {
-    return 'IncludedPackage(title: $title, customParameterCount: $customParameterCount, testNames: $testNames)';
+    return 'IncludedPackage(title: $title, customParameterCount: $customParameterCount, type: $type, testNames: $testNames)';
   }
 
   @override
@@ -1331,6 +1347,7 @@ class _$IncludedPackageImpl implements _IncludedPackage {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.customParameterCount, customParameterCount) ||
                 other.customParameterCount == customParameterCount) &&
+            (identical(other.type, type) || other.type == type) &&
             const DeepCollectionEquality()
                 .equals(other._testNames, _testNames));
   }
@@ -1338,7 +1355,7 @@ class _$IncludedPackageImpl implements _IncludedPackage {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, title, customParameterCount,
-      const DeepCollectionEquality().hash(_testNames));
+      type, const DeepCollectionEquality().hash(_testNames));
 
   /// Create a copy of IncludedPackage
   /// with the given fields replaced by the non-null parameter values.
@@ -1361,6 +1378,7 @@ abstract class _IncludedPackage implements IncludedPackage {
   const factory _IncludedPackage(
       {final String? title,
       @JsonKey(name: 'custom_parameter_count') final int customParameterCount,
+      final TestPackageType? type,
       @JsonKey(name: 'test_names')
       final List<String> testNames}) = _$IncludedPackageImpl;
 
@@ -1372,6 +1390,8 @@ abstract class _IncludedPackage implements IncludedPackage {
   @override
   @JsonKey(name: 'custom_parameter_count')
   int get customParameterCount;
+  @override
+  TestPackageType? get type;
   @override
   @JsonKey(name: 'test_names')
   List<String> get testNames;

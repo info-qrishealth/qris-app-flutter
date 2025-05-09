@@ -63,6 +63,7 @@ class IncludedPackage with _$IncludedPackage {
           @JsonKey(name: 'custom_parameter_count')
           @Default(0)
           int customParameterCount,
+          TestPackageType? type,
           @JsonKey(name: 'test_names') @Default([]) List<String> testNames}) =
       _IncludedPackage;
 
