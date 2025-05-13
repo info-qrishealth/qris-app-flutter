@@ -39,6 +39,10 @@ _$DoctorImpl _$$DoctorImplFromJson(Map<String, dynamic> json) => _$DoctorImpl(
       mobVerified: json['mob_verified'] as String?,
       emailVerified: json['email_verified'] as String?,
       otp: json['otp'] as String?,
+      educations: (json['educations'] as List<dynamic>?)
+              ?.map((e) => DoctorEducation.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$DoctorImplToJson(_$DoctorImpl instance) =>
@@ -75,4 +79,5 @@ Map<String, dynamic> _$$DoctorImplToJson(_$DoctorImpl instance) =>
       'mob_verified': instance.mobVerified,
       'email_verified': instance.emailVerified,
       'otp': instance.otp,
+      'educations': instance.educations,
     };

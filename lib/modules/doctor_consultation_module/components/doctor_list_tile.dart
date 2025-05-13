@@ -54,7 +54,7 @@ class DoctorListTile extends StatelessWidget with GeneralHelperMixin {
                             Padding(
                                 padding: const EdgeInsets.only(top: 1.5),
                                 child: Text(
-                                    '${doctor.docExperience?.split(' ').firstOrNull} Year Experience',
+                                    '${doctor.docExperience?.split(' ').firstOrNull}+ Year Experience',
                                     style: TextStyle(
                                         fontSize: 8.19,
                                         color: Colors.white,
@@ -117,7 +117,10 @@ class DoctorListTile extends StatelessWidget with GeneralHelperMixin {
                     SizedBox(height: 8),
                     CommonDivider(height: 1),
                     SizedBox(height: 8),
-                    Text('${doctor.docSpeciality}',
+                    Text(
+                        doctor.educations
+                            .map((education) => education.education)
+                            .join(' | '),
                         style: _textTheme.bodySmall!.copyWith(
                             fontWeight: FontWeight.w500,
                             color: Colors.black.withOpacity(0.6))),

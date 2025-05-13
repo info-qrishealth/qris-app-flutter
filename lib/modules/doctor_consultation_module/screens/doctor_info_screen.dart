@@ -1,11 +1,9 @@
-import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/doctor_consultation_module/components/doctor_list_tile.dart';
 import 'package:qris_health/modules/doctor_consultation_module/models/doctor/doctor.dart';
 import 'package:qris_health/modules/doctor_consultation_module/models/doctor_category/doctor_category.dart';
-import 'package:qris_health/modules/doctor_consultation_module/models/doctor_education/doctor_education.dart';
 import 'package:qris_health/modules/doctor_consultation_module/services/doctor_service.dart';
 import 'package:qris_health/shared/components/bullet_point.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
@@ -28,7 +26,6 @@ class DoctorInfoScreen extends StatefulWidget {
 
 class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
   final _textTheme = Get.textTheme;
-  List<DoctorEducation>? _educations;
   late Future<List<Doctor>> _doctorFuture;
 
   @override
@@ -109,39 +106,13 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                                       '${double.tryParse('${widget.doctor.rating}')?.toStringAsFixed(1) ?? 0}'),
                             ]),
                         SizedBox(height: 4),
-                        FutureBuilder<List<DoctorEducation>>(
-                            future: DoctorService.getDoctorEducation(
-                                widget.doctor.id),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                if (_educations == null) {
-                                  _educations = snapshot.data!;
-
-                                  WidgetsBinding.instance
-                                      .addPostFrameCallback((_) {
-                                    setState(() {});
-                                  });
-                                }
-
-                                return Text(
-                                    _educations!
-                                        .map((education) => education
-                                            .education?.capitalizeFirst)
-                                        .join(' | '),
-                                    style: _textTheme.bodySmall!.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black.withOpacity(0.6)));
-                              } else if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return FadeShimmer(
-                                    radius: 4,
-                                    width: 50,
-                                    height: 10,
-                                    fadeTheme: FadeTheme.light);
-                              }
-
-                              return Container();
-                            }),
+                        Text(
+                            widget.doctor.educations
+                                .map((education) => education.education)
+                                .join(' | '),
+                            style: _textTheme.bodySmall!.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black.withOpacity(0.6))),
                         SizedBox(height: 8),
                         Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -231,13 +202,11 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                       borderRadius: BorderRadius.circular(9),
                       border: Border.all(color: AppColors.borderColor)),
                   child: Column(
-                      children: _educations == null
-                          ? []
-                          : _educations!
-                              .map((education) => BulletPoint(
-                                  text:
-                                      '${education.education}${education.college.isNullOrEmpty ? '' : ', ${education.college}'}'))
-                              .toList())),
+                      children: widget.doctor.educations
+                          .map((education) => BulletPoint(
+                              text:
+                                  '${education.education}${education.college.isNullOrEmpty ? '' : ', ${education.college}'}'))
+                          .toList())),
               SizedBox(height: 24),
               HeadingText(text: 'Other ${widget.selectedCategory.title}'),
               SizedBox(height: 10),

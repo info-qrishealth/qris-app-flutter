@@ -83,6 +83,8 @@ mixin _$Doctor {
   String? get emailVerified => throw _privateConstructorUsedError;
   @JsonKey(name: 'otp')
   String? get otp => throw _privateConstructorUsedError;
+  @JsonKey(name: 'educations')
+  List<DoctorEducation> get educations => throw _privateConstructorUsedError;
 
   /// Serializes this Doctor to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -130,7 +132,8 @@ abstract class $DoctorCopyWith<$Res> {
       @JsonKey(name: 'status') String? status,
       @JsonKey(name: 'mob_verified') String? mobVerified,
       @JsonKey(name: 'email_verified') String? emailVerified,
-      @JsonKey(name: 'otp') String? otp});
+      @JsonKey(name: 'otp') String? otp,
+      @JsonKey(name: 'educations') List<DoctorEducation> educations});
 }
 
 /// @nodoc
@@ -180,6 +183,7 @@ class _$DoctorCopyWithImpl<$Res, $Val extends Doctor>
     Object? mobVerified = freezed,
     Object? emailVerified = freezed,
     Object? otp = freezed,
+    Object? educations = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -310,6 +314,10 @@ class _$DoctorCopyWithImpl<$Res, $Val extends Doctor>
           ? _value.otp
           : otp // ignore: cast_nullable_to_non_nullable
               as String?,
+      educations: null == educations
+          ? _value.educations
+          : educations // ignore: cast_nullable_to_non_nullable
+              as List<DoctorEducation>,
     ) as $Val);
   }
 }
@@ -353,7 +361,8 @@ abstract class _$$DoctorImplCopyWith<$Res> implements $DoctorCopyWith<$Res> {
       @JsonKey(name: 'status') String? status,
       @JsonKey(name: 'mob_verified') String? mobVerified,
       @JsonKey(name: 'email_verified') String? emailVerified,
-      @JsonKey(name: 'otp') String? otp});
+      @JsonKey(name: 'otp') String? otp,
+      @JsonKey(name: 'educations') List<DoctorEducation> educations});
 }
 
 /// @nodoc
@@ -401,6 +410,7 @@ class __$$DoctorImplCopyWithImpl<$Res>
     Object? mobVerified = freezed,
     Object? emailVerified = freezed,
     Object? otp = freezed,
+    Object? educations = null,
   }) {
     return _then(_$DoctorImpl(
       id: null == id
@@ -531,6 +541,10 @@ class __$$DoctorImplCopyWithImpl<$Res>
           ? _value.otp
           : otp // ignore: cast_nullable_to_non_nullable
               as String?,
+      educations: null == educations
+          ? _value._educations
+          : educations // ignore: cast_nullable_to_non_nullable
+              as List<DoctorEducation>,
     ));
   }
 }
@@ -570,7 +584,10 @@ class _$DoctorImpl implements _Doctor {
       @JsonKey(name: 'status') this.status,
       @JsonKey(name: 'mob_verified') this.mobVerified,
       @JsonKey(name: 'email_verified') this.emailVerified,
-      @JsonKey(name: 'otp') this.otp});
+      @JsonKey(name: 'otp') this.otp,
+      @JsonKey(name: 'educations')
+      final List<DoctorEducation> educations = const []})
+      : _educations = educations;
 
   factory _$DoctorImpl.fromJson(Map<String, dynamic> json) =>
       _$$DoctorImplFromJson(json);
@@ -670,10 +687,18 @@ class _$DoctorImpl implements _Doctor {
   @override
   @JsonKey(name: 'otp')
   final String? otp;
+  final List<DoctorEducation> _educations;
+  @override
+  @JsonKey(name: 'educations')
+  List<DoctorEducation> get educations {
+    if (_educations is EqualUnmodifiableListView) return _educations;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_educations);
+  }
 
   @override
   String toString() {
-    return 'Doctor(id: $id, docName: $docName, shortBio: $shortBio, description: $description, docSpeciality: $docSpeciality, pic: $pic, category: $category, docEmail: $docEmail, docExperience: $docExperience, docPhone: $docPhone, doctorDob: $doctorDob, docAddress: $docAddress, docStates: $docStates, docAreas: $docAreas, gender: $gender, rating: $rating, review: $review, fees: $fees, education: $education, passingYear: $passingYear, trusted: $trusted, verified: $verified, slug: $slug, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, disOrder: $disOrder, uploadedOn: $uploadedOn, status: $status, mobVerified: $mobVerified, emailVerified: $emailVerified, otp: $otp)';
+    return 'Doctor(id: $id, docName: $docName, shortBio: $shortBio, description: $description, docSpeciality: $docSpeciality, pic: $pic, category: $category, docEmail: $docEmail, docExperience: $docExperience, docPhone: $docPhone, doctorDob: $doctorDob, docAddress: $docAddress, docStates: $docStates, docAreas: $docAreas, gender: $gender, rating: $rating, review: $review, fees: $fees, education: $education, passingYear: $passingYear, trusted: $trusted, verified: $verified, slug: $slug, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, disOrder: $disOrder, uploadedOn: $uploadedOn, status: $status, mobVerified: $mobVerified, emailVerified: $emailVerified, otp: $otp, educations: $educations)';
   }
 
   @override
@@ -732,7 +757,9 @@ class _$DoctorImpl implements _Doctor {
                 other.mobVerified == mobVerified) &&
             (identical(other.emailVerified, emailVerified) ||
                 other.emailVerified == emailVerified) &&
-            (identical(other.otp, otp) || other.otp == otp));
+            (identical(other.otp, otp) || other.otp == otp) &&
+            const DeepCollectionEquality()
+                .equals(other._educations, _educations));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -770,7 +797,8 @@ class _$DoctorImpl implements _Doctor {
         status,
         mobVerified,
         emailVerified,
-        otp
+        otp,
+        const DeepCollectionEquality().hash(_educations)
       ]);
 
   /// Create a copy of Doctor
@@ -822,7 +850,9 @@ abstract class _Doctor implements Doctor {
       @JsonKey(name: 'status') final String? status,
       @JsonKey(name: 'mob_verified') final String? mobVerified,
       @JsonKey(name: 'email_verified') final String? emailVerified,
-      @JsonKey(name: 'otp') final String? otp}) = _$DoctorImpl;
+      @JsonKey(name: 'otp') final String? otp,
+      @JsonKey(name: 'educations')
+      final List<DoctorEducation> educations}) = _$DoctorImpl;
 
   factory _Doctor.fromJson(Map<String, dynamic> json) = _$DoctorImpl.fromJson;
 
@@ -921,6 +951,9 @@ abstract class _Doctor implements Doctor {
   @override
   @JsonKey(name: 'otp')
   String? get otp;
+  @override
+  @JsonKey(name: 'educations')
+  List<DoctorEducation> get educations;
 
   /// Create a copy of Doctor
   /// with the given fields replaced by the non-null parameter values.
