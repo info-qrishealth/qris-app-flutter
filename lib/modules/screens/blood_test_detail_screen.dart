@@ -252,13 +252,11 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                                                                     .w400))),
                                           ])))),
                           SizedBox(height: 18),
-                          ContactUsContainer(),
-                          SizedBox(height: 18),
                           Text(
                               'Parameters Included - ${_testPackageModel?.customParameterCount}',
                               style: _textTheme.titleMedium!
                                   .copyWith(fontWeight: FontWeight.w700)),
-                          SizedBox(height: 8),
+                          SizedBox(height: 10),
                           if (includedPackages.isNotEmpty)
                             Container(
                                 decoration: BoxDecoration(
@@ -273,6 +271,8 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
                                                 includedPackage:
                                                     includedPackage))
                                         .toList())),
+                          SizedBox(height: 18),
+                          ContactUsContainer(),
                           SizedBox(height: 18),
                           Text('Benefits',
                               style: _textTheme.titleMedium!
