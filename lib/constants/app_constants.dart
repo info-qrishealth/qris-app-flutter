@@ -25,7 +25,7 @@ class AppConstants {
       'https://qrishealth.com/privacy-and-policy.php';
   static const termsAndConditionsUrl =
       'https://qrishealth.com/terms-and-conditions.php';
-  static const razorpayKey = 'rzp_test_Jz4MxRXoB0bQx7';
+  static const razorpayKey = 'rzp_live_cM3qnAbKhHGQQ5';
   // 'rzp_live_cM3qnAbKhHGQQ5';
 
   static String getErrorMessage(String message) {
