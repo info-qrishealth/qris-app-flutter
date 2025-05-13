@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.qrishealth.app.qris_health"
+    namespace = "com.qrishealth.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.qrishealth.app.qris_health"
+        applicationId = "com.qrishealth.app"
         multiDexEnabled true
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
