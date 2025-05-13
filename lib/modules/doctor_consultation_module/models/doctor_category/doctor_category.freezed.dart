@@ -41,6 +41,10 @@ mixin _$DoctorCategory {
   DateTime? get publishedOn => throw _privateConstructorUsedError;
   @JsonKey(name: 'dis_order')
   int? get disOrder => throw _privateConstructorUsedError;
+  @JsonKey(name: 'icon')
+  String? get icon => throw _privateConstructorUsedError;
+  @JsonKey(name: 'icon_bg')
+  String? get iconBg => throw _privateConstructorUsedError;
   @JsonKey(name: 'status')
   String? get status => throw _privateConstructorUsedError;
 
@@ -72,6 +76,8 @@ abstract class $DoctorCategoryCopyWith<$Res> {
       @JsonKey(name: 'meta_desc') String? metaDesc,
       @JsonKey(name: 'published_on') DateTime? publishedOn,
       @JsonKey(name: 'dis_order') int? disOrder,
+      @JsonKey(name: 'icon') String? icon,
+      @JsonKey(name: 'icon_bg') String? iconBg,
       @JsonKey(name: 'status') String? status});
 }
 
@@ -101,6 +107,8 @@ class _$DoctorCategoryCopyWithImpl<$Res, $Val extends DoctorCategory>
     Object? metaDesc = freezed,
     Object? publishedOn = freezed,
     Object? disOrder = freezed,
+    Object? icon = freezed,
+    Object? iconBg = freezed,
     Object? status = freezed,
   }) {
     return _then(_value.copyWith(
@@ -148,6 +156,14 @@ class _$DoctorCategoryCopyWithImpl<$Res, $Val extends DoctorCategory>
           ? _value.disOrder
           : disOrder // ignore: cast_nullable_to_non_nullable
               as int?,
+      icon: freezed == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as String?,
+      iconBg: freezed == iconBg
+          ? _value.iconBg
+          : iconBg // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -176,6 +192,8 @@ abstract class _$$DoctorCategoryImplCopyWith<$Res>
       @JsonKey(name: 'meta_desc') String? metaDesc,
       @JsonKey(name: 'published_on') DateTime? publishedOn,
       @JsonKey(name: 'dis_order') int? disOrder,
+      @JsonKey(name: 'icon') String? icon,
+      @JsonKey(name: 'icon_bg') String? iconBg,
       @JsonKey(name: 'status') String? status});
 }
 
@@ -203,6 +221,8 @@ class __$$DoctorCategoryImplCopyWithImpl<$Res>
     Object? metaDesc = freezed,
     Object? publishedOn = freezed,
     Object? disOrder = freezed,
+    Object? icon = freezed,
+    Object? iconBg = freezed,
     Object? status = freezed,
   }) {
     return _then(_$DoctorCategoryImpl(
@@ -250,6 +270,14 @@ class __$$DoctorCategoryImplCopyWithImpl<$Res>
           ? _value.disOrder
           : disOrder // ignore: cast_nullable_to_non_nullable
               as int?,
+      icon: freezed == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as String?,
+      iconBg: freezed == iconBg
+          ? _value.iconBg
+          : iconBg // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -273,6 +301,8 @@ class _$DoctorCategoryImpl implements _DoctorCategory {
       @JsonKey(name: 'meta_desc') this.metaDesc,
       @JsonKey(name: 'published_on') this.publishedOn,
       @JsonKey(name: 'dis_order') this.disOrder,
+      @JsonKey(name: 'icon') this.icon,
+      @JsonKey(name: 'icon_bg') this.iconBg,
       @JsonKey(name: 'status') this.status});
 
   factory _$DoctorCategoryImpl.fromJson(Map<String, dynamic> json) =>
@@ -311,12 +341,18 @@ class _$DoctorCategoryImpl implements _DoctorCategory {
   @JsonKey(name: 'dis_order')
   final int? disOrder;
   @override
+  @JsonKey(name: 'icon')
+  final String? icon;
+  @override
+  @JsonKey(name: 'icon_bg')
+  final String? iconBg;
+  @override
   @JsonKey(name: 'status')
   final String? status;
 
   @override
   String toString() {
-    return 'DoctorCategory(id: $id, title: $title, h1: $h1, slug: $slug, description: $description, pic: $pic, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, publishedOn: $publishedOn, disOrder: $disOrder, status: $status)';
+    return 'DoctorCategory(id: $id, title: $title, h1: $h1, slug: $slug, description: $description, pic: $pic, metaTitle: $metaTitle, metaKey: $metaKey, metaDesc: $metaDesc, publishedOn: $publishedOn, disOrder: $disOrder, icon: $icon, iconBg: $iconBg, status: $status)';
   }
 
   @override
@@ -340,13 +376,29 @@ class _$DoctorCategoryImpl implements _DoctorCategory {
                 other.publishedOn == publishedOn) &&
             (identical(other.disOrder, disOrder) ||
                 other.disOrder == disOrder) &&
+            (identical(other.icon, icon) || other.icon == icon) &&
+            (identical(other.iconBg, iconBg) || other.iconBg == iconBg) &&
             (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, h1, slug, description,
-      pic, metaTitle, metaKey, metaDesc, publishedOn, disOrder, status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      h1,
+      slug,
+      description,
+      pic,
+      metaTitle,
+      metaKey,
+      metaDesc,
+      publishedOn,
+      disOrder,
+      icon,
+      iconBg,
+      status);
 
   /// Create a copy of DoctorCategory
   /// with the given fields replaced by the non-null parameter values.
@@ -378,6 +430,8 @@ abstract class _DoctorCategory implements DoctorCategory {
       @JsonKey(name: 'meta_desc') final String? metaDesc,
       @JsonKey(name: 'published_on') final DateTime? publishedOn,
       @JsonKey(name: 'dis_order') final int? disOrder,
+      @JsonKey(name: 'icon') final String? icon,
+      @JsonKey(name: 'icon_bg') final String? iconBg,
       @JsonKey(name: 'status') final String? status}) = _$DoctorCategoryImpl;
 
   factory _DoctorCategory.fromJson(Map<String, dynamic> json) =
@@ -415,6 +469,12 @@ abstract class _DoctorCategory implements DoctorCategory {
   @override
   @JsonKey(name: 'dis_order')
   int? get disOrder;
+  @override
+  @JsonKey(name: 'icon')
+  String? get icon;
+  @override
+  @JsonKey(name: 'icon_bg')
+  String? get iconBg;
   @override
   @JsonKey(name: 'status')
   String? get status;

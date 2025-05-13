@@ -49,6 +49,8 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final allLocations = widget.allLocations;
+
     return Scaffold(
         appBar: CommonAppBar(
             title: '${_selectedCategory.title} in ${_selectedLocation.title}'),
@@ -66,12 +68,11 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                       spacing: 8,
                       runSpacing: 8,
                       children: [
-                        ...widget.allLocations
+                        ...allLocations
                             .where((location) =>
                                 location.cityId == _selectedLocation.cityId)
                             .toList()
-                            .sublist(
-                                0, widget.allLocations.length > 5 ? 5 : null)
+                            .sublist(0, allLocations.length > 5 ? 5 : null)
                             .map((place) => GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -82,13 +83,13 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                     isSelected:
                                         _selectedLocation.id == place.id,
                                     title: place.title!))),
-                        if (widget.allLocations.length > 5)
+                        if (allLocations.length > 5)
                           CommonOutlinedChip(
                               onTap: () async {
                                 await showDialog(
                                     context: context,
                                     builder: (context) => SelectLocationDialog(
-                                        doctorLocations: widget.allLocations,
+                                        doctorLocations: allLocations,
                                         onApply: (selectedLocation) {
                                           Navigator.of(context).pop();
 
@@ -99,7 +100,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                         },
                                         selectedLocation: _selectedLocation));
                               },
-                              isSelected: widget.allLocations
+                              isSelected: allLocations
                                       .sublist(0, 5)
                                       .firstWhereOrNull((element) =>
                                           element.id == _selectedLocation.id) ==
@@ -120,8 +121,19 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                         _doctors = snapshot.data!;
 
                         if (_doctors.isEmpty) {
-                          return NoItemFoundContainer(
-                              title: 'No bookings found.');
+                          return Column(
+                            children: [
+                              Expanded(
+                                  child: NoItemFoundContainer(
+                                      title: 'No bookings found.')),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AppConstants.scaffoldPadding),
+                                child: _buildOtherSpecialistWidget(),
+                              ),
+                              SizedBox(height: 8),
+                            ],
+                          );
                         }
 
                         return ListView(
@@ -137,8 +149,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                   itemBuilder: (context, index) {
                                     return DoctorListTile(
                                         doctor: _doctors[index],
-                                        doctorCategory:
-                                            widget.selectedCategory);
+                                        doctorCategory: _selectedCategory);
                                   },
                                   separatorBuilder: (context, index) {
                                     if (index == 1) {
@@ -153,46 +164,52 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                   },
                                   itemCount: _doctors.length),
                               SizedBox(height: 24),
-                              Row(children: [
-                                Expanded(
-                                    child: HeadingText(
-                                        text: 'Other Specialists in Rohini')),
-                                NavigationRow(
-                                    onPreviousTap: () async {
-                                      await _scrollController.animateTo(
-                                          _scrollController.position.pixels -
-                                              100,
-                                          duration: Duration(milliseconds: 200),
-                                          curve: Curves.easeIn);
-                                    },
-                                    onNextTap: () async {
-                                      await _scrollController.animateTo(
-                                          _scrollController.position.pixels +
-                                              100,
-                                          duration: Duration(milliseconds: 200),
-                                          curve: Curves.easeIn);
-                                    },
-                                    activeColor: AppColors.primaryBlue),
-                              ]),
-                              SizedBox(height: 12),
-                              SizedBox(
-                                  height: 79,
-                                  child: ListView(
-                                      controller: _scrollController,
-                                      physics: BouncingScrollPhysics(),
-                                      scrollDirection: Axis.horizontal,
-                                      children: SpecialistType.values
-                                          .map((specialist) => Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10),
-                                              child:
-                                                  SpecialistCategoryContainer(
-                                                      specialistType:
-                                                          specialist)))
-                                          .toList()))
+                              _buildOtherSpecialistWidget(),
                             ]);
                       })),
               SizedBox(height: 16),
             ])));
+  }
+
+  Widget _buildOtherSpecialistWidget() {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Row(children: [
+        Expanded(
+            child: HeadingText(
+                text: 'Other Specialists in ${_selectedLocation.title}')),
+        NavigationRow(
+            onPreviousTap: () async {
+              await _scrollController.animateTo(
+                  _scrollController.position.pixels - 100,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeIn);
+            },
+            onNextTap: () async {
+              await _scrollController.animateTo(
+                  _scrollController.position.pixels + 100,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeIn);
+            },
+            activeColor: AppColors.primaryBlue),
+      ]),
+      SizedBox(height: 12),
+      SizedBox(
+          height: 79,
+          child: ListView(
+              controller: _scrollController,
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              children: widget.allCategories
+                  .map((specialist) => Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: SpecialistCategoryContainer(
+                          onTap: () {
+                            setState(() {
+                              _selectedCategory = specialist;
+                            });
+                          },
+                          doctorCategory: specialist)))
+                  .toList()))
+    ]);
   }
 }

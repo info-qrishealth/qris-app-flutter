@@ -21,6 +21,8 @@ _$DoctorCategoryImpl _$$DoctorCategoryImplFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['published_on'] as String),
       disOrder: (json['dis_order'] as num?)?.toInt(),
+      icon: json['icon'] as String?,
+      iconBg: json['icon_bg'] as String?,
       status: json['status'] as String?,
     );
 
@@ -38,5 +40,7 @@ Map<String, dynamic> _$$DoctorCategoryImplToJson(
       'meta_desc': instance.metaDesc,
       'published_on': instance.publishedOn?.toIso8601String(),
       'dis_order': instance.disOrder,
+      'icon': instance.icon,
+      'icon_bg': instance.iconBg,
       'status': instance.status,
     };

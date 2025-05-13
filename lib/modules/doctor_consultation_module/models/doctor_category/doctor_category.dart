@@ -17,6 +17,8 @@ class DoctorCategory with _$DoctorCategory {
     @JsonKey(name: 'meta_desc') String? metaDesc,
     @JsonKey(name: 'published_on') DateTime? publishedOn,
     @JsonKey(name: 'dis_order') int? disOrder,
+    @JsonKey(name: 'icon') String? icon,
+    @JsonKey(name: 'icon_bg') String? iconBg,
     @JsonKey(name: 'status') String? status,
   }) = _DoctorCategory;
 
