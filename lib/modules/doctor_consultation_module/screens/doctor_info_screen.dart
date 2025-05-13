@@ -119,7 +119,7 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                             child: CommonDivider(height: 1)),
                         SizedBox(height: 8),
                         Text(
-                            '${widget.doctor.docSpeciality?.replaceAll('|', ' | ')}',
+                            '${widget.doctor.docSpeciality?.replaceAll('|', ' , ')}',
                             style: _textTheme.bodyLarge!.copyWith(
                                 color: AppColors.lightText,
                                 fontWeight: FontWeight.w400,
@@ -132,6 +132,7 @@ class _DoctorInfoScreenState extends State<DoctorInfoScreen> {
                                 .copyWith(fontWeight: FontWeight.w700)),
                         SizedBox(height: 12),
                         Container(
+                            margin: EdgeInsets.symmetric(horizontal: 8),
                             padding: EdgeInsets.symmetric(vertical: 9),
                             decoration: BoxDecoration(
                                 color: AppColors.primaryPink.withOpacity(0.04),
