@@ -43,14 +43,15 @@ class TestService {
   }
 
   static Future<List<TestPackageModel>> getPackagesByCategory(
-      {required int? categoryId, required int? riskId}) async {
+      {required int categoryOrRiskId}) async {
     final url =
-        '${AppConstants.baseUrl}/tests/by-category-or-risk-id${categoryId != null ? '?categoryId=$categoryId' : riskId != null ? '?riskId=$riskId' : ''}';
+        '${AppConstants.baseUrl}/tests/by-category-or-risk-id?categoryOrRiskId=$categoryOrRiskId';
 
     try {
       final response = await Wrapper.get(url);
       return (json.decode(response)['body'] as List)
           .map((element) => TestPackageModel.fromJson(element))
+          .toSet()
           .toList();
     } catch (e) {
       rethrow;

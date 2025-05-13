@@ -169,8 +169,8 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                         } else {
                           return FutureBuilder<List<TestPackageModel>>(
                               future: TestService.getPackagesByCategory(
-                                  categoryId: _selectedTestCategory?.id,
-                                  riskId: _selectedRiskAreaCategory?.id),
+                                  categoryOrRiskId: _selectedTestCategory?.id ??
+                                      _selectedRiskAreaCategory!.id),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
