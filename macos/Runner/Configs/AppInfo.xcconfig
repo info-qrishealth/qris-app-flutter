@@ -8,7 +8,7 @@
 PRODUCT_NAME = qris_health
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.qrishealth.app.qrisHealth
+PRODUCT_BUNDLE_IDENTIFIER = com.qris.app.qrisHealth
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2024 com.qrishealth.app. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2024 com.qris.app. All rights reserved.

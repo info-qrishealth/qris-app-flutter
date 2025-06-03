@@ -1,4 +1,4 @@
-package com.qrishealth.app
+package com.qris.app
 
 import io.flutter.embedding.android.FlutterActivity
 
