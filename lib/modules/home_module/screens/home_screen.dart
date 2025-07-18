@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
@@ -38,6 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
   final _textTheme = Get.textTheme;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Permission.notification.request();
+  }
 
   @override
   Widget build(BuildContext context) {
