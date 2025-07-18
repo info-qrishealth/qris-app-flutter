@@ -1,11 +1,19 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_udid/flutter_udid.dart';
+import 'package:get/get.dart';
 import 'package:qris_health/constants/api_params.dart';
+import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/constants/pref_constants.dart';
 import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
+import 'package:qris_health/modules/notification_module/models/notification_token.dart';
+import 'package:qris_health/modules/notification_module/services/notification_service.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
+import 'package:qris_health/modules/users_module/services/user_service.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,6 +40,24 @@ mixin LoginHelperMixin {
 
       BlocProvider.of<QrisCoinsCubit>(context).getQrisCoins();
       BlocProvider.of<QrisWalletCubit>(context).getWalletEntries();
+
+      try {
+        final token = await FirebaseMessaging.instance.getToken();
+        if (token != null) {
+          await NotificationService.setNotificationToken(
+              notificationToken: NotificationToken(
+                  token: token,
+                  platform: GetPlatform.isAndroid
+                      ? 1
+                      : GetPlatform.isIOS
+                          ? 2
+                          : 3,
+                  deviceIdentifier: await FlutterUdid.udid,
+                  userId: user.id));
+        }
+      } catch (e) {
+        print(e.toString());
+      }
 
       Navigator.of(context).pushAndRemoveUntil(
           CupertinoPageRoute(builder: (context) => HomeScreen()), (_) => false);

@@ -1,0 +1,2 @@
+/Users/keshavrathore/StudioProjects/qris/android/app/.cxx/RelWithDebInfo/156f704z/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/keshavrathore/StudioProjects/qris/android/app/.cxx/RelWithDebInfo/156f704z/arm64-v8a/CMakeFiles/rebuild_cache.dir

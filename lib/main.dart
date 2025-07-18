@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,10 +16,15 @@ import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:qris_health/styles/app_styles.dart';
 
+import 'firebase_options.dart';
 import 'modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
