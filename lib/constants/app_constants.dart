@@ -2,15 +2,23 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/constants/enums/environment.dart';
 
 import '../styles/app_colors.dart';
 import '../styles/app_styles.dart';
 import 'enums/snackbar_type.dart';
 
 class AppConstants {
-  static const String baseUrl =
-      // 'http://192.168.1.35:8080';
-      'http://srv740952.hstgr.cloud:8080';
+  static const Environment environment = Environment.prod;
+
+  static const String baseUrl = environment == Environment.prod
+      ? 'http://srv740952.hstgr.cloud:8080'
+      : 'http://192.168.1.37:8080';
+
+  static const razorpayKey = environment == Environment.prod
+      ? 'rzp_live_cM3qnAbKhHGQQ5'
+      : 'rzp_test_Jz4MxRXoB0bQx7';
+
   static const ubuntuFontFamily = 'Ubuntu';
   static const latoFontFamily = 'Lato';
   static const metropolisFontFamily = 'Metropolis';
@@ -25,8 +33,6 @@ class AppConstants {
       'https://qrishealth.com/privacy-and-policy.php';
   static const termsAndConditionsUrl =
       'https://qrishealth.com/terms-and-conditions.php';
-  static const razorpayKey = 'rzp_live_cM3qnAbKhHGQQ5';
-  // 'rzp_live_cM3qnAbKhHGQQ5';
 
   static String getErrorMessage(String message) {
     try {

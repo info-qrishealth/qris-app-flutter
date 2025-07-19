@@ -693,7 +693,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
             '(You will get %${coupon.couponPrice.toInt()} (₹${(testAmount * coupon.couponPrice) ~/ 100}) cashback right after your order completion)';
       } else {
         text =
-            '(You will get ₹${testAmount - coupon.couponPrice} cashback right after your order completion)';
+            '(You will get ₹${coupon.couponPrice} cashback right after your order completion)';
       }
 
       return Text(text, style: style);
