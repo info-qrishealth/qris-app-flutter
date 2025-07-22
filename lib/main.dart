@@ -1,24 +1,40 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/constants/pref_constants.dart';
+import 'package:qris_health/modules/address_module/screens/address_screen.dart';
 import 'package:qris_health/modules/all_scans_module/cubits/tests_category_cubit.dart';
 import 'package:qris_health/modules/health_article_module/cubits/health_article_category_cubit/health_article_category_cubit.dart';
 import 'package:qris_health/modules/health_article_module/cubits/health_articles_cubit/health_article_cubit.dart';
+import 'package:qris_health/modules/health_article_module/screens/health_article_detail_screen.dart';
+import 'package:qris_health/modules/health_article_module/screens/health_articles_screen.dart';
+import 'package:qris_health/modules/health_article_module/services/health_article_service.dart';
 import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
+import 'package:qris_health/modules/health_module/screens/mental_wellness_screen.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
+import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/intro_module/screens/custom_splash_screen.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
+import 'package:qris_health/modules/orders_modele/screens/orders_screen.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
+import 'package:qris_health/modules/patients_module/screens/patients_screen.dart';
+import 'package:qris_health/modules/profile_module/screens/my_profile_screen.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
+import 'package:qris_health/modules/refer_and_earn_module/screens/coins_screen.dart';
+import 'package:qris_health/modules/refer_and_earn_module/screens/wallet_screen.dart';
+import 'package:qris_health/modules/screens/blood_test_detail_screen.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:qris_health/styles/app_styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'firebase_options.dart';
 import 'modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
@@ -88,7 +104,13 @@ class _MyAppState extends State<MyApp> {
       if (Platform.isAndroid) {
         FirebaseMessaging.onBackgroundMessage(_myBackgroundMessageHandler);
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
+
+    FirebaseMessaging.instance.getInitialMessage().then((message) async {
+      await _handleUrl(message: message);
+    });
 
     FirebaseMessaging.onMessage.listen((event) async {
       try {
@@ -97,6 +119,105 @@ class _MyAppState extends State<MyApp> {
         print(e.toString());
       }
     });
+  }
+
+  Future<void> _handleUrl({required RemoteMessage? message}) async {
+    final url =
+        message?.data != null && message!.data.containsKey(PrefConstants.url)
+            ? message.data[PrefConstants.url]
+            : null;
+
+    final uri = Uri.tryParse('$url');
+
+    if (uri == null) {
+      return;
+    }
+
+    if (await canLaunchUrl(uri)) {
+      print('Launching url');
+      await launch(url);
+    } else {
+      final segments = uri.pathSegments;
+      if (segments.isEmpty) return;
+
+      if (segments.first == 'test' && segments.length == 2) {
+        final testId = int.tryParse(segments[1]);
+
+        if (testId != null) {
+          Navigator.of(context).push(CupertinoPageRoute(
+              builder: (context) => BloodTestDetailScreen(testId: testId)));
+        }
+      }
+
+      if (segments.first == 'article' && segments.length == 2) {
+        final articleId = int.tryParse(segments[1]);
+
+        if (articleId != null) {
+          final articles = await HealthArticleService.getArticlesByArticleIds(
+              testIds: [articleId]);
+
+          if (articles.isNotEmpty) {
+            Navigator.of(context).push(CupertinoPageRoute(
+                builder: (context) =>
+                    HealthArticleDetailScreen(healthArticle: articles.first)));
+          }
+        }
+      }
+
+      if (segments.first == 'popular') {
+        final length = segments.length;
+
+        if (length == 1) {
+          Navigator.of(context).push(
+              CupertinoPageRoute(builder: (context) => PopularPackageScreen()));
+        } else {
+          Navigator.of(context).push(CupertinoPageRoute(
+              builder: (context) => PopularPackageScreen(
+                    initialCategoryId: int.tryParse(segments[1]),
+                  )));
+        }
+      }
+
+      if (segments.first == 'profile') {
+        Navigator.of(context)
+            .push(CupertinoPageRoute(builder: (context) => MyProfileScreen()));
+      }
+
+      if (segments.first == 'address') {
+        Navigator.of(context)
+            .push(CupertinoPageRoute(builder: (context) => AddressScreen()));
+      }
+
+      if (segments.first == 'member') {
+        Navigator.of(context)
+            .push(CupertinoPageRoute(builder: (context) => PatientsScreen()));
+      }
+
+      if (segments.first == 'wallet') {
+        Navigator.of(context)
+            .push(CupertinoPageRoute(builder: (context) => WalletScreen()));
+      }
+
+      if (segments.first == 'coins') {
+        Navigator.of(context)
+            .push(CupertinoPageRoute(builder: (context) => CoinsScreen()));
+      }
+
+      if (segments.first == 'order') {
+        Navigator.of(context)
+            .push(CupertinoPageRoute(builder: (context) => OrdersScreen()));
+      }
+
+      if (segments.first == 'wellness') {
+        Navigator.of(context).push(
+            CupertinoPageRoute(builder: (context) => MentalWellnessScreen()));
+      }
+
+      if (segments.first == 'articles') {
+        Navigator.of(context).push(
+            CupertinoPageRoute(builder: (context) => HealthArticlesScreen()));
+      }
+    }
   }
 }
 
@@ -123,7 +244,8 @@ Future<void> _showNotification(RemoteMessage message) async {
         DateTime.now().millisecondsSinceEpoch.remainder(100000),
         title,
         body,
-        platformChannelSpecifics);
+        platformChannelSpecifics,
+        payload: json.encode(message.data));
   } catch (e) {
     print(e);
   }

@@ -23,8 +23,10 @@ import '../../../constants/enums/test_package_type.dart';
 import '../../screens/blood_test_detail_screen.dart';
 
 class PopularPackageScreen extends StatefulWidget {
+  final int? initialCategoryId;
   final bool showBottomStrip;
-  const PopularPackageScreen({super.key, this.showBottomStrip = true});
+  const PopularPackageScreen(
+      {super.key, this.showBottomStrip = true, this.initialCategoryId});
 
   @override
   State<PopularPackageScreen> createState() => _PopularPackageScreenState();
@@ -42,7 +44,19 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
     final popularPackagesCubit = BlocProvider.of<PopularPackagesCubit>(context);
 
     if (testCategoriesCubit.state is! TestsCategoryLoaded) {
-      testCategoriesCubit.getTestsCategories();
+      testCategoriesCubit.getTestsCategories().then((_) {
+        if (widget.initialCategoryId != null) {
+          _selectedTestCategory =
+              testCategoriesCubit.getTestCategoryById(widget.initialCategoryId);
+
+          if (_selectedTestCategory == null) {
+            _selectedRiskAreaCategory = testCategoriesCubit
+                .getRiskCategoryById(widget.initialCategoryId);
+          }
+
+          setState(() {});
+        }
+      });
     }
 
     if (popularPackagesCubit.state is! PopularPackagesLoaded) {

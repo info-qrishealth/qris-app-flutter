@@ -3,4 +3,5 @@ class PrefConstants {
   static const String authToken = 'authToken';
   static const String phoneNumber = 'phoneNumber';
   static const String firebaseToken = 'firebaseToken';
+  static const String url = 'url';
 }

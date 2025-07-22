@@ -9,6 +9,7 @@ import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/login_module/screens/login_phone_number_screen.dart';
+import 'package:qris_health/modules/notification_module/services/notification_service.dart';
 import 'package:qris_health/modules/orders_modele/screens/orders_screen.dart';
 import 'package:qris_health/modules/patients_module/screens/patients_screen.dart';
 import 'package:qris_health/modules/profile_module/screens/my_profile_screen.dart';
@@ -199,6 +200,13 @@ class _MainDrawerState extends State<MainDrawer> {
       ApiParams.getInstance()!.userId = null;
       ApiParams.getInstance()!.authorization = null;
       ApiParams.getInstance()!.phoneNumber = null;
+
+      try {
+        await NotificationService.removeNotificationToken();
+      } catch (e) {
+        print(e.toString());
+      }
+
       Navigator.of(context).pushAndRemoveUntil(
           CupertinoPageRoute(builder: (context) => LoginPhoneNumberScreen()),
           (route) => false);
