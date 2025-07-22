@@ -43,7 +43,8 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
     final testCategoriesCubit = BlocProvider.of<TestsCategoryCubit>(context);
     final popularPackagesCubit = BlocProvider.of<PopularPackagesCubit>(context);
 
-    if (testCategoriesCubit.state is! TestsCategoryLoaded) {
+    if (testCategoriesCubit.state is! TestsCategoryLoaded ||
+        widget.initialCategoryId != null) {
       testCategoriesCubit.getTestsCategories().then((_) {
         if (widget.initialCategoryId != null) {
           _selectedTestCategory =
@@ -52,6 +53,9 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
           if (_selectedTestCategory == null) {
             _selectedRiskAreaCategory = testCategoriesCubit
                 .getRiskCategoryById(widget.initialCategoryId);
+            _selectedTestCategory = null;
+          } else {
+            _selectedRiskAreaCategory = null;
           }
 
           setState(() {});
