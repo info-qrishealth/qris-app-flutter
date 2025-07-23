@@ -120,26 +120,44 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _firebaseCloudMessagingListeners() async {
-    try {
-      if (Platform.isIOS) {
-        FirebaseMessaging.instance.requestPermission(
-            sound: true, badge: true, alert: true, provisional: false);
+    if (Platform.isIOS) {
+      /// Request permissions
+      await FirebaseMessaging.instance.requestPermission(
+          sound: true, badge: true, alert: true, provisional: false);
 
-        await FirebaseMessaging.instance
-            .setForegroundNotificationPresentationOptions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
-      }
+      /// add ability to add notifications in foreground
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
 
-      if (Platform.isAndroid) {
-        FirebaseMessaging.onBackgroundMessage(_myBackgroundMessageHandler);
-      }
-    } catch (e) {
-      print(e.toString());
+      /// When user taps on the notification
+      FirebaseMessaging.onMessageOpenedApp.listen((message) async {
+        final url = message.data.containsKey(PrefConstants.url)
+            ? message.data[PrefConstants.url]
+            : null;
+
+        await NavigatorUtils.handleUrl(url: url, navigatorKey: _navigatorKey);
+      });
     }
 
+    if (Platform.isAndroid) {
+      /// Set background handler
+      FirebaseMessaging.onBackgroundMessage(_myBackgroundMessageHandler);
+
+      /// When notification is received when app is in foreground
+      FirebaseMessaging.onMessage.listen((event) async {
+        try {
+          await _showNotification(event);
+        } catch (e) {
+          print(e.toString());
+        }
+      });
+    }
+
+    /// On notification click in terminated state
     FirebaseMessaging.instance.getInitialMessage().then((message) async {
       final url =
           message?.data != null && message!.data.containsKey(PrefConstants.url)
@@ -147,14 +165,6 @@ class _MyAppState extends State<MyApp> {
               : null;
 
       await NavigatorUtils.handleUrl(url: url, navigatorKey: _navigatorKey);
-    });
-
-    FirebaseMessaging.onMessage.listen((event) async {
-      try {
-        await _showNotification(event);
-      } catch (e) {
-        print(e.toString());
-      }
     });
   }
 }
