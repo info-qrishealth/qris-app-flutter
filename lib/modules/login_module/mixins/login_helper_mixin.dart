@@ -5,16 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/api_params.dart';
-import 'package:qris_health/constants/app_constants.dart';
-import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/constants/pref_constants.dart';
 import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/notification_module/models/notification_token.dart';
 import 'package:qris_health/modules/notification_module/services/notification_service.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
-import 'package:qris_health/modules/users_module/services/user_service.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
+import 'package:qris_health/shared/models/notification_launch_data.dart';
+import 'package:qris_health/shared/utils/navigator_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../home_module/screens/home_screen.dart';
@@ -59,8 +58,19 @@ mixin LoginHelperMixin {
         print(e.toString());
       }
 
-      Navigator.of(context).pushAndRemoveUntil(
-          CupertinoPageRoute(builder: (context) => HomeScreen()), (_) => false);
+      if (NotificationLaunchData.tappedUrl != null) {
+        Navigator.of(context).pushAndRemoveUntil(
+            CupertinoPageRoute(builder: (context) => HomeScreen()),
+            (_) => false);
+
+        NavigatorUtils.handleUrl(
+            url: NotificationLaunchData.tappedUrl,
+            navigatorKey: NotificationLaunchData.navigatorKey);
+      } else {
+        Navigator.of(context).pushAndRemoveUntil(
+            CupertinoPageRoute(builder: (context) => HomeScreen()),
+            (_) => false);
+      }
     } catch (e) {
       rethrow;
     }

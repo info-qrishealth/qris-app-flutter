@@ -16,20 +16,18 @@ import 'package:qris_health/modules/health_article_module/cubits/health_articles
 import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/intro_module/screens/custom_splash_screen.dart';
-import 'package:qris_health/modules/login_module/mixins/login_helper_mixin.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
+import 'package:qris_health/shared/models/notification_launch_data.dart';
 import 'package:qris_health/shared/utils/navigator_utils.dart';
 import 'package:qris_health/styles/app_styles.dart';
-
 import 'firebase_options.dart';
 import 'modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 
 final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
 @pragma('vm:entry-point')
 Future<void> _myBackgroundMessageHandler(RemoteMessage message) async {
@@ -45,7 +43,8 @@ void _onNotificationTap(NotificationResponse response) async {
       final data = json.decode(payload);
       if (data is Map && data.containsKey(PrefConstants.url)) {
         final url = data[PrefConstants.url];
-        NavigatorUtils.handleUrl(url: url, navigatorKey: _navigatorKey);
+        NavigatorUtils.handleUrl(
+            url: url, navigatorKey: NotificationLaunchData.navigatorKey);
       }
     } catch (e) {
       print("Failed to handle notification tap: $e");
@@ -95,7 +94,7 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (context) => QrisCoinsCubit()),
         ],
         child: GetMaterialApp(
-            navigatorKey: _navigatorKey,
+            navigatorKey: NotificationLaunchData.navigatorKey,
             debugShowCheckedModeBanner: false,
             title: 'Qris Health',
             theme: AppStyles.theme(context),
@@ -140,7 +139,8 @@ class _MyAppState extends State<MyApp> {
             ? message.data[PrefConstants.url]
             : null;
 
-        await NavigatorUtils.handleUrl(url: url, navigatorKey: _navigatorKey);
+        await NavigatorUtils.handleUrl(
+            url: url, navigatorKey: NotificationLaunchData.navigatorKey);
       });
     }
 
@@ -158,29 +158,26 @@ class _MyAppState extends State<MyApp> {
       });
 
       /// When user clicks on notification when application is terminated
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        final details = await _flutterLocalNotificationsPlugin
-            .getNotificationAppLaunchDetails();
+      final details = await _flutterLocalNotificationsPlugin
+          .getNotificationAppLaunchDetails();
 
-        if (details?.didNotificationLaunchApp == true) {
-          final payload = details!.notificationResponse!.payload;
+      if (details?.didNotificationLaunchApp == true) {
+        final payload = details!.notificationResponse!.payload;
 
-          try {
-            if (payload != null) {
-              final decodedPayload = json.decode(payload);
-              if (decodedPayload is Map &&
-                  decodedPayload.containsKey(PrefConstants.url)) {
-                final url = decodedPayload[PrefConstants.url];
-                if (url != null) {
-                  await Future.delayed(Duration(seconds: 1));
-                  await NavigatorUtils.handleUrl(
-                      url: url, navigatorKey: _navigatorKey);
-                }
+        try {
+          if (payload != null) {
+            final decodedPayload = json.decode(payload);
+
+            if (decodedPayload is Map &&
+                decodedPayload.containsKey(PrefConstants.url)) {
+              final url = decodedPayload[PrefConstants.url];
+              if (url != null) {
+                NotificationLaunchData.tappedUrl = url;
               }
             }
-          } catch (e) {}
-        }
-      });
+          }
+        } catch (e) {}
+      }
     }
 
     /// On notification click in terminated state
@@ -190,7 +187,9 @@ class _MyAppState extends State<MyApp> {
               ? message.data[PrefConstants.url]
               : null;
 
-      await NavigatorUtils.handleUrl(url: url, navigatorKey: _navigatorKey);
+      if (url != null) {
+        NotificationLaunchData.tappedUrl = url;
+      }
     });
   }
 }
