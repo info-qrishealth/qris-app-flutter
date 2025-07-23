@@ -16,6 +16,7 @@ import 'package:qris_health/modules/health_article_module/cubits/health_articles
 import 'package:qris_health/modules/health_module/cubits/qris_doctors_cubit/qris_doctors_cubit.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/intro_module/screens/custom_splash_screen.dart';
+import 'package:qris_health/modules/login_module/mixins/login_helper_mixin.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
@@ -153,6 +154,31 @@ class _MyAppState extends State<MyApp> {
           await _showNotification(event);
         } catch (e) {
           print(e.toString());
+        }
+      });
+
+      /// When user clicks on notification when application is terminated
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final details = await _flutterLocalNotificationsPlugin
+            .getNotificationAppLaunchDetails();
+
+        if (details?.didNotificationLaunchApp == true) {
+          final payload = details!.notificationResponse!.payload;
+
+          try {
+            if (payload != null) {
+              final decodedPayload = json.decode(payload);
+              if (decodedPayload is Map &&
+                  decodedPayload.containsKey(PrefConstants.url)) {
+                final url = decodedPayload[PrefConstants.url];
+                if (url != null) {
+                  await Future.delayed(Duration(seconds: 1));
+                  await NavigatorUtils.handleUrl(
+                      url: url, navigatorKey: _navigatorKey);
+                }
+              }
+            }
+          } catch (e) {}
         }
       });
     }
