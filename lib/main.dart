@@ -124,6 +124,13 @@ class _MyAppState extends State<MyApp> {
       if (Platform.isIOS) {
         FirebaseMessaging.instance.requestPermission(
             sound: true, badge: true, alert: true, provisional: false);
+
+        await FirebaseMessaging.instance
+            .setForegroundNotificationPresentationOptions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
       }
 
       if (Platform.isAndroid) {
@@ -169,7 +176,7 @@ Future<void> _showNotification(RemoteMessage message) async {
 
     NotificationDetails platformChannelSpecifics = NotificationDetails(
         android: androidNotificationDetailsWithDefaultSound,
-        iOS: const DarwinNotificationDetails());
+        iOS: DarwinNotificationDetails(presentSound: true));
 
     _flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch.remainder(100000),
