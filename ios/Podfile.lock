@@ -4,7 +4,7 @@ PODS:
   - Firebase/Messaging (11.15.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 11.15.0)
-  - firebase_core (3.15.1):
+  - firebase_core (3.15.2):
     - Firebase/CoreOnly (= 11.15.0)
     - Flutter
   - firebase_messaging (15.2.9):
@@ -79,7 +79,7 @@ PODS:
   - permission_handler_apple (9.3.0):
     - Flutter
   - PromisesObjC (2.4.0)
-  - razorpay-pod (1.4.0)
+  - razorpay-pod (1.4.3)
   - razorpay_flutter (1.1.10):
     - Flutter
     - razorpay-pod
@@ -157,7 +157,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Firebase: d99ac19b909cd2c548339c2241ecd0d1599ab02e
-  firebase_core: ece862f94b2bc72ee0edbeec7ab5c7cb09fe1ab5
+  firebase_core: 995454a784ff288be5689b796deb9e9fa3601818
   firebase_messaging: e1a5fae495603115be1d0183bc849da748734e2b
   FirebaseCore: efb3893e5b94f32b86e331e3bd6dadf18b66568e
   FirebaseCoreInternal: 9afa45b1159304c963da48addb78275ef701c6b4
@@ -174,7 +174,7 @@ SPEC CHECKSUMS:
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  razorpay-pod: cb5b5439697bdda9c57d68a92b3e5b0ce1d2f2f3
+  razorpay-pod: af9d52abe715ed5cc3eed9fdf6fd74340443d0b9
   razorpay_flutter: 0e98e4fcaae27ad50e011d85f66d85e0a008754a
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
   share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
