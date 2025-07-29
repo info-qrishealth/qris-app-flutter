@@ -95,6 +95,7 @@ class Assets {
   static const String illustrationsFemaleInfertilityIllustration = 'assets/images/illustrations/female_infertility_illustration.png';
   static const String illustrationsHealthScoreIllustration = 'assets/images/illustrations/health_score_illustration.png';
   static const String illustrationsHealthScoreSectionIllustration = 'assets/images/illustrations/health_score_section_illustration.png';
+  static const String illustrationsIcuIllustration = 'assets/images/illustrations/icu_illustration.png';
   static const String illustrationsIntroIllustration = 'assets/images/illustrations/intro-illustration.svg';
   static const String illustrationsMaleInfertilityIllustration = 'assets/images/illustrations/male_infertility_illustration.png';
   static const String illustrationsMalePerformanceIllustration = 'assets/images/illustrations/male_performance_illustration.png';
