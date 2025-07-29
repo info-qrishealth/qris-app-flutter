@@ -81,8 +81,11 @@ class Assets {
   static const String iconsStarIcon = 'assets/images/icons/star_icon.svg';
   static const String iconsTestTube = 'assets/images/icons/test_tube.png';
   static const String iconsUnhide = 'assets/images/icons/unhide.png';
+  static const String iconsUploadIcon = 'assets/images/icons/upload_icon.svg';
   static const String iconsVerifiedIcon2 = 'assets/images/icons/verified_icon_2.png';
   static const String iconsWhatsappIcon = 'assets/images/icons/whatsapp_icon.svg';
+  static const String illustrationsBmiImage = 'assets/images/illustrations/bmi_image.png';
+  static const String illustrationsChronicDiseaseImage = 'assets/images/illustrations/chronic_disease_image.png';
   static const String illustrationsDiscoverHealthScoreIllustration = 'assets/images/illustrations/discover_health_score_illustration.png';
   static const String illustrationsDoctorAdIllustration = 'assets/images/illustrations/doctor_ad_illustration.png';
   static const String illustrationsDoctorConsultationIllustration = 'assets/images/illustrations/doctor_consultation_illustration.png';
@@ -248,9 +251,11 @@ class Assets {
   static const String testCategoriesIconBloodTest = 'assets/images/icons/test_categories_icon/blood_test.png';
   static const String testCategoriesIconDoctor = 'assets/images/icons/test_categories_icon/doctor.png';
   static const String testCategoriesIconHealthScore = 'assets/images/icons/test_categories_icon/health_score.png';
+  static const String testCategoriesIconIcuCare = 'assets/images/icons/test_categories_icon/icu_care.png';
   static const String testCategoriesIconMenHealth = 'assets/images/icons/test_categories_icon/men_health.png';
   static const String testCategoriesIconMentalWellness = 'assets/images/icons/test_categories_icon/mental_wellness.png';
   static const String testCategoriesIconMri = 'assets/images/icons/test_categories_icon/mri.png';
+  static const String testCategoriesIconPharmacy = 'assets/images/icons/test_categories_icon/pharmacy.png';
   static const String testCategoriesIconReports = 'assets/images/icons/test_categories_icon/reports.png';
   static const String testCategoriesIconWomenHealth = 'assets/images/icons/test_categories_icon/women_health.png';
   static const String ubuntuUbuntuBold = 'assets/fonts/ubuntu/Ubuntu-Bold.ttf';

@@ -12,13 +12,17 @@ class CommonCategoryContainer extends StatelessWidget {
   final String? assetImagePath;
   final String? networkImagePath;
   final String title;
+  final double? imageSize;
+  final EdgeInsets? padding;
   const CommonCategoryContainer(
       {super.key,
       required this.onTap,
       required this.backgroundColor,
       this.assetImagePath,
       required this.title,
-      this.networkImagePath});
+      this.networkImagePath,
+      this.imageSize = 30,
+      this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +33,17 @@ class CommonCategoryContainer extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             children: [
               Container(
-                  padding: EdgeInsets.all(20),
+                  padding: padding ?? EdgeInsets.all(20),
                   decoration: BoxDecoration(
                       color: backgroundColor,
                       borderRadius: BorderRadius.circular(12)),
                   child: assetImagePath != null
-                      ? Image.asset(assetImagePath!, height: 30, width: 30)
+                      ? Image.asset(assetImagePath!,
+                          height: imageSize, width: imageSize)
                       : CommonNetworkImage(
-                          name: '$networkImagePath', height: 30, width: 30)),
+                          name: '$networkImagePath',
+                          height: imageSize,
+                          width: imageSize)),
               Positioned(
                   top: 62,
                   child: Container(

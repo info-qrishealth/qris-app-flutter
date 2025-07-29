@@ -8,6 +8,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
+import 'package:qris_health/modules/home_module/components/chronic_disease_card.dart';
+import 'package:qris_health/modules/home_module/components/health_scrore_card.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_category_container.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_app_bar.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_nav_bar.dart';
@@ -74,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   suffixIcon: null),
               SizedBox(height: 24),
               Row(
-                  children: List.generate(4, (index) {
+                  children: List.generate(3, (index) {
                 final category = TestCategory.values[index];
 
                 return Expanded(
@@ -85,8 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
               })),
               SizedBox(height: 50),
               Row(
-                  children: List.generate(4, (i) {
-                final index = i + 4;
+                  children: List.generate(3, (i) {
+                final index = i + 3;
                 final category = TestCategory.values[index];
 
                 return Expanded(
@@ -95,9 +97,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: HomeScreenCategoryContainer(
                             testCategory: category)));
               })),
-              SizedBox(height: 40),
+              SizedBox(height: 24),
+              HealthScoreCard(),
+              SizedBox(height: 16),
+              ChronicDiseaseCard(),
+              SizedBox(height: 16),
+              _buildUploadPrescriptionContainer(),
+              SizedBox(height: 16),
               CashbackContainer(),
-              SizedBox(height: 18),
+              SizedBox(height: 16),
               _buildHeadingRow(
                   title: 'Popular blood test packages',
                   onTap: () {
@@ -209,5 +217,40 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildCreditImage({required String path}) {
     return Opacity(opacity: 0.65, child: Image.asset(path, height: 65));
+  }
+
+  Widget _buildUploadPrescriptionContainer() {
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+        decoration: BoxDecoration(
+            border: Border.all(color: AppColors.borderColor),
+            borderRadius: BorderRadius.circular(12)),
+        child: Row(children: [
+          Expanded(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                Text(
+                  'Not sure what to book?',
+                  style: _textTheme.bodyMedium!
+                      .copyWith(fontWeight: FontWeight.w600),
+                ),
+                Text('Upload a prescription for tests and scans!',
+                    style: _textTheme.labelSmall!.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.lightSubTextColor))
+              ])),
+          SizedBox(
+              height: 30,
+              child: ElevatedButton(
+                  onPressed: () {},
+                  child: Row(children: [
+                    Text('Upload',
+                        style: _textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.w600, color: Colors.white)),
+                    SizedBox(width: 4),
+                    SvgPicture.asset(Assets.iconsUploadIcon)
+                  ])))
+        ]));
   }
 }
