@@ -86,6 +86,7 @@ class Assets {
   static const String iconsWhatsappIcon = 'assets/images/icons/whatsapp_icon.svg';
   static const String illustrationsBmiImage = 'assets/images/illustrations/bmi_image.png';
   static const String illustrationsChronicDiseaseImage = 'assets/images/illustrations/chronic_disease_image.png';
+  static const String illustrationsChronicIllustration = 'assets/images/illustrations/chronic_illustration.png';
   static const String illustrationsDiscoverHealthScoreIllustration = 'assets/images/illustrations/discover_health_score_illustration.png';
   static const String illustrationsDoctorAdIllustration = 'assets/images/illustrations/doctor_ad_illustration.png';
   static const String illustrationsDoctorConsultationIllustration = 'assets/images/illustrations/doctor_consultation_illustration.png';

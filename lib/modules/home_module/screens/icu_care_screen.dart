@@ -6,6 +6,7 @@ import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/shared/components/bordered_container.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/request_callback_dialog.dart';
+import 'package:qris_health/shared/components/verified_tick_row.dart';
 
 import '../../../styles/app_colors.dart';
 
@@ -45,19 +46,19 @@ class _IcuCareScreenState extends State<IcuCareScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 8),
                       child: Column(spacing: 2, children: [
-                        _buildBenefitRow(
+                        VerifiedTickRow(
                             title: 'Up to 40% Lower Costs vs. metro hospitals'),
-                        _buildBenefitRow(
+                        VerifiedTickRow(
                             title:
                                 'Critical Care Supervision from certified intensivists'),
-                        _buildBenefitRow(
+                        VerifiedTickRow(
                             title:
                                 'Partnered with Trustworthy Hospitals near you'),
-                        _buildBenefitRow(
+                        VerifiedTickRow(
                             title: 'Quick Bed Access in Emergencies'),
-                        _buildBenefitRow(
+                        VerifiedTickRow(
                             title: 'Transparent Communication with families'),
-                        _buildBenefitRow(
+                        VerifiedTickRow(
                             title: 'Digital Record Integration with Qris App'),
                       ]))),
               SizedBox(height: 20),
@@ -100,20 +101,5 @@ class _IcuCareScreenState extends State<IcuCareScreen> {
                 ]),
               ),
             ]));
-  }
-
-  Widget _buildBenefitRow({required String title}) {
-    return Row(children: [
-      SvgPicture.asset(Assets.testBenefitIconsVerifiedBenefitIcon,
-          color: AppColors.primaryBlue,
-          fit: BoxFit.fill,
-          height: 24,
-          width: 24),
-      SizedBox(width: 4),
-      Expanded(
-          child: Text(title,
-              style: Get.textTheme.bodySmall!.copyWith(
-                  color: AppColors.primaryPink, fontWeight: FontWeight.w400)))
-    ]);
   }
 }

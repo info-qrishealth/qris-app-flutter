@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/modules/home_module/screens/chronic_disease_screen.dart';
 
 import '../../../generated/assets.dart';
 import '../../../styles/app_colors.dart';
@@ -42,7 +44,10 @@ class ChronicDiseaseCard extends StatelessWidget {
                 SizedBox(
                   height: 28,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(CupertinoPageRoute(
+                          builder: (context) => ChronicDiseaseScreen()));
+                    },
                     child: Text(
                       'Explore Chronic Care Packages',
                       style: textTheme.bodySmall!.copyWith(
