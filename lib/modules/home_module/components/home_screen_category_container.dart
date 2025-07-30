@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qris_health/modules/all_scans_module/screens/all_scans_screen.dart';
 import 'package:qris_health/modules/home_module/enum/test_category.dart';
 import 'package:qris_health/modules/home_module/screens/icu_care_screen.dart';
-import 'package:qris_health/modules/home_module/screens/pharmacy_screen.dart';
+import 'package:qris_health/modules/home_module/screens/upload_prescription_screen.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/modules/health_module/screens/mental_wellness_screen.dart';
 import 'package:qris_health/modules/doctor_consultation_module/screens/doctor_consultation_screen.dart';
@@ -38,7 +38,7 @@ class HomeScreenCategoryContainer extends StatelessWidget {
       case TestCategory.mentalWellness:
         return MentalWellnessScreen();
       case TestCategory.pharmacy:
-        return PharmacyScreen();
+        return UploadPrescriptionScreen();
       case TestCategory.icuCare:
         return IcuCareScreen();
     }

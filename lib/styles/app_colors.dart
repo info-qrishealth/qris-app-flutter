@@ -12,7 +12,6 @@ class AppColors {
   static const textColor = Color(0xFF343434);
   static const lightGrey = Color(0xFF777777);
   static const goldenColor = Color(0xFFC49F0C);
-
   static final borderColor = Colors.black.withOpacity(0.09);
   static final black60 = Colors.black.withOpacity(0.6);
 }

@@ -76,6 +76,7 @@ flutter:
     - assets/images/icons/nav_bar_icons/
     - assets/images/icons/included_packages_icon/
     - assets/images/jsons/
+    - assets/images/icons/extension_icons/
 
   fonts:
     - family: Ubuntu

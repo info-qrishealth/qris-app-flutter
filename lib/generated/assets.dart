@@ -35,6 +35,9 @@ class Assets {
   static const String drawerIconsProfileIcon = 'assets/images/icons/drawer_icons/profile_icon.svg';
   static const String drawerIconsReferIcon = 'assets/images/icons/drawer_icons/refer_icon.svg';
   static const String drawerIconsWalletIcon = 'assets/images/icons/drawer_icons/wallet_icon.svg';
+  static const String extensionIconsCsvExtensionIcon = 'assets/images/icons/extension_icons/csv_extension_icon.svg';
+  static const String extensionIconsImageExtensionIcon = 'assets/images/icons/extension_icons/image_extension_icon.svg';
+  static const String extensionIconsPdfExtensionIcon = 'assets/images/icons/extension_icons/pdf_extension_icon.svg';
   static const String genderFemaleIcon = 'assets/images/icons/gender/female_icon.svg';
   static const String genderMaleIcon = 'assets/images/icons/gender/male_icon.svg';
   static const String genderOthersIcon = 'assets/images/icons/gender/others_icon.svg';
@@ -61,6 +64,7 @@ class Assets {
   static const String iconsBatteryIcon = 'assets/images/icons/battery_icon.png';
   static const String iconsCallIcon = 'assets/images/icons/call_icon.png';
   static const String iconsCallbackIcon = 'assets/images/icons/callback_icon.png';
+  static const String iconsCameraIcon = 'assets/images/icons/camera_icon.svg';
   static const String iconsClockIcon = 'assets/images/icons/clock_icon.svg';
   static const String iconsCopyIcon = 'assets/images/icons/copy_icon.svg';
   static const String iconsCouponIcon = 'assets/images/icons/coupon_icon.svg';
@@ -105,9 +109,11 @@ class Assets {
   static const String illustrationsMentalWellnessIllustration = 'assets/images/illustrations/mental_wellness_illustration.png';
   static const String illustrationsMentalWellnessPackageIllustration = 'assets/images/illustrations/mental_wellness_package_illustration.png';
   static const String illustrationsNoItemFoundIllustration = 'assets/images/illustrations/no_item_found_illustration.png';
+  static const String illustrationsPrescriptionIllustration = 'assets/images/illustrations/prescription_illustration.svg';
   static const String illustrationsReferAndEarnBanner = 'assets/images/illustrations/refer_and_earn_banner.svg';
   static const String illustrationsReferAndEarnIllustration = 'assets/images/illustrations/refer_and_earn_illustration.png';
   static const String illustrationsStarsIllustration = 'assets/images/illustrations/stars_illustration.png';
+  static const String illustrationsUploadPrescriptionIllustration = 'assets/images/illustrations/upload_prescription_illustration.png';
   static const String illustrationsWomenHealthIllustration = 'assets/images/illustrations/women_health_illustration.png';
   static const String imagesIconsCallIcon = 'assets/images/icons/call_icon.svg';
   static const String imagesIconsHome = 'assets/images/icons/home.svg';
