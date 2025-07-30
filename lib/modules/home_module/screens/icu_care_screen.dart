@@ -9,28 +9,19 @@ import 'package:qris_health/shared/components/request_callback_dialog.dart';
 
 import '../../../styles/app_colors.dart';
 
-class IcuCareScreen extends StatelessWidget {
+class IcuCareScreen extends StatefulWidget {
   const IcuCareScreen({super.key});
 
+  @override
+  State<IcuCareScreen> createState() => _IcuCareScreenState();
+}
+
+class _IcuCareScreenState extends State<IcuCareScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Get.textTheme;
 
     return Scaffold(
-        bottomNavigationBar: SafeArea(
-            child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppConstants.scaffoldPadding, vertical: 8),
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryBlue),
-                    onPressed: () async {
-                      await showDialog(
-                          context: context,
-                          builder: (context) => RequestCallbackDialog(
-                              query: 'I want your help about ICU Care'));
-                    },
-                    child: Text('Request callback')))),
         appBar: CommonAppBar(title: 'ICU Care'),
         body: ListView(
             physics: BouncingScrollPhysics(),
@@ -75,12 +66,39 @@ class IcuCareScreen extends StatelessWidget {
                   style: textTheme.bodyLarge!
                       .copyWith(fontWeight: FontWeight.w400)),
               SizedBox(height: 2),
-              Text(
-                '(We’ll get in touch with you shortly)',
-                style: textTheme.labelSmall!.copyWith(
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.lightSubTextColor),
-              )
+              Text('(We’ll get in touch with you shortly)',
+                  style: textTheme.labelSmall!.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.lightSubTextColor)),
+              SizedBox(height: 16),
+              SizedBox(
+                height: 36,
+                child: Row(children: [
+                  Expanded(
+                      child: OutlinedButton(
+                          onPressed: Navigator.of(context).pop,
+                          style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: AppColors.primaryBlue)),
+                          child: Text('No',
+                              style: textTheme.bodyLarge!
+                                  .copyWith(fontWeight: FontWeight.w500)))),
+                  SizedBox(width: 8),
+                  Expanded(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryBlue),
+                          onPressed: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (context) => RequestCallbackDialog(
+                                    query: 'I want your help about ICU Care'));
+                          },
+                          child: Text('Yes',
+                              style: textTheme.bodyLarge!.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500))))
+                ]),
+              ),
             ]));
   }
 
