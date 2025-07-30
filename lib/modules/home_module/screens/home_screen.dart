@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/generated/assets.dart';
-import 'package:qris_health/modules/health_score_module/screens/health_score_intro_screen.dart';
 import 'package:qris_health/modules/home_module/components/chronic_disease_card.dart';
 import 'package:qris_health/modules/home_module/components/health_scrore_card.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_category_container.dart';
@@ -75,29 +74,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   hintText: 'Search for Blood tests / Packages....',
                   suffixIcon: null),
               SizedBox(height: 24),
-              Row(
-                  children: List.generate(3, (index) {
-                final category = TestCategory.values[index];
-
-                return Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: HomeScreenCategoryContainer(
-                            testCategory: category)));
-              })),
-              SizedBox(height: 50),
-              Row(
-                  children: List.generate(3, (i) {
-                final index = i + 3;
-                final category = TestCategory.values[index];
-
-                return Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: HomeScreenCategoryContainer(
-                            testCategory: category)));
-              })),
-              SizedBox(height: 24),
+              GridView.count(
+                  crossAxisSpacing: 18,
+                  mainAxisSpacing: 28,
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  crossAxisCount: 3,
+                  children: TestCategory.values
+                      .map((element) =>
+                          HomeScreenCategoryContainer(testCategory: element))
+                      .toList()),
+              SizedBox(height: 28),
               HealthScoreCard(),
               SizedBox(height: 16),
               ChronicDiseaseCard(),

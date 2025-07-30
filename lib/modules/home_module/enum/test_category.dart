@@ -11,7 +11,7 @@ enum TestCategory {
 }
 
 extension TestCategoryExtension on TestCategory {
-  String get svgPath {
+  String get pngPath {
     switch (this) {
       case TestCategory.bloodTest:
         return 'assets/images/icons/test_categories_icon/blood_test.png';
