@@ -145,15 +145,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     radius: 16);
               }),
               SizedBox(height: 16),
-              GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(CupertinoPageRoute(
-                        builder: (context) => HealthScoreIntroScreen()));
-                  },
-                  child: Image.asset(
-                      Assets.illustrationsDiscoverHealthScoreIllustration,
-                      fit: BoxFit.fitWidth)),
-              SizedBox(height: 12),
               ContactUsContainer(),
               SizedBox(height: 16),
               _buildHeadingRow(
