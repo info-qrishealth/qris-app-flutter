@@ -9,7 +9,7 @@ import '../styles/app_styles.dart';
 import 'enums/snackbar_type.dart';
 
 class AppConstants {
-  static const Environment environment = Environment.prod;
+  static const Environment environment = Environment.dev;
 
   static const String baseUrl = environment == Environment.prod
       ? 'http://srv740952.hstgr.cloud:8080'

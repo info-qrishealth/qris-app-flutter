@@ -1,15 +1,28 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/home_module/components/prescription_upload_success_dialog.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
-class UploadPrescriptionScreen extends StatelessWidget {
+class UploadPrescriptionScreen extends StatefulWidget {
   const UploadPrescriptionScreen({super.key});
+
+  @override
+  State<UploadPrescriptionScreen> createState() =>
+      _UploadPrescriptionScreenState();
+}
+
+class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
+  final List<File> _files = [];
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +36,15 @@ class UploadPrescriptionScreen extends StatelessWidget {
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryBlue),
-                    onPressed: () async {
-                      await showDialog(
-                          context: context,
-                          builder: (context) =>
-                              PrescriptionUploadSuccessDialog());
-                      Navigator.of(context).pop();
-                    },
+                    onPressed: _files.isEmpty
+                        ? null
+                        : () async {
+                            await showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    PrescriptionUploadSuccessDialog());
+                            Navigator.of(context).pop();
+                          },
                     child: Text('Submit prescription')))),
         appBar: CommonAppBar(title: 'Upload prescription'),
         body: SafeArea(
@@ -80,48 +95,100 @@ class UploadPrescriptionScreen extends StatelessWidget {
                     Expanded(
                         child: _buildContainer(
                             assetPath: Assets.iconsCameraIcon,
-                            title: 'Take photo')),
+                            title: 'Take photo',
+                            onTap: () async {
+                              try {
+                                final image = await ImagePicker()
+                                    .pickImage(source: ImageSource.camera);
+
+                                if (image != null) {
+                                  final file = File(image.path);
+                                  _files.add(file);
+                                  setState(() {});
+                                }
+                              } catch (e) {
+                                AppConstants.showSnackbar(
+                                    text: e.toString(),
+                                    type: SnackbarType.error);
+                              }
+                            })),
                     SizedBox(width: 10),
                     Expanded(
                         child: _buildContainer(
                             assetPath: Assets.iconsUploadIcon,
-                            title: 'Upload from gallery')),
+                            title: 'Upload from gallery',
+                            onTap: () async {
+                              try {
+                                final pickedFiles = await FilePicker.platform
+                                    .pickFiles(
+                                        type: FileType.custom,
+                                        allowMultiple: true,
+                                        allowedExtensions: [
+                                      'csv',
+                                      'jpg',
+                                      'jpeg',
+                                      'pdf',
+                                      'png'
+                                    ]);
+
+                                if (pickedFiles?.xFiles != null &&
+                                    pickedFiles!.xFiles.isNotEmpty) {
+                                  for (var pickedFile in pickedFiles.xFiles) {
+                                    final file = File(pickedFile.path);
+                                    _files.add(file);
+                                  }
+
+                                  setState(() {});
+                                }
+                              } catch (e) {
+                                AppConstants.showSnackbar(
+                                    text: e.toString(),
+                                    type: SnackbarType.error);
+                              }
+                            })),
                   ])),
               SizedBox(height: 12),
-              ...List.generate(4, (index) {
+              ...List.generate(_files.length, (index) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: _buildFileListTile(),
-                );
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: _buildFileListTile(file: _files[index]));
               }),
             ])));
   }
 
-  Widget _buildContainer({required String assetPath, required String title}) {
-    return DottedBorder(
-        dashPattern: const [5, 5],
-        color: AppColors.borderColor,
-        radius: Radius.circular(14),
-        borderType: BorderType.RRect,
-        padding: EdgeInsets.symmetric(vertical: 32),
-        child: Center(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-              SvgPicture.asset(assetPath,
-                  color: Colors.black, height: 24, width: 24),
-              SizedBox(height: 4),
-              Text(title,
-                  style: Get.textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.lightSubTextColor))
-            ])));
+  Widget _buildContainer(
+      {required String assetPath,
+      required String title,
+      required Function() onTap}) {
+    return InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: onTap,
+        child: DottedBorder(
+            dashPattern: const [5, 5],
+            color: AppColors.borderColor,
+            radius: Radius.circular(14),
+            borderType: BorderType.RRect,
+            padding: EdgeInsets.symmetric(vertical: 32),
+            child: Center(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                  SvgPicture.asset(assetPath,
+                      color: Colors.black, height: 24, width: 24),
+                  SizedBox(height: 4),
+                  Text(title,
+                      style: Get.textTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.lightSubTextColor))
+                ]))));
   }
 
-  Widget _buildFileListTile() {
+  Widget _buildFileListTile({required File file}) {
     final textTheme = Get.textTheme;
+    final fileName = file.path.split('/').last.replaceAll('image_picker_', '');
 
-    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
       SvgPicture.asset(Assets.extensionIconsImageExtensionIcon),
       SizedBox(width: 8),
       Expanded(
@@ -129,24 +196,57 @@ class UploadPrescriptionScreen extends StatelessWidget {
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
           Flexible(
-              child: Text('raj sharma.pdf',
+              child: Text(fileName,
                   style: textTheme.bodyMedium!
-                      .copyWith(fontWeight: FontWeight.w400))),
-          SizedBox(width: 6),
-          Text('4.8MB',
-              style: textTheme.bodySmall!.copyWith(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black.withOpacity(0.45))),
+                      .copyWith(fontWeight: FontWeight.w400),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1)),
+          SizedBox(width: 8),
+          FutureBuilder<double>(
+              future: _getFileSizeInMb(file: file),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final size = snapshot.data!;
+                  return Text('${size.toStringAsFixed(2)} MB',
+                      style: textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black.withOpacity(0.45)));
+                }
+                return SizedBox.shrink();
+              })
         ]),
-        SizedBox(height: 2),
-        Text('Maximum file size limit exceeded.',
-            style: textTheme.labelSmall!
-                .copyWith(color: AppColors.red, fontWeight: FontWeight.w400)),
+        FutureBuilder<double>(
+            future: _getFileSizeInMb(file: file),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data! > 5) {
+                return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: 2),
+                      Text('Maximum file size limit exceeded.',
+                          style: textTheme.labelSmall!.copyWith(
+                              color: AppColors.red,
+                              fontWeight: FontWeight.w400))
+                    ]);
+              }
+              return SizedBox.shrink();
+            }),
       ])),
       Padding(
-          padding: const EdgeInsets.all(4.0).copyWith(right: 0),
+          padding:
+              const EdgeInsets.all(4.0).copyWith(right: 0, top: 0, left: 8),
           child: InkWell(
-              onTap: () {}, child: SvgPicture.asset(Assets.iconsDeleteIcon))),
+              onTap: () {
+                _files.removeWhere((element) => element.path == file.path);
+                setState(() {});
+              },
+              child: SvgPicture.asset(Assets.iconsDeleteIcon)))
     ]);
+  }
+
+  Future<double> _getFileSizeInMb({required File file}) async {
+    final bytes = await file.length();
+    final sizeInMB = bytes / (1024 * 1024);
+    return sizeInMB;
   }
 }
