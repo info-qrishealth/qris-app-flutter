@@ -37,8 +37,7 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
   void initState() {
     super.initState();
     _fileUploadModel = FileUploadModel(
-        userId:
-            int.parse(BlocProvider.of<UserCubit>(context).state.user.userId));
+        userId: BlocProvider.of<UserCubit>(context).state.user.id!);
   }
 
   @override
@@ -55,56 +54,7 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue),
-                      onPressed: _files.isEmpty
-                          ? null
-                          : () async {
-                              try {
-                                setState(() {
-                                  _loading = true;
-                                });
-
-                                final user = BlocProvider.of<UserCubit>(context)
-                                    .state
-                                    .user;
-
-                                for (var file in _files) {
-                                  final fileName = _getFileName(file: file);
-
-                                  final task = await FirebaseStorage.instance
-                                      .ref('pharmacy_prescriptions')
-                                      .child(user.phone ?? user.userId)
-                                      .child(fileName)
-                                      .putFile(file);
-
-                                  final url = await task.ref.getDownloadURL();
-
-                                  _fileUploadModel = _fileUploadModel.copyWith
-                                      .call(urls: [
-                                    ..._fileUploadModel.urls,
-                                    FileUrl(fileName: fileName, fileUrl: url)
-                                  ]);
-                                }
-
-                                await FileService.uploadPrescriptionUrls(
-                                    fileUploadModel: _fileUploadModel);
-
-                                await showDialog(
-                                    context: context,
-                                    builder: (context) =>
-                                        PrescriptionUploadSuccessDialog());
-
-                                Navigator.of(context).pop();
-                              } catch (e) {
-                                AppConstants.showSnackbar(
-                                    text: e.toString(),
-                                    type: SnackbarType.error);
-                              } finally {
-                                _fileUploadModel =
-                                    _fileUploadModel.copyWith.call(urls: []);
-                                _loading = false;
-                                setState(() {});
-                              }
-                            },
+                      onPressed: _files.isEmpty ? null : _upload,
                       child: Text('Submit prescription')))),
           appBar: CommonAppBar(title: 'Upload prescription'),
           body: SafeArea(
@@ -313,5 +263,47 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
 
   String _getFileName({required File file}) {
     return file.path.split('/').last.replaceAll('image_picker_', '');
+  }
+
+  Future<void> _upload() async {
+    try {
+      setState(() {
+        _loading = true;
+      });
+
+      final user = BlocProvider.of<UserCubit>(context).state.user;
+
+      for (var file in _files) {
+        final fileName = _getFileName(file: file);
+
+        final task = await FirebaseStorage.instance
+            .ref('pharmacy_prescriptions')
+            .child(user.phone ?? user.userId)
+            .child(fileName)
+            .putFile(file);
+
+        final url = await task.ref.getDownloadURL();
+
+        _fileUploadModel = _fileUploadModel.copyWith.call(urls: [
+          ..._fileUploadModel.urls,
+          FileUrl(fileName: fileName, fileUrl: url)
+        ]);
+      }
+
+      await FileService.uploadPrescriptionUrls(
+          fileUploadModel: _fileUploadModel);
+
+      await showDialog(
+          context: context,
+          builder: (context) => PrescriptionUploadSuccessDialog());
+
+      Navigator.of(context).pop();
+    } catch (e) {
+      AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+    } finally {
+      _fileUploadModel = _fileUploadModel.copyWith.call(urls: []);
+      _loading = false;
+      setState(() {});
+    }
   }
 }
