@@ -16,6 +16,7 @@ import 'package:qris_health/modules/home_module/components/prescription_upload_s
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/models/file_upload_model/file_upload_model.dart';
+import 'package:qris_health/shared/utils/file_util.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../shared/services/file_service.dart';
@@ -197,7 +198,7 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
 
   Widget _buildFileListTile({required File file}) {
     final textTheme = Get.textTheme;
-    final fileName = _getFileName(file: file);
+    final fileName = FileUtil.getFileName(file: file);
 
     return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
       SvgPicture.asset(Assets.extensionIconsImageExtensionIcon),
@@ -214,7 +215,7 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
                   maxLines: 1)),
           SizedBox(width: 8),
           FutureBuilder<double>(
-              future: _getFileSizeInMb(file: file),
+              future: FileUtil.getFileSizeInMb(file: file),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final size = snapshot.data!;
@@ -227,7 +228,7 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
               })
         ]),
         FutureBuilder<double>(
-            future: _getFileSizeInMb(file: file),
+            future: FileUtil.getFileSizeInMb(file: file),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data! > 5) {
                 return Column(
@@ -255,42 +256,18 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
     ]);
   }
 
-  Future<double> _getFileSizeInMb({required File file}) async {
-    final bytes = await file.length();
-    final sizeInMB = bytes / (1024 * 1024);
-    return sizeInMB;
-  }
-
-  String _getFileName({required File file}) {
-    return file.path.split('/').last.replaceAll('image_picker_', '');
-  }
-
   Future<void> _upload() async {
     try {
       setState(() {
         _loading = true;
       });
 
-      final user = BlocProvider.of<UserCubit>(context).state.user;
+      final fileUrls = await FileUtil.uploadFiles(
+          context: context, files: _files, ref: 'pharmacy_prescriptions');
 
-      for (var file in _files) {
-        final fileName = _getFileName(file: file);
+      _fileUploadModel = _fileUploadModel.copyWith.call(urls: fileUrls);
 
-        final task = await FirebaseStorage.instance
-            .ref('pharmacy_prescriptions')
-            .child(user.phone ?? user.userId)
-            .child(fileName)
-            .putFile(file);
-
-        final url = await task.ref.getDownloadURL();
-
-        _fileUploadModel = _fileUploadModel.copyWith.call(urls: [
-          ..._fileUploadModel.urls,
-          FileUrl(fileName: fileName, fileUrl: url)
-        ]);
-      }
-
-      await FileService.uploadPrescriptionUrls(
+      await FileService.uploadPharmacyPrescriptionUrls(
           fileUploadModel: _fileUploadModel);
 
       await showDialog(

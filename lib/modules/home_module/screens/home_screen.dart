@@ -13,6 +13,7 @@ import 'package:qris_health/modules/home_module/components/home_screen_category_
 import 'package:qris_health/modules/home_module/components/home_screen_app_bar.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_nav_bar.dart';
 import 'package:qris_health/modules/home_module/components/package_tile_horizontal.dart';
+import 'package:qris_health/modules/home_module/components/upload_prescription_home_screen_container.dart';
 import 'package:qris_health/modules/home_module/enum/test_category.dart';
 import 'package:qris_health/modules/home_module/popular_packages_cubit/popular_packages_cubit.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
@@ -90,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: 16),
               ChronicDiseaseCard(),
               SizedBox(height: 16),
-              _buildUploadPrescriptionContainer(),
+              UploadPrescriptionHomeScreenContainer(),
               SizedBox(height: 16),
               CashbackContainer(),
               SizedBox(height: 16),
@@ -196,40 +197,5 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildCreditImage({required String path}) {
     return Opacity(opacity: 0.65, child: Image.asset(path, height: 65));
-  }
-
-  Widget _buildUploadPrescriptionContainer() {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-        decoration: BoxDecoration(
-            border: Border.all(color: AppColors.borderColor),
-            borderRadius: BorderRadius.circular(12)),
-        child: Row(children: [
-          Expanded(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                Text(
-                  'Not sure what to book?',
-                  style: _textTheme.bodyMedium!
-                      .copyWith(fontWeight: FontWeight.w600),
-                ),
-                Text('Upload a prescription for tests and scans!',
-                    style: _textTheme.labelSmall!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.lightSubTextColor))
-              ])),
-          SizedBox(
-              height: 30,
-              child: ElevatedButton(
-                  onPressed: () {},
-                  child: Row(children: [
-                    Text('Upload',
-                        style: _textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w600, color: Colors.white)),
-                    SizedBox(width: 4),
-                    SvgPicture.asset(Assets.iconsUploadIcon)
-                  ])))
-        ]));
   }
 }
