@@ -2,16 +2,23 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/home_module/components/prescription_upload_success_dialog.dart';
+import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
+import 'package:qris_health/shared/models/file_upload_model/file_upload_model.dart';
 import 'package:qris_health/styles/app_colors.dart';
+
+import '../../../shared/services/file_service.dart';
 
 class UploadPrescriptionScreen extends StatefulWidget {
   const UploadPrescriptionScreen({super.key});
@@ -22,138 +29,192 @@ class UploadPrescriptionScreen extends StatefulWidget {
 }
 
 class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
+  bool _loading = false;
   final List<File> _files = [];
+  late FileUploadModel _fileUploadModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _fileUploadModel = FileUploadModel(
+        userId:
+            int.parse(BlocProvider.of<UserCubit>(context).state.user.userId));
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Get.textTheme;
 
-    return Scaffold(
-        bottomNavigationBar: SafeArea(
-            child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppConstants.scaffoldPadding, vertical: 16),
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryBlue),
-                    onPressed: _files.isEmpty
-                        ? null
-                        : () async {
-                            await showDialog(
-                                context: context,
-                                builder: (context) =>
-                                    PrescriptionUploadSuccessDialog());
-                            Navigator.of(context).pop();
-                          },
-                    child: Text('Submit prescription')))),
-        appBar: CommonAppBar(title: 'Upload prescription'),
-        body: SafeArea(
-            child: ListView(
-                physics: BouncingScrollPhysics(),
-                padding: EdgeInsets.symmetric(
-                    horizontal: AppConstants.scaffoldPadding, vertical: 16),
-                children: [
-              Text(
-                  'Let our medical team guide you better. Upload a valid prescription and we’ll give you a call.',
-                  style: textTheme.bodyLarge!
-                      .copyWith(fontWeight: FontWeight.w400)),
-              SizedBox(height: 24),
-              Image.asset(Assets.illustrationsUploadPrescriptionIllustration,
-                  height: 170),
-              SizedBox(height: 24),
-              Text.rich(TextSpan(children: [
-                TextSpan(
-                    text: 'Note:',
-                    style: textTheme.labelSmall!.copyWith(
-                        color: AppColors.lightSubTextColor,
-                        fontWeight: FontWeight.w700)),
-                TextSpan(
-                    text:
-                        ' Ensure the entire prescription is visible and clear',
-                    style: textTheme.labelSmall!.copyWith(
-                        color: AppColors.lightSubTextColor,
-                        fontWeight: FontWeight.w400)),
-              ])),
-              SizedBox(height: 4),
-              Text.rich(TextSpan(children: [
-                TextSpan(
-                    text: 'Max size:',
-                    style: textTheme.labelSmall!.copyWith(
-                        color: AppColors.lightSubTextColor,
-                        fontWeight: FontWeight.w700)),
-                TextSpan(
-                    text: ' 5MB | Formats: JPG, PNG, PDF',
-                    style: textTheme.labelSmall!.copyWith(
-                        color: AppColors.lightSubTextColor,
-                        fontWeight: FontWeight.w400))
-              ])),
-              SizedBox(height: 20),
-              IntrinsicHeight(
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                    Expanded(
-                        child: _buildContainer(
-                            assetPath: Assets.iconsCameraIcon,
-                            title: 'Take photo',
-                            onTap: () async {
+    return ModalProgressHUD(
+      inAsyncCall: _loading,
+      child: Scaffold(
+          bottomNavigationBar: SafeArea(
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppConstants.scaffoldPadding, vertical: 16),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryBlue),
+                      onPressed: _files.isEmpty
+                          ? null
+                          : () async {
                               try {
-                                final image = await ImagePicker()
-                                    .pickImage(source: ImageSource.camera);
+                                setState(() {
+                                  _loading = true;
+                                });
 
-                                if (image != null) {
-                                  final file = File(image.path);
-                                  _files.add(file);
-                                  setState(() {});
+                                final user = BlocProvider.of<UserCubit>(context)
+                                    .state
+                                    .user;
+
+                                for (var file in _files) {
+                                  final fileName = _getFileName(file: file);
+
+                                  final task = await FirebaseStorage.instance
+                                      .ref('pharmacy_prescriptions')
+                                      .child(user.phone ?? user.userId)
+                                      .child(fileName)
+                                      .putFile(file);
+
+                                  final url = await task.ref.getDownloadURL();
+
+                                  _fileUploadModel = _fileUploadModel.copyWith
+                                      .call(urls: [
+                                    ..._fileUploadModel.urls,
+                                    FileUrl(fileName: fileName, fileUrl: url)
+                                  ]);
                                 }
+
+                                await FileService.uploadPrescriptionUrls(
+                                    fileUploadModel: _fileUploadModel);
+
+                                await showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        PrescriptionUploadSuccessDialog());
+
+                                Navigator.of(context).pop();
                               } catch (e) {
                                 AppConstants.showSnackbar(
                                     text: e.toString(),
                                     type: SnackbarType.error);
+                              } finally {
+                                _fileUploadModel =
+                                    _fileUploadModel.copyWith.call(urls: []);
+                                _loading = false;
+                                setState(() {});
                               }
-                            })),
-                    SizedBox(width: 10),
-                    Expanded(
-                        child: _buildContainer(
-                            assetPath: Assets.iconsUploadIcon,
-                            title: 'Upload from gallery',
-                            onTap: () async {
-                              try {
-                                final pickedFiles = await FilePicker.platform
-                                    .pickFiles(
-                                        type: FileType.custom,
-                                        allowMultiple: true,
-                                        allowedExtensions: [
-                                      'csv',
-                                      'jpg',
-                                      'jpeg',
-                                      'pdf',
-                                      'png'
-                                    ]);
+                            },
+                      child: Text('Submit prescription')))),
+          appBar: CommonAppBar(title: 'Upload prescription'),
+          body: SafeArea(
+              child: ListView(
+                  physics: BouncingScrollPhysics(),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: AppConstants.scaffoldPadding, vertical: 16),
+                  children: [
+                Text(
+                    'Let our medical team guide you better. Upload a valid prescription and we’ll give you a call.',
+                    style: textTheme.bodyLarge!
+                        .copyWith(fontWeight: FontWeight.w400)),
+                SizedBox(height: 24),
+                Image.asset(Assets.illustrationsUploadPrescriptionIllustration,
+                    height: 170),
+                SizedBox(height: 24),
+                Text.rich(TextSpan(children: [
+                  TextSpan(
+                      text: 'Note:',
+                      style: textTheme.labelSmall!.copyWith(
+                          color: AppColors.lightSubTextColor,
+                          fontWeight: FontWeight.w700)),
+                  TextSpan(
+                      text:
+                          ' Ensure the entire prescription is visible and clear',
+                      style: textTheme.labelSmall!.copyWith(
+                          color: AppColors.lightSubTextColor,
+                          fontWeight: FontWeight.w400)),
+                ])),
+                SizedBox(height: 4),
+                Text.rich(TextSpan(children: [
+                  TextSpan(
+                      text: 'Max size:',
+                      style: textTheme.labelSmall!.copyWith(
+                          color: AppColors.lightSubTextColor,
+                          fontWeight: FontWeight.w700)),
+                  TextSpan(
+                      text: ' 5MB | Formats: JPG, PNG, PDF',
+                      style: textTheme.labelSmall!.copyWith(
+                          color: AppColors.lightSubTextColor,
+                          fontWeight: FontWeight.w400))
+                ])),
+                SizedBox(height: 20),
+                IntrinsicHeight(
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                      Expanded(
+                          child: _buildContainer(
+                              assetPath: Assets.iconsCameraIcon,
+                              title: 'Take photo',
+                              onTap: () async {
+                                try {
+                                  final image = await ImagePicker()
+                                      .pickImage(source: ImageSource.camera);
 
-                                if (pickedFiles?.xFiles != null &&
-                                    pickedFiles!.xFiles.isNotEmpty) {
-                                  for (var pickedFile in pickedFiles.xFiles) {
-                                    final file = File(pickedFile.path);
+                                  if (image != null) {
+                                    final file = File(image.path);
                                     _files.add(file);
+                                    setState(() {});
                                   }
-
-                                  setState(() {});
+                                } catch (e) {
+                                  AppConstants.showSnackbar(
+                                      text: e.toString(),
+                                      type: SnackbarType.error);
                                 }
-                              } catch (e) {
-                                AppConstants.showSnackbar(
-                                    text: e.toString(),
-                                    type: SnackbarType.error);
-                              }
-                            })),
-                  ])),
-              SizedBox(height: 12),
-              ...List.generate(_files.length, (index) {
-                return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: _buildFileListTile(file: _files[index]));
-              }),
-            ])));
+                              })),
+                      SizedBox(width: 10),
+                      Expanded(
+                          child: _buildContainer(
+                              assetPath: Assets.iconsUploadIcon,
+                              title: 'Upload from gallery',
+                              onTap: () async {
+                                try {
+                                  final pickedFiles = await FilePicker.platform
+                                      .pickFiles(
+                                          type: FileType.custom,
+                                          allowMultiple: true,
+                                          allowedExtensions: [
+                                        'csv',
+                                        'jpg',
+                                        'jpeg',
+                                        'pdf',
+                                        'png'
+                                      ]);
+
+                                  if (pickedFiles?.xFiles != null &&
+                                      pickedFiles!.xFiles.isNotEmpty) {
+                                    for (var pickedFile in pickedFiles.xFiles) {
+                                      final file = File(pickedFile.path);
+                                      _files.add(file);
+                                    }
+
+                                    setState(() {});
+                                  }
+                                } catch (e) {
+                                  AppConstants.showSnackbar(
+                                      text: e.toString(),
+                                      type: SnackbarType.error);
+                                }
+                              })),
+                    ])),
+                SizedBox(height: 12),
+                ...List.generate(_files.length, (index) {
+                  return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: _buildFileListTile(file: _files[index]));
+                }),
+              ]))),
+    );
   }
 
   Widget _buildContainer(
@@ -186,7 +247,7 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
 
   Widget _buildFileListTile({required File file}) {
     final textTheme = Get.textTheme;
-    final fileName = file.path.split('/').last.replaceAll('image_picker_', '');
+    final fileName = _getFileName(file: file);
 
     return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
       SvgPicture.asset(Assets.extensionIconsImageExtensionIcon),
@@ -248,5 +309,9 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
     final bytes = await file.length();
     final sizeInMB = bytes / (1024 * 1024);
     return sizeInMB;
+  }
+
+  String _getFileName({required File file}) {
+    return file.path.split('/').last.replaceAll('image_picker_', '');
   }
 }
