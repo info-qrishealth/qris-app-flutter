@@ -9,6 +9,7 @@ import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/home_module/components/chronic_disease_card.dart';
 import 'package:qris_health/modules/home_module/components/health_scrore_card.dart';
+import 'package:qris_health/modules/home_module/components/home_screen_carausel.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_category_container.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_app_bar.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_nav_bar.dart';
@@ -94,6 +95,8 @@ class _HomeScreenState extends State<HomeScreen> {
               UploadPrescriptionHomeScreenContainer(),
               SizedBox(height: 16),
               CashbackContainer(),
+              SizedBox(height: 16),
+              HomeScreenCarousel(),
               SizedBox(height: 16),
               _buildHeadingRow(
                   title: 'Popular blood test packages',
