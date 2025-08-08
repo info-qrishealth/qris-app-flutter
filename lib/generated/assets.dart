@@ -61,11 +61,13 @@ class Assets {
   static const String howToBookIconsHowToBookIcon2 = 'assets/images/icons/how_to_book_icons/how_to_book_icon_2.png';
   static const String howToBookIconsHowToBookIcon3 = 'assets/images/icons/how_to_book_icons/how_to_book_icon_3.png';
   static const String howToBookIconsHowToBookIcon4 = 'assets/images/icons/how_to_book_icons/how_to_book_icon_4.png';
+  static const String iconsAddOnIcon = 'assets/images/icons/add_on_icon.svg';
   static const String iconsBatteryIcon = 'assets/images/icons/battery_icon.png';
   static const String iconsCallIcon = 'assets/images/icons/call_icon.png';
   static const String iconsCallbackIcon = 'assets/images/icons/callback_icon.png';
   static const String iconsCameraIcon = 'assets/images/icons/camera_icon.svg';
   static const String iconsClockIcon = 'assets/images/icons/clock_icon.svg';
+  static const String iconsConsultationIcon = 'assets/images/icons/consultation_icon.svg';
   static const String iconsCopyIcon = 'assets/images/icons/copy_icon.svg';
   static const String iconsCouponIcon = 'assets/images/icons/coupon_icon.svg';
   static const String iconsCouponImage = 'assets/images/icons/coupon_image.svg';
@@ -77,10 +79,12 @@ class Assets {
   static const String iconsFoodIcon = 'assets/images/icons/food_icon.svg';
   static const String iconsHide = 'assets/images/icons/hide.png';
   static const String iconsHome = 'assets/images/icons/home.png';
+  static const String iconsInjectionIcon = 'assets/images/icons/injection_icon.svg';
   static const String iconsLocationIcon = 'assets/images/icons/location_icon.svg';
   static const String iconsMinusIcon = 'assets/images/icons/minus_icon.svg';
   static const String iconsPartyPopper = 'assets/images/icons/party_popper.png';
   static const String iconsPlusIcon = 'assets/images/icons/plus_icon.svg';
+  static const String iconsReportIcon = 'assets/images/icons/report_icon.svg';
   static const String iconsSearchIcon = 'assets/images/icons/search_icon.svg';
   static const String iconsStarIcon = 'assets/images/icons/star_icon.svg';
   static const String iconsTestTube = 'assets/images/icons/test_tube.png';

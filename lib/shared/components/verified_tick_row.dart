@@ -7,7 +7,8 @@ import '../../styles/app_colors.dart';
 
 class VerifiedTickRow extends StatelessWidget {
   final String title;
-  const VerifiedTickRow({super.key, required this.title});
+  final Color? textColor;
+  const VerifiedTickRow({super.key, required this.title, this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,8 @@ class VerifiedTickRow extends StatelessWidget {
       Expanded(
           child: Text(title,
               style: Get.textTheme.bodySmall!.copyWith(
-                  color: AppColors.primaryPink, fontWeight: FontWeight.w400)))
+                  color: textColor ?? AppColors.primaryPink,
+                  fontWeight: FontWeight.w400)))
     ]);
   }
 }

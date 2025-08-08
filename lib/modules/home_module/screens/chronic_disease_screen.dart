@@ -6,9 +6,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/generated/assets.dart';
+import 'package:qris_health/modules/home_module/screens/chronic_packages_screen.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/heading_text.dart';
 import 'package:qris_health/shared/components/outlined_icon_button.dart';
+import 'package:qris_health/shared/components/verified_tick_row.dart';
 
 import '../../../shared/components/bordered_container.dart';
 import '../../../styles/app_colors.dart';
@@ -35,16 +37,15 @@ class ChronicDiseaseScreen extends StatelessWidget {
                   style: textTheme.titleSmall!
                       .copyWith(fontWeight: FontWeight.w700)),
               SizedBox(height: 6),
-              Text(
-                  'At Qris Health, we believe that managing chronic illnesses such as Diabetes, Hypertension, Heart disease, Thyroid disorders, and Kidney conditions isn’t just about treatment—it’s about ongoing monitoring, lifestyle adjustments, and early detection. Our comprehensive Chronic Disease Management Packages are specially designed to help you stay in control of your health and prevent complications before they arise.',
-                  style: textTheme.bodyLarge!
-                      .copyWith(fontWeight: FontWeight.w400, height: 1.5)),
+              HeadingText(
+                  text:
+                      'At Qris Health, we believe that managing chronic illnesses such as Diabetes, Hypertension, Heart disease, Thyroid disorders, and Kidney conditions isn’t just about treatment—it’s about ongoing monitoring, lifestyle adjustments, and early detection. Our comprehensive Chronic Disease Management Packages are specially designed to help you stay in control of your health and prevent complications before they arise.'),
               SizedBox(height: 20),
               Image.asset(Assets.illustrationsChronicIllustration, height: 204),
               SizedBox(height: 20),
-              Text('Why Choose Qris Health for Chronic Disease Management?',
-                  style: textTheme.titleSmall!
-                      .copyWith(fontWeight: FontWeight.w700)),
+              HeadingText(
+                  text:
+                      'Why Choose Qris Health for Chronic Disease Management?'),
               SizedBox(height: 10),
               BorderedContainer(
                   child: Padding(
@@ -68,44 +69,50 @@ class ChronicDiseaseScreen extends StatelessWidget {
                             text: 'Get tested from the comfort of your home.'),
                       ]))),
               SizedBox(height: 20),
-              Row(children: [
-                HeadingText(text: 'Chronic Disease Test Packages'),
-                Spacer(),
-                OutlinedIconButton(
-                    onTap: () {}, icon: Icon(Icons.arrow_forward_ios, size: 20))
-              ]),
-              SizedBox(height: 12),
-              BlocBuilder<PopularPackagesCubit, PopularPackagesState>(
-                  builder: (context, state) {
-                if (state is PopularPackagesLoaded) {
-                  final packages = state.popularPackages;
-
-                  return SizedBox(
-                      height: 150,
-                      child: ListView.separated(
-                          itemCount: packages.length,
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          separatorBuilder: (context, index) =>
-                              SizedBox(width: 8),
-                          itemBuilder: (context, index) {
-                            return PackageTileHorizontal(
-                                testPackageModel: packages[index],
-                                onSeeDetailsTap: () async {
-                                  Navigator.of(context).push(CupertinoPageRoute(
-                                      builder: (context) =>
-                                          BloodTestDetailScreen(
-                                              testId: packages[index].id)));
-                                });
-                          }));
-                }
-
-                return FadeShimmer(
-                    width: double.infinity,
-                    height: 145,
-                    fadeTheme: FadeTheme.light,
-                    radius: 16);
-              }),
+              HeadingText(text: 'Chronic Disease Management Packages'),
+              SizedBox(height: 10),
+              BorderedContainer(
+                  child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: 4,
+                          children: [
+                            Text('Each package includes:',
+                                style: textTheme.bodySmall!
+                                    .copyWith(fontWeight: FontWeight.w400)),
+                            VerifiedTickRow(
+                                title: 'Comprehensive blood investigations',
+                                textColor: Colors.black),
+                            VerifiedTickRow(
+                                title: 'Specialist doctor consultations',
+                                textColor: Colors.black),
+                            VerifiedTickRow(
+                                title: 'Dietitian consultation and follow-up',
+                                textColor: Colors.black),
+                            VerifiedTickRow(
+                                title: 'Physiotherapy assessment and guidance',
+                                textColor: Colors.black),
+                            VerifiedTickRow(
+                                title: 'Follow-up support',
+                                textColor: Colors.black),
+                            SizedBox(
+                                height: 36,
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.primaryBlue),
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  ChronicPackagesScreen()));
+                                    },
+                                    child: Text(
+                                        'Explore Chronic health packages',
+                                        style: textTheme.bodyLarge!.copyWith(
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white))))
+                          ])))
             ])));
   }
 
