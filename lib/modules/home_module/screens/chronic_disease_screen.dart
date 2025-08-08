@@ -96,6 +96,7 @@ class ChronicDiseaseScreen extends StatelessWidget {
                             VerifiedTickRow(
                                 title: 'Follow-up support',
                                 textColor: Colors.black),
+                            SizedBox(height: 4),
                             SizedBox(
                                 height: 36,
                                 child: ElevatedButton(
