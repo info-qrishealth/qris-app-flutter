@@ -33,13 +33,12 @@ class ChronicDiseaseScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                     horizontal: AppConstants.scaffoldPadding, vertical: 16),
                 children: [
-              Text('Stay Ahead of Chronic Conditions',
-                  style: textTheme.titleSmall!
-                      .copyWith(fontWeight: FontWeight.w700)),
+              HeadingText(text: 'Stay Ahead of Chronic Conditions'),
               SizedBox(height: 6),
-              HeadingText(
-                  text:
-                      'At Qris Health, we believe that managing chronic illnesses such as Diabetes, Hypertension, Heart disease, Thyroid disorders, and Kidney conditions isn’t just about treatment—it’s about ongoing monitoring, lifestyle adjustments, and early detection. Our comprehensive Chronic Disease Management Packages are specially designed to help you stay in control of your health and prevent complications before they arise.'),
+              Text(
+                  'At Qris Health, we believe that managing chronic illnesses such as Diabetes, Hypertension, Heart disease, Thyroid disorders, and Kidney conditions isn’t just about treatment—it’s about ongoing monitoring, lifestyle adjustments, and early detection. Our comprehensive Chronic Disease Management Packages are specially designed to help you stay in control of your health and prevent complications before they arise.',
+                  style: textTheme.bodyLarge!
+                      .copyWith(fontWeight: FontWeight.w400, height: 1.5)),
               SizedBox(height: 20),
               Image.asset(Assets.illustrationsChronicIllustration, height: 204),
               SizedBox(height: 20),
