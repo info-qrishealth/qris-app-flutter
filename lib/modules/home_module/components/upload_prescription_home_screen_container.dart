@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/snackbar_type.dart';
 
@@ -75,13 +75,10 @@ class _UploadPrescriptionHomeScreenContainerState
   Future<void> _pickAndUploadFiles() async {
     final List<File> filesToUpload = [];
 
-    final pickedFiles = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowMultiple: true,
-        allowedExtensions: ['csv', 'jpg', 'jpeg', 'pdf', 'png']);
+    final pickedFiles = await ImagePicker().pickMultiImage();
 
-    if (pickedFiles?.xFiles != null && pickedFiles!.xFiles.isNotEmpty) {
-      for (var pickedFile in pickedFiles.xFiles) {
+    if (pickedFiles.isNotEmpty) {
+      for (var pickedFile in pickedFiles) {
         final file = File(pickedFile.path);
         filesToUpload.add(file);
       }

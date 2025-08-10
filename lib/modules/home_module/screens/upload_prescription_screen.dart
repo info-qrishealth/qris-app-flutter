@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -93,7 +91,7 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
                           color: AppColors.lightSubTextColor,
                           fontWeight: FontWeight.w700)),
                   TextSpan(
-                      text: ' 5MB | Formats: JPG, PNG, PDF',
+                      text: ' 5MB',
                       style: textTheme.labelSmall!.copyWith(
                           color: AppColors.lightSubTextColor,
                           fontWeight: FontWeight.w400))
@@ -130,21 +128,11 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
                               title: 'Upload from gallery',
                               onTap: () async {
                                 try {
-                                  final pickedFiles = await FilePicker.platform
-                                      .pickFiles(
-                                          type: FileType.custom,
-                                          allowMultiple: true,
-                                          allowedExtensions: [
-                                        'csv',
-                                        'jpg',
-                                        'jpeg',
-                                        'pdf',
-                                        'png'
-                                      ]);
+                                  final pickedFiles =
+                                      await ImagePicker().pickMultiImage();
 
-                                  if (pickedFiles?.xFiles != null &&
-                                      pickedFiles!.xFiles.isNotEmpty) {
-                                    for (var pickedFile in pickedFiles.xFiles) {
+                                  if (pickedFiles.isNotEmpty) {
+                                    for (var pickedFile in pickedFiles) {
                                       final file = File(pickedFile.path);
                                       _files.add(file);
                                     }
