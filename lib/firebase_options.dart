@@ -41,49 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDPq2Ck8VdwD9vjWchAPxUquuBaL9JoECU',
-    appId: '1:1034566344192:web:867fef4ef1f0a90c1d02e5',
-    messagingSenderId: '1034566344192',
-    projectId: 'qris-ebdd4',
-    authDomain: 'qris-ebdd4.firebaseapp.com',
-    storageBucket: 'qris-ebdd4.firebasestorage.app',
-    measurementId: 'G-V4VM9W74HD',
+    apiKey: 'AIzaSyAtxqIquJ1U_j8mcy5JOBXutYkzQWkn29I',
+    appId: '1:134756807625:web:057c573da44caf45b56e18',
+    messagingSenderId: '134756807625',
+    projectId: 'qris-79e5a',
+    authDomain: 'qris-79e5a.firebaseapp.com',
+    storageBucket: 'qris-79e5a.firebasestorage.app',
+    measurementId: 'G-9LV2GL21LF',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAc7EFlJe9O8I0N-1AYRJqBm0uEfDWSxiI',
-    appId: '1:1034566344192:android:e3252dfa249cc3fb1d02e5',
-    messagingSenderId: '1034566344192',
-    projectId: 'qris-ebdd4',
-    storageBucket: 'qris-ebdd4.firebasestorage.app',
+    apiKey: 'AIzaSyD-F_YqaC5peimCRsLcAFtheiPV4fYZkWE',
+    appId: '1:134756807625:android:614da517e025a15ab56e18',
+    messagingSenderId: '134756807625',
+    projectId: 'qris-79e5a',
+    storageBucket: 'qris-79e5a.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyALOnKXkLnBVnvjfY2Q1M3sCY43hA5jCso',
-    appId: '1:1034566344192:ios:8fc83f0e0812a38c1d02e5',
-    messagingSenderId: '1034566344192',
-    projectId: 'qris-ebdd4',
-    storageBucket: 'qris-ebdd4.firebasestorage.app',
+    apiKey: 'AIzaSyDLZdqQ74miPR8vPlF_CJbYz5KGdVCyEMw',
+    appId: '1:134756807625:ios:eed31b0bee1f5397b56e18',
+    messagingSenderId: '134756807625',
+    projectId: 'qris-79e5a',
+    storageBucket: 'qris-79e5a.firebasestorage.app',
     iosBundleId: 'com.qris.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyALOnKXkLnBVnvjfY2Q1M3sCY43hA5jCso',
-    appId: '1:1034566344192:ios:2ccf669fef00b14c1d02e5',
-    messagingSenderId: '1034566344192',
-    projectId: 'qris-ebdd4',
-    storageBucket: 'qris-ebdd4.firebasestorage.app',
+    apiKey: 'AIzaSyDLZdqQ74miPR8vPlF_CJbYz5KGdVCyEMw',
+    appId: '1:134756807625:ios:5b8d3732b6152d09b56e18',
+    messagingSenderId: '134756807625',
+    projectId: 'qris-79e5a',
+    storageBucket: 'qris-79e5a.firebasestorage.app',
     iosBundleId: 'com.qris.app.qrisHealth',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDPq2Ck8VdwD9vjWchAPxUquuBaL9JoECU',
-    appId: '1:1034566344192:web:8c1bc87d91f9c7a81d02e5',
-    messagingSenderId: '1034566344192',
-    projectId: 'qris-ebdd4',
-    authDomain: 'qris-ebdd4.firebaseapp.com',
-    storageBucket: 'qris-ebdd4.firebasestorage.app',
-    measurementId: 'G-QKJ85NENB6',
+    apiKey: 'AIzaSyAtxqIquJ1U_j8mcy5JOBXutYkzQWkn29I',
+    appId: '1:134756807625:web:a0f90a710d03ab36b56e18',
+    messagingSenderId: '134756807625',
+    projectId: 'qris-79e5a',
+    authDomain: 'qris-79e5a.firebaseapp.com',
+    storageBucket: 'qris-79e5a.firebasestorage.app',
+    measurementId: 'G-WBL2D8X4X8',
   );
 
 }
