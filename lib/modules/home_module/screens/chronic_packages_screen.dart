@@ -67,7 +67,7 @@ class ChronicPackagesScreen extends StatelessWidget {
         ChronicPackageItem(
           type: ChronicPackageItemType.blood_test,
           title: "Blood Tests",
-          details: "CBC, Total IgE, AEC, Vitamin D, CRP, Lft, Kft",
+          details: "CBC, Total IgE, AEC, Vitamin D, CRP, LFT, KFT",
         ),
         ChronicPackageItem(
           type: ChronicPackageItemType.xray,
@@ -98,7 +98,7 @@ class ChronicPackagesScreen extends StatelessWidget {
           type: ChronicPackageItemType.blood_test,
           title: "Blood Tests",
           details:
-              "CBC, Kidney Function, Lipid Profile, HbA1c, Serum Electrolytes, THYROID PROFILE, LFT",
+              "CBC, Kidney Function, Lipid Profile, HbA1c, Serum Electrolytes, Thyroid Profile, LFT",
         ),
         ChronicPackageItem(
           type: ChronicPackageItemType.xray, // Treating this as monitoring/test
@@ -112,46 +112,12 @@ class ChronicPackagesScreen extends StatelessWidget {
               "Cardiologist/Internal Medicine (1), Dietitian (1), Physiotherapist (1 - Lifestyle & Exercise Training)",
         ),
         ChronicPackageItem(
-          type: ChronicPackageItemType.addon,
-          title: "Add-On",
-          details:
-              "Home BP Log + Lifestyle Toolkit\nAdditional Add On Home BP Monitor",
-        ),
+            type: ChronicPackageItemType.addon,
+            title: "Add-On",
+            details: "Home BP Log + Lifestyle Toolkit + Home BP Monitor"),
       ],
       originalPrice: 4999,
       discountedPrice: 4200,
-    ),
-    ChronicDiseasePackage(
-      title: "Diabetes Management Package",
-      idealFor:
-          "Type 2 Diabetes, Prediabetes, Newly diagnosed, or uncontrolled sugar levels",
-      includes: [
-        ChronicPackageItem(
-          type: ChronicPackageItemType.blood_test,
-          title: "Blood Tests",
-          details:
-              "FBS, PPBS, HbA1c, Lipid Profile, LFT, KFT, Vitamin B12, Vitamin D, Urine Microalbumin, Thyroid, Urine Routine",
-        ),
-        ChronicPackageItem(
-          type: ChronicPackageItemType
-              .xray, // Treating this exam as a monitoring/test
-          title: "Foot Examination",
-          details: "",
-        ),
-        ChronicPackageItem(
-          type: ChronicPackageItemType.consultation,
-          title: "Consultations",
-          details:
-              "Endocrinologist/Physician (1), Dietitian (1), Physiotherapist (1 - Diabetes-Specific Exercises)",
-        ),
-        ChronicPackageItem(
-          type: ChronicPackageItemType.addon,
-          title: "Add-On",
-          details: "Diabetic Foot Care Education & Home Glucometer",
-        ),
-      ],
-      originalPrice: 4299,
-      discountedPrice: 3800,
     ),
     ChronicDiseasePackage(
       title: "Diabetes Management Package",
@@ -193,7 +159,7 @@ class ChronicPackagesScreen extends StatelessWidget {
           type: ChronicPackageItemType.blood_test,
           title: "Blood Tests",
           details:
-              "LH, FSH, Prolactin, TSH, Testosterone, DHEAS, HbA1c, Lipid Profile, Vitamin D, AMH (Optional)",
+              "LH, FSH, Prolactin, TSH, Testosterone, DHEAS, HbA1c, Lipid Profile, Vitamin D, AMH",
         ),
         ChronicPackageItem(
           type: ChronicPackageItemType.xray,
@@ -216,32 +182,31 @@ class ChronicPackagesScreen extends StatelessWidget {
       discountedPrice: 5800,
     ),
     ChronicDiseasePackage(
-      title: "Hypothyroidism / Thyroid Disorders",
-      idealFor: "Extremely common in Indian females; needs lifelong monitoring",
-      includes: [
-        ChronicPackageItem(
-          type: ChronicPackageItemType.blood_test,
-          title: "Tests",
-          details: "TSH, T3, T4, Anti-TPO, Vitamin D, B12, CBC, LFT, KFt",
-        ),
-        ChronicPackageItem(
-          type: ChronicPackageItemType.consultation,
-          title: "Consultations",
-          details:
-              "Internal Medicine (1), Dietitian (1), Optional Physiotherapist",
-        ),
-      ],
-      originalPrice: 3499,
-      discountedPrice: 2700,
-    ),
+        title: "Hypothyroidism / Thyroid Disorders",
+        why: "Extremely common in Indian females; needs lifelong monitoring",
+        includes: [
+          ChronicPackageItem(
+            type: ChronicPackageItemType.blood_test,
+            title: "Tests",
+            details: "TSH, T3, T4, Anti-TPO, Vitamin D, B12, CBC, LFT, KFT",
+          ),
+          ChronicPackageItem(
+            type: ChronicPackageItemType.consultation,
+            title: "Consultations",
+            details:
+                "Internal Medicine (1), Dietitian (1), Optional Physiotherapist",
+          ),
+        ],
+        originalPrice: 3499,
+        discountedPrice: 2700),
     ChronicDiseasePackage(
       title: "Arthritis / Osteoarthritis / Rheumatoid Arthritis",
-      idealFor: "Causes pain, disability; requires multi-disciplinary care",
+      why: "Causes pain, disability; requires multi-disciplinary care",
       includes: [
         ChronicPackageItem(
           type: ChronicPackageItemType.blood_test,
           title: "Tests",
-          details: "CRP, ESR, RA Factor, ANA, Vitamin D, Uric Acid, KFt, LFT",
+          details: "CRP, ESR, RA Factor, ANA, Vitamin D, Uric Acid, KFT, LFT",
         ),
         ChronicPackageItem(
           type: ChronicPackageItemType.consultation,
@@ -255,12 +220,12 @@ class ChronicPackagesScreen extends StatelessWidget {
     ),
     ChronicDiseasePackage(
       title: "Anaemia Management (Iron Deficiency / B12 / Chronic Disease)",
-      idealFor: "Common across women, children, elderly",
+      why: "Common across women, children, elderly",
       includes: [
         ChronicPackageItem(
           type: ChronicPackageItemType.blood_test,
           title: "Tests",
-          details: "CBC, Ferritin, Iron Studies, B12, Folate, KFt",
+          details: "CBC, Ferritin, Iron Studies, B12, Folate, KFT",
         ),
         ChronicPackageItem(
           type: ChronicPackageItemType.consultation,
@@ -279,13 +244,13 @@ class ChronicPackagesScreen extends StatelessWidget {
     ),
     ChronicDiseasePackage(
       title: "Obesity / Metabolic Syndrome",
-      idealFor: "Cross-links diabetes, HTN, PCOD, heart disease",
+      why: "Cross-links diabetes, HTN, PCOD, heart disease",
       includes: [
         ChronicPackageItem(
           type: ChronicPackageItemType.blood_test,
           title: "Tests",
           details:
-              "HbA1c, Lipid Profile, LFT, TSH, Insulin Fasting, Bmi Calculation",
+              "HbA1c, Lipid Profile, LFT, TSH, Insulin Fasting, BMI Calculation",
         ),
         ChronicPackageItem(
           type: ChronicPackageItemType.consultation,
@@ -299,12 +264,12 @@ class ChronicPackagesScreen extends StatelessWidget {
     ),
     ChronicDiseasePackage(
       title: "Chronic Headache / Migraine",
-      idealFor: "Highly disabling; often mismanaged",
+      why: "Highly disabling; often mismanaged",
       includes: [
         ChronicPackageItem(
           type: ChronicPackageItemType.blood_test,
           title: "Tests",
-          details: "CBC, Vitamin D, MRI Brain (Optional)",
+          details: "CBC, Vitamin D, MRI Brain",
         ),
         ChronicPackageItem(
           type: ChronicPackageItemType.consultation,
@@ -318,7 +283,7 @@ class ChronicPackagesScreen extends StatelessWidget {
     ),
     ChronicDiseasePackage(
       title: "IBS / IBD / Chronic Digestive Disorders",
-      idealFor: "Lifestyle-triggered, hereditary",
+      why: "Lifestyle-triggered, hereditary",
       includes: [
         ChronicPackageItem(
           type: ChronicPackageItemType.blood_test,
@@ -338,7 +303,7 @@ class ChronicPackagesScreen extends StatelessWidget {
     ChronicDiseasePackage(
       title:
           "Fatty Liver / NAFLD/ Alcoholic Liver Disease (Non-Alcoholic & Alcoholic Fatty Liver Disease)",
-      idealFor: "Silent epidemic; overlaps with diabetes & obesity",
+      why: "Silent epidemic; overlaps with diabetes & obesity",
       includes: [
         ChronicPackageItem(
           type: ChronicPackageItemType.blood_test,
@@ -357,7 +322,7 @@ class ChronicPackagesScreen extends StatelessWidget {
     ),
     ChronicDiseasePackage(
       title: "Chronic Fatigue / Fibromyalgia",
-      idealFor: "Often undiagnosed in women",
+      why: "Often undiagnosed in women",
       includes: [
         ChronicPackageItem(
           type: ChronicPackageItemType.blood_test,
@@ -375,7 +340,7 @@ class ChronicPackagesScreen extends StatelessWidget {
     ),
     ChronicDiseasePackage(
       title: "Heart Disease Follow-Up (Post-MI / Heart Failure)",
-      idealFor: "Long-term secondary prevention",
+      why: "Long-term secondary prevention",
       includes: [
         ChronicPackageItem(
           type: ChronicPackageItemType.blood_test,
