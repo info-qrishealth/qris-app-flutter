@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/generated/assets.dart';
+import 'package:qris_health/modules/health_article_module/cubits/health_articles_cubit/health_article_cubit.dart';
 import 'package:qris_health/modules/home_module/components/chronic_disease_card.dart';
 import 'package:qris_health/modules/home_module/components/health_scrore_card.dart';
 import 'package:qris_health/modules/home_module/components/home_screen_carausel.dart';
@@ -29,6 +30,7 @@ import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../constants/enums/subscan_type.dart';
 import '../../all_scans_module/components/subscan_list_tile_horizontal.dart';
+import '../../health_article_module/components/health_article_list_tile_horizontal.dart';
 import '../components/cashback_container.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -168,6 +170,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           Assets.illustrationsReferAndEarnBanner,
                           fit: BoxFit.fitWidth))),
               SizedBox(height: 18),
+              _buildArticlesListView(),
+              SizedBox(height: 18),
               Text('Our Accreditations',
                   style: _textTheme.titleMedium!.copyWith(
                       fontWeight: FontWeight.w700, color: Color(0xFF707B81)),
@@ -200,5 +204,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildCreditImage({required String path}) {
     return Opacity(opacity: 0.65, child: Image.asset(path, height: 65));
+  }
+
+  Widget _buildArticlesListView() {
+    return BlocBuilder<HealthArticleCubit, HealthArticleState>(
+      builder: (context, state) {
+        final articles =
+            BlocProvider.of<HealthArticleCubit>(context).getRecentArticles();
+        if (articles.isEmpty) return Container();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildHeadingRow(title: 'Recent Articles', onTap: null),
+            SizedBox(height: 12),
+            SizedBox(
+                height: 245,
+                child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return HealthArticleListTileHorizontal(
+                          healthArticle: articles[index]);
+                    },
+                    separatorBuilder: (context, index) {
+                      return SizedBox(width: 8);
+                    },
+                    itemCount: articles.length)),
+          ],
+        );
+      },
+    );
   }
 }
