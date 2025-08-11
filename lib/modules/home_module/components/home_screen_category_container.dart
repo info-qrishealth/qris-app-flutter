@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/constants/enums/prescription_type.dart';
 import 'package:qris_health/modules/all_scans_module/screens/all_scans_screen.dart';
 import 'package:qris_health/modules/home_module/enum/test_category.dart';
 import 'package:qris_health/modules/home_module/screens/icu_care_screen.dart';
@@ -64,7 +65,7 @@ class HomeScreenCategoryContainer extends StatelessWidget {
       case TestCategory.mentalWellness:
         return MentalWellnessScreen();
       case TestCategory.pharmacy:
-        return UploadPrescriptionScreen();
+        return UploadPrescriptionScreen(type: PrescriptionType.pharmacy);
       case TestCategory.icuCare:
         return IcuCareScreen();
     }

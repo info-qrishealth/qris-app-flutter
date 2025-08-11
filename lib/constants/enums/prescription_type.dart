@@ -1,0 +1,1 @@
+enum PrescriptionType { normal, pharmacy }

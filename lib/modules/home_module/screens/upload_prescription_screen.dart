@@ -17,10 +17,12 @@ import 'package:qris_health/shared/models/file_upload_model/file_upload_model.da
 import 'package:qris_health/shared/utils/file_util.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
+import '../../../constants/enums/prescription_type.dart';
 import '../../../shared/services/file_service.dart';
 
 class UploadPrescriptionScreen extends StatefulWidget {
-  const UploadPrescriptionScreen({super.key});
+  final PrescriptionType type;
+  const UploadPrescriptionScreen({super.key, required this.type});
 
   @override
   State<UploadPrescriptionScreen> createState() =>
@@ -251,12 +253,21 @@ class _UploadPrescriptionScreenState extends State<UploadPrescriptionScreen> {
       });
 
       final fileUrls = await FileUtil.uploadFiles(
-          context: context, files: _files, ref: 'pharmacy_prescriptions');
+          context: context,
+          files: _files,
+          ref: widget.type == PrescriptionType.normal
+              ? 'prescriptions'
+              : 'pharmacy_prescriptions');
 
       _fileUploadModel = _fileUploadModel.copyWith.call(urls: fileUrls);
 
-      await FileService.uploadPharmacyPrescriptionUrls(
-          fileUploadModel: _fileUploadModel);
+      if (widget.type == PrescriptionType.normal) {
+        await FileService.uploadPrescriptionUrls(
+            fileUploadModel: _fileUploadModel);
+      } else {
+        await FileService.uploadPharmacyPrescriptionUrls(
+            fileUploadModel: _fileUploadModel);
+      }
 
       await showDialog(
           context: context,
