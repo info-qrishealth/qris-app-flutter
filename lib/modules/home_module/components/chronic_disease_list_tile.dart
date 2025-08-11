@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/generated/assets.dart';
+import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/modules/home_module/enum/chronic_disease_item_type.dart';
 import 'package:qris_health/modules/home_module/models/chronic_package_model/chronic_disease_package.dart';
+import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/shared/components/bordered_container.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class ChronicDiseaseListTile extends StatelessWidget {
+  final int testId;
   final ChronicDiseasePackage chronicDiseasePackage;
   const ChronicDiseaseListTile(
-      {super.key, required this.chronicDiseasePackage});
+      {super.key, required this.chronicDiseasePackage, required this.testId});
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +218,16 @@ class ChronicDiseaseListTile extends StatelessWidget {
                       borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(10),
                           bottomLeft: Radius.circular(10)))),
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  final test = await TestService.getTestByTestId(id: testId);
+
+                  await CartHelper.addToCartAndNavigate(testPackageModel: test);
+                } catch (e) {
+                  AppConstants.showSnackbar(
+                      text: e.toString(), type: SnackbarType.error);
+                }
+              },
               child: Text('Add to cart',
                   style: textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.w700, color: Colors.white))))

@@ -20,7 +20,8 @@ class ChronicPackagesScreen extends StatelessWidget {
                   horizontal: AppConstants.scaffoldPadding, vertical: 16),
               itemBuilder: (BuildContext context, int index) {
                 return ChronicDiseaseListTile(
-                    chronicDiseasePackage: _chronicPackages[index]);
+                    chronicDiseasePackage: _chronicPackages[index],
+                    testId: index + 376);
               },
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(height: 12);
