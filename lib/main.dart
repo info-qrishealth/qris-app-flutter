@@ -93,12 +93,16 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (context) => QrisWalletCubit()),
           BlocProvider(create: (context) => QrisCoinsCubit()),
         ],
-        child: GetMaterialApp(
-            navigatorKey: NotificationLaunchData.navigatorKey,
-            debugShowCheckedModeBanner: false,
-            title: 'Qris Health',
-            theme: AppStyles.theme(context),
-            home: CustomSplashScreen()));
+        child: MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: TextScaler.linear(1.022)),
+          child: GetMaterialApp(
+              navigatorKey: NotificationLaunchData.navigatorKey,
+              debugShowCheckedModeBanner: false,
+              title: 'Qris Health',
+              theme: AppStyles.theme(context),
+              home: CustomSplashScreen()),
+        ));
   }
 
   Future<void> _initializeNotifications() async {
