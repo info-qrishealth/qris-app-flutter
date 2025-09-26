@@ -23,10 +23,14 @@ import '../../../constants/enums/test_package_type.dart';
 import '../../screens/blood_test_detail_screen.dart';
 
 class PopularPackageScreen extends StatefulWidget {
-  final int? initialCategoryId;
+  final int? categoryId;
+  final int? riskAreaId;
   final bool showBottomStrip;
   const PopularPackageScreen(
-      {super.key, this.showBottomStrip = true, this.initialCategoryId});
+      {super.key,
+      this.showBottomStrip = true,
+      this.categoryId,
+      this.riskAreaId});
 
   @override
   State<PopularPackageScreen> createState() => _PopularPackageScreenState();
@@ -44,22 +48,22 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
     final popularPackagesCubit = BlocProvider.of<PopularPackagesCubit>(context);
 
     if (testCategoriesCubit.state is! TestsCategoryLoaded ||
-        widget.initialCategoryId != null) {
+        widget.riskAreaId != null ||
+        widget.categoryId != null) {
       testCategoriesCubit.getTestsCategories().then((_) {
-        if (widget.initialCategoryId != null) {
+        if (widget.categoryId != null) {
           _selectedTestCategory =
-              testCategoriesCubit.getTestCategoryById(widget.initialCategoryId);
-
-          if (_selectedTestCategory == null) {
-            _selectedRiskAreaCategory = testCategoriesCubit
-                .getRiskCategoryById(widget.initialCategoryId);
-            _selectedTestCategory = null;
-          } else {
-            _selectedRiskAreaCategory = null;
-          }
-
-          setState(() {});
+              testCategoriesCubit.getTestCategoryById(widget.categoryId);
+          _selectedRiskAreaCategory = null;
         }
+
+        if (widget.riskAreaId != null) {
+          _selectedRiskAreaCategory =
+              testCategoriesCubit.getRiskCategoryById(widget.riskAreaId);
+          _selectedTestCategory = null;
+        }
+
+        setState(() {});
       });
     }
 

@@ -64,11 +64,14 @@ class NavigatorUtils {
         if (length == 1) {
           Navigator.of(context).push(
               CupertinoPageRoute(builder: (context) => PopularPackageScreen()));
-        } else {
+        } else if (length == 3) {
+          final secondPath = segments[1];
+          final id = int.tryParse(segments[2]);
+
           Navigator.of(context).push(CupertinoPageRoute(
               builder: (context) => PopularPackageScreen(
-                    initialCategoryId: int.tryParse(segments[1]),
-                  )));
+                  riskAreaId: secondPath == 'risk' ? id : null,
+                  categoryId: secondPath == 'category' ? id : null)));
         }
       }
 
