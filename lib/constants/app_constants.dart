@@ -33,6 +33,10 @@ class AppConstants {
       'https://qrishealth.com/privacy-and-policy.php';
   static const termsAndConditionsUrl =
       'https://qrishealth.com/terms-and-conditions.php';
+  static const playStoreLink =
+      'https://play.google.com/store/apps/details?id=com.qris.app&hl=en';
+  static const appStoreLink =
+      'https://apps.apple.com/in/app/qris-health-full-body-checkup/id6746754385';
 
   static String getErrorMessage(String message) {
     try {

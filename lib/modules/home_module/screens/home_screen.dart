@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/generated/assets.dart';
@@ -29,6 +30,8 @@ import 'package:qris_health/shared/components/outlined_icon_button.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../constants/enums/subscan_type.dart';
+import '../../../shared/components/new_update_dialog.dart';
+import '../../../shared/utils/firebase_service.dart';
 import '../../all_scans_module/components/subscan_list_tile_horizontal.dart';
 import '../../health_article_module/components/health_article_list_tile_horizontal.dart';
 import '../components/cashback_container.dart';
@@ -48,7 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    Permission.notification.request();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkForUpdate();
+      Permission.notification.request();
+    });
   }
 
   @override
@@ -236,5 +242,27 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
+  }
+
+  void _checkForUpdate() {
+    FirebaseService.getCurrentAppInfo().then((appInfo) {
+      PackageInfo.fromPlatform().then((packageInfo) {
+        final currentVersion =
+            int.tryParse(packageInfo.buildNumber.replaceAll('.', ''))!;
+
+        if (appInfo.minVersionCode! > currentVersion) {
+          _buildNewUpdateDialog(isForceUpdate: true);
+        } else if (appInfo.recommendedVersionCode! > currentVersion) {
+          _buildNewUpdateDialog(isForceUpdate: false);
+        }
+      });
+    });
+  }
+
+  Future<void> _buildNewUpdateDialog({required bool isForceUpdate}) async {
+    await showCupertinoDialog(
+        context: context,
+        barrierDismissible: !isForceUpdate,
+        builder: (context) => NewUpdateDialog(showNoButton: !isForceUpdate));
   }
 }
