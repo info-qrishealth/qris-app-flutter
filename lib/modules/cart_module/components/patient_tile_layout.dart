@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/modules/patients_module/extensions/patient_extension.dart';
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
@@ -8,7 +7,6 @@ import 'package:qris_health/shared/extensions/string_extension.dart';
 
 import '../../../constants/enums/gender.dart';
 import '../../../styles/app_colors.dart';
-import '../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 
 class PatientTileLayout extends StatelessWidget {
   final Patient? patient;

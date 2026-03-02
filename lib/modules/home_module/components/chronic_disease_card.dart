@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,51 +21,64 @@ class ChronicDiseaseCard extends StatelessWidget {
         color: AppColors.primaryBlue.withOpacity(0.03),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Chronic disease wellness',
-                  style: textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryPink,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Comprehensive test packages designed for regular monitoring and health management.',
-                  style: textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.primaryBlue,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  height: 28,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                          builder: (context) => ChronicDiseaseScreen()));
-                    },
-                    child: Text(
-                      'Explore Chronic Care Packages',
-                      style: textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w700, color: Colors.white),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Chronic disease wellness',
+                      style: textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primaryPink,
+                      ),
                     ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Comprehensive test packages designed for regular monitoring and health management.',
+                      style: textTheme.labelSmall?.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.primaryBlue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 4),
+              Image.asset(
+                Assets.illustrationsChronicDiseaseImage,
+                width: 120,
+                fit: BoxFit.contain,
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              SizedBox(
+                height: 28,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => ChronicDiseaseScreen()));
+                  },
+                  child: Text(
+                    'Explore Chronic Care Packages',
+                    style: textTheme.bodySmall!.copyWith(
+                        fontSize: Platform.isAndroid
+                            ? (textTheme.bodySmall!.fontSize ?? 12) - 2
+                            : null,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white),
                   ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(width: 4),
-          Image.asset(
-            Assets.illustrationsChronicDiseaseImage,
-            width: 120,
-            fit: BoxFit.contain,
-          ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

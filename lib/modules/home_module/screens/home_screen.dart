@@ -35,6 +35,7 @@ import '../../../shared/utils/firebase_service.dart';
 import '../../all_scans_module/components/subscan_list_tile_horizontal.dart';
 import '../../health_article_module/components/health_article_list_tile_horizontal.dart';
 import '../components/cashback_container.dart';
+import '../components/order_status_carousel.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -47,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final _textTheme = Get.textTheme;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _searchController = TextEditingController();
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -58,14 +60,33 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void scrollToTop() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: HomeScreenNavBar(),
+        bottomNavigationBar: HomeScreenNavBar(
+          onHomeTap: scrollToTop,
+        ),
         key: _scaffoldKey,
         drawer: MainDrawer(),
         appBar: HomeScreenAppBar(scaffoldKey: _scaffoldKey),
         body: SafeArea(
             child: ListView(
+                controller: _scrollController,
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: BouncingScrollPhysics(),
@@ -96,9 +117,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           HomeScreenCategoryContainer(testCategory: element))
                       .toList()),
               SizedBox(height: 28),
-              HealthScoreCard(),
-              SizedBox(height: 16),
+              OrderStatusCarousel(),
+              SizedBox(height: 8),
               ChronicDiseaseCard(),
+              SizedBox(height: 16),
+              HealthScoreCard(),   
               SizedBox(height: 16),
               UploadPrescriptionHomeScreenContainer(),
               SizedBox(height: 16),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:qris_health/shared/components/mini_tile_container.dart';
-
 import '../../constants/app_constants.dart';
 import '../../modules/health_score_module/components/heath_score_info_tile.dart';
 import '../../styles/app_colors.dart';

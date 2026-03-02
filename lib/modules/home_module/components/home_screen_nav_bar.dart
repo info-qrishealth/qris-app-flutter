@@ -4,13 +4,16 @@ import 'package:get/get.dart';
 import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/all_scans_module/screens/all_scans_screen.dart';
 import 'package:qris_health/modules/health_module/screens/mental_wellness_screen.dart';
+import 'package:qris_health/modules/home_module/screens/home_screen.dart';
 import 'package:qris_health/modules/home_module/screens/popular_package_screen.dart';
 import 'package:qris_health/shared/components/discount_coupon_container.dart';
 import 'package:qris_health/shared/components/request_callback_dialog.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 class HomeScreenNavBar extends StatefulWidget {
-  const HomeScreenNavBar({super.key});
+  final VoidCallback? onHomeTap;
+  
+  const HomeScreenNavBar({super.key, this.onHomeTap});
 
   @override
   State<HomeScreenNavBar> createState() => _HomeScreenNavBarState();
@@ -48,11 +51,22 @@ class _HomeScreenNavBarState extends State<HomeScreenNavBar> {
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                            _buildNavItem(
-                                imagePath: Assets.navBarIconsHome,
-                                label: 'Home',
-                                index: 0,
-                                size: 22),
+                            InkWell(
+                                onTap: () {
+                                  if (widget.onHomeTap != null) {
+                                    widget.onHomeTap?.call();
+                                  } else {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      CupertinoPageRoute(builder: (context) => const HomeScreen()),
+                                      (route) => false,
+                                    );
+                                  }
+                                },
+                                child: _buildNavItem(
+                                    imagePath: Assets.navBarIconsHome,
+                                    label: 'Home',
+                                    index: 0,
+                                    size: 22)),
                             InkWell(
                                 onTap: () {
                                   Navigator.of(context).push(CupertinoPageRoute(

@@ -8,6 +8,7 @@ import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
 
 import '../models/order_cancellation_model/order_cancellation_model.dart';
 import '../models/order_req_model/order_req_model.dart';
+import '../models/order_status/order_status.dart';
 
 class OrderService {
   static Future<List<Order>> getAllOrdersForUser(
@@ -56,14 +57,13 @@ class OrderService {
     }
   }
 
-  static Future<Order> createOrder(
-      {required OrderReqModel orderReqModel}) async {
+  static Future<Order> createOrder({
+      required OrderReqModel orderReqModel,
+      Map<String, dynamic>? payload}) async {
     final url = '${AppConstants.baseUrl}/orders/create';
     try {
-      print(json.encode(orderReqModel.toJson()));
-
-      final response =
-          await Wrapper.post(url, json.encode(orderReqModel.toJson()));
+      final body = payload ?? orderReqModel.toJson();
+      final response = await Wrapper.post(url, json.encode(body));
       return Order.fromJson(json.decode(response)['body']);
     } catch (e) {
       rethrow;
@@ -76,6 +76,27 @@ class OrderService {
 
     try {
       await Wrapper.put(url, json.encode(orderCancellationModel.toJson()));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<List<OrderStatus>> getOrderStatusForUser(
+      {required String userId}) async {
+    final url = '${AppConstants.baseUrl}/orders/status/$userId';
+
+    try {
+      final response = await Wrapper.get(url);
+      final decoded = json.decode(response);
+      final rawData = decoded['data'] ?? decoded['body'] ?? [];
+
+      if (rawData is! List) {
+        return [];
+      }
+
+      return rawData
+          .map((element) => OrderStatus.fromJson(element as Map<String, dynamic>))
+          .toList();
     } catch (e) {
       rethrow;
     }

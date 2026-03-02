@@ -31,11 +31,43 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
   late final Future<List<TestPackageModel>> _testsFuture;
   final _searchController = TextEditingController();
   List<TestPackageModel>? _testsToShow;
+  String _currentSearchQuery = '';
 
   @override
   void initState() {
     super.initState();
     _testsFuture = TestService.getAllTests();
+  }
+
+  void _performSearch(String query) {
+    if (query.isEmpty) {
+      _testsToShow = null;
+      _currentSearchQuery = '';
+      setState(() {});
+      return;
+    }
+
+    TestService.trackTestSearch(searchQuery: query);
+    _currentSearchQuery = query;
+
+    _testsFuture.then((snapshot) {
+      final allPackages = _getValidPackages(tests: snapshot);
+      final List<TestPackageModel> packages = [];
+
+      if (query.isNumeric) {
+        packages.addAll(allPackages
+            .where((element) => element.id.toString() == query)
+            .toList());
+      }
+
+      packages.addAll(allPackages.where((element) {
+        return element.title!.toLowerCase().contains(query.toLowerCase());
+      }).toList());
+
+      setState(() {
+        _testsToShow = packages.toSet().toList();
+      });
+    });
   }
 
   @override
@@ -90,14 +122,19 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                                     PopularPackagesState>(
                                 builder: (context, state) {
                               return FilterTextField(
-                                  onFieldSubmitted: (value) {},
+                                  onFieldSubmitted: (value) {
+                                    _performSearch(value);
+                                  },
                                   controller: _searchController,
                                   onChanged: (value) {
                                     if (value.isEmpty) {
                                       _testsToShow = null;
+                                      _currentSearchQuery = '';
                                       setState(() {});
                                       return;
                                     }
+
+                                    _currentSearchQuery = value;
 
                                     final allPackages = _getValidPackages(
                                         tests: snapshot.data!);
@@ -157,7 +194,8 @@ class _SearchPackageScreenState extends State<SearchPackageScreen>
                                                               testId:
                                                                   _testsToShow![
                                                                           index]
-                                                                      .id)));
+                                                                      .id,
+                                                              searchQuery: _currentSearchQuery.isNotEmpty ? _currentSearchQuery : null)));
                                             },
                                             onBookNowTap: () async {
                                               await CartHelper

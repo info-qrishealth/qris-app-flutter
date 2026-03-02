@@ -195,16 +195,27 @@ class ChronicDiseaseListTile extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          spacing: 7,
           children: [
             Text('₹ ${chronicDiseasePackage.originalPrice.toInt()}',
                 style: textTheme.bodyMedium!.copyWith(
-                    color: AppColors.primaryPink, fontWeight: FontWeight.w400)),
+                    color: AppColors.primaryPink,
+                    fontWeight: FontWeight.w400,
+                    decoration: TextDecoration.lineThrough,
+                    decorationColor: AppColors.primaryPink)),
+            SizedBox(width: 7),
             Text(
               '₹${chronicDiseasePackage.discountedPrice.toInt()}',
               style: textTheme.titleMedium!.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
+              ),
+            ),
+            SizedBox(width: 2.5),
+            Text(
+              'per month',
+              style: textTheme.bodySmall!.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ],

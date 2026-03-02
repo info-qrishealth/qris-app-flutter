@@ -38,6 +38,7 @@ class PopularPackageScreen extends StatefulWidget {
 
 class _PopularPackageScreenState extends State<PopularPackageScreen> {
   final _textTheme = Get.textTheme;
+  final _scrollController = ScrollController();
   TestCategoryModel? _selectedTestCategory;
   RiskAreaCategory? _selectedRiskAreaCategory;
 
@@ -73,6 +74,12 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar:
@@ -97,6 +104,11 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                           _selectedTestCategory = null;
                           _selectedRiskAreaCategory = null;
                           setState(() {});
+                          _scrollController.animateTo(
+                            0,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeOut,
+                          );
                         },
                         child: Column(children: [
                           Container(
@@ -161,6 +173,7 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                             final tests = state.popularPackages;
 
                             return ListView.separated(
+                                controller: _scrollController,
                                 physics: BouncingScrollPhysics(),
                                 padding: EdgeInsets.only(
                                     left: AppConstants.scaffoldPadding,
@@ -228,6 +241,7 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
                                   ]);
 
                                   return ListView.separated(
+                                      controller: _scrollController,
                                       physics: BouncingScrollPhysics(),
                                       padding: EdgeInsets.only(
                                           left: AppConstants.scaffoldPadding,
@@ -289,6 +303,11 @@ class _PopularPackageScreenState extends State<PopularPackageScreen> {
           }
 
           setState(() {});
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
         },
         child: Column(children: [
           Container(

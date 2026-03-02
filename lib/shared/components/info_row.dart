@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -19,6 +21,9 @@ class InfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final baseFontSize = Get.textTheme.bodySmall!.fontSize ?? 12;
+    final androidFontSize = Platform.isAndroid ? baseFontSize - 2 : baseFontSize;
+    
     return Row(
         mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
         children: [
@@ -29,11 +34,13 @@ class InfoRow extends StatelessWidget {
               TextSpan(
                   text: title,
                   style: Get.textTheme.bodySmall!.copyWith(
+                      fontSize: androidFontSize,
                       color: AppColors.primaryPink,
                       fontWeight: FontWeight.w400)),
               TextSpan(
                   text: description,
                   style: TextStyle(
+                      fontSize: androidFontSize,
                       color: AppColors.primaryPink,
                       fontWeight: FontWeight.w700)),
             ])),

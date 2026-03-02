@@ -50,19 +50,22 @@ class ChronicDiseaseScreen extends StatelessWidget {
                   child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 8),
-                      child: Column(spacing: 4, children: [
+                      child: Column(children: [
                         _buildRow(
                             title: 'Consistent Monitoring: ',
                             text:
                                 'Track changes in your condition over time with regular testing.'),
+                        SizedBox(height: 4),
                         _buildRow(
                             title: 'Doctor-Recommended Panels: ',
                             text:
                                 'Our test packages are curated in consultation with leading specialists.'),
+                        SizedBox(height: 4),
                         _buildRow(
                             title: 'Preventive Focus: ',
                             text:
                                 'Detect health deterioration before symptoms worsen.'),
+                        SizedBox(height: 4),
                         _buildRow(
                             title: 'Easy Booking & Home Collection: ',
                             text: 'Get tested from the comfort of your home.'),
@@ -75,23 +78,27 @@ class ChronicDiseaseScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(10.0),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 4,
                           children: [
                             Text('Each package includes:',
                                 style: textTheme.bodySmall!
                                     .copyWith(fontWeight: FontWeight.w400)),
+                            SizedBox(height: 4),
                             VerifiedTickRow(
                                 title: 'Comprehensive blood investigations',
                                 textColor: Colors.black),
+                            SizedBox(height: 4),
                             VerifiedTickRow(
                                 title: 'Specialist doctor consultations',
                                 textColor: Colors.black),
+                            SizedBox(height: 4),
                             VerifiedTickRow(
                                 title: 'Dietitian consultation and follow-up',
                                 textColor: Colors.black),
+                            SizedBox(height: 4),
                             VerifiedTickRow(
                                 title: 'Physiotherapy assessment and guidance',
                                 textColor: Colors.black),
+                            SizedBox(height: 4),
                             VerifiedTickRow(
                                 title: 'Follow-up support',
                                 textColor: Colors.black),

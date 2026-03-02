@@ -4,7 +4,6 @@ import 'package:qris_health/shared/components/navigation_row.dart';
 import 'package:qris_health/shared/models/qris_team_doctor/qris_team_doctor.dart';
 
 import '../../modules/health_module/components/doctor_carousel_card.dart';
-import '../../styles/app_colors.dart';
 import 'heading_text.dart';
 
 class MeetTheTeamCarousel extends StatefulWidget {

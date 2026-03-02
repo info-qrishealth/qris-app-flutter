@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qris_health/constants/enums/scan_type.dart';
 import 'package:qris_health/modules/all_scans_module/components/subscan_bottom_sheet.dart';
 import 'package:qris_health/modules/all_scans_module/screens/subscan_info_screen.dart';
+import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 
 import '../../../shared/components/common_category_container.dart';
@@ -15,6 +16,9 @@ class ScanCategoryContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonCategoryContainer(
         onTap: () async {
+          final testId = TestService.getScanTestId(scanType.formattedName);
+          TestService.trackTestSearch(testId: testId, scanName: scanType.formattedName);
+          
           final subScans = scanType.subScans;
 
           if (subScans.length == 1) {

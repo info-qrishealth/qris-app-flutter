@@ -14,10 +14,13 @@ import 'package:qris_health/modules/notification_module/services/notification_se
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:qris_health/shared/models/notification_launch_data.dart';
+import 'package:qris_health/shared/services/token_storage_service.dart';
 import 'package:qris_health/shared/utils/navigator_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../home_module/screens/home_screen.dart';
+import '../../orders_modele/cart_cubit/cart_cubit.dart';
+import '../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 import '../../refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 import '../../users_module/cubits/user_cubit.dart';
 import '../models/user/user.dart';
@@ -33,14 +36,33 @@ mixin LoginHelperMixin {
       await BlocProvider.of<QrisConfigCubit>(context).getConfig();
 
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-          PrefConstants.authToken, ApiParams.getInstance()!.authorization!);
+      
+      if (ApiParams.getInstance()!.authorization != null) {
+        await TokenStorageService.saveToken(ApiParams.getInstance()!.authorization!);
+      }
+      
       await prefs.setString(PrefConstants.phoneNumber, user.phone!);
       ApiParams.getInstance()!.userId = user.id;
       ApiParams.getInstance()!.phoneNumber = user.phone;
 
       BlocProvider.of<QrisCoinsCubit>(context).getQrisCoins();
       BlocProvider.of<QrisWalletCubit>(context).getWalletEntries();
+
+      // Load all patients first (this replaces any old patient data)
+      try {
+        await BlocProvider.of<PatientsCubit>(context).getAllPatientsForUser();
+      } catch (e) {
+        debugPrint('Error loading patients: $e');
+      }
+
+      // Load cart from backend/local storage
+      try {
+        final cartCubit = BlocProvider.of<CartCubit>(context);
+        cartCubit.setUserId(user.id.toString());
+        await cartCubit.loadCart(userId: user.id.toString(), context: context);
+      } catch (e) {
+        debugPrint('Error loading cart: $e');
+      }
 
       try {
         final token = await FirebaseMessaging.instance.getToken();
@@ -57,7 +79,7 @@ mixin LoginHelperMixin {
                   userId: user.id));
         }
       } catch (e) {
-        print(e.toString());
+        debugPrint(e.toString());
       }
 
       if (NotificationLaunchData.tappedUrl != null) {

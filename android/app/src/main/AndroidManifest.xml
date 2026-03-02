@@ -5,12 +5,23 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- AD_ID permission removed - not required for Facebook SDK install tracking only -->
+    <!-- <uses-permission android:name="com.google.android.gms.permission.AD_ID" /> -->
 
     <application
         android:enableOnBackInvokedCallback="true"
         android:label="Qris Health"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider${facebookAppId}"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +14,6 @@ import 'package:qris_health/modules/doctor_consultation_module/screens/doctor_co
 
 import '../../../styles/app_colors.dart';
 import '../../../styles/app_styles.dart';
-
 class HomeScreenCategoryContainer extends StatelessWidget {
   final TestCategory testCategory;
   const HomeScreenCategoryContainer({super.key, required this.testCategory});
@@ -20,38 +21,86 @@ class HomeScreenCategoryContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          Navigator.of(context)
-              .push(CupertinoPageRoute(builder: (context) => _getScreen()));
-        },
-        child: Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.bottomCenter,
-            fit: StackFit.expand,
-            children: [
-              Container(
+      onTap: () {
+        Navigator.of(context).push(
+          CupertinoPageRoute(builder: (context) => _getScreen()),
+        );
+      },
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Height of the image box (taller, like screenshot)
+          final double boxHeight = constraints.maxWidth;
+
+          // Icon size and padding
+          final double iconSize = 38;
+          final double padding = 12;
+
+          // Text chip
+          final double textFontSize = Platform.isAndroid ? 9 : 11;
+          final double chipVerticalPadding = 6;
+          final double chipHeight =
+              textFontSize * 1.2 + (chipVerticalPadding * 2);
+
+          // Overlap half
+          final double overlap = chipHeight / 2;
+
+          return SizedBox(
+            height: boxHeight + overlap,
+            child: Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.topCenter,
+              children: [
+                // ================= IMAGE CARD =================
+                Container(
+                  height: boxHeight,
+                  width: constraints.maxWidth,
                   decoration: BoxDecoration(
-                      color: testCategory.backgroundColor,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: UnconstrainedBox(
-                      child: Image.asset(testCategory.pngPath,
-                          height: 38, width: 38))),
-              Positioned(
-                  top: 92,
+                    color: testCategory.backgroundColor,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  padding: EdgeInsets.all(padding),
+                  child: Center(
+                    child: Image.asset(
+                      testCategory.pngPath,
+                      width: iconSize,
+                      height: iconSize,
+                    ),
+                  ),
+                ),
+
+                // ================= TEXT CHIP =================
+                Positioned(
+                  top: boxHeight - overlap,
                   child: Container(
-                      width: 100,
-                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
-                      decoration: BoxDecoration(
-                          boxShadow: AppStyles.cardShadow,
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(24)),
-                      child: Text(testCategory.formattedName,
-                          textAlign: TextAlign.center,
-                          style: Get.textTheme.labelSmall!.copyWith(
-                              fontSize: 10.5,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.lightText))))
-            ]));
+                    width: constraints.maxWidth,   // 100% width of container
+                    padding: EdgeInsets.symmetric(
+                      vertical: chipVerticalPadding,
+                      horizontal: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: AppStyles.cardShadow,
+                    ),
+                    child: Text(
+                      testCategory.formattedName,
+                      textAlign: TextAlign.center,
+                      style: Get.textTheme.labelSmall!.copyWith(
+                        fontSize: textFontSize,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.lightText,
+                      ),
+                      softWrap: true,
+                      maxLines: 2,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 
   Widget _getScreen() {
@@ -71,3 +120,5 @@ class HomeScreenCategoryContainer extends StatelessWidget {
     }
   }
 }
+
+

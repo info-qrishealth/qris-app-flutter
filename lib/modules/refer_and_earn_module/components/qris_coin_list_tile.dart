@@ -46,7 +46,7 @@ class QrisCoinListTile extends StatelessWidget {
                 color: AppColors.lightSubTextColor))
       ])),
       SizedBox(width: 16),
-      Text('₹ ${coinEntry.coins.toInt()}',
+      Text('${coinEntry.coins.toInt()}',
           style: textTheme.bodyLarge!.copyWith(
               fontWeight: FontWeight.w600,
               color: coinEntry.txnType == TransactionType.credit

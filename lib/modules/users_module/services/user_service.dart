@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/shared/services/token_manager.dart';
+import 'package:qris_health/shared/services/token_storage_service.dart';
 import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
 
 import '../../login_module/models/otp/otp.dart';
@@ -23,7 +24,8 @@ class UserService {
       if (response.statusCode == 200 &&
           response.headers.containsKey('authorization')) {
         final auth = response.headers['authorization'].toString();
-        ApiParams.getInstance()!.authorization = auth;
+        await TokenStorageService.saveToken(auth);
+
         return User.fromJson(json.decode(response.body)['body']);
       }
 
@@ -47,8 +49,16 @@ class UserService {
       if (response.statusCode == 200 &&
           response.headers.containsKey('authorization')) {
         final auth = response.headers['authorization'].toString();
-        ApiParams.getInstance()!.authorization = auth;
-        return User.fromJson(json.decode(response.body)['body']);
+        await TokenStorageService.saveToken(auth);
+
+        final user = User.fromJson(json.decode(response.body)['body']);
+
+        await TokenManager.saveCredentialsOnLogin(
+          loginMethod: TokenManager.otpLoginMethod,
+          phone: otp.phoneNumber,
+        );
+
+        return user;
       }
 
       throw AppConstants.getErrorMessage(response.body);
@@ -72,8 +82,18 @@ class UserService {
       if (response.statusCode == 200 &&
           response.headers.containsKey('authorization')) {
         final auth = response.headers['authorization'].toString();
-        ApiParams.getInstance()!.authorization = auth;
-        return User.fromJson(json.decode(response.body)['body']);
+        await TokenStorageService.saveToken(auth);
+
+        final user = User.fromJson(json.decode(response.body)['body']);
+
+        await TokenManager.saveCredentialsOnLogin(
+          loginMethod: TokenManager.userIdPasswordLoginMethod,
+          userId: userId,
+          password: password,
+          phone: user.phone,
+        );
+
+        return user;
       }
 
       throw AppConstants.getErrorMessage(response.body);

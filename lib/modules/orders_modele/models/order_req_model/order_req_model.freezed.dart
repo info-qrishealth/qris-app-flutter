@@ -25,8 +25,11 @@ mixin _$OrderReqModel {
   int get packagesAmount => throw _privateConstructorUsedError;
   String get collectionCharges => throw _privateConstructorUsedError;
   int get cartFinalValue => throw _privateConstructorUsedError;
-  PaymentMode get paymentMode => throw _privateConstructorUsedError;
+  PaymentMode get paymentMode =>
+      throw _privateConstructorUsedError; // ✅ Razorpay fields added
   String? get razorpayPaymentId => throw _privateConstructorUsedError;
+  String? get razorpayOrderId => throw _privateConstructorUsedError;
+  String? get razorpaySignature => throw _privateConstructorUsedError;
   Coupon? get coupon => throw _privateConstructorUsedError;
   int get redeemedWalletAmount => throw _privateConstructorUsedError;
   int get redeemedQrisCoins => throw _privateConstructorUsedError;
@@ -69,6 +72,8 @@ abstract class $OrderReqModelCopyWith<$Res> {
       int cartFinalValue,
       PaymentMode paymentMode,
       String? razorpayPaymentId,
+      String? razorpayOrderId,
+      String? razorpaySignature,
       Coupon? coupon,
       int redeemedWalletAmount,
       int redeemedQrisCoins,
@@ -111,6 +116,8 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
     Object? cartFinalValue = null,
     Object? paymentMode = null,
     Object? razorpayPaymentId = freezed,
+    Object? razorpayOrderId = freezed,
+    Object? razorpaySignature = freezed,
     Object? coupon = freezed,
     Object? redeemedWalletAmount = null,
     Object? redeemedQrisCoins = null,
@@ -156,6 +163,14 @@ class _$OrderReqModelCopyWithImpl<$Res, $Val extends OrderReqModel>
       razorpayPaymentId: freezed == razorpayPaymentId
           ? _value.razorpayPaymentId
           : razorpayPaymentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      razorpayOrderId: freezed == razorpayOrderId
+          ? _value.razorpayOrderId
+          : razorpayOrderId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      razorpaySignature: freezed == razorpaySignature
+          ? _value.razorpaySignature
+          : razorpaySignature // ignore: cast_nullable_to_non_nullable
               as String?,
       coupon: freezed == coupon
           ? _value.coupon
@@ -255,6 +270,8 @@ abstract class _$$OrderReqModelImplCopyWith<$Res>
       int cartFinalValue,
       PaymentMode paymentMode,
       String? razorpayPaymentId,
+      String? razorpayOrderId,
+      String? razorpaySignature,
       Coupon? coupon,
       int redeemedWalletAmount,
       int redeemedQrisCoins,
@@ -296,6 +313,8 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
     Object? cartFinalValue = null,
     Object? paymentMode = null,
     Object? razorpayPaymentId = freezed,
+    Object? razorpayOrderId = freezed,
+    Object? razorpaySignature = freezed,
     Object? coupon = freezed,
     Object? redeemedWalletAmount = null,
     Object? redeemedQrisCoins = null,
@@ -341,6 +360,14 @@ class __$$OrderReqModelImplCopyWithImpl<$Res>
       razorpayPaymentId: freezed == razorpayPaymentId
           ? _value.razorpayPaymentId
           : razorpayPaymentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      razorpayOrderId: freezed == razorpayOrderId
+          ? _value.razorpayOrderId
+          : razorpayOrderId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      razorpaySignature: freezed == razorpaySignature
+          ? _value.razorpaySignature
+          : razorpaySignature // ignore: cast_nullable_to_non_nullable
               as String?,
       coupon: freezed == coupon
           ? _value.coupon
@@ -421,6 +448,8 @@ class _$OrderReqModelImpl implements _OrderReqModel {
       this.cartFinalValue = 0,
       required this.paymentMode,
       this.razorpayPaymentId,
+      this.razorpayOrderId,
+      this.razorpaySignature,
       this.coupon,
       this.redeemedWalletAmount = 0,
       this.redeemedQrisCoins = 0,
@@ -457,8 +486,13 @@ class _$OrderReqModelImpl implements _OrderReqModel {
   final int cartFinalValue;
   @override
   final PaymentMode paymentMode;
+// ✅ Razorpay fields added
   @override
   final String? razorpayPaymentId;
+  @override
+  final String? razorpayOrderId;
+  @override
+  final String? razorpaySignature;
   @override
   final Coupon? coupon;
   @override
@@ -505,7 +539,7 @@ class _$OrderReqModelImpl implements _OrderReqModel {
 
   @override
   String toString() {
-    return 'OrderReqModel(userId: $userId, phoneNumber: $phoneNumber, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, appliedCouponAmount: $appliedCouponAmount, encodedProductData: $encodedProductData, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, encodedAddress: $encodedAddress, wellnessAnswers: $wellnessAnswers, encodedCouponData: $encodedCouponData, sampleType: $sampleType, tubeType: $tubeType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
+    return 'OrderReqModel(userId: $userId, phoneNumber: $phoneNumber, packagesAmount: $packagesAmount, collectionCharges: $collectionCharges, cartFinalValue: $cartFinalValue, paymentMode: $paymentMode, razorpayPaymentId: $razorpayPaymentId, razorpayOrderId: $razorpayOrderId, razorpaySignature: $razorpaySignature, coupon: $coupon, redeemedWalletAmount: $redeemedWalletAmount, redeemedQrisCoins: $redeemedQrisCoins, paymentResponse: $paymentResponse, appliedCouponAmount: $appliedCouponAmount, encodedProductData: $encodedProductData, slotDate: $slotDate, slotTime: $slotTime, pincode: $pincode, encodedAddress: $encodedAddress, wellnessAnswers: $wellnessAnswers, encodedCouponData: $encodedCouponData, sampleType: $sampleType, tubeType: $tubeType, hardCopyCharges: $hardCopyCharges, referBy: $referBy)';
   }
 
   @override
@@ -526,6 +560,10 @@ class _$OrderReqModelImpl implements _OrderReqModel {
                 other.paymentMode == paymentMode) &&
             (identical(other.razorpayPaymentId, razorpayPaymentId) ||
                 other.razorpayPaymentId == razorpayPaymentId) &&
+            (identical(other.razorpayOrderId, razorpayOrderId) ||
+                other.razorpayOrderId == razorpayOrderId) &&
+            (identical(other.razorpaySignature, razorpaySignature) ||
+                other.razorpaySignature == razorpaySignature) &&
             (identical(other.coupon, coupon) || other.coupon == coupon) &&
             (identical(other.redeemedWalletAmount, redeemedWalletAmount) ||
                 other.redeemedWalletAmount == redeemedWalletAmount) &&
@@ -568,6 +606,8 @@ class _$OrderReqModelImpl implements _OrderReqModel {
         cartFinalValue,
         paymentMode,
         razorpayPaymentId,
+        razorpayOrderId,
+        razorpaySignature,
         coupon,
         redeemedWalletAmount,
         redeemedQrisCoins,
@@ -611,6 +651,8 @@ abstract class _OrderReqModel implements OrderReqModel {
       final int cartFinalValue,
       required final PaymentMode paymentMode,
       final String? razorpayPaymentId,
+      final String? razorpayOrderId,
+      final String? razorpaySignature,
       final Coupon? coupon,
       final int redeemedWalletAmount,
       final int redeemedQrisCoins,
@@ -642,9 +684,13 @@ abstract class _OrderReqModel implements OrderReqModel {
   @override
   int get cartFinalValue;
   @override
-  PaymentMode get paymentMode;
+  PaymentMode get paymentMode; // ✅ Razorpay fields added
   @override
   String? get razorpayPaymentId;
+  @override
+  String? get razorpayOrderId;
+  @override
+  String? get razorpaySignature;
   @override
   Coupon? get coupon;
   @override

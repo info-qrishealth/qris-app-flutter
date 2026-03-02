@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,54 +20,67 @@ class HealthScoreCard extends StatelessWidget {
         color: AppColors.primaryBlue.withOpacity(0.03),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Understand Your Health Score!',
-                  style: textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryBlue,
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Understand Your Health Score!',
+                      style: textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primaryBlue,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Your health score provides a quick overview of your well-being and make healthcare decisions.',
+                      style: textTheme.labelSmall?.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.primaryBlue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 4),
+              Image.asset(
+                Assets.illustrationsBmiImage,
+                width: 120,
+                fit: BoxFit.contain,
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              SizedBox(
+                height: 28,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => HealthScoreIntroScreen()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryBlue,
+                  ),
+                  child: Text(
+                    'Explore Your Health Report',
+                    style: textTheme.bodySmall!.copyWith(
+                        fontSize: Platform.isAndroid
+                            ? (textTheme.bodySmall!.fontSize ?? 12) - 2
+                            : null,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white),
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'Your health score provides a quick overview of your well-being and make healthcare decisions.',
-                  style: textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.primaryBlue,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  height: 28,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                          builder: (context) => HealthScoreIntroScreen()));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryBlue,
-                    ),
-                    child: Text(
-                      'Explore Your Health Report',
-                      style: textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w700, color: Colors.white),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(width: 4),
-          Image.asset(
-            Assets.illustrationsBmiImage,
-            width: 120,
-            fit: BoxFit.contain,
-          ),
+              ),
+            ],
+          )
         ],
       ),
     );

@@ -13,13 +13,17 @@ import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_filled_chip.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
 import 'package:qris_health/shared/components/no_item_found_container.dart';
+import 'package:qris_health/shared/utils/auth_helper.dart';
 
 import '../components/order_list_tile.dart';
 import '../models/order/order.dart';
 import '../models/order_info/order_info.dart';
 
 class OrdersScreen extends StatefulWidget {
-  const OrdersScreen({super.key});
+  final int? autoExpandOrderId;
+  final String? orderStatus;
+  
+  const OrdersScreen({super.key, this.autoExpandOrderId, this.orderStatus});
 
   @override
   State<OrdersScreen> createState() => _OrdersScreenState();
@@ -28,6 +32,7 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> {
   late final Future<List<Patient>> _patientsFuture;
   late final Future<List<Order>> _ordersFuture;
+  late final Future<Map<int, String>> _orderStatusMapFuture;
 
   Patient? _selectedPatient;
   bool _hasShownError = false;
@@ -38,6 +43,27 @@ class _OrdersScreenState extends State<OrdersScreen> {
     final userId = ApiParams.getInstance()!.userId.toString();
     _patientsFuture = PatientService.getPatientsOfUser(userId: userId);
     _ordersFuture = OrderService.getAllOrdersForUser(userId: userId);
+    _orderStatusMapFuture = _loadOrderStatusMap(userId);
+  }
+
+  Future<Map<int, String>> _loadOrderStatusMap(String userId) async {
+    try {
+      final orderStatuses = await OrderService.getOrderStatusForUser(userId: userId);
+      final statusMap = <int, String>{};
+      
+      for (final orderStatus in orderStatuses) {
+        statusMap[orderStatus.orderId] = orderStatus.overallStatus;
+      }
+      
+      return statusMap;
+    } catch (e) {
+      final errorMessage = e.toString();
+      if (AuthHelper.isAuthError(errorMessage)) {
+        await AuthHelper.handleAuthError(errorMessage);
+      }
+      debugPrint('Error loading order statuses: $e');
+      return {};
+    }
   }
 
   @override
@@ -65,6 +91,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
         }
 
         if (snapshot.hasError) {
+          final errorMessage = snapshot.error.toString();
+          if (AuthHelper.isAuthError(errorMessage)) {
+            WidgetsBinding.instance.addPostFrameCallback((_) async {
+              await AuthHelper.handleAuthError(errorMessage);
+            });
+            return const SizedBox.shrink();
+          }
           return Padding(
             padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.scaffoldPadding),
@@ -131,28 +164,33 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Widget _buildOrdersList() {
     return FutureBuilder<List<Order>>(
       future: _ordersFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasError && !_hasShownError) {
+      builder: (context, ordersSnapshot) {
+        if (ordersSnapshot.hasError && !_hasShownError) {
           _hasShownError = true;
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            AppConstants.showSnackbar(
-              text: snapshot.error.toString(),
-              type: SnackbarType.error,
-            );
+          final errorMessage = ordersSnapshot.error.toString();
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            if (AuthHelper.isAuthError(errorMessage)) {
+              await AuthHelper.handleAuthError(errorMessage);
+            } else {
+              AppConstants.showSnackbar(
+                text: errorMessage,
+                type: SnackbarType.error,
+              );
+            }
           });
         }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (ordersSnapshot.connectionState == ConnectionState.waiting) {
           return const CommonListviewShimmer();
         }
 
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        if (!ordersSnapshot.hasData || ordersSnapshot.data!.isEmpty) {
           return const Center(
             child: NoItemFoundContainer(title: 'No bookings found'),
           );
         }
 
-        final orders = snapshot.data!.reversed.toList();
+        final orders = ordersSnapshot.data!.reversed.toList();
         final filteredOrders =
             _selectedPatient == null ? orders : _filterOrders(orders: orders);
 
@@ -163,16 +201,37 @@ class _OrdersScreenState extends State<OrdersScreen> {
           );
         }
 
-        return ListView.separated(
-          key: ValueKey(Random().nextInt(10000)),
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.scaffoldPadding),
-          physics: const BouncingScrollPhysics(),
-          itemCount: filteredOrders.length,
-          itemBuilder: (context, index) {
-            return OrderListTile(order: filteredOrders[index]);
+        return FutureBuilder<Map<int, String>>(
+          future: _orderStatusMapFuture,
+          builder: (context, statusMapSnapshot) {
+            final orderStatusMap = statusMapSnapshot.data ?? {};
+            
+            return ListView.separated(
+              key: ValueKey(Random().nextInt(10000)),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppConstants.scaffoldPadding),
+              physics: const BouncingScrollPhysics(),
+              itemCount: filteredOrders.length,
+              itemBuilder: (context, index) {
+                final order = filteredOrders[index];
+                final isAutoExpanded = widget.autoExpandOrderId == order.id;
+                
+                String? orderStatus;
+                if (isAutoExpanded && widget.orderStatus != null) {
+                  orderStatus = widget.orderStatus;
+                } else if (orderStatusMap.containsKey(order.id)) {
+                  orderStatus = orderStatusMap[order.id];
+                }
+                
+                return OrderListTile(
+                  order: order,
+                  initiallyExpanded: isAutoExpanded,
+                  overallStatus: orderStatus,
+                );
+              },
+              separatorBuilder: (_, __) => const SizedBox(height: 10),
+            );
           },
-          separatorBuilder: (_, __) => const SizedBox(height: 10),
         );
       },
     );

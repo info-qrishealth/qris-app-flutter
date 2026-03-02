@@ -1,7 +1,7 @@
-# Uncomment this line to define a global platform for your project
-# platform :ios, '12.0'
+platform :ios, '13.0'
 
-# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
+$FirebaseExcludeSharedSwift = true
+
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 project 'Runner', {
@@ -13,14 +13,13 @@ project 'Runner', {
 def flutter_root
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
   unless File.exist?(generated_xcode_build_settings_path)
-    raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first"
+    raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, run flutter pub get first."
   end
 
   File.foreach(generated_xcode_build_settings_path) do |line|
     matches = line.match(/FLUTTER_ROOT\=(.*)/)
     return matches[1].strip if matches
   end
-  raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run flutter pub get"
 end
 
 require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
@@ -28,10 +27,12 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 flutter_ios_podfile_setup
 
 target 'Runner' do
-  use_frameworks!
+  # Use frameworks with static linkage to satisfy Swift pods that require module interfaces.
+  use_frameworks! :linkage => :static
+  # Enable modular headers so non-modular pods (e.g., GoogleUtilities, SAMKeychain) expose module maps.
   use_modular_headers!
-
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
   target 'RunnerTests' do
     inherit! :search_paths
   end
@@ -39,6 +40,71 @@ end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
+    
+    # Flutter extra settings
     flutter_additional_ios_build_settings(target)
+
+    target.build_configurations.each do |config|
+
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+
+      # Set Swift version - use 5.9 for Concurrency support (libswift_Concurrency.dylib)
+      # If url_launcher_ios has issues, we'll handle it separately
+      config.build_settings['SWIFT_VERSION'] = '5.9'
+
+      # Ensure CocoaPods compilation condition via Swift conditions (avoids "Improperly formatted define flag")
+      # Use COCOAPODS without $(inherited) to avoid space issues in Flutter packaging
+      config.build_settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS'] = 'COCOAPODS'
+      # Force no-space Swift define form to avoid Flutter packaging error
+      # Use -DCOCOAPODS directly (not $(inherited) -DCOCOAPODS) to avoid leading space when inherited is empty
+      inherited_flags = config.build_settings['OTHER_SWIFT_FLAGS'] || ''
+      if inherited_flags.to_s.strip.empty?
+        config.build_settings['OTHER_SWIFT_FLAGS'] = '-DCOCOAPODS'
+      else
+        config.build_settings['OTHER_SWIFT_FLAGS'] = "#{inherited_flags} -DCOCOAPODS"
+      end
+    end
+  end
+
+  # Patch generated xcconfig files to fix improperly formatted flags
+  Dir.glob('Pods/Target Support Files/**/*.xcconfig').each do |xcconfig_path|
+    begin
+      text = File.read(xcconfig_path)
+      modified = false
+      
+      # Fix "-D COCOAPODS" -> "-DCOCOAPODS"
+      if text.include?('-D COCOAPODS')
+        text = text.gsub('-D COCOAPODS', '-DCOCOAPODS')
+        modified = true
+      end
+      
+      # Fix " COCOAPODS" (leading space) -> "COCOAPODS" in SWIFT_ACTIVE_COMPILATION_CONDITIONS
+      if text =~ /SWIFT_ACTIVE_COMPILATION_CONDITIONS.*=\s+COCOAPODS/
+        text = text.gsub(/(SWIFT_ACTIVE_COMPILATION_CONDITIONS\s*=\s*)\s+COCOAPODS/, '\1COCOAPODS')
+        modified = true
+      end
+      
+      # Fix "$(inherited) COCOAPODS" -> "COCOAPODS" to avoid space issues
+      if text.include?('$(inherited) COCOAPODS')
+        text = text.gsub('$(inherited) COCOAPODS', 'COCOAPODS')
+        modified = true
+      end
+      
+      # Fix "OTHER_SWIFT_FLAGS = $(inherited) -DCOCOAPODS" -> "OTHER_SWIFT_FLAGS = -DCOCOAPODS" to avoid leading space
+      if text =~ /OTHER_SWIFT_FLAGS\s*=\s*\$\(inherited\)\s+-DCOCOAPODS/
+        text = text.gsub(/(OTHER_SWIFT_FLAGS\s*=\s*)\$\(inherited\)\s+-DCOCOAPODS/, '\1-DCOCOAPODS')
+        modified = true
+      end
+      
+      # Fix "OTHER_SWIFT_FLAGS =  -DCOCOAPODS" (leading space) -> "OTHER_SWIFT_FLAGS = -DCOCOAPODS"
+      if text =~ /OTHER_SWIFT_FLAGS\s*=\s+\s+-DCOCOAPODS/
+        text = text.gsub(/(OTHER_SWIFT_FLAGS\s*=\s*)\s+-DCOCOAPODS/, '\1-DCOCOAPODS')
+        modified = true
+      end
+      
+      File.write(xcconfig_path, text) if modified
+    rescue => e
+      puts "Warning: Could not patch #{xcconfig_path}: #{e}"
+    end
   end
 end

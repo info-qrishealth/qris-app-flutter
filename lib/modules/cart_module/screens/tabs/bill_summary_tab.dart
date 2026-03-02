@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/coupon_discount_type.dart';
 import 'package:qris_health/constants/enums/coupon_type.dart';
@@ -15,7 +15,6 @@ import 'package:qris_health/modules/address_module/services/address_service.dart
 import 'package:qris_health/modules/cart_module/components/patient_tile_layout.dart';
 import 'package:qris_health/modules/health_module/models/wellness_answer/wellness_answer.dart';
 import 'package:qris_health/modules/home_module/components/package_list_tile.dart';
-import 'package:qris_health/modules/home_module/screens/home_screen.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/models/order_info/order_info.dart';
@@ -706,7 +705,11 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
 
   Future<void> _onPaymentSuccess(PaymentSuccessResponse response) async {
     try {
-      await _createOrder(razorpayPaymentId: response.paymentId);
+      await _createOrder(
+        razorpayPaymentId: response.paymentId,
+        razorpayOrderId: response.orderId,
+        razorpaySignature: response.signature,
+      );
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     } finally {}
@@ -746,85 +749,177 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
   Future<void> _checkout() async {
     try {
       final cartCubit = BlocProvider.of<CartCubit>(context);
+      final cart = cartCubit.state.cart;
       final cartFinalValue = cartCubit.getCartFinalValue(context: context);
 
-      var options = {
-        'key': AppConstants.razorpayKey,
-        'amount': cartFinalValue * 100,
+      if (cart.selectedAddress == null ||
+          cart.collectionDate == null ||
+          cart.timeSlot == null) {
+        AppConstants.showSnackbar(
+          text: 'Please select address, date and time slot before paying.',
+          type: SnackbarType.warning,
+        );
+        return;
+      }
+
+      final encodedAddress = AppConstants.encodeStringToBase64(
+        json.encode(cart.selectedAddress!.toJson()),
+      );
+      final encodedProductData =
+          AppConstants.encodeStringToBase64(_getProductsData());
+      final encodedCouponData = cart.appliedCoupon == null
+          ? ''
+          : AppConstants.encodeStringToBase64(
+              json.encode(cart.appliedCoupon!.toJson()),
+            );
+
+      final response = await http.post(
+        Uri.parse('${AppConstants.baseUrl}/orders/create'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': ApiParams.getInstance()!.authorization ?? '',
+        },
+        body: jsonEncode({
+          'userId': ApiParams.getInstance()!.userId!,
+          'phoneNumber': ApiParams.getInstance()!.phoneNumber!,
+          'paymentMode': 'online',
+          'packagesAmount': cartCubit.getCartTestPrices().round(),
+          'collectionCharges': cartCubit.getDeliveryCharge(),
+          'hardCopyCharges': cartCubit.getHardCopyCharges().toString(),
+          'redeemedWalletAmount': cart.walletRedeemedAmount,
+          'redeemedQrisCoins': cart.redeemedQrisCoins,
+          'cartFinalValue': cartFinalValue.round(),
+          'encodedProductData': encodedProductData,
+          'slotDate': DateFormat('yyyyMMdd').format(cart.collectionDate!),
+          'slotTime':
+              '${cart.timeSlot!.startingTime}-${cart.timeSlot!.endingTime}',
+          'pincode': cart.pincode!.pincode.toString(),
+          'encodedAddress': encodedAddress,
+          'encodedCouponData': encodedCouponData,
+          'appliedCouponAmount': cart.appliedCouponAmount ?? 0,
+          'coupon': cart.appliedCoupon?.toJson(),
+          'referBy': _referController.text.trim(),
+          'paymentResponse': '',
+          'sampleType': cartCubit.getCollectiveSampleType(),
+          'tubeType': cartCubit.getCollectiveTubeType(),
+        }),
+      );
+
+      final decoded = jsonDecode(response.body);
+      final body = decoded['body'] ?? {};
+
+      if (response.statusCode != 200 ||
+          decoded['error'] != null ||
+          body['razorpayOrderId'] == null ||
+          body['key'] == null) {
+        AppConstants.showSnackbar(
+          text: 'Failed to start payment. Please try again.',
+          type: SnackbarType.error,
+        );
+        return;
+      }
+
+      final options = {
+        'key': body['key'],
+        'amount': body['amount'],
+        'order_id': body['razorpayOrderId'],
         'name': 'Qris Health',
         'image':
             'https://cdn-1.webcatalog.io/catalog/qris-health/qris-health-icon-filled-256.webp?v=1714781957813',
         'description':
             "Securely book your health tests with Qris Health using our seamless online payment system.",
         'prefill': {'contact': ApiParams.getInstance()!.phoneNumber},
-        "theme": {"color": "#B23C97"}
+        'theme': {'color': '#B23C97'},
       };
 
       _razorpay.open(options);
     } catch (e) {
-      AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
+      AppConstants.showSnackbar(
+        text: 'Payment initialization failed. Please try again.',
+        type: SnackbarType.error,
+      );
     }
   }
 
-  Future<void> _createOrder(
-      {String? razorpayPaymentId, bool walletPaid = false}) async {
+  Future<void> _createOrder({
+    String? razorpayPaymentId,
+    String? razorpayOrderId,
+    String? razorpaySignature,
+    bool walletPaid = false,
+  }) async {
     try {
       final cartCubit = BlocProvider.of<CartCubit>(context);
       final cart = cartCubit.state.cart;
 
       final encodedAddress = AppConstants.encodeStringToBase64(
-          json.encode(cart.selectedAddress!.toJson()));
+        json.encode(cart.selectedAddress!.toJson()),
+      );
 
       final encodedCouponData = cart.appliedCoupon == null
           ? ''
           : AppConstants.encodeStringToBase64(
-              json.encode(cart.appliedCoupon!.toJson()));
+              json.encode(cart.appliedCoupon!.toJson()),
+            );
 
       final productsData =
           AppConstants.encodeStringToBase64(_getProductsData());
 
       final orderReqModel = OrderReqModel(
-          userId: ApiParams.getInstance()!.userId!,
-          packagesAmount: cartCubit.getCartTestPrices().round(),
-          collectionCharges: cartCubit.getDeliveryCharge().toString(),
-          hardCopyCharges: cartCubit.getHardCopyCharges().toString(),
-          cartFinalValue: cartCubit.getCartFinalValue(context: context).round(),
-          paymentMode: walletPaid ? PaymentMode.prepaid : _selectedPaymentMode!,
-          razorpayPaymentId: razorpayPaymentId,
-          coupon: cart.appliedCoupon,
-          redeemedWalletAmount: cart.walletRedeemedAmount,
-          redeemedQrisCoins: cart.redeemedQrisCoins,
-          slotDate: DateFormat('yyyyMMdd').format(cart.collectionDate!),
-          slotTime:
-              '${cart.timeSlot!.startingTime}-${cart.timeSlot!.endingTime}',
-          pincode: cart.pincode!.pincode.toString(),
-          encodedProductData: productsData,
-          encodedAddress: encodedAddress,
-          encodedCouponData: encodedCouponData,
-          referBy: _referController.text,
-          paymentResponse: '',
-          tubeType: cartCubit.getCollectiveTubeType(),
-          sampleType: cartCubit.getCollectiveSampleType(),
-          appliedCouponAmount: cart.appliedCouponAmount ?? 0,
-          phoneNumber: ApiParams.getInstance()!.phoneNumber!,
-          wellnessAnswers: widget.wellnessAnswers
-              ?.map((answer) => answer.copyWith.call(
+        userId: ApiParams.getInstance()!.userId!,
+        packagesAmount: cartCubit.getCartTestPrices().round(),
+        collectionCharges: cartCubit.getDeliveryCharge().toString(),
+        hardCopyCharges: cartCubit.getHardCopyCharges().toString(),
+        cartFinalValue: cartCubit.getCartFinalValue(context: context).round(),
+        paymentMode: walletPaid ? PaymentMode.prepaid : _selectedPaymentMode!,
+        razorpayPaymentId: razorpayPaymentId,
+        coupon: cart.appliedCoupon,
+        redeemedWalletAmount: cart.walletRedeemedAmount,
+        redeemedQrisCoins: cart.redeemedQrisCoins,
+        slotDate: DateFormat('yyyyMMdd').format(cart.collectionDate!),
+        slotTime:
+            '${cart.timeSlot!.startingTime}-${cart.timeSlot!.endingTime}',
+        pincode: cart.pincode!.pincode.toString(),
+        encodedProductData: productsData,
+        encodedAddress: encodedAddress,
+        encodedCouponData: encodedCouponData,
+        referBy: _referController.text,
+        paymentResponse: '',
+        tubeType: cartCubit.getCollectiveTubeType(),
+        sampleType: cartCubit.getCollectiveSampleType(),
+        appliedCouponAmount: cart.appliedCouponAmount ?? 0,
+        phoneNumber: ApiParams.getInstance()!.phoneNumber!,
+        wellnessAnswers: widget.wellnessAnswers
+            ?.map((answer) => answer.copyWith.call(
                   answer: answer.answer.trim(),
                   ptntId: cart.cartTests.firstOrNull?.patientIds.firstOrNull
-                      .toString()))
-              .toList());
+                      .toString(),
+                ))
+            .toList(),
+      );
+
+      final payload = {
+        ...orderReqModel.toJson(),
+        if (razorpayOrderId != null) 'razorpayOrderId': razorpayOrderId,
+        if (razorpayPaymentId != null) 'razorpayPaymentId': razorpayPaymentId,
+        if (razorpaySignature != null) 'razorpaySignature': razorpaySignature,
+      };
 
       await showModalBottomSheet(
-          enableDrag: false,
-          isScrollControlled: true,
-          isDismissible: false,
-          context: context,
-          builder: (context) =>
-              OrderProcessingBottomSheet(orderReqModel: orderReqModel));
+        enableDrag: false,
+        isScrollControlled: true,
+        isDismissible: false,
+        context: context,
+        builder: (context) => OrderProcessingBottomSheet(
+          orderReqModel: orderReqModel,
+          payload: payload,
+        ),
+      );
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     }
   }
+
+
 
   String _getProductsData() {
     final cart = BlocProvider.of<CartCubit>(context).state.cart;

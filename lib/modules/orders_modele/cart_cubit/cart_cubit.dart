@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,9 @@ import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
+import 'package:qris_health/modules/orders_modele/services/cart_service.dart';
+import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
+import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
@@ -20,10 +25,71 @@ part 'cart_state.dart';
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial());
 
+  String? _currentUserId;
+
   double get cartTestValue => getCartTestPrices();
+
+  /// Load cart from backend/local storage
+  Future<void> loadCart({required String userId, BuildContext? context}) async {
+    _currentUserId = userId;
+    
+    try {
+      final cartResponse = await CartService.loadCart(userId: userId);
+      
+      if (cartResponse != null && cartResponse['cart_data'] != null) {
+        final cartDataString = cartResponse['cart_data'] as String;
+        
+        if (cartDataString.isNotEmpty) {
+          final cartJson = json.decode(cartDataString);
+          final cart = Cart.fromJson(cartJson);
+          
+          // Load patients into PatientsCubit if context is provided
+          if (context != null && cartResponse['patients'] != null) {
+            final patientsMap = cartResponse['patients'] as Map<String, dynamic>;
+            final patients = patientsMap.values
+                .map((patientData) => Patient.fromJson(patientData as Map<String, dynamic>))
+                .toList();
+            
+            if (patients.isNotEmpty && context.mounted) {
+              final patientsCubit = BlocProvider.of<PatientsCubit>(context);
+              for (var patient in patients) {
+                // Check if patient already exists, if not add it
+                final existingPatient = patientsCubit.getPatientByPatientId(patientId: patient.id);
+                if (existingPatient == null) {
+                  patientsCubit.addNewPatient(patient);
+                }
+              }
+            }
+          }
+          
+          emit(CartUpdated(cart: cart));
+        }
+      }
+    } catch (e) {
+      debugPrint('Error loading cart: $e');
+    }
+  }
+
+  /// Save cart to backend and local storage
+  Future<void> _saveCart() async {
+    if (_currentUserId == null) return;
+    
+    try {
+      final cartJson = state.cart.toJson();
+      final cartDataString = json.encode(cartJson);
+      
+      await CartService.saveCart(
+        userId: _currentUserId!,
+        cartData: cartDataString,
+      );
+    } catch (e) {
+      debugPrint('Error saving cart: $e');
+    }
+  }
 
   void _updateCart({required Cart cart}) {
     emit(CartUpdated(cart: cart));
+    _saveCart();
   }
 
   void addToCart(TestPackageModel testPackageModel) {
@@ -103,8 +169,17 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  void clearCart() {
+  /// Clear cart from memory, backend and local storage
+  Future<void> clearCart() async {
+    if (_currentUserId != null) {
+      await CartService.clearCart(userId: _currentUserId!);
+    }
     emit(CartInitial(cart: Cart(cartTests: [])));
+  }
+
+  /// Set user ID for cart persistence
+  void setUserId(String userId) {
+    _currentUserId = userId;
   }
 
   void removeInvalidTests() {

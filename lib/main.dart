@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -22,7 +23,10 @@ import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 import 'package:qris_health/shared/models/notification_launch_data.dart';
+import 'package:qris_health/shared/services/facebook_analytics_service.dart';
+import 'package:qris_health/shared/services/token_manager.dart';
 import 'package:qris_health/shared/utils/navigator_utils.dart';
+import 'package:qris_health/shared/utils/permission_coordinator.dart';
 import 'package:qris_health/styles/app_styles.dart';
 import 'firebase_options.dart';
 import 'modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
@@ -47,7 +51,7 @@ void _onNotificationTap(NotificationResponse response) async {
             url: url, navigatorKey: NotificationLaunchData.navigatorKey);
       }
     } catch (e) {
-      print("Failed to handle notification tap: $e");
+      debugPrint("Failed to handle notification tap: $e");
     }
   }
 }
@@ -57,6 +61,14 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await FacebookAnalyticsService.initialize();
+
+  try {
+    await TokenManager.ensureValidToken();
+  } catch (e) {
+    debugPrint('Token validation error: $e');
+  }
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
@@ -125,9 +137,11 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _firebaseCloudMessagingListeners() async {
     if (Platform.isIOS) {
-      /// Request permissions
       await FirebaseMessaging.instance.requestPermission(
           sound: true, badge: true, alert: true, provisional: false);
+      
+      await Future.delayed(const Duration(milliseconds: 500));
+      PermissionCoordinator.markNotificationPermissionComplete();
 
       /// add ability to add notifications in foreground
       await FirebaseMessaging.instance
@@ -157,7 +171,7 @@ class _MyAppState extends State<MyApp> {
         try {
           await _showNotification(event);
         } catch (e) {
-          print(e.toString());
+          debugPrint(e.toString());
         }
       });
 
@@ -224,6 +238,6 @@ Future<void> _showNotification(RemoteMessage message) async {
         platformChannelSpecifics,
         payload: json.encode(message.data));
   } catch (e) {
-    print(e);
+    debugPrint(e.toString());
   }
 }

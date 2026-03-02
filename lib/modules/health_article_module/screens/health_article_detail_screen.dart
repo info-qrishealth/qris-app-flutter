@@ -49,6 +49,258 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
         BlocProvider.of<HealthArticleCubit>(context).getTopArticles();
   }
 
+  List<Widget> _buildArticleContent() {
+    final commonFontSize = FontSize.medium;
+    final description = widget.healthArticle.description ?? '';
+    
+    // First decode HTML entities to get the actual content
+    final decodedDescription = description.htmlString;
+    
+    // Pattern to match [PRDCARD ID=X] with optional whitespace
+    final prdcardPattern = RegExp(r'\[PRDCARD\s+ID\s*=\s*(\d+)\s*\]', caseSensitive: false);
+    
+    final List<Widget> widgets = [];
+    int lastIndex = 0;
+    final matches = prdcardPattern.allMatches(decodedDescription).toList();
+    
+    for (final match in matches) {
+      // Add HTML content before the PRDCARD
+      if (match.start > lastIndex) {
+        final htmlContent = decodedDescription.substring(lastIndex, match.start);
+        // Remove trailing/leading whitespace and check if there's actual content
+        final trimmedContent = htmlContent.trim();
+        if (trimmedContent.isNotEmpty) {
+          widgets.add(Html(
+            data: trimmedContent,
+            style: _getHtmlStyles(commonFontSize),
+            onLinkTap: (url, _, __) async {
+              if (url != null && await canLaunchUrl(Uri.parse(url))) {
+                await launchUrl(Uri.parse(url),
+                    mode: LaunchMode.externalApplication);
+              }
+            },
+          ));
+        }
+      }
+      
+      // Add product card for the PRDCARD
+      final testId = int.tryParse(match.group(1) ?? '');
+      if (testId != null) {
+        widgets.add(SizedBox(height: 16));
+        widgets.add(FutureBuilder<TestPackageModel>(
+          future: TestService.getTestByTestId(id: testId),
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              return PackageTileHorizontal(
+                testPackageModel: snapshot.data,
+                onSeeDetailsTap: () async {
+                  await Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) => BloodTestDetailScreen(
+                        testId: snapshot.data!.id,
+                      ),
+                    ),
+                  );
+                },
+              );
+            } else if (snapshot.hasError) {
+              return const SizedBox.shrink();
+            }
+            return FadeShimmer(
+              width: 152,
+              height: 200,
+              fadeTheme: FadeTheme.light,
+            );
+          },
+        ));
+        widgets.add(SizedBox(height: 16));
+      }
+      
+      lastIndex = match.end;
+    }
+    
+    // Add remaining HTML content after the last PRDCARD
+    if (lastIndex < decodedDescription.length) {
+      final htmlContent = decodedDescription.substring(lastIndex);
+      final trimmedContent = htmlContent.trim();
+      if (trimmedContent.isNotEmpty) {
+        widgets.add(Html(
+          data: trimmedContent,
+          style: _getHtmlStyles(commonFontSize),
+          onLinkTap: (url, _, __) async {
+            if (url != null && await canLaunchUrl(Uri.parse(url))) {
+              await launchUrl(Uri.parse(url),
+                  mode: LaunchMode.externalApplication);
+            }
+          },
+        ));
+      }
+    }
+    
+    // If no PRDCARD found, render the entire description as HTML
+    if (widgets.isEmpty) {
+      widgets.add(Html(
+        data: decodedDescription,
+        style: _getHtmlStyles(commonFontSize),
+        onLinkTap: (url, _, __) async {
+          if (url != null && await canLaunchUrl(Uri.parse(url))) {
+            await launchUrl(Uri.parse(url),
+                mode: LaunchMode.externalApplication);
+          }
+        },
+      ));
+    }
+    
+    return widgets;
+  }
+
+  Map<String, Style> _getHtmlStyles(FontSize commonFontSize) {
+    return {
+      'p': Style(
+        fontWeight: FontWeight.w400,
+        color: AppColors.lightText,
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+        margin: Margins.zero,
+      ),
+      'strong': Style(
+        color: AppColors.textColor,
+        fontWeight: FontWeight.bold,
+        display: Display.inline,
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+      ),
+      'li': Style(
+        color: AppColors.lightText,
+        fontWeight: FontWeight.w400,
+        margin: Margins.symmetric(horizontal: 8, vertical: 5),
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+      ),
+      'ul': Style(
+        padding: HtmlPaddings.only(left: 16),
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+        margin: Margins.only(bottom: 8),
+      ),
+      'ol': Style(
+        padding: HtmlPaddings.only(left: 16),
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+        margin: Margins.only(bottom: 8),
+      ),
+      'em': Style(
+        fontStyle: FontStyle.italic,
+        color: AppColors.textColor,
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+      ),
+      'h1': Style(
+        fontWeight: FontWeight.bold,
+        color: AppColors.textColor,
+        margin: Margins.only(bottom: 12),
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+      ),
+      'h2': Style(
+        fontWeight: FontWeight.bold,
+        color: AppColors.textColor,
+        margin: Margins.only(bottom: 10),
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+      ),
+      'h3': Style(
+        fontWeight: FontWeight.w600,
+        color: AppColors.textColor,
+        margin: Margins.only(bottom: 8),
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+      ),
+      'h4': Style(
+        fontWeight: FontWeight.w600,
+        color: AppColors.textColor,
+        margin: Margins.only(bottom: 6),
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+      ),
+      'h5': Style(
+        fontWeight: FontWeight.w500,
+        color: AppColors.textColor,
+        margin: Margins.only(bottom: 4),
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+      ),
+      'h6': Style(
+        fontWeight: FontWeight.w500,
+        color: AppColors.textColor,
+        margin: Margins.only(bottom: 2),
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+      ),
+      'a': Style(
+        color: Colors.blue,
+        textDecoration: TextDecoration.underline,
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+      ),
+      'blockquote': Style(
+        fontStyle: FontStyle.italic,
+        backgroundColor: Colors.grey.shade200,
+        padding: HtmlPaddings.all(12),
+        margin: Margins.symmetric(vertical: 12),
+        border:
+            Border(left: BorderSide(color: Colors.grey, width: 4)),
+        fontSize: commonFontSize,
+        lineHeight: LineHeight.number(1.4),
+      ),
+      'code': Style(
+        fontFamily: 'monospace',
+        backgroundColor: Colors.grey.shade200,
+        padding: HtmlPaddings.all(4),
+        color: Colors.deepPurple,
+      ),
+      'pre': Style(
+          fontFamily: 'monospace',
+          backgroundColor: Colors.black87,
+          color: Colors.white,
+          padding: HtmlPaddings.all(12),
+          margin: Margins.symmetric(vertical: 12)),
+      'table': Style(
+        border: Border.all(color: Colors.grey),
+        padding: HtmlPaddings.all(8),
+        margin: Margins.symmetric(vertical: 8),
+      ),
+      'thead': Style(
+        backgroundColor: Colors.grey.shade200,
+      ),
+      'tbody': Style(),
+      'tr': Style(
+        border:
+            Border(bottom: BorderSide(color: Colors.grey.shade300)),
+      ),
+      'td': Style(
+        padding: HtmlPaddings.all(8),
+      ),
+      'th': Style(
+        padding: HtmlPaddings.all(8),
+        fontWeight: FontWeight.bold,
+      ),
+      'img': Style(
+        margin: Margins.symmetric(vertical: 8),
+      ),
+      'hr': Style(
+        border: Border(
+            bottom:
+                BorderSide(color: Colors.grey.shade400, width: 1)),
+        margin: Margins.symmetric(vertical: 12),
+      ),
+      'br': Style(
+        display: Display.block,
+        height: Height(8),
+      ),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final commonFontSize = FontSize.medium;
@@ -76,159 +328,7 @@ class _HealthArticleDetailScreenState extends State<HealthArticleDetailScreen>
                       fit: BoxFit.fill,
                       height: null)),
               SizedBox(height: 16),
-              Html(
-                data: widget.healthArticle.description.htmlString,
-                style: {
-                  'p': Style(
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.lightText,
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                    margin: Margins.zero,
-                  ),
-                  'strong': Style(
-                    color: AppColors.textColor,
-                    margin: Margins.only(bottom: 8, top: 8),
-                    display: Display.block,
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                  ),
-                  'li': Style(
-                    color: AppColors.lightText,
-                    fontWeight: FontWeight.w400,
-                    margin: Margins.symmetric(horizontal: 8, vertical: 5),
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                  ),
-                  'ul': Style(
-                    padding: HtmlPaddings.only(left: 16),
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                    margin: Margins.only(bottom: 8),
-                  ),
-                  'ol': Style(
-                    padding: HtmlPaddings.only(left: 16),
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                    margin: Margins.only(bottom: 8),
-                  ),
-                  'em': Style(
-                    fontStyle: FontStyle.italic,
-                    color: AppColors.textColor,
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                  ),
-                  'h1': Style(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textColor,
-                    margin: Margins.only(bottom: 12),
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                  ),
-                  'h2': Style(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textColor,
-                    margin: Margins.only(bottom: 10),
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                  ),
-                  'h3': Style(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textColor,
-                    margin: Margins.only(bottom: 8),
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                  ),
-                  'h4': Style(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textColor,
-                    margin: Margins.only(bottom: 6),
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                  ),
-                  'h5': Style(
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.textColor,
-                    margin: Margins.only(bottom: 4),
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                  ),
-                  'h6': Style(
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.textColor,
-                    margin: Margins.only(bottom: 2),
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                  ),
-                  'a': Style(
-                    color: Colors.blue,
-                    textDecoration: TextDecoration.underline,
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                  ),
-                  'blockquote': Style(
-                    fontStyle: FontStyle.italic,
-                    backgroundColor: Colors.grey.shade200,
-                    padding: HtmlPaddings.all(12),
-                    margin: Margins.symmetric(vertical: 12),
-                    border:
-                        Border(left: BorderSide(color: Colors.grey, width: 4)),
-                    fontSize: commonFontSize,
-                    lineHeight: LineHeight.number(1.4),
-                  ),
-                  'code': Style(
-                    fontFamily: 'monospace',
-                    backgroundColor: Colors.grey.shade200,
-                    padding: HtmlPaddings.all(4),
-                    color: Colors.deepPurple,
-                  ),
-                  'pre': Style(
-                      fontFamily: 'monospace',
-                      backgroundColor: Colors.black87,
-                      color: Colors.white,
-                      padding: HtmlPaddings.all(12),
-                      margin: Margins.symmetric(vertical: 12)),
-                  'table': Style(
-                    border: Border.all(color: Colors.grey),
-                    padding: HtmlPaddings.all(8),
-                    margin: Margins.symmetric(vertical: 8),
-                  ),
-                  'thead': Style(
-                    backgroundColor: Colors.grey.shade200,
-                  ),
-                  'tbody': Style(),
-                  'tr': Style(
-                    border:
-                        Border(bottom: BorderSide(color: Colors.grey.shade300)),
-                  ),
-                  'td': Style(
-                    padding: HtmlPaddings.all(8),
-                  ),
-                  'th': Style(
-                    padding: HtmlPaddings.all(8),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  'img': Style(
-                    margin: Margins.symmetric(vertical: 8),
-                  ),
-                  'hr': Style(
-                    border: Border(
-                        bottom:
-                            BorderSide(color: Colors.grey.shade400, width: 1)),
-                    margin: Margins.symmetric(vertical: 12),
-                  ),
-                  'br': Style(
-                    display: Display.block,
-                    height: Height(8),
-                  ),
-                },
-                onLinkTap: (url, _, __) async {
-                  if (url != null && await canLaunchUrl(Uri.parse(url))) {
-                    await launchUrl(Uri.parse(url),
-                        mode: LaunchMode.externalApplication);
-                  }
-                },
-              ),
+              ..._buildArticleContent(),
               SizedBox(height: 16),
               ContactUsContainer(),
               // SizedBox(height: 16),

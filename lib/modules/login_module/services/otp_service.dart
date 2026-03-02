@@ -11,7 +11,9 @@ class OtpService {
         '${AppConstants.baseUrl}/otp/send?phoneNumber=$phoneNumber${email != null ? '&email=$email' : ''}';
 
     try {
-      final response = await Wrapper.post(url, null);
+      final response = await Wrapper.post(
+          url, null,
+          requireAuth: false);
       return Otp.fromJson(json.decode(response)['body']);
     } catch (e) {
       rethrow;
@@ -22,7 +24,9 @@ class OtpService {
     const url = '${AppConstants.baseUrl}/otp/verify';
 
     try {
-      await Wrapper.post(url, json.encode(otp.toJson()));
+      await Wrapper.post(
+          url, json.encode(otp.toJson()),
+          requireAuth: false);
     } catch (e) {
       rethrow;
     }
@@ -39,7 +43,9 @@ class OtpService {
         '${AppConstants.baseUrl}/otp/is-exists?${Uri(queryParameters: queryParams).query}';
 
     try {
-      final response = await Wrapper.get(url);
+      final response = await Wrapper.get(
+          url,
+          requireAuth: false);
       return json.decode(response)['body'];
     } catch (e) {
       rethrow;

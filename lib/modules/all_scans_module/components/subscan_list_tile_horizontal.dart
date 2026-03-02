@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/enums/scan_type.dart';
 import 'package:qris_health/constants/enums/subscan_type.dart';
 import 'package:qris_health/modules/all_scans_module/screens/subscan_info_screen.dart';
+import 'package:qris_health/modules/all_scans_module/services/test_service.dart';
 import 'package:qris_health/shared/extensions/string_extension.dart';
 
 import '../../../constants/app_constants.dart';
@@ -20,6 +23,10 @@ class SubscanListTileHorizontal extends StatelessWidget {
 
     return GestureDetector(
         onTap: () {
+          final testId = TestService.getScanTestId(subScanType.subScanModel.scanType.formattedName);
+          final scanName = '${subScanType.formattedName} (${subScanType.subScanModel.scanType.formattedName})';
+          TestService.trackTestSearch(testId: testId, scanName: scanName);
+          
           Navigator.of(context).push(CupertinoPageRoute(
               builder: (context) =>
                   SubscanInfoScreen(subScanType: subScanType)));
@@ -48,15 +55,23 @@ class SubscanListTileHorizontal extends StatelessWidget {
                                         fontFamily:
                                             AppConstants.ubuntuFontFamily,
                                         color: AppColors.primaryBlue)),
-                                SizedBox(height: 6),
-                                Text(
-                                    subScanType
-                                        .subScanModel.firstHeadingDescription
-                                        .getEllipticText(
-                                            charactersAfterTrim: 50)!,
-                                    style: textTheme.labelSmall!.copyWith(
-                                        color: AppColors.lightSubTextColor,
-                                        fontWeight: FontWeight.w400))
+                                SizedBox(height: Platform.isAndroid ? 4 : 6),
+                                Expanded(
+                                  child: Text(
+                                      subScanType
+                                          .subScanModel.firstHeadingDescription
+                                          .getEllipticText(
+                                              charactersAfterTrim: 50)!,
+                                      maxLines: Platform.isAndroid ? 3 : null,
+                                      overflow: Platform.isAndroid
+                                          ? TextOverflow.ellipsis
+                                          : TextOverflow.visible,
+                                      style: textTheme.labelSmall!.copyWith(
+                                          color: AppColors.lightSubTextColor,
+                                          fontWeight: FontWeight.w400,
+                                          height:
+                                              Platform.isAndroid ? 1.1 : null)),
+                                )
                               ]))),
                   OfferedPriceContainer(
                       customWidget: Text(

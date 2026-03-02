@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qris_health/constants/app_constants.dart';
-import 'package:qris_health/constants/enums/specialist_type.dart';
 import 'package:qris_health/modules/doctor_consultation_module/components/doctor_list_tile.dart';
 import 'package:qris_health/modules/doctor_consultation_module/components/select_location_dialog.dart';
 import 'package:qris_health/modules/doctor_consultation_module/components/specialist_category_container.dart';

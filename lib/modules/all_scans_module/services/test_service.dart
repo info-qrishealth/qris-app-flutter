@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:qris_health/constants/api_params.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/all_scans_module/models/category_res/test_and_risk_category_res.dart';
 import 'package:qris_health/modules/all_scans_module/models/faq/faq.dart';
@@ -97,5 +99,59 @@ class TestService {
     } catch (e) {
       rethrow;
     }
+  }
+
+  static Future<void> trackTestSearch({
+    int? testId,
+    String? searchQuery,
+    String? scanName,
+  }) async {
+    try {
+      final userId = ApiParams.getInstance()?.userId;
+      if (userId == null) return;
+
+      if (_lastTrackingCall != null && 
+          _lastTrackingCall!['userId'] == userId && 
+          _lastTrackingCall!['testId'] == testId &&
+          DateTime.now().difference(_lastTrackingCall!['timestamp']).inSeconds < 5) {
+        return;
+      }
+
+      final url = '${AppConstants.baseUrl}/tests/track-search';
+      final body = json.encode({
+        'userId': userId,
+        if (testId != null) 'testId': testId,
+        if (searchQuery != null) 'searchQuery': searchQuery,
+        if (scanName != null) 'scanName': scanName,
+      });
+
+      await Wrapper.post(url, body);
+      
+      _lastTrackingCall = {
+        'userId': userId,
+        'testId': testId,
+        'timestamp': DateTime.now()
+      };
+    } catch (e) {
+      debugPrint('Tracking error: $e');
+    }
+  }
+
+  static Map<String, dynamic>? _lastTrackingCall;
+
+  static int? getScanTestId(String scanName) {
+    final scanTestIdMap = {
+      'ECG Test': 368,
+      'CT Scan': 368,
+      'Ultrasound': 368,
+      'ECHO Test': 368,
+      'EEG Test': 368,
+      'DEXA Test': 368,
+      'PFT Test': 368,
+      'MRI': 368,
+      'Holter Test': 368,
+      'Color Doppler': 368,
+    };
+    return scanTestIdMap[scanName];
   }
 }

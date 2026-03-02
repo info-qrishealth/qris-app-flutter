@@ -33,6 +33,8 @@ class _SubscanInfoScreenState extends State<SubscanInfoScreen> {
   void initState() {
     super.initState();
     _subscanModel = widget.subScanType.subScanModel;
+    // Tracking is handled by the component that navigates here
+    // No need to track again in initState to prevent double entries
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
@@ -124,7 +126,9 @@ class _HomeScreenCarouselState extends State<HomeScreenCarousel> {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: Platform.isAndroid
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.spaceAround,
               children: [
                 Text(
                   banner.title,
@@ -133,34 +137,42 @@ class _HomeScreenCarouselState extends State<HomeScreenCarousel> {
                       color: Colors.white,
                       fontFamily: AppConstants.ubuntuFontFamily),
                 ),
+                SizedBox(height: Platform.isAndroid ? 4 : 6),
                 Text(
                   banner.description,
+                  maxLines: Platform.isAndroid ? 3 : null,
+                  overflow:
+                      Platform.isAndroid ? TextOverflow.ellipsis : null,
                   style: textTheme.bodySmall!.copyWith(
-                      fontWeight: FontWeight.w400, color: Colors.white),
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                      height: Platform.isAndroid ? 1.1 : null),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: SizedBox(
-                    height: 24,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              banner.buttonBackgroundColorValue ?? Colors.white,
-                        ),
-                        onPressed: () async {
-                          await NavigatorUtils.handleUrl(
-                              url: banner.onTap,
-                              navigatorKey:
-                                  NotificationLaunchData.navigatorKey);
-                        },
-                        child: Text(banner.buttonText,
-                            style: textTheme.bodyLarge!.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: banner.buttonTextColorValue ??
-                                    AppColors.primaryPink))),
-                  ),
+                SizedBox(height: Platform.isAndroid ? 10 : 12),
+                SizedBox(
+                  height: Platform.isAndroid ? 26 : 30,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: Platform.isAndroid ? 14 : 18),
+                        backgroundColor:
+                            banner.buttonBackgroundColorValue ?? Colors.white,
+                      ),
+                      onPressed: () async {
+                        await NavigatorUtils.handleUrl(
+                            url: banner.onTap,
+                            navigatorKey: NotificationLaunchData.navigatorKey);
+                      },
+                      child: Text(
+                        banner.buttonText,
+                        style: textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: Platform.isAndroid ? 12 : null,
+                            color: banner.buttonTextColorValue ??
+                                AppColors.primaryPink),
+                      )),
                 ),
-                SizedBox(height: 13),
+                SizedBox(height: Platform.isAndroid ? 8 : 13),
               ],
             ),
           ),

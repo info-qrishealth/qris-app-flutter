@@ -54,7 +54,7 @@ class _CoinsScreenState extends State<CoinsScreen> {
                       child: WalletBalanceContainer(
                           svgPath: Assets.drawerIconsCoinIcon,
                           title: 'Total Coins',
-                          value: '₹$totalCoins')),
+                          value: '$totalCoins')),
                   SizedBox(height: 32),
                   Expanded(
                       child: state.coinEntries.isEmpty

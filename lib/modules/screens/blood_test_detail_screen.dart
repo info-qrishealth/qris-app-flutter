@@ -30,7 +30,8 @@ import '../../shared/components/feature_row.dart';
 
 class BloodTestDetailScreen extends StatefulWidget {
   final int testId;
-  const BloodTestDetailScreen({super.key, required this.testId});
+  final String? searchQuery;
+  const BloodTestDetailScreen({super.key, required this.testId, this.searchQuery});
 
   @override
   State<BloodTestDetailScreen> createState() => _BloodTestDetailScreenState();
@@ -48,6 +49,10 @@ class _BloodTestDetailScreenState extends State<BloodTestDetailScreen>
   void initState() {
     super.initState();
     _faqFuture = TestService.getFaqsByTestId(testId: widget.testId);
+    TestService.trackTestSearch(
+      testId: widget.testId,
+      searchQuery: widget.searchQuery,
+    );
   }
 
   @override

@@ -19,7 +19,9 @@ import '../services/order_service.dart';
 
 class OrderProcessingBottomSheet extends StatefulWidget {
   final OrderReqModel orderReqModel;
-  const OrderProcessingBottomSheet({super.key, required this.orderReqModel});
+  final Map<String, dynamic>? payload;
+
+  const OrderProcessingBottomSheet({super.key, required this.orderReqModel, this.payload});
 
   @override
   _OrderProcessingBottomSheetState createState() =>
@@ -31,13 +33,52 @@ class _OrderProcessingBottomSheetState
   Order? _order;
   int _redirectingSeconds = 3;
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Future.delayed(Duration.zero, () async {
+  //     try {
+  //       _order =
+  //           await OrderService.createOrder(orderReqModel: widget.orderReqModel);
+
+  //       BlocProvider.of<QrisCoinsCubit>(context).getQrisCoins();
+  //       BlocProvider.of<QrisWalletCubit>(context).getWalletEntries();
+  //       BlocProvider.of<CartCubit>(context).clearCart();
+
+  //       Timer.periodic(Duration(seconds: 1), (timer) {
+  //         setState(() {
+  //           _redirectingSeconds--;
+  //         });
+
+  //         if (_redirectingSeconds == 0) {
+  //           Navigator.of(context).pushAndRemoveUntil(
+  //               CupertinoPageRoute(builder: (context) => HomeScreen()),
+  //               (route) => false);
+  //           timer.cancel();
+  //         }
+  //       });
+
+  //       setState(() {});
+  //     } catch (e) {
+  //       Navigator.of(context).pop();
+  //       AppConstants.showSnackbar(
+  //           text:
+  //               'There is some error while creating order. Please contact Qris support for better guidance',
+  //           type: SnackbarType.error);
+  //     }
+  //   });
+  // }
+
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
       try {
-        _order =
-            await OrderService.createOrder(orderReqModel: widget.orderReqModel);
+        final payload = widget.payload ?? widget.orderReqModel.toJson();
+        _order = await OrderService.createOrder(
+          orderReqModel: widget.orderReqModel,
+          payload: payload,
+        );
 
         BlocProvider.of<QrisCoinsCubit>(context).getQrisCoins();
         BlocProvider.of<QrisWalletCubit>(context).getWalletEntries();
@@ -66,6 +107,7 @@ class _OrderProcessingBottomSheetState
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
