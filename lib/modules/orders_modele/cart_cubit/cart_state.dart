@@ -2,16 +2,17 @@ part of 'cart_cubit.dart';
 
 sealed class CartState extends Equatable {
   final Cart cart;
-  const CartState({this.cart = const Cart(cartTests: [])});
+  final CartSummary? cartSummary;
+  const CartState({this.cart = const Cart(cartTests: []), this.cartSummary});
 
   @override
-  List<Object> get props => [cart];
+  List<Object?> get props => [cart, cartSummary];
 }
 
 final class CartInitial extends CartState {
-  const CartInitial({super.cart});
+  const CartInitial({super.cart, super.cartSummary});
 }
 
 final class CartUpdated extends CartState {
-  const CartUpdated({required super.cart});
+  const CartUpdated({required super.cart, super.cartSummary});
 }

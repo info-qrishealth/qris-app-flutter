@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/modules/doctor_consultation_module/models/free_consultation_request/free_consultation_request.dart';
 import 'package:qris_health/modules/orders_modele/models/order_status/order_status.dart';

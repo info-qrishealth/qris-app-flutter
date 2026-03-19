@@ -38,6 +38,7 @@ import '../../../orders_modele/models/order_patient/order_patient.dart';
 import '../../../orders_modele/models/order_req_model/order_req_model.dart';
 import '../../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 import '../../components/coupons_bottom_sheet.dart';
+import '../../helpers/bill_summary_cart_helpers.dart';
 
 class BillSummaryTab extends StatefulWidget {
   final List<WellnessAnswer>? wellnessAnswers;
@@ -87,16 +88,29 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
             final address = state.cart.selectedAddress;
             final pincode = pincodes.firstWhereOrNull(
                 (element) => element.pincode.toString() == address?.pincode);
-            cartCubit.updateCollectionPincode(pincode);
 
-            /// Cart test prices
+            syncPincodeIfNeeded(
+              cartCubit: cartCubit,
+              state: state,
+              pincode: pincode,
+            );
+            scheduleLoadCartSummaryIfNeeded(
+              context: context,
+              state: state,
+              cartCubit: cartCubit,
+              userId: ApiParams.getInstance()?.userId?.toString(),
+              totalWalletAmount: totalWalletAmount.toDouble(),
+              totalQrisCoins: totalQrisCoins,
+              pincode: pincode,
+            );
+
+            /// Cart test prices (from backend summary)
             final cartTestPrices = cartCubit.getCartTestPrices().toInt();
 
-            /// Cart final value after coupons and wallet amounts
-            final cartFinalValue =
-                cartCubit.getCartFinalValue(context: context).toInt();
+            /// Cart final value after coupons and wallet amounts (from backend summary)
+            final cartFinalValue = cartCubit.getCartFinalValue().toInt();
 
-            /// Cart value which consists of package amount, hard copy charges and delivery charges
+            /// Cart value which consists of package amount, hard copy charges and delivery charges (from backend summary)
             final baseCartValue = cartCubit.getBaseCartValue();
 
             return Column(
@@ -750,7 +764,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
     try {
       final cartCubit = BlocProvider.of<CartCubit>(context);
       final cart = cartCubit.state.cart;
-      final cartFinalValue = cartCubit.getCartFinalValue(context: context);
+      final cartFinalValue = cartCubit.getCartFinalValue();
 
       if (cart.selectedAddress == null ||
           cart.collectionDate == null ||
@@ -869,7 +883,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
         packagesAmount: cartCubit.getCartTestPrices().round(),
         collectionCharges: cartCubit.getDeliveryCharge().toString(),
         hardCopyCharges: cartCubit.getHardCopyCharges().toString(),
-        cartFinalValue: cartCubit.getCartFinalValue(context: context).round(),
+        cartFinalValue: cartCubit.getCartFinalValue().round(),
         paymentMode: walletPaid ? PaymentMode.prepaid : _selectedPaymentMode!,
         razorpayPaymentId: razorpayPaymentId,
         coupon: cart.appliedCoupon,
