@@ -4,8 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qris_health/constants/enums/coupon_discount_type.dart';
-import 'package:qris_health/constants/enums/coupon_type.dart';
 import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
@@ -13,12 +11,10 @@ import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dar
 import 'package:qris_health/modules/orders_modele/services/cart_service.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
 import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
-import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
-import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
-import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 
 import '../../address_module/models/address/address.dart';
 import '../models/cart/cart.dart';
+import '../models/cart/cart_summary.dart';
 
 part 'cart_state.dart';
 
@@ -88,7 +84,7 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void _updateCart({required Cart cart}) {
-    emit(CartUpdated(cart: cart));
+    emit(CartUpdated(cart: cart, cartSummary: null));
     _saveCart();
   }
 
@@ -174,7 +170,7 @@ class CartCubit extends Cubit<CartState> {
     if (_currentUserId != null) {
       await CartService.clearCart(userId: _currentUserId!);
     }
-    emit(CartInitial(cart: Cart(cartTests: [])));
+    emit(CartInitial(cart: Cart(cartTests: []), cartSummary: null));
   }
 
   /// Set user ID for cart persistence
@@ -201,130 +197,53 @@ class CartCubit extends Cubit<CartState> {
     _updateCart(cart: state.cart.copyWith.call(appliedCoupon: coupon));
   }
 
-  double getCartTestPrices() {
-    double cartFinalValue = 0;
-
-    for (var cartTest in state.cart.cartTests) {
-      final testPrice = cartTest.test.price ?? 0;
-      cartFinalValue += testPrice * cartTest.patientIds.length;
+  /// Fetches cart summary from backend (all calculations done server-side).
+  /// Call when displaying bill summary; pass wallet and coins from context.
+  /// Updates cart with walletRedeemedAmount, appliedCouponAmount, redeemedQrisCoins from response.
+  Future<void> loadCartSummary({
+    required String userId,
+    required double totalWalletAmount,
+    required int totalQrisCoins,
+  }) async {
+    if (state.cart.cartTests.isEmpty) return;
+    try {
+      final cartDataString = json.encode(state.cart.toJson());
+      final result = await CartService.calculateCart(
+        userId: userId,
+        cartData: cartDataString,
+        totalWalletAmount: totalWalletAmount,
+        totalQrisCoins: totalQrisCoins,
+      );
+      if (result == null) return;
+      final summary = CartSummary.fromJson(result);
+      final updatedCart = state.cart.copyWith.call(
+        walletRedeemedAmount: summary.walletRedeemedAmount,
+        appliedCouponAmount: summary.appliedCouponAmount,
+        redeemedQrisCoins: summary.redeemedQrisCoins,
+      );
+      emit(CartUpdated(cart: updatedCart, cartSummary: summary));
+    } catch (e) {
+      debugPrint('Error loading cart summary: $e');
     }
-
-    return cartFinalValue;
   }
 
-  double getCartFinalValue({required BuildContext context}) {
-    double cartFinalValue = getCartTestPrices();
-    final config = BlocProvider.of<QrisConfigCubit>(context).state.config;
-
-    /// For sample collection charges
-    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
-      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
-    }
-
-    /// For hard copy charges
-    if (state.cart.shouldGetHardCopy) {
-      cartFinalValue =
-          cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
-    }
-
-    double discountAmount = 0;
-
-    /// Coupon calculations
-    if (state.cart.appliedCoupon != null) {
-      final appliedCoupon = state.cart.appliedCoupon!;
-
-      /// If coupon type is direct cashback
-      if (appliedCoupon.discountAction == CouponType.dc) {
-        /// If percentage coupon
-        if (appliedCoupon.discountMode == CouponDiscountType.per) {
-          final discountPercentage = appliedCoupon.couponPrice;
-          discountAmount = (getCartTestPrices() * discountPercentage) / 100;
-        }
-
-        /// If fixed discount coupon
-        else if (appliedCoupon.discountMode == CouponDiscountType.fix) {
-          discountAmount = appliedCoupon.couponPrice;
-        }
-      }
-
-      /// If coupon type is cashback
-      else if (appliedCoupon.discountAction == CouponType.cb) {
-        _updateCart(cart: state.cart.copyWith.call(appliedCouponAmount: null));
-      }
-
-      /// If coupon type is combo
-      else if (appliedCoupon.discountAction == CouponType.sc) {
-        /// If percentage coupon
-        if (appliedCoupon.cdDiscountType == CouponDiscountType.per) {
-          final discountPercentage = appliedCoupon.cdCouponAmt;
-          discountAmount = (getCartTestPrices() * discountPercentage) / 100;
-        }
-
-        /// If fixed discount coupon
-        else if (appliedCoupon.cdDiscountType == CouponDiscountType.fix) {
-          discountAmount = appliedCoupon.cdCouponAmt;
-        }
-      }
-    }
-
-    /// Check redeem coins condition
-    if (state.cart.redeemCoins) {
-      final totalQrisCoins =
-          BlocProvider.of<QrisCoinsCubit>(context).getTotalCoins();
-
-      final coinsDiscount = (config!.qcUsedCoins * getCartTestPrices()) / 100;
-
-      if (totalQrisCoins > coinsDiscount) {
-        discountAmount = coinsDiscount;
-      } else {
-        discountAmount = totalQrisCoins.roundToDouble();
-      }
-    }
-
-    /// Wallet money calculations
-    final totalWalletAmount =
-        BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
-    int walletRedeemAmount = 0;
-    discountAmount = discountAmount.roundToDouble();
-
-    if ((totalWalletAmount + discountAmount) < cartFinalValue) {
-      cartFinalValue = cartFinalValue - discountAmount;
-      walletRedeemAmount = totalWalletAmount;
-      cartFinalValue = cartFinalValue - walletRedeemAmount;
-    } else {
-      cartFinalValue = cartFinalValue - discountAmount;
-      walletRedeemAmount = cartFinalValue.round();
-      cartFinalValue = cartFinalValue - walletRedeemAmount.round();
-    }
-
-    /// Update state
-    _updateCart(
-        cart: state.cart.copyWith.call(
-            walletRedeemedAmount: walletRedeemAmount,
-            appliedCouponAmount:
-                state.cart.appliedCoupon != null ? discountAmount : null,
-            redeemedQrisCoins:
-                state.cart.redeemCoins ? discountAmount.round() : 0));
-
-    return cartFinalValue;
+  /// Reads a value from cart summary or returns default (no logic/calc change).
+  T _fromSummary<T>(T Function(CartSummary s) getter, T defaultValue) {
+    final s = state.cartSummary;
+    return s != null ? getter(s) : defaultValue;
   }
 
-  double getBaseCartValue() {
-    double cartFinalValue = getCartTestPrices();
+  /// Cart test total (package prices only). From backend summary when available.
+  double getCartTestPrices() =>
+      _fromSummary((s) => s.cartTestPrices, 0.0);
 
-    /// For hard copy charges
-    if (state.cart.shouldGetHardCopy) {
-      cartFinalValue =
-          cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
-    }
+  /// Final payable amount. From backend summary when available.
+  double getCartFinalValue({BuildContext? context}) =>
+      _fromSummary((s) => s.cartFinalValue, 0.0);
 
-    /// For sample collection charges
-    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
-      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
-    }
-
-    return cartFinalValue;
-  }
+  /// Base cart value (packages + delivery + hard copy). From backend summary when available.
+  double getBaseCartValue() =>
+      _fromSummary((s) => s.baseCartValue, 0.0);
 
   void updateHardCopy(bool hardCopy) {
     removeAppliedCouponAndCoins();
@@ -362,53 +281,15 @@ class CartCubit extends Cubit<CartState> {
             redeemedQrisCoins: 0));
   }
 
-  int getDeliveryCharge() {
-    if (state.cart.pincode == null) {
-      return 0;
-    }
+  int getDeliveryCharge() =>
+      _fromSummary((s) => s.deliveryCharge, 0);
 
-    return getCartTestPrices() >= state.cart.pincode!.minOrder
-        ? 0
-        : state.cart.pincode!.deliveryCharge;
-  }
+  int getHardCopyCharges() =>
+      _fromSummary((s) => s.hardCopyCharges, 0);
 
-  int getHardCopyCharges() {
-    if (state.cart.pincode == null) return 0;
+  String getCollectiveSampleType() =>
+      _fromSummary((s) => s.sampleType, '');
 
-    if (state.cart.shouldGetHardCopy) {
-      return state.cart.pincode!.hardCopyCharge;
-    }
-
-    return 0;
-  }
-
-  String getCollectiveSampleType() {
-    return _getUniqueNames(
-        names: state.cart.cartTests
-            .map((test) => '${test.test.sampleType}')
-            .toList());
-  }
-
-  String getCollectiveTubeType() {
-    return _getUniqueNames(
-        names: state.cart.cartTests
-            .map((test) => '${test.test.tubeType}')
-            .toList());
-  }
-
-  String _getUniqueNames({required List<String> names}) {
-    Set<String> uniqueNormalizedSet = names.map((item) {
-      List<String> items = item.split(',');
-      items.sort();
-      return items.join(',');
-    }).toSet();
-
-    String finalResult = uniqueNormalizedSet.firstWhere(
-      (element) => element.contains(','),
-      orElse: () =>
-          uniqueNormalizedSet.isNotEmpty ? uniqueNormalizedSet.first : '',
-    );
-
-    return finalResult;
-  }
+  String getCollectiveTubeType() =>
+      _fromSummary((s) => s.tubeType, '');
 }

@@ -9,12 +9,12 @@ import '../styles/app_styles.dart';
 import 'enums/snackbar_type.dart';
 
 class AppConstants {
-  static const Environment environment = Environment.prod;
+  static const Environment environment = Environment.dev;
 
   static const String baseUrl = environment == Environment.prod
       ? 'http://srv740952.hstgr.cloud:8080'
       // ? 'http://192.168.1.4:8080'
-      : 'http://192.168.1.7:8080';
+      : 'http://192.168.1.36:8080';
 
   static const razorpayKey = environment == Environment.prod
       ? 'rzp_live_cM3qnAbKhHGQQ5'

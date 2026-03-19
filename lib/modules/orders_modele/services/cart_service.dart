@@ -139,5 +139,30 @@ class CartService {
       debugPrint('Failed to clear backend cart');
     }
   }
+
+  /// Calculate cart summary (prices, discounts, delivery, etc.) on the backend.
+  /// All business logic lives on the server; returns computed values only.
+  static Future<Map<String, dynamic>?> calculateCart({
+    required String userId,
+    required String cartData,
+    required double totalWalletAmount,
+    required int totalQrisCoins,
+  }) async {
+    final url = '${AppConstants.baseUrl}/cart/$userId/calculate';
+
+    try {
+      final response = await Wrapper.post(url, json.encode({
+        'cartData': cartData,
+        'totalWalletAmount': totalWalletAmount,
+        'totalQrisCoins': totalQrisCoins,
+      }));
+      final data = json.decode(response);
+      final body = data['body'] as Map<String, dynamic>?;
+      return body;
+    } catch (e) {
+      debugPrint('Error calculating cart: $e');
+      return null;
+    }
+  }
 }
 
