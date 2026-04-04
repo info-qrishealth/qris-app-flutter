@@ -14,7 +14,7 @@ class AppConstants {
   static const String baseUrl = environment == Environment.prod
       ? 'http://srv740952.hstgr.cloud:8080'
       // ? 'http://192.168.1.4:8080'
-      : 'http://192.168.1.36:8080';
+      : 'http://192.168.214.197:8080';
 
   static const razorpayKey = environment == Environment.prod
       ? 'rzp_live_cM3qnAbKhHGQQ5'

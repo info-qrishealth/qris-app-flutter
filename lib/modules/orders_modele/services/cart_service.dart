@@ -7,19 +7,29 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CartService {
   static const String _localCartKey = 'qris_cart_data';
 
-  /// Save cart to backend
-  static Future<void> saveCartToBackend({
+  /// Save cart to backend; returns response `body` (includes cart row id).
+  static Future<Map<String, dynamic>?> saveCartToBackendWithResponse({
     required String userId,
     required String cartData,
   }) async {
     final url = '${AppConstants.baseUrl}/cart/$userId';
 
     try {
-      await Wrapper.post(url, json.encode({'cartData': cartData}));
+      final response = await Wrapper.post(url, json.encode({'cartData': cartData}));
+      final decoded = json.decode(response) as Map<String, dynamic>?;
+      return decoded?['body'] as Map<String, dynamic>?;
     } catch (e) {
       debugPrint('Error saving cart to backend: $e');
       rethrow;
     }
+  }
+
+  /// Save cart to backend
+  static Future<void> saveCartToBackend({
+    required String userId,
+    required String cartData,
+  }) async {
+    await saveCartToBackendWithResponse(userId: userId, cartData: cartData);
   }
 
   /// Get cart from backend
@@ -28,7 +38,7 @@ class CartService {
 
     try {
       final response = await Wrapper.get(url);
-      final data = json.decode(response)['body'];
+      final data = json.decode(response)['body'] as Map<String, dynamic>?;
       
       if (data == null || data['cart_data'] == null) {
         return null;
@@ -36,7 +46,8 @@ class CartService {
 
       return {
         'cart_data': data['cart_data'],
-        'patients': data['patients'] ?? {}
+        'patients': data['patients'] ?? {},
+        if (data['id'] != null) 'id': data['id'],
       };
     } catch (e) {
       debugPrint('Error getting cart from backend: $e');
@@ -86,20 +97,22 @@ class CartService {
     }
   }
 
-  /// Save cart to both backend and local storage
-  static Future<void> saveCart({
+  /// Save cart to both backend and local storage. Returns backend cart id when sync succeeds.
+  static Future<int?> saveCart({
     required String userId,
     required String cartData,
   }) async {
-    // Save locally first (instant)
     await saveCartLocally(cartData: cartData);
 
-    // Then sync to backend (async)
     try {
-      await saveCartToBackend(userId: userId, cartData: cartData);
+      final body = await saveCartToBackendWithResponse(userId: userId, cartData: cartData);
+      if (body != null && body['id'] != null) {
+        return (body['id'] as num).toInt();
+      }
     } catch (e) {
       debugPrint('Backend sync failed, cart saved locally only');
     }
+    return null;
   }
 
   /// Load cart from backend, fallback to local
@@ -140,21 +153,17 @@ class CartService {
     }
   }
 
-  /// Calculate cart summary (prices, discounts, delivery, etc.) on the backend.
-  /// All business logic lives on the server; returns computed values only.
+  /// Calculate cart summary (prices, discounts, delivery, wallet/coins) on the backend.
+  /// Wallet and Qris coin balances are read from the server — not send from the app.
   static Future<Map<String, dynamic>?> calculateCart({
     required String userId,
     required String cartData,
-    required double totalWalletAmount,
-    required int totalQrisCoins,
   }) async {
     final url = '${AppConstants.baseUrl}/cart/$userId/calculate';
 
     try {
       final response = await Wrapper.post(url, json.encode({
         'cartData': cartData,
-        'totalWalletAmount': totalWalletAmount,
-        'totalQrisCoins': totalQrisCoins,
       }));
       final data = json.decode(response);
       final body = data['body'] as Map<String, dynamic>?;
@@ -162,6 +171,50 @@ class CartService {
     } catch (e) {
       debugPrint('Error calculating cart: $e');
       return null;
+    }
+  }
+
+  /// Server validates coupon and merges into saved cart
+  static Future<Map<String, dynamic>?> applyCoupon({
+    required String userId,
+    required int cartId,
+    required String couponCode,
+    String platform = 'app',
+  }) async {
+    final url = '${AppConstants.baseUrl}/cart/$userId/coupon/apply';
+    try {
+      final response = await Wrapper.post(
+        url,
+        json.encode({
+          'cartId': cartId,
+          'couponCode': couponCode.trim(),
+          'platform': platform,
+        }),
+      );
+      final decoded = json.decode(response) as Map<String, dynamic>?;
+      return decoded?['body'] as Map<String, dynamic>?;
+    } catch (e) {
+      debugPrint('Error applying coupon: $e');
+      rethrow;
+    }
+  }
+
+  /// Clears coupon on saved cart.
+  static Future<Map<String, dynamic>?> removeCoupon({
+    required String userId,
+    required int cartId,
+  }) async {
+    final url = '${AppConstants.baseUrl}/cart/$userId/coupon/remove';
+    try {
+      final response = await Wrapper.post(
+        url,
+        json.encode({'cartId': cartId}),
+      );
+      final decoded = json.decode(response) as Map<String, dynamic>?;
+      return decoded?['body'] as Map<String, dynamic>?;
+    } catch (e) {
+      debugPrint('Error removing coupon: $e');
+      rethrow;
     }
   }
 }

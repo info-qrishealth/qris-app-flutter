@@ -12,6 +12,9 @@ class CartSummary {
   final String sampleType;
   final String tubeType;
 
+  final double availableWalletBalance;
+  final double availableQrisCoins;
+
   const CartSummary({
     required this.cartTestPrices,
     required this.baseCartValue,
@@ -23,6 +26,8 @@ class CartSummary {
     required this.redeemedQrisCoins,
     required this.sampleType,
     required this.tubeType,
+    this.availableWalletBalance = 0,
+    this.availableQrisCoins = 0,
   });
 
   factory CartSummary.fromJson(Map<String, dynamic> json) {
@@ -37,6 +42,10 @@ class CartSummary {
       redeemedQrisCoins: (json['redeemedQrisCoins'] as num?)?.toInt() ?? 0,
       sampleType: json['sampleType'] as String? ?? '',
       tubeType: json['tubeType'] as String? ?? '',
+      availableWalletBalance:
+          (json['availableWalletBalance'] as num?)?.toDouble() ?? 0,
+      availableQrisCoins:
+          (json['availableQrisCoins'] as num?)?.toDouble() ?? 0,
     );
   }
 }

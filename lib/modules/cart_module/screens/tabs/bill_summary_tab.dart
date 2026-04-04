@@ -89,6 +89,12 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
             final pincode = pincodes.firstWhereOrNull(
                 (element) => element.pincode.toString() == address?.pincode);
 
+            final walletBalanceForUi = state.cartSummary?.availableWalletBalance ??
+                totalWalletAmount.toDouble();
+            final qrisCoinsBalanceForUi = state.cartSummary != null
+                ? state.cartSummary!.availableQrisCoins.toInt()
+                : totalQrisCoins;
+
             syncPincodeIfNeeded(
               cartCubit: cartCubit,
               state: state,
@@ -99,8 +105,6 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
               state: state,
               cartCubit: cartCubit,
               userId: ApiParams.getInstance()?.userId?.toString(),
-              totalWalletAmount: totalWalletAmount.toDouble(),
-              totalQrisCoins: totalQrisCoins,
               pincode: pincode,
             );
 
@@ -217,7 +221,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                   }),
                                 ])),
                         SizedBox(height: 12),
-                        if (baseCartValue > totalWalletAmount)
+                        if (baseCartValue > walletBalanceForUi)
                           GestureDetector(
                               onTap: () {
                                 if (state.cart.redeemCoins) {
@@ -470,11 +474,11 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                           .state
                                           .cart
                                           .walletRedeemedAmount !=
-                                      totalWalletAmount)
+                                      walletBalanceForUi)
                                     Padding(
                                         padding: const EdgeInsets.only(top: 2),
                                         child: Text(
-                                            '(Balance after this transaction ₹${totalWalletAmount - BlocProvider.of<CartCubit>(context).state.cart.walletRedeemedAmount})',
+                                            '(Balance after this transaction ₹${walletBalanceForUi - BlocProvider.of<CartCubit>(context).state.cart.walletRedeemedAmount})',
                                             style: _textTheme.labelSmall!
                                                 .copyWith(
                                                     fontWeight: FontWeight.w300,
@@ -495,7 +499,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                   if (cartTestPrices >=
                                           double.parse(_config.qcMinCartAmt) &&
                                       _config.qcEnable == '1' &&
-                                      baseCartValue > totalWalletAmount)
+                                      baseCartValue > walletBalanceForUi)
                                     Padding(
                                       padding: const EdgeInsets.only(top: 18),
                                       child: InkWell(
@@ -546,7 +550,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                                                             .w700)),
                                                             TextSpan(
                                                                 text:
-                                                                    '( $totalQrisCoins coins )',
+                                                                    '( $qrisCoinsBalanceForUi coins )',
                                                                 style: TextStyle(
                                                                     color: AppColors
                                                                         .goldenColor,

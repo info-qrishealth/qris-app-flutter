@@ -23,6 +23,8 @@ class CartCubit extends Cubit<CartState> {
 
   String? _currentUserId;
 
+  int? _serverCartId;
+
   double get cartTestValue => getCartTestPrices();
 
   /// Load cart from backend/local storage
@@ -33,6 +35,11 @@ class CartCubit extends Cubit<CartState> {
       final cartResponse = await CartService.loadCart(userId: userId);
       
       if (cartResponse != null && cartResponse['cart_data'] != null) {
+        final rawId = cartResponse['id'];
+        if (rawId != null) {
+          _serverCartId = (rawId as num).toInt();
+        }
+
         final cartDataString = cartResponse['cart_data'] as String;
         
         if (cartDataString.isNotEmpty) {
@@ -74,13 +81,57 @@ class CartCubit extends Cubit<CartState> {
       final cartJson = state.cart.toJson();
       final cartDataString = json.encode(cartJson);
       
-      await CartService.saveCart(
+      final id = await CartService.saveCart(
         userId: _currentUserId!,
         cartData: cartDataString,
       );
+      if (id != null) _serverCartId = id;
     } catch (e) {
       debugPrint('Error saving cart: $e');
     }
+  }
+
+  Future<void> _ensureServerCartId() async {
+    if (_currentUserId == null) return;
+    if (_serverCartId != null) return;
+
+    final cartJson = json.encode(state.cart.toJson());
+    final id = await CartService.saveCart(
+      userId: _currentUserId!,
+      cartData: cartJson,
+    );
+    if (id != null) _serverCartId = id;
+    if (_serverCartId == null) {
+      final data = await CartService.getCartFromBackend(userId: _currentUserId!);
+      final rawId = data?['id'];
+      if (rawId != null) _serverCartId = (rawId as num).toInt();
+    }
+  }
+
+  Future<void> applyCouponByCode({
+    required String couponCode,
+    String? userId,
+    BuildContext? context,
+  }) async {
+    final uid = userId ?? _currentUserId;
+    if (uid == null) {
+      throw Exception('Not logged in');
+    }
+    _currentUserId = uid;
+
+    await _ensureServerCartId();
+    final cid = _serverCartId;
+    if (cid == null) {
+      throw Exception('Could not sync cart. Please try again.');
+    }
+
+    await CartService.applyCoupon(
+      userId: uid,
+      cartId: cid,
+      couponCode: couponCode,
+    );
+    await loadCart(userId: uid, context: context);
+    await loadCartSummary(userId: uid);
   }
 
   void _updateCart({required Cart cart}) {
@@ -143,7 +194,7 @@ class CartCubit extends Cubit<CartState> {
     if (cartTestIndex != -1) {
       final cartTest = state.cart.cartTests[cartTestIndex];
       final updatedCartTest = cartTest.copyWith
-          .call(patientIds: [...cartTest.patientIds]..removeAt(cartTestIndex));
+          .call(patientIds: [...cartTest.patientIds]..remove(patientId));
       final tests = [...state.cart.cartTests]..removeAt(cartTestIndex);
       removeAppliedCouponAndCoins();
 
@@ -170,6 +221,7 @@ class CartCubit extends Cubit<CartState> {
     if (_currentUserId != null) {
       await CartService.clearCart(userId: _currentUserId!);
     }
+    _serverCartId = null;
     emit(CartInitial(cart: Cart(cartTests: []), cartSummary: null));
   }
 
@@ -198,12 +250,8 @@ class CartCubit extends Cubit<CartState> {
   }
 
   /// Fetches cart summary from backend (all calculations done server-side).
-  /// Call when displaying bill summary; pass wallet and coins from context.
-  /// Updates cart with walletRedeemedAmount, appliedCouponAmount, redeemedQrisCoins from response.
   Future<void> loadCartSummary({
     required String userId,
-    required double totalWalletAmount,
-    required int totalQrisCoins,
   }) async {
     if (state.cart.cartTests.isEmpty) return;
     try {
@@ -211,8 +259,6 @@ class CartCubit extends Cubit<CartState> {
       final result = await CartService.calculateCart(
         userId: userId,
         cartData: cartDataString,
-        totalWalletAmount: totalWalletAmount,
-        totalQrisCoins: totalQrisCoins,
       );
       if (result == null) return;
       final summary = CartSummary.fromJson(result);
