@@ -446,7 +446,8 @@ class _AiHealthReportScreenState extends State<AiHealthReportScreen> with Single
   }
 
   Widget _buildSuccessView() {
-    if (_analysisData == null) {
+    final analysis = _analysisData;
+    if (analysis == null) {
       return const SizedBox.shrink();
     }
 
@@ -455,8 +456,10 @@ class _AiHealthReportScreenState extends State<AiHealthReportScreen> with Single
     final testTitle = widget.testName ?? '';
     final bookingDate = widget.bookingDate;
 
-    final groupedParams = _groupByCategory(_analysisData!.concerningParameters);
+    final groupedParams = _groupByCategory(analysis.concerningParameters);
     final categoryEntries = groupedParams.entries.toList();
+    final shouldShowConcerningParameters =
+        (analysis.hasConcerningParameters ?? false) && categoryEntries.isNotEmpty;
     
     // Sort categories so "Others" comes last
     categoryEntries.sort((a, b) {
@@ -500,10 +503,10 @@ class _AiHealthReportScreenState extends State<AiHealthReportScreen> with Single
                         offset: const Offset(0, 2))
                   ]),
               child: Text(
-                  _analysisData!.executiveSummary,
+                  analysis.executiveSummary,
                   style: _textTheme.bodyMedium!
                       .copyWith(color: AppColors.black, fontWeight: FontWeight.w400, height: 1.35))),
-          if (categoryEntries.isNotEmpty) ...[
+          if (shouldShowConcerningParameters) ...[
           const SizedBox(height: 20),
           Text('Concerning Parameters',
               style: _textTheme.titleLarge!
@@ -518,7 +521,7 @@ class _AiHealthReportScreenState extends State<AiHealthReportScreen> with Single
               ),
             )),
           ],
-          if (_analysisData!.recommendations.isNotEmpty) ...[
+          if (analysis.recommendations.isNotEmpty) ...[
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -552,10 +555,10 @@ class _AiHealthReportScreenState extends State<AiHealthReportScreen> with Single
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
-                itemCount: _analysisData!.recommendations.length,
+                itemCount: analysis.recommendations.length,
                 separatorBuilder: (context, index) => const SizedBox(width: 12),
                 itemBuilder: (context, index) {
-                  final recommendation = _analysisData!.recommendations[index];
+                  final recommendation = analysis.recommendations[index];
                   return _buildPackageCard(recommendation: recommendation);
                 },
               ),

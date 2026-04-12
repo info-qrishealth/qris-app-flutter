@@ -1,4 +1,3 @@
-/// Response from backend POST /cart/:userId/calculate.
 /// All cart calculations are done on the server; this holds the result.
 class CartSummary {
   final double cartTestPrices;

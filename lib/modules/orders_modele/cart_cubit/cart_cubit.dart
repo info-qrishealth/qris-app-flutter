@@ -1,16 +1,14 @@
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
-import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
+import 'package:qris_health/modules/orders_modele/services/cart_remote_mapper.dart';
 import 'package:qris_health/modules/orders_modele/services/cart_service.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
-import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
 
 import '../../address_module/models/address/address.dart';
 import '../models/cart/cart.dart';
@@ -23,94 +21,179 @@ class CartCubit extends Cubit<CartState> {
 
   String? _currentUserId;
 
-  int? _serverCartId;
-
   double get cartTestValue => getCartTestPrices();
 
-  /// Load cart from backend/local storage
+  String _ymd(DateTime d) =>
+      '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+  Cart _mergeCartPricingFromSummary(Cart cart, CartSummary? summary) {
+    if (summary == null) return cart;
+    return cart.copyWith(
+      appliedCouponAmount: summary.appliedCouponAmount ?? cart.appliedCouponAmount,
+      redeemedQrisCoins: summary.redeemedQrisCoins,
+    );
+  }
+
+  Future<void> _emitFromRemoteBody(Map<String, dynamic>? body, [BuildContext? context]) async {
+    if (body == null) {
+      emit(CartInitial(cart: const Cart(cartTests: []), cartSummary: null));
+      return;
+    }
+    final cart = CartRemoteMapper.cartFromServerBody(body);
+    final summary = CartRemoteMapper.summaryFromServerBody(body);
+    final merged = _mergeCartPricingFromSummary(cart, summary);
+    emit(CartUpdated(cart: merged, cartSummary: summary));
+
+    try {
+      await CartService.saveCartLocally(cartData: json.encode(merged.toJson()));
+    } catch (_) {}
+
+    if (context != null && context.mounted) {
+      final patients = CartRemoteMapper.patientsFromServerBody(body);
+      if (patients.isNotEmpty) {
+        final patientsCubit = BlocProvider.of<PatientsCubit>(context);
+        for (final patient in patients) {
+          final existing = patientsCubit.getPatientByPatientId(patientId: patient.id);
+          if (existing == null) {
+            patientsCubit.addNewPatient(patient);
+          }
+        }
+      }
+    }
+  }
+
+  Future<void> refreshCartFromServer({BuildContext? context}) async {
+    if (_currentUserId == null) return;
+    final ctx = context;
+    try {
+      final body = await CartService.fetchFullCart();
+      final safeContext = ctx != null && ctx.mounted ? ctx : null;
+      await _emitFromRemoteBody(body, safeContext);
+    } catch (e) {
+      debugPrint('refreshCartFromServer: $e');
+    }
+  }
+
   Future<void> loadCart({required String userId, BuildContext? context}) async {
     _currentUserId = userId;
-    
-    try {
-      final cartResponse = await CartService.loadCart(userId: userId);
-      
-      if (cartResponse != null && cartResponse['cart_data'] != null) {
-        final rawId = cartResponse['id'];
-        if (rawId != null) {
-          _serverCartId = (rawId as num).toInt();
-        }
+    await refreshCartFromServer(context: context);
+  }
 
-        final cartDataString = cartResponse['cart_data'] as String;
-        
-        if (cartDataString.isNotEmpty) {
-          final cartJson = json.decode(cartDataString);
-          final cart = Cart.fromJson(cartJson);
-          
-          // Load patients into PatientsCubit if context is provided
-          if (context != null && cartResponse['patients'] != null) {
-            final patientsMap = cartResponse['patients'] as Map<String, dynamic>;
-            final patients = patientsMap.values
-                .map((patientData) => Patient.fromJson(patientData as Map<String, dynamic>))
-                .toList();
-            
-            if (patients.isNotEmpty && context.mounted) {
-              final patientsCubit = BlocProvider.of<PatientsCubit>(context);
-              for (var patient in patients) {
-                // Check if patient already exists, if not add it
-                final existingPatient = patientsCubit.getPatientByPatientId(patientId: patient.id);
-                if (existingPatient == null) {
-                  patientsCubit.addNewPatient(patient);
-                }
-              }
-            }
-          }
-          
-          emit(CartUpdated(cart: cart));
+  Future<void> addToCart(TestPackageModel testPackageModel) async {
+    if (_currentUserId == null) return;
+    if (state.cart.cartTests.any((e) => e.test.id == testPackageModel.id)) {
+      return;
+    }
+    await CartService.addCartItem(
+      testId: testPackageModel.id,
+      type: testPackageModel.type?.name,
+    );
+    await refreshCartFromServer();
+  }
+
+  bool isPatientAlreadyAddedToThisTest({required int testId, required int patientId}) {
+    final cartTestIndex = state.cart.cartTests.indexWhere((e) => e.test.id == testId);
+    if (cartTestIndex == -1) return false;
+    return state.cart.cartTests[cartTestIndex].patientIds.contains(patientId);
+  }
+
+  Future<void> addPatientToTest({required int patientId, required int testId}) async {
+    if (_currentUserId == null) return;
+    await CartService.addPatientToCartItem(testId: testId, patientId: patientId);
+    await refreshCartFromServer();
+  }
+
+  Future<void> removePatientFromTest({required int patientId, required int testId}) async {
+    if (_currentUserId == null) return;
+    await CartService.removePatientFromCartItem(testId: testId, patientId: patientId);
+    await refreshCartFromServer();
+  }
+
+  Future<void> changeAddress(Address? address) async {
+    if (_currentUserId == null) return;
+    final id = address?.id;
+    if (id != null) {
+      await CartService.attachAddress(addressId: id);
+    } else {
+      await CartService.removeAddress();
+    }
+    await refreshCartFromServer();
+  }
+
+  Future<void> removeTestFromCart(int testId) async {
+    if (_currentUserId == null) return;
+    await CartService.removeCartItem(testId: testId);
+    await refreshCartFromServer();
+  }
+
+  Future<void> clearCart() async {
+    try {
+      final body = await CartService.fetchFullCart();
+      final items = body?['items'] as List<dynamic>? ?? [];
+      for (final raw in items) {
+        if (raw is Map<String, dynamic> && raw['testId'] != null) {
+          final tid = (raw['testId'] as num).toInt();
+          await CartService.removeCartItem(testId: tid);
         }
       }
     } catch (e) {
-      debugPrint('Error loading cart: $e');
+      debugPrint('clearCart server cleanup: $e');
     }
+    await CartService.clearCartForUser();
+    emit(CartInitial(cart: const Cart(cartTests: []), cartSummary: null));
   }
 
-  /// Save cart to backend and local storage
-  Future<void> _saveCart() async {
-    if (_currentUserId == null) return;
-    
-    try {
-      final cartJson = state.cart.toJson();
-      final cartDataString = json.encode(cartJson);
-      
-      final id = await CartService.saveCart(
-        userId: _currentUserId!,
-        cartData: cartDataString,
-      );
-      if (id != null) _serverCartId = id;
-    } catch (e) {
-      debugPrint('Error saving cart: $e');
-    }
+  void setUserId(String userId) {
+    _currentUserId = userId;
   }
 
-  Future<void> _ensureServerCartId() async {
-    if (_currentUserId == null) return;
-    if (_serverCartId != null) return;
+  Future<void> removeInvalidTests() async {
+    final tests = [...state.cart.cartTests];
+    final invalid = tests.where((t) => t.patientIds.isEmpty).map((t) => t.test.id).toList();
+    for (final testId in invalid) {
+      await CartService.removeCartItem(testId: testId);
+    }
+    await refreshCartFromServer();
+  }
 
-    final cartJson = json.encode(state.cart.toJson());
-    final id = await CartService.saveCart(
-      userId: _currentUserId!,
-      cartData: cartJson,
+  Future<void> updateTimeSlot(TimeSlot? timeSlot) async {
+    if (_currentUserId == null) return;
+    if (timeSlot == null) {
+      emit(CartUpdated(
+        cart: state.cart.copyWith(timeSlot: null),
+        cartSummary: state.cartSummary,
+      ));
+      return;
+    }
+    final date = state.cart.collectionDate ?? DateTime.now();
+    await CartService.updateSlot(
+      slotId: timeSlot.id,
+      collectionDate: _ymd(date),
     );
-    if (id != null) _serverCartId = id;
-    if (_serverCartId == null) {
-      final data = await CartService.getCartFromBackend(userId: _currentUserId!);
-      final rawId = data?['id'];
-      if (rawId != null) _serverCartId = (rawId as num).toInt();
+    await refreshCartFromServer();
+  }
+
+  Future<void> updateCollectionDate(DateTime collectionDate) async {
+    if (_currentUserId == null) return;
+    final slot = state.cart.timeSlot;
+    if (slot != null) {
+      await CartService.updateSlot(
+        slotId: slot.id,
+        collectionDate: _ymd(collectionDate),
+      );
+      await refreshCartFromServer();
+    } else {
+      emit(CartUpdated(
+        cart: state.cart.copyWith(collectionDate: collectionDate),
+        cartSummary: state.cartSummary,
+      ));
     }
   }
 
   Future<void> applyCouponByCode({
     required String couponCode,
     String? userId,
+    String platform = 'app',
     BuildContext? context,
   }) async {
     final uid = userId ?? _currentUserId;
@@ -118,224 +201,76 @@ class CartCubit extends Cubit<CartState> {
       throw Exception('Not logged in');
     }
     _currentUserId = uid;
+    final ctx = context;
+    await CartService.applyCoupon(couponCode: couponCode, platform: platform);
+    final safeContext = ctx != null && ctx.mounted ? ctx : null;
+    await refreshCartFromServer(context: safeContext);
+  }
 
-    await _ensureServerCartId();
-    final cid = _serverCartId;
-    if (cid == null) {
-      throw Exception('Could not sync cart. Please try again.');
+  Future<void> updateHardCopy(bool hardCopy) async {
+    if (_currentUserId == null) return;
+    if (hardCopy) {
+      await CartService.applyHardCopy();
+    } else {
+      await CartService.removeHardCopy();
     }
-
-    await CartService.applyCoupon(
-      userId: uid,
-      cartId: cid,
-      couponCode: couponCode,
-    );
-    await loadCart(userId: uid, context: context);
-    await loadCartSummary(userId: uid);
+    await refreshCartFromServer();
   }
 
-  void _updateCart({required Cart cart}) {
-    emit(CartUpdated(cart: cart, cartSummary: null));
-    _saveCart();
-  }
-
-  void addToCart(TestPackageModel testPackageModel) {
-    if (state.cart.cartTests
-        .any((element) => element.test.id == testPackageModel.id)) {
-      return;
+  Future<void> removeInvalidTestsFromCart() async {
+    final ids = state.cart.cartTests.where((t) => t.patientIds.isEmpty).map((t) => t.test.id).toList();
+    for (final testId in ids) {
+      await CartService.removeCartItem(testId: testId);
     }
-
-    removeAppliedCouponAndCoins();
-    _updateCart(
-        cart: state.cart.copyWith.call(cartTests: [
-      ...state.cart.cartTests,
-      CartTest(test: testPackageModel, patientIds: [])
-    ]));
+    await refreshCartFromServer();
   }
 
-  void addPatientToTest({required int patientId, required int testId}) {
-    final cartTestIndex =
-        state.cart.cartTests.indexWhere((element) => element.test.id == testId);
+  void updateCollectionPincode(Pincode? pincode) {
+    emit(CartUpdated(
+      cart: state.cart.copyWith(pincode: pincode),
+      cartSummary: state.cartSummary,
+    ));
+  }
 
-    if (cartTestIndex != -1) {
-      final cartTest = state.cart.cartTests[cartTestIndex];
-      final updatedCartTest = cartTest.copyWith
-          .call(patientIds: [...cartTest.patientIds, patientId]);
-      final tests = [...state.cart.cartTests]..removeAt(cartTestIndex);
-      removeAppliedCouponAndCoins();
-
-      _updateCart(
-          cart: state.cart.copyWith.call(
-              cartTests: [...tests]..insert(cartTestIndex, updatedCartTest)));
+  Future<void> toggleRedeemCoins() async {
+    if (_currentUserId == null) return;
+    if (state.cart.redeemCoins) {
+      await CartService.removeRedeemCoins();
+    } else {
+      await CartService.applyRedeemCoins();
     }
+    await refreshCartFromServer();
   }
 
-  bool isPatientAlreadyAddedToThisTest(
-      {required int testId, required int patientId}) {
-    final cartTestIndex =
-        state.cart.cartTests.indexWhere((element) => element.test.id == testId);
-
-    if (cartTestIndex != -1) {
-      final cartTest = state.cart.cartTests[cartTestIndex];
-      return cartTest.patientIds.any((element) => element == patientId);
-    }
-
-    return false;
+  Future<void> removeAppliedCouponAndCoins() async {
+    if (_currentUserId == null) return;
+    await CartService.removeCoupon();
+    await CartService.removeRedeemCoins();
+    await refreshCartFromServer();
   }
 
-  void changeAddress(Address? address) {
-    _updateCart(cart: state.cart.copyWith.call(selectedAddress: address));
-  }
-
-  void removePatientFromTest({required int patientId, required int testId}) {
-    final cartTestIndex =
-        state.cart.cartTests.indexWhere((element) => element.test.id == testId);
-
-    if (cartTestIndex != -1) {
-      final cartTest = state.cart.cartTests[cartTestIndex];
-      final updatedCartTest = cartTest.copyWith
-          .call(patientIds: [...cartTest.patientIds]..remove(patientId));
-      final tests = [...state.cart.cartTests]..removeAt(cartTestIndex);
-      removeAppliedCouponAndCoins();
-
-      _updateCart(
-          cart: state.cart.copyWith.call(
-              cartTests: [...tests]..insert(cartTestIndex, updatedCartTest)));
-    }
-  }
-
-  void removeTestFromCart(int testId) {
-    final index =
-        state.cart.cartTests.indexWhere((element) => element.test.id == testId);
-
-    if (index != -1) {
-      removeAppliedCouponAndCoins();
-      _updateCart(
-          cart: state.cart.copyWith
-              .call(cartTests: [...state.cart.cartTests]..removeAt(index)));
-    }
-  }
-
-  /// Clear cart from memory, backend and local storage
-  Future<void> clearCart() async {
-    if (_currentUserId != null) {
-      await CartService.clearCart(userId: _currentUserId!);
-    }
-    _serverCartId = null;
-    emit(CartInitial(cart: Cart(cartTests: []), cartSummary: null));
-  }
-
-  /// Set user ID for cart persistence
-  void setUserId(String userId) {
+  Future<void> loadCartSummary({required String userId, BuildContext? context}) async {
     _currentUserId = userId;
+    await refreshCartFromServer(context: context);
   }
 
-  void removeInvalidTests() {
-    final tests = [...state.cart.cartTests];
-    final validTests =
-        tests.where((element) => element.patientIds.isNotEmpty).toList();
-    _updateCart(cart: state.cart.copyWith.call(cartTests: validTests));
-  }
-
-  void updateTimeSlot(TimeSlot? timeSlot) {
-    _updateCart(cart: state.cart.copyWith.call(timeSlot: timeSlot));
-  }
-
-  void updateCollectionDate(DateTime collectionDate) {
-    _updateCart(cart: state.cart.copyWith.call(collectionDate: collectionDate));
-  }
-
-  void applyCoupon({required Coupon coupon}) {
-    _updateCart(cart: state.cart.copyWith.call(appliedCoupon: coupon));
-  }
-
-  /// Fetches cart summary from backend (all calculations done server-side).
-  Future<void> loadCartSummary({
-    required String userId,
-  }) async {
-    if (state.cart.cartTests.isEmpty) return;
-    try {
-      final cartDataString = json.encode(state.cart.toJson());
-      final result = await CartService.calculateCart(
-        userId: userId,
-        cartData: cartDataString,
-      );
-      if (result == null) return;
-      final summary = CartSummary.fromJson(result);
-      final updatedCart = state.cart.copyWith.call(
-        walletRedeemedAmount: summary.walletRedeemedAmount,
-        appliedCouponAmount: summary.appliedCouponAmount,
-        redeemedQrisCoins: summary.redeemedQrisCoins,
-      );
-      emit(CartUpdated(cart: updatedCart, cartSummary: summary));
-    } catch (e) {
-      debugPrint('Error loading cart summary: $e');
-    }
-  }
-
-  /// Reads a value from cart summary or returns default (no logic/calc change).
   T _fromSummary<T>(T Function(CartSummary s) getter, T defaultValue) {
     final s = state.cartSummary;
     return s != null ? getter(s) : defaultValue;
   }
 
-  /// Cart test total (package prices only). From backend summary when available.
-  double getCartTestPrices() =>
-      _fromSummary((s) => s.cartTestPrices, 0.0);
+  double getCartTestPrices() => _fromSummary((s) => s.cartTestPrices, 0.0);
 
-  /// Final payable amount. From backend summary when available.
   double getCartFinalValue({BuildContext? context}) =>
       _fromSummary((s) => s.cartFinalValue, 0.0);
 
-  /// Base cart value (packages + delivery + hard copy). From backend summary when available.
-  double getBaseCartValue() =>
-      _fromSummary((s) => s.baseCartValue, 0.0);
+  double getBaseCartValue() => _fromSummary((s) => s.baseCartValue, 0.0);
 
-  void updateHardCopy(bool hardCopy) {
-    removeAppliedCouponAndCoins();
-    _updateCart(cart: state.cart.copyWith.call(shouldGetHardCopy: hardCopy));
-  }
+  int getDeliveryCharge() => _fromSummary((s) => s.deliveryCharge, 0);
 
-  void removeInvalidTestsFromCart() {
-    final tests = [...state.cart.cartTests];
-    tests.removeWhere((element) => element.patientIds.isEmpty);
+  int getHardCopyCharges() => _fromSummary((s) => s.hardCopyCharges, 0);
 
-    _updateCart(cart: state.cart.copyWith.call(cartTests: tests));
-  }
+  String getCollectiveSampleType() => _fromSummary((s) => s.sampleType, '');
 
-  void updateCollectionPincode(Pincode? pincode) {
-    _updateCart(cart: state.cart.copyWith.call(pincode: pincode));
-  }
-
-  void toggleRedeemCoins() {
-    final shouldRedeemCoins = !state.cart.redeemCoins;
-    _updateCart(
-        cart: state.cart.copyWith.call(
-            redeemCoins: shouldRedeemCoins,
-            appliedCouponAmount:
-                shouldRedeemCoins ? null : state.cart.appliedCouponAmount,
-            appliedCoupon:
-                shouldRedeemCoins ? null : state.cart.appliedCoupon));
-  }
-
-  void removeAppliedCouponAndCoins() {
-    _updateCart(
-        cart: state.cart.copyWith.call(
-            appliedCoupon: null,
-            appliedCouponAmount: null,
-            redeemCoins: false,
-            redeemedQrisCoins: 0));
-  }
-
-  int getDeliveryCharge() =>
-      _fromSummary((s) => s.deliveryCharge, 0);
-
-  int getHardCopyCharges() =>
-      _fromSummary((s) => s.hardCopyCharges, 0);
-
-  String getCollectiveSampleType() =>
-      _fromSummary((s) => s.sampleType, '');
-
-  String getCollectiveTubeType() =>
-      _fromSummary((s) => s.tubeType, '');
+  String getCollectiveTubeType() => _fromSummary((s) => s.tubeType, '');
 }

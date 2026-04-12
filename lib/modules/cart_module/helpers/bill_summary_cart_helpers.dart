@@ -19,23 +19,19 @@ void syncPincodeIfNeeded({
   }
 }
 
-/// Schedules a post-frame callback to load cart summary from backend when
-/// summary is missing and cart has items and pincode.
 void scheduleLoadCartSummaryIfNeeded({
   required BuildContext context,
   required CartState state,
   required CartCubit cartCubit,
   required String? userId,
-  required Pincode? pincode,
+  Pincode? pincode,
 }) {
   if (state.cartSummary != null) return;
-  if (state.cart.cartTests.isEmpty || pincode == null || userId == null) return;
+  if (state.cart.cartTests.isEmpty || userId == null) return;
 
   WidgetsBinding.instance.addPostFrameCallback((_) {
     if (context.mounted) {
-      cartCubit.loadCartSummary(
-        userId: userId,
-      );
+      cartCubit.loadCartSummary(userId: userId, context: context);
     }
   });
 }
