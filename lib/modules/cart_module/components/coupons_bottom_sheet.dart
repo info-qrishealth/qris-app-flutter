@@ -181,7 +181,7 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
       );
       if (!mounted) return;
       Navigator.of(context).pop();
-      final applied = cartCubit.state.cart.appliedCoupon;
+      final applied = cartCubit.state.cart?.appliedCoupon;
       if (applied != null && mounted) {
         await showDialog<void>(
             context: context,

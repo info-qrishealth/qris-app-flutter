@@ -1,50 +1,27 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:qris_health/constants/app_constants.dart';
+import 'package:qris_health/modules/orders_modele/models/cart/cart.dart';
 import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CartService {
   CartService._();
-  static const String _localCartKey = 'qris_cart_data';
   static String get _root => '${AppConstants.baseUrl}/cart';
 
-  static Map<String, dynamic>? _decodeBody(String response) {
-    final decoded = json.decode(response) as Map<String, dynamic>?;
-    final body = decoded?['body'];
-    if (body is Map<String, dynamic>) return body;
-    return null;
-  }
-
   /// Full cart payload (items, address, slot, coupon, pricing fields).
-  static Future<Map<String, dynamic>?> fetchFullCart() async {
+  static Future<Cart> fetchFullCart() async {
     try {
       final response = await Wrapper.get(_root);
-      return _decodeBody(response);
+      return Cart.fromJson(json.decode(response)['body']);
     } catch (e) {
       debugPrint('CartService.fetchFullCart: $e');
       rethrow;
     }
   }
 
-  static Future<Map<String, dynamic>?> _post(String path, Map<String, dynamic> body) async {
-    final response = await Wrapper.post('$_root$path', json.encode(body));
-    return _decodeBody(response);
-  }
-
-  static Future<Map<String, dynamic>?> _put(String path, Map<String, dynamic> body) async {
-    final response = await Wrapper.put('$_root$path', json.encode(body));
-    return _decodeBody(response);
-  }
-
-  static Future<Map<String, dynamic>?> _delete(String path) async {
-    final response = await Wrapper.delete('$_root$path');
-    return _decodeBody(response);
-  }
-
   // Coupon
 
-  static Future<Map<String, dynamic>?> applyCoupon({
+  static Future<Cart?> applyCoupon({
     required String couponCode,
     String platform = 'app',
   }) =>
@@ -53,30 +30,30 @@ class CartService {
         'platform': platform,
       });
 
-  static Future<Map<String, dynamic>?> removeCoupon() => _post('/coupon/remove', {});
+  static Future<Cart?> removeCoupon() => _post('/coupon/remove', {});
 
-  // Address 
+  // Address
 
-  static Future<Map<String, dynamic>?> attachAddress({required int addressId}) =>
+  static Future<Cart?> attachAddress({required int addressId}) =>
       _put('/address', {'addressId': addressId});
 
-  static Future<Map<String, dynamic>?> removeAddress() => _delete('/address');
+  static Future<Cart?> removeAddress() => _delete('/address');
 
-  // Hard copy 
+  // Hard copy
 
-  static Future<Map<String, dynamic>?> applyHardCopy() => _put('/hard-copy', {});
+  static Future<Cart?> applyHardCopy() => _put('/hard-copy', {});
 
-  static Future<Map<String, dynamic>?> removeHardCopy() => _delete('/hard-copy');
+  static Future<Cart?> removeHardCopy() => _delete('/hard-copy');
 
-  // Redeem coins  
+  // Redeem coins
 
-  static Future<Map<String, dynamic>?> applyRedeemCoins() => _put('/redeem-coins', {});
+  static Future<Cart?> applyRedeemCoins() => _put('/redeem-coins', {});
 
-  static Future<Map<String, dynamic>?> removeRedeemCoins() => _delete('/redeem-coins');
+  static Future<Cart?> removeRedeemCoins() => _delete('/redeem-coins');
 
   // Slot
 
-  static Future<Map<String, dynamic>?> updateSlot({
+  static Future<Cart?> updateSlot({
     required int slotId,
     String? collectionDate,
   }) =>
@@ -85,9 +62,9 @@ class CartService {
         if (collectionDate != null) 'collectionDate': collectionDate,
       });
 
-  // Items / patients 
+  // Items / patients
 
-  static Future<Map<String, dynamic>?> addCartItem({
+  static Future<Cart?> addCartItem({
     required int testId,
     String? type,
   }) =>
@@ -96,52 +73,39 @@ class CartService {
         if (type != null && type.isNotEmpty) 'type': type,
       });
 
-  static Future<Map<String, dynamic>?> removeCartItem({required int testId}) =>
+  static Future<Cart?> removeCartItem({required int testId}) =>
       _delete('/items/$testId');
 
-  static Future<Map<String, dynamic>?> addPatientToCartItem({
+  static Future<Cart?> addPatientToCartItem({
     required int testId,
     required int patientId,
   }) =>
       _post('/items/$testId/patients', {'patientId': patientId});
 
-  static Future<Map<String, dynamic>?> removePatientFromCartItem({
+  static Future<Cart?> removePatientFromCartItem({
     required int testId,
     required int patientId,
   }) =>
       _delete('/items/$testId/patients/$patientId');
 
-
-  static Future<void> saveCartLocally({required String cartData}) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_localCartKey, cartData);
-    } catch (e) {
-      debugPrint('CartService.saveCartLocally: $e');
-    }
+  static Future<Cart?> _post(String path, Map<String, dynamic> body) async {
+    final response = await Wrapper.post('$_root$path', json.encode(body));
+    final resBody = json.decode(response)['body'];
+    if (resBody == null) return null;
+    return Cart.fromJson(resBody);
   }
 
-  static Future<String?> getCartLocally() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      return prefs.getString(_localCartKey);
-    } catch (e) {
-      debugPrint('CartService.getCartLocally: $e');
-      return null;
-    }
+  static Future<Cart?> _put(String path, Map<String, dynamic> body) async {
+    final response = await Wrapper.put('$_root$path', json.encode(body));
+    final resBody = json.decode(response)['body'];
+    if (resBody == null) return null;
+    return Cart.fromJson(resBody);
   }
 
-  static Future<void> clearCartLocally() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.remove(_localCartKey);
-    } catch (e) {
-      debugPrint('CartService.clearCartLocally: $e');
-    }
-  }
-
-  static Future<void> clearCartForUser() async {
-    await clearCartLocally();
+  static Future<Cart?> _delete(String path) async {
+    final response = await Wrapper.delete('$_root$path');
+    final resBody = json.decode(response)['body'];
+    if (resBody == null) return null;
+    return Cart.fromJson(resBody);
   }
 }
-

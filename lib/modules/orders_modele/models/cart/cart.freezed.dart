@@ -20,19 +20,33 @@ Cart _$CartFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Cart {
-  List<CartTest> get cartTests => throw _privateConstructorUsedError;
-  Address? get selectedAddress => throw _privateConstructorUsedError;
-  TimeSlot? get timeSlot => throw _privateConstructorUsedError;
+  int? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'items')
+  List<CartItem> get cartTests => throw _privateConstructorUsedError;
   DateTime? get collectionDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hardCopy')
+  bool? get shouldGetHardCopy => throw _privateConstructorUsedError;
+  bool? get redeemCoins => throw _privateConstructorUsedError;
+  @JsonKey(name: 'address')
+  Address? get selectedAddress => throw _privateConstructorUsedError;
+  @JsonKey(name: 'slot')
+  TimeSlot? get timeSlot => throw _privateConstructorUsedError;
+  @JsonKey(name: 'coupon')
   Coupon? get appliedCoupon => throw _privateConstructorUsedError;
-  double? get appliedCouponAmount => throw _privateConstructorUsedError;
-  bool get shouldGetHardCopy => throw _privateConstructorUsedError;
-  Pincode? get pincode => throw _privateConstructorUsedError;
-  int get walletRedeemedAmount => throw _privateConstructorUsedError;
-  int get redeemedQrisCoins => throw _privateConstructorUsedError;
-  List<WellnessAnswer>? get wellnessAnswers =>
-      throw _privateConstructorUsedError;
-  bool get redeemCoins => throw _privateConstructorUsedError;
+  int? get cartTestPrices => throw _privateConstructorUsedError;
+  int? get baseCartValue => throw _privateConstructorUsedError;
+  int? get deliveryCharge => throw _privateConstructorUsedError;
+  int? get hardCopyCharges => throw _privateConstructorUsedError;
+  int? get cartFinalValue => throw _privateConstructorUsedError;
+  int? get walletRedeemedAmount => throw _privateConstructorUsedError;
+  int? get appliedCouponAmount => throw _privateConstructorUsedError;
+  int? get redeemedQrisCoins => throw _privateConstructorUsedError;
+  String? get sampleType => throw _privateConstructorUsedError;
+  String? get tubeType => throw _privateConstructorUsedError;
+  int? get totalCartValue => throw _privateConstructorUsedError;
+  int? get collectionCharge => throw _privateConstructorUsedError;
+  int? get availableWalletBalance => throw _privateConstructorUsedError;
+  int? get availableQrisCoins => throw _privateConstructorUsedError;
 
   /// Serializes this Cart to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,23 +63,32 @@ abstract class $CartCopyWith<$Res> {
       _$CartCopyWithImpl<$Res, Cart>;
   @useResult
   $Res call(
-      {List<CartTest> cartTests,
-      Address? selectedAddress,
-      TimeSlot? timeSlot,
+      {int? userId,
+      @JsonKey(name: 'items') List<CartItem> cartTests,
       DateTime? collectionDate,
-      Coupon? appliedCoupon,
-      double? appliedCouponAmount,
-      bool shouldGetHardCopy,
-      Pincode? pincode,
-      int walletRedeemedAmount,
-      int redeemedQrisCoins,
-      List<WellnessAnswer>? wellnessAnswers,
-      bool redeemCoins});
+      @JsonKey(name: 'hardCopy') bool? shouldGetHardCopy,
+      bool? redeemCoins,
+      @JsonKey(name: 'address') Address? selectedAddress,
+      @JsonKey(name: 'slot') TimeSlot? timeSlot,
+      @JsonKey(name: 'coupon') Coupon? appliedCoupon,
+      int? cartTestPrices,
+      int? baseCartValue,
+      int? deliveryCharge,
+      int? hardCopyCharges,
+      int? cartFinalValue,
+      int? walletRedeemedAmount,
+      int? appliedCouponAmount,
+      int? redeemedQrisCoins,
+      String? sampleType,
+      String? tubeType,
+      int? totalCartValue,
+      int? collectionCharge,
+      int? availableWalletBalance,
+      int? availableQrisCoins});
 
   $AddressCopyWith<$Res>? get selectedAddress;
   $TimeSlotCopyWith<$Res>? get timeSlot;
   $CouponCopyWith<$Res>? get appliedCoupon;
-  $PincodeCopyWith<$Res>? get pincode;
 }
 
 /// @nodoc
@@ -83,24 +106,50 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userId = freezed,
     Object? cartTests = null,
+    Object? collectionDate = freezed,
+    Object? shouldGetHardCopy = freezed,
+    Object? redeemCoins = freezed,
     Object? selectedAddress = freezed,
     Object? timeSlot = freezed,
-    Object? collectionDate = freezed,
     Object? appliedCoupon = freezed,
+    Object? cartTestPrices = freezed,
+    Object? baseCartValue = freezed,
+    Object? deliveryCharge = freezed,
+    Object? hardCopyCharges = freezed,
+    Object? cartFinalValue = freezed,
+    Object? walletRedeemedAmount = freezed,
     Object? appliedCouponAmount = freezed,
-    Object? shouldGetHardCopy = null,
-    Object? pincode = freezed,
-    Object? walletRedeemedAmount = null,
-    Object? redeemedQrisCoins = null,
-    Object? wellnessAnswers = freezed,
-    Object? redeemCoins = null,
+    Object? redeemedQrisCoins = freezed,
+    Object? sampleType = freezed,
+    Object? tubeType = freezed,
+    Object? totalCartValue = freezed,
+    Object? collectionCharge = freezed,
+    Object? availableWalletBalance = freezed,
+    Object? availableQrisCoins = freezed,
   }) {
     return _then(_value.copyWith(
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int?,
       cartTests: null == cartTests
           ? _value.cartTests
           : cartTests // ignore: cast_nullable_to_non_nullable
-              as List<CartTest>,
+              as List<CartItem>,
+      collectionDate: freezed == collectionDate
+          ? _value.collectionDate
+          : collectionDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      shouldGetHardCopy: freezed == shouldGetHardCopy
+          ? _value.shouldGetHardCopy
+          : shouldGetHardCopy // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      redeemCoins: freezed == redeemCoins
+          ? _value.redeemCoins
+          : redeemCoins // ignore: cast_nullable_to_non_nullable
+              as bool?,
       selectedAddress: freezed == selectedAddress
           ? _value.selectedAddress
           : selectedAddress // ignore: cast_nullable_to_non_nullable
@@ -109,42 +158,66 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
           ? _value.timeSlot
           : timeSlot // ignore: cast_nullable_to_non_nullable
               as TimeSlot?,
-      collectionDate: freezed == collectionDate
-          ? _value.collectionDate
-          : collectionDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       appliedCoupon: freezed == appliedCoupon
           ? _value.appliedCoupon
           : appliedCoupon // ignore: cast_nullable_to_non_nullable
               as Coupon?,
+      cartTestPrices: freezed == cartTestPrices
+          ? _value.cartTestPrices
+          : cartTestPrices // ignore: cast_nullable_to_non_nullable
+              as int?,
+      baseCartValue: freezed == baseCartValue
+          ? _value.baseCartValue
+          : baseCartValue // ignore: cast_nullable_to_non_nullable
+              as int?,
+      deliveryCharge: freezed == deliveryCharge
+          ? _value.deliveryCharge
+          : deliveryCharge // ignore: cast_nullable_to_non_nullable
+              as int?,
+      hardCopyCharges: freezed == hardCopyCharges
+          ? _value.hardCopyCharges
+          : hardCopyCharges // ignore: cast_nullable_to_non_nullable
+              as int?,
+      cartFinalValue: freezed == cartFinalValue
+          ? _value.cartFinalValue
+          : cartFinalValue // ignore: cast_nullable_to_non_nullable
+              as int?,
+      walletRedeemedAmount: freezed == walletRedeemedAmount
+          ? _value.walletRedeemedAmount
+          : walletRedeemedAmount // ignore: cast_nullable_to_non_nullable
+              as int?,
       appliedCouponAmount: freezed == appliedCouponAmount
           ? _value.appliedCouponAmount
           : appliedCouponAmount // ignore: cast_nullable_to_non_nullable
-              as double?,
-      shouldGetHardCopy: null == shouldGetHardCopy
-          ? _value.shouldGetHardCopy
-          : shouldGetHardCopy // ignore: cast_nullable_to_non_nullable
-              as bool,
-      pincode: freezed == pincode
-          ? _value.pincode
-          : pincode // ignore: cast_nullable_to_non_nullable
-              as Pincode?,
-      walletRedeemedAmount: null == walletRedeemedAmount
-          ? _value.walletRedeemedAmount
-          : walletRedeemedAmount // ignore: cast_nullable_to_non_nullable
-              as int,
-      redeemedQrisCoins: null == redeemedQrisCoins
+              as int?,
+      redeemedQrisCoins: freezed == redeemedQrisCoins
           ? _value.redeemedQrisCoins
           : redeemedQrisCoins // ignore: cast_nullable_to_non_nullable
-              as int,
-      wellnessAnswers: freezed == wellnessAnswers
-          ? _value.wellnessAnswers
-          : wellnessAnswers // ignore: cast_nullable_to_non_nullable
-              as List<WellnessAnswer>?,
-      redeemCoins: null == redeemCoins
-          ? _value.redeemCoins
-          : redeemCoins // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as int?,
+      sampleType: freezed == sampleType
+          ? _value.sampleType
+          : sampleType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tubeType: freezed == tubeType
+          ? _value.tubeType
+          : tubeType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      totalCartValue: freezed == totalCartValue
+          ? _value.totalCartValue
+          : totalCartValue // ignore: cast_nullable_to_non_nullable
+              as int?,
+      collectionCharge: freezed == collectionCharge
+          ? _value.collectionCharge
+          : collectionCharge // ignore: cast_nullable_to_non_nullable
+              as int?,
+      availableWalletBalance: freezed == availableWalletBalance
+          ? _value.availableWalletBalance
+          : availableWalletBalance // ignore: cast_nullable_to_non_nullable
+              as int?,
+      availableQrisCoins: freezed == availableQrisCoins
+          ? _value.availableQrisCoins
+          : availableQrisCoins // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 
@@ -189,20 +262,6 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
       return _then(_value.copyWith(appliedCoupon: value) as $Val);
     });
   }
-
-  /// Create a copy of Cart
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $PincodeCopyWith<$Res>? get pincode {
-    if (_value.pincode == null) {
-      return null;
-    }
-
-    return $PincodeCopyWith<$Res>(_value.pincode!, (value) {
-      return _then(_value.copyWith(pincode: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -213,18 +272,28 @@ abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {List<CartTest> cartTests,
-      Address? selectedAddress,
-      TimeSlot? timeSlot,
+      {int? userId,
+      @JsonKey(name: 'items') List<CartItem> cartTests,
       DateTime? collectionDate,
-      Coupon? appliedCoupon,
-      double? appliedCouponAmount,
-      bool shouldGetHardCopy,
-      Pincode? pincode,
-      int walletRedeemedAmount,
-      int redeemedQrisCoins,
-      List<WellnessAnswer>? wellnessAnswers,
-      bool redeemCoins});
+      @JsonKey(name: 'hardCopy') bool? shouldGetHardCopy,
+      bool? redeemCoins,
+      @JsonKey(name: 'address') Address? selectedAddress,
+      @JsonKey(name: 'slot') TimeSlot? timeSlot,
+      @JsonKey(name: 'coupon') Coupon? appliedCoupon,
+      int? cartTestPrices,
+      int? baseCartValue,
+      int? deliveryCharge,
+      int? hardCopyCharges,
+      int? cartFinalValue,
+      int? walletRedeemedAmount,
+      int? appliedCouponAmount,
+      int? redeemedQrisCoins,
+      String? sampleType,
+      String? tubeType,
+      int? totalCartValue,
+      int? collectionCharge,
+      int? availableWalletBalance,
+      int? availableQrisCoins});
 
   @override
   $AddressCopyWith<$Res>? get selectedAddress;
@@ -232,8 +301,6 @@ abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
   $TimeSlotCopyWith<$Res>? get timeSlot;
   @override
   $CouponCopyWith<$Res>? get appliedCoupon;
-  @override
-  $PincodeCopyWith<$Res>? get pincode;
 }
 
 /// @nodoc
@@ -248,24 +315,50 @@ class __$$CartImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userId = freezed,
     Object? cartTests = null,
+    Object? collectionDate = freezed,
+    Object? shouldGetHardCopy = freezed,
+    Object? redeemCoins = freezed,
     Object? selectedAddress = freezed,
     Object? timeSlot = freezed,
-    Object? collectionDate = freezed,
     Object? appliedCoupon = freezed,
+    Object? cartTestPrices = freezed,
+    Object? baseCartValue = freezed,
+    Object? deliveryCharge = freezed,
+    Object? hardCopyCharges = freezed,
+    Object? cartFinalValue = freezed,
+    Object? walletRedeemedAmount = freezed,
     Object? appliedCouponAmount = freezed,
-    Object? shouldGetHardCopy = null,
-    Object? pincode = freezed,
-    Object? walletRedeemedAmount = null,
-    Object? redeemedQrisCoins = null,
-    Object? wellnessAnswers = freezed,
-    Object? redeemCoins = null,
+    Object? redeemedQrisCoins = freezed,
+    Object? sampleType = freezed,
+    Object? tubeType = freezed,
+    Object? totalCartValue = freezed,
+    Object? collectionCharge = freezed,
+    Object? availableWalletBalance = freezed,
+    Object? availableQrisCoins = freezed,
   }) {
     return _then(_$CartImpl(
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int?,
       cartTests: null == cartTests
-          ? _value._cartTests
+          ? _value.cartTests
           : cartTests // ignore: cast_nullable_to_non_nullable
-              as List<CartTest>,
+              as List<CartItem>,
+      collectionDate: freezed == collectionDate
+          ? _value.collectionDate
+          : collectionDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      shouldGetHardCopy: freezed == shouldGetHardCopy
+          ? _value.shouldGetHardCopy
+          : shouldGetHardCopy // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      redeemCoins: freezed == redeemCoins
+          ? _value.redeemCoins
+          : redeemCoins // ignore: cast_nullable_to_non_nullable
+              as bool?,
       selectedAddress: freezed == selectedAddress
           ? _value.selectedAddress
           : selectedAddress // ignore: cast_nullable_to_non_nullable
@@ -274,42 +367,66 @@ class __$$CartImplCopyWithImpl<$Res>
           ? _value.timeSlot
           : timeSlot // ignore: cast_nullable_to_non_nullable
               as TimeSlot?,
-      collectionDate: freezed == collectionDate
-          ? _value.collectionDate
-          : collectionDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       appliedCoupon: freezed == appliedCoupon
           ? _value.appliedCoupon
           : appliedCoupon // ignore: cast_nullable_to_non_nullable
               as Coupon?,
+      cartTestPrices: freezed == cartTestPrices
+          ? _value.cartTestPrices
+          : cartTestPrices // ignore: cast_nullable_to_non_nullable
+              as int?,
+      baseCartValue: freezed == baseCartValue
+          ? _value.baseCartValue
+          : baseCartValue // ignore: cast_nullable_to_non_nullable
+              as int?,
+      deliveryCharge: freezed == deliveryCharge
+          ? _value.deliveryCharge
+          : deliveryCharge // ignore: cast_nullable_to_non_nullable
+              as int?,
+      hardCopyCharges: freezed == hardCopyCharges
+          ? _value.hardCopyCharges
+          : hardCopyCharges // ignore: cast_nullable_to_non_nullable
+              as int?,
+      cartFinalValue: freezed == cartFinalValue
+          ? _value.cartFinalValue
+          : cartFinalValue // ignore: cast_nullable_to_non_nullable
+              as int?,
+      walletRedeemedAmount: freezed == walletRedeemedAmount
+          ? _value.walletRedeemedAmount
+          : walletRedeemedAmount // ignore: cast_nullable_to_non_nullable
+              as int?,
       appliedCouponAmount: freezed == appliedCouponAmount
           ? _value.appliedCouponAmount
           : appliedCouponAmount // ignore: cast_nullable_to_non_nullable
-              as double?,
-      shouldGetHardCopy: null == shouldGetHardCopy
-          ? _value.shouldGetHardCopy
-          : shouldGetHardCopy // ignore: cast_nullable_to_non_nullable
-              as bool,
-      pincode: freezed == pincode
-          ? _value.pincode
-          : pincode // ignore: cast_nullable_to_non_nullable
-              as Pincode?,
-      walletRedeemedAmount: null == walletRedeemedAmount
-          ? _value.walletRedeemedAmount
-          : walletRedeemedAmount // ignore: cast_nullable_to_non_nullable
-              as int,
-      redeemedQrisCoins: null == redeemedQrisCoins
+              as int?,
+      redeemedQrisCoins: freezed == redeemedQrisCoins
           ? _value.redeemedQrisCoins
           : redeemedQrisCoins // ignore: cast_nullable_to_non_nullable
-              as int,
-      wellnessAnswers: freezed == wellnessAnswers
-          ? _value._wellnessAnswers
-          : wellnessAnswers // ignore: cast_nullable_to_non_nullable
-              as List<WellnessAnswer>?,
-      redeemCoins: null == redeemCoins
-          ? _value.redeemCoins
-          : redeemCoins // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as int?,
+      sampleType: freezed == sampleType
+          ? _value.sampleType
+          : sampleType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tubeType: freezed == tubeType
+          ? _value.tubeType
+          : tubeType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      totalCartValue: freezed == totalCartValue
+          ? _value.totalCartValue
+          : totalCartValue // ignore: cast_nullable_to_non_nullable
+              as int?,
+      collectionCharge: freezed == collectionCharge
+          ? _value.collectionCharge
+          : collectionCharge // ignore: cast_nullable_to_non_nullable
+              as int?,
+      availableWalletBalance: freezed == availableWalletBalance
+          ? _value.availableWalletBalance
+          : availableWalletBalance // ignore: cast_nullable_to_non_nullable
+              as int?,
+      availableQrisCoins: freezed == availableQrisCoins
+          ? _value.availableQrisCoins
+          : availableQrisCoins // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -318,70 +435,85 @@ class __$$CartImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CartImpl implements _Cart {
   const _$CartImpl(
-      {required final List<CartTest> cartTests,
-      this.selectedAddress,
-      this.timeSlot,
+      {this.userId,
+      @JsonKey(name: 'items') this.cartTests = const [],
       this.collectionDate,
-      this.appliedCoupon,
+      @JsonKey(name: 'hardCopy') this.shouldGetHardCopy,
+      this.redeemCoins,
+      @JsonKey(name: 'address') this.selectedAddress,
+      @JsonKey(name: 'slot') this.timeSlot,
+      @JsonKey(name: 'coupon') this.appliedCoupon,
+      this.cartTestPrices,
+      this.baseCartValue,
+      this.deliveryCharge,
+      this.hardCopyCharges,
+      this.cartFinalValue,
+      this.walletRedeemedAmount,
       this.appliedCouponAmount,
-      this.shouldGetHardCopy = false,
-      this.pincode,
-      this.walletRedeemedAmount = 0,
-      this.redeemedQrisCoins = 0,
-      final List<WellnessAnswer>? wellnessAnswers,
-      this.redeemCoins = false})
-      : _cartTests = cartTests,
-        _wellnessAnswers = wellnessAnswers;
+      this.redeemedQrisCoins,
+      this.sampleType,
+      this.tubeType,
+      this.totalCartValue,
+      this.collectionCharge,
+      this.availableWalletBalance,
+      this.availableQrisCoins});
 
   factory _$CartImpl.fromJson(Map<String, dynamic> json) =>
       _$$CartImplFromJson(json);
 
-  final List<CartTest> _cartTests;
   @override
-  List<CartTest> get cartTests {
-    if (_cartTests is EqualUnmodifiableListView) return _cartTests;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_cartTests);
-  }
-
+  final int? userId;
   @override
-  final Address? selectedAddress;
-  @override
-  final TimeSlot? timeSlot;
+  @JsonKey(name: 'items')
+  final List<CartItem> cartTests;
   @override
   final DateTime? collectionDate;
   @override
+  @JsonKey(name: 'hardCopy')
+  final bool? shouldGetHardCopy;
+  @override
+  final bool? redeemCoins;
+  @override
+  @JsonKey(name: 'address')
+  final Address? selectedAddress;
+  @override
+  @JsonKey(name: 'slot')
+  final TimeSlot? timeSlot;
+  @override
+  @JsonKey(name: 'coupon')
   final Coupon? appliedCoupon;
   @override
-  final double? appliedCouponAmount;
+  final int? cartTestPrices;
   @override
-  @JsonKey()
-  final bool shouldGetHardCopy;
+  final int? baseCartValue;
   @override
-  final Pincode? pincode;
+  final int? deliveryCharge;
   @override
-  @JsonKey()
-  final int walletRedeemedAmount;
+  final int? hardCopyCharges;
   @override
-  @JsonKey()
-  final int redeemedQrisCoins;
-  final List<WellnessAnswer>? _wellnessAnswers;
+  final int? cartFinalValue;
   @override
-  List<WellnessAnswer>? get wellnessAnswers {
-    final value = _wellnessAnswers;
-    if (value == null) return null;
-    if (_wellnessAnswers is EqualUnmodifiableListView) return _wellnessAnswers;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
+  final int? walletRedeemedAmount;
   @override
-  @JsonKey()
-  final bool redeemCoins;
+  final int? appliedCouponAmount;
+  @override
+  final int? redeemedQrisCoins;
+  @override
+  final String? sampleType;
+  @override
+  final String? tubeType;
+  @override
+  final int? totalCartValue;
+  @override
+  final int? collectionCharge;
+  @override
+  final int? availableWalletBalance;
+  @override
+  final int? availableQrisCoins;
 
   @override
   String toString() {
-    return 'Cart(cartTests: $cartTests, selectedAddress: $selectedAddress, timeSlot: $timeSlot, collectionDate: $collectionDate, appliedCoupon: $appliedCoupon, appliedCouponAmount: $appliedCouponAmount, shouldGetHardCopy: $shouldGetHardCopy, pincode: $pincode, walletRedeemedAmount: $walletRedeemedAmount, redeemedQrisCoins: $redeemedQrisCoins, wellnessAnswers: $wellnessAnswers, redeemCoins: $redeemCoins)';
+    return 'Cart(userId: $userId, cartTests: $cartTests, collectionDate: $collectionDate, shouldGetHardCopy: $shouldGetHardCopy, redeemCoins: $redeemCoins, selectedAddress: $selectedAddress, timeSlot: $timeSlot, appliedCoupon: $appliedCoupon, cartTestPrices: $cartTestPrices, baseCartValue: $baseCartValue, deliveryCharge: $deliveryCharge, hardCopyCharges: $hardCopyCharges, cartFinalValue: $cartFinalValue, walletRedeemedAmount: $walletRedeemedAmount, appliedCouponAmount: $appliedCouponAmount, redeemedQrisCoins: $redeemedQrisCoins, sampleType: $sampleType, tubeType: $tubeType, totalCartValue: $totalCartValue, collectionCharge: $collectionCharge, availableWalletBalance: $availableWalletBalance, availableQrisCoins: $availableQrisCoins)';
   }
 
   @override
@@ -389,47 +521,77 @@ class _$CartImpl implements _Cart {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CartImpl &&
-            const DeepCollectionEquality()
-                .equals(other._cartTests, _cartTests) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            const DeepCollectionEquality().equals(other.cartTests, cartTests) &&
+            (identical(other.collectionDate, collectionDate) ||
+                other.collectionDate == collectionDate) &&
+            (identical(other.shouldGetHardCopy, shouldGetHardCopy) ||
+                other.shouldGetHardCopy == shouldGetHardCopy) &&
+            (identical(other.redeemCoins, redeemCoins) ||
+                other.redeemCoins == redeemCoins) &&
             (identical(other.selectedAddress, selectedAddress) ||
                 other.selectedAddress == selectedAddress) &&
             (identical(other.timeSlot, timeSlot) ||
                 other.timeSlot == timeSlot) &&
-            (identical(other.collectionDate, collectionDate) ||
-                other.collectionDate == collectionDate) &&
             (identical(other.appliedCoupon, appliedCoupon) ||
                 other.appliedCoupon == appliedCoupon) &&
-            (identical(other.appliedCouponAmount, appliedCouponAmount) ||
-                other.appliedCouponAmount == appliedCouponAmount) &&
-            (identical(other.shouldGetHardCopy, shouldGetHardCopy) ||
-                other.shouldGetHardCopy == shouldGetHardCopy) &&
-            (identical(other.pincode, pincode) || other.pincode == pincode) &&
+            (identical(other.cartTestPrices, cartTestPrices) ||
+                other.cartTestPrices == cartTestPrices) &&
+            (identical(other.baseCartValue, baseCartValue) ||
+                other.baseCartValue == baseCartValue) &&
+            (identical(other.deliveryCharge, deliveryCharge) ||
+                other.deliveryCharge == deliveryCharge) &&
+            (identical(other.hardCopyCharges, hardCopyCharges) ||
+                other.hardCopyCharges == hardCopyCharges) &&
+            (identical(other.cartFinalValue, cartFinalValue) ||
+                other.cartFinalValue == cartFinalValue) &&
             (identical(other.walletRedeemedAmount, walletRedeemedAmount) ||
                 other.walletRedeemedAmount == walletRedeemedAmount) &&
+            (identical(other.appliedCouponAmount, appliedCouponAmount) ||
+                other.appliedCouponAmount == appliedCouponAmount) &&
             (identical(other.redeemedQrisCoins, redeemedQrisCoins) ||
                 other.redeemedQrisCoins == redeemedQrisCoins) &&
-            const DeepCollectionEquality()
-                .equals(other._wellnessAnswers, _wellnessAnswers) &&
-            (identical(other.redeemCoins, redeemCoins) ||
-                other.redeemCoins == redeemCoins));
+            (identical(other.sampleType, sampleType) ||
+                other.sampleType == sampleType) &&
+            (identical(other.tubeType, tubeType) ||
+                other.tubeType == tubeType) &&
+            (identical(other.totalCartValue, totalCartValue) ||
+                other.totalCartValue == totalCartValue) &&
+            (identical(other.collectionCharge, collectionCharge) ||
+                other.collectionCharge == collectionCharge) &&
+            (identical(other.availableWalletBalance, availableWalletBalance) ||
+                other.availableWalletBalance == availableWalletBalance) &&
+            (identical(other.availableQrisCoins, availableQrisCoins) ||
+                other.availableQrisCoins == availableQrisCoins));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_cartTests),
-      selectedAddress,
-      timeSlot,
-      collectionDate,
-      appliedCoupon,
-      appliedCouponAmount,
-      shouldGetHardCopy,
-      pincode,
-      walletRedeemedAmount,
-      redeemedQrisCoins,
-      const DeepCollectionEquality().hash(_wellnessAnswers),
-      redeemCoins);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        userId,
+        const DeepCollectionEquality().hash(cartTests),
+        collectionDate,
+        shouldGetHardCopy,
+        redeemCoins,
+        selectedAddress,
+        timeSlot,
+        appliedCoupon,
+        cartTestPrices,
+        baseCartValue,
+        deliveryCharge,
+        hardCopyCharges,
+        cartFinalValue,
+        walletRedeemedAmount,
+        appliedCouponAmount,
+        redeemedQrisCoins,
+        sampleType,
+        tubeType,
+        totalCartValue,
+        collectionCharge,
+        availableWalletBalance,
+        availableQrisCoins
+      ]);
 
   /// Create a copy of Cart
   /// with the given fields replaced by the non-null parameter values.
@@ -449,45 +611,80 @@ class _$CartImpl implements _Cart {
 
 abstract class _Cart implements Cart {
   const factory _Cart(
-      {required final List<CartTest> cartTests,
-      final Address? selectedAddress,
-      final TimeSlot? timeSlot,
+      {final int? userId,
+      @JsonKey(name: 'items') final List<CartItem> cartTests,
       final DateTime? collectionDate,
-      final Coupon? appliedCoupon,
-      final double? appliedCouponAmount,
-      final bool shouldGetHardCopy,
-      final Pincode? pincode,
-      final int walletRedeemedAmount,
-      final int redeemedQrisCoins,
-      final List<WellnessAnswer>? wellnessAnswers,
-      final bool redeemCoins}) = _$CartImpl;
+      @JsonKey(name: 'hardCopy') final bool? shouldGetHardCopy,
+      final bool? redeemCoins,
+      @JsonKey(name: 'address') final Address? selectedAddress,
+      @JsonKey(name: 'slot') final TimeSlot? timeSlot,
+      @JsonKey(name: 'coupon') final Coupon? appliedCoupon,
+      final int? cartTestPrices,
+      final int? baseCartValue,
+      final int? deliveryCharge,
+      final int? hardCopyCharges,
+      final int? cartFinalValue,
+      final int? walletRedeemedAmount,
+      final int? appliedCouponAmount,
+      final int? redeemedQrisCoins,
+      final String? sampleType,
+      final String? tubeType,
+      final int? totalCartValue,
+      final int? collectionCharge,
+      final int? availableWalletBalance,
+      final int? availableQrisCoins}) = _$CartImpl;
 
   factory _Cart.fromJson(Map<String, dynamic> json) = _$CartImpl.fromJson;
 
   @override
-  List<CartTest> get cartTests;
+  int? get userId;
   @override
-  Address? get selectedAddress;
-  @override
-  TimeSlot? get timeSlot;
+  @JsonKey(name: 'items')
+  List<CartItem> get cartTests;
   @override
   DateTime? get collectionDate;
   @override
+  @JsonKey(name: 'hardCopy')
+  bool? get shouldGetHardCopy;
+  @override
+  bool? get redeemCoins;
+  @override
+  @JsonKey(name: 'address')
+  Address? get selectedAddress;
+  @override
+  @JsonKey(name: 'slot')
+  TimeSlot? get timeSlot;
+  @override
+  @JsonKey(name: 'coupon')
   Coupon? get appliedCoupon;
   @override
-  double? get appliedCouponAmount;
+  int? get cartTestPrices;
   @override
-  bool get shouldGetHardCopy;
+  int? get baseCartValue;
   @override
-  Pincode? get pincode;
+  int? get deliveryCharge;
   @override
-  int get walletRedeemedAmount;
+  int? get hardCopyCharges;
   @override
-  int get redeemedQrisCoins;
+  int? get cartFinalValue;
   @override
-  List<WellnessAnswer>? get wellnessAnswers;
+  int? get walletRedeemedAmount;
   @override
-  bool get redeemCoins;
+  int? get appliedCouponAmount;
+  @override
+  int? get redeemedQrisCoins;
+  @override
+  String? get sampleType;
+  @override
+  String? get tubeType;
+  @override
+  int? get totalCartValue;
+  @override
+  int? get collectionCharge;
+  @override
+  int? get availableWalletBalance;
+  @override
+  int? get availableQrisCoins;
 
   /// Create a copy of Cart
   /// with the given fields replaced by the non-null parameter values.
@@ -497,133 +694,172 @@ abstract class _Cart implements Cart {
       throw _privateConstructorUsedError;
 }
 
-CartTest _$CartTestFromJson(Map<String, dynamic> json) {
-  return _CartTest.fromJson(json);
+CartItem _$CartItemFromJson(Map<String, dynamic> json) {
+  return _CartItem.fromJson(json);
 }
 
 /// @nodoc
-mixin _$CartTest {
-  TestPackageModel get test => throw _privateConstructorUsedError;
+mixin _$CartItem {
+  int? get testId => throw _privateConstructorUsedError;
   List<int> get patientIds => throw _privateConstructorUsedError;
+  TestPackageModel? get test => throw _privateConstructorUsedError;
+  List<Patient> get patients => throw _privateConstructorUsedError;
 
-  /// Serializes this CartTest to a JSON map.
+  /// Serializes this CartItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of CartTest
+  /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $CartTestCopyWith<CartTest> get copyWith =>
+  $CartItemCopyWith<CartItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CartTestCopyWith<$Res> {
-  factory $CartTestCopyWith(CartTest value, $Res Function(CartTest) then) =
-      _$CartTestCopyWithImpl<$Res, CartTest>;
+abstract class $CartItemCopyWith<$Res> {
+  factory $CartItemCopyWith(CartItem value, $Res Function(CartItem) then) =
+      _$CartItemCopyWithImpl<$Res, CartItem>;
   @useResult
-  $Res call({TestPackageModel test, List<int> patientIds});
+  $Res call(
+      {int? testId,
+      List<int> patientIds,
+      TestPackageModel? test,
+      List<Patient> patients});
 
-  $TestPackageModelCopyWith<$Res> get test;
+  $TestPackageModelCopyWith<$Res>? get test;
 }
 
 /// @nodoc
-class _$CartTestCopyWithImpl<$Res, $Val extends CartTest>
-    implements $CartTestCopyWith<$Res> {
-  _$CartTestCopyWithImpl(this._value, this._then);
+class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
+    implements $CartItemCopyWith<$Res> {
+  _$CartItemCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CartTest
+  /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? test = null,
+    Object? testId = freezed,
     Object? patientIds = null,
+    Object? test = freezed,
+    Object? patients = null,
   }) {
     return _then(_value.copyWith(
-      test: null == test
-          ? _value.test
-          : test // ignore: cast_nullable_to_non_nullable
-              as TestPackageModel,
+      testId: freezed == testId
+          ? _value.testId
+          : testId // ignore: cast_nullable_to_non_nullable
+              as int?,
       patientIds: null == patientIds
           ? _value.patientIds
           : patientIds // ignore: cast_nullable_to_non_nullable
               as List<int>,
+      test: freezed == test
+          ? _value.test
+          : test // ignore: cast_nullable_to_non_nullable
+              as TestPackageModel?,
+      patients: null == patients
+          ? _value.patients
+          : patients // ignore: cast_nullable_to_non_nullable
+              as List<Patient>,
     ) as $Val);
   }
 
-  /// Create a copy of CartTest
+  /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $TestPackageModelCopyWith<$Res> get test {
-    return $TestPackageModelCopyWith<$Res>(_value.test, (value) {
+  $TestPackageModelCopyWith<$Res>? get test {
+    if (_value.test == null) {
+      return null;
+    }
+
+    return $TestPackageModelCopyWith<$Res>(_value.test!, (value) {
       return _then(_value.copyWith(test: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$CartTestImplCopyWith<$Res>
-    implements $CartTestCopyWith<$Res> {
-  factory _$$CartTestImplCopyWith(
-          _$CartTestImpl value, $Res Function(_$CartTestImpl) then) =
-      __$$CartTestImplCopyWithImpl<$Res>;
+abstract class _$$CartItemImplCopyWith<$Res>
+    implements $CartItemCopyWith<$Res> {
+  factory _$$CartItemImplCopyWith(
+          _$CartItemImpl value, $Res Function(_$CartItemImpl) then) =
+      __$$CartItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({TestPackageModel test, List<int> patientIds});
+  $Res call(
+      {int? testId,
+      List<int> patientIds,
+      TestPackageModel? test,
+      List<Patient> patients});
 
   @override
-  $TestPackageModelCopyWith<$Res> get test;
+  $TestPackageModelCopyWith<$Res>? get test;
 }
 
 /// @nodoc
-class __$$CartTestImplCopyWithImpl<$Res>
-    extends _$CartTestCopyWithImpl<$Res, _$CartTestImpl>
-    implements _$$CartTestImplCopyWith<$Res> {
-  __$$CartTestImplCopyWithImpl(
-      _$CartTestImpl _value, $Res Function(_$CartTestImpl) _then)
+class __$$CartItemImplCopyWithImpl<$Res>
+    extends _$CartItemCopyWithImpl<$Res, _$CartItemImpl>
+    implements _$$CartItemImplCopyWith<$Res> {
+  __$$CartItemImplCopyWithImpl(
+      _$CartItemImpl _value, $Res Function(_$CartItemImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartTest
+  /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? test = null,
+    Object? testId = freezed,
     Object? patientIds = null,
+    Object? test = freezed,
+    Object? patients = null,
   }) {
-    return _then(_$CartTestImpl(
-      test: null == test
-          ? _value.test
-          : test // ignore: cast_nullable_to_non_nullable
-              as TestPackageModel,
+    return _then(_$CartItemImpl(
+      testId: freezed == testId
+          ? _value.testId
+          : testId // ignore: cast_nullable_to_non_nullable
+              as int?,
       patientIds: null == patientIds
           ? _value._patientIds
           : patientIds // ignore: cast_nullable_to_non_nullable
               as List<int>,
+      test: freezed == test
+          ? _value.test
+          : test // ignore: cast_nullable_to_non_nullable
+              as TestPackageModel?,
+      patients: null == patients
+          ? _value._patients
+          : patients // ignore: cast_nullable_to_non_nullable
+              as List<Patient>,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$CartTestImpl implements _CartTest {
-  const _$CartTestImpl(
-      {required this.test, required final List<int> patientIds})
-      : _patientIds = patientIds;
+class _$CartItemImpl implements _CartItem {
+  const _$CartItemImpl(
+      {this.testId,
+      final List<int> patientIds = const [],
+      this.test,
+      final List<Patient> patients = const []})
+      : _patientIds = patientIds,
+        _patients = patients;
 
-  factory _$CartTestImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CartTestImplFromJson(json);
+  factory _$CartItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CartItemImplFromJson(json);
 
   @override
-  final TestPackageModel test;
+  final int? testId;
   final List<int> _patientIds;
   @override
+  @JsonKey()
   List<int> get patientIds {
     if (_patientIds is EqualUnmodifiableListView) return _patientIds;
     // ignore: implicit_dynamic_type
@@ -631,58 +867,81 @@ class _$CartTestImpl implements _CartTest {
   }
 
   @override
+  final TestPackageModel? test;
+  final List<Patient> _patients;
+  @override
+  @JsonKey()
+  List<Patient> get patients {
+    if (_patients is EqualUnmodifiableListView) return _patients;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_patients);
+  }
+
+  @override
   String toString() {
-    return 'CartTest(test: $test, patientIds: $patientIds)';
+    return 'CartItem(testId: $testId, patientIds: $patientIds, test: $test, patients: $patients)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CartTestImpl &&
-            (identical(other.test, test) || other.test == test) &&
+            other is _$CartItemImpl &&
+            (identical(other.testId, testId) || other.testId == testId) &&
             const DeepCollectionEquality()
-                .equals(other._patientIds, _patientIds));
+                .equals(other._patientIds, _patientIds) &&
+            (identical(other.test, test) || other.test == test) &&
+            const DeepCollectionEquality().equals(other._patients, _patients));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, test, const DeepCollectionEquality().hash(_patientIds));
+      runtimeType,
+      testId,
+      const DeepCollectionEquality().hash(_patientIds),
+      test,
+      const DeepCollectionEquality().hash(_patients));
 
-  /// Create a copy of CartTest
+  /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$CartTestImplCopyWith<_$CartTestImpl> get copyWith =>
-      __$$CartTestImplCopyWithImpl<_$CartTestImpl>(this, _$identity);
+  _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>
+      __$$CartItemImplCopyWithImpl<_$CartItemImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CartTestImplToJson(
+    return _$$CartItemImplToJson(
       this,
     );
   }
 }
 
-abstract class _CartTest implements CartTest {
-  const factory _CartTest(
-      {required final TestPackageModel test,
-      required final List<int> patientIds}) = _$CartTestImpl;
+abstract class _CartItem implements CartItem {
+  const factory _CartItem(
+      {final int? testId,
+      final List<int> patientIds,
+      final TestPackageModel? test,
+      final List<Patient> patients}) = _$CartItemImpl;
 
-  factory _CartTest.fromJson(Map<String, dynamic> json) =
-      _$CartTestImpl.fromJson;
+  factory _CartItem.fromJson(Map<String, dynamic> json) =
+      _$CartItemImpl.fromJson;
 
   @override
-  TestPackageModel get test;
+  int? get testId;
   @override
   List<int> get patientIds;
+  @override
+  TestPackageModel? get test;
+  @override
+  List<Patient> get patients;
 
-  /// Create a copy of CartTest
+  /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CartTestImplCopyWith<_$CartTestImpl> get copyWith =>
+  _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

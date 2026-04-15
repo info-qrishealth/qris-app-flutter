@@ -62,7 +62,7 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                 children: [
                   BlocBuilder<CartCubit, CartState>(builder: (context, state) {
                     return Column(
-                        children: state.cart.cartTests
+                        children: state.cart!.cartTests
                             .map((cartTest) => Column(children: [
                                   PackageListTile(
                                       customDescription: Container(),
@@ -73,13 +73,13 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                                           onTap: () {
                                             BlocProvider.of<CartCubit>(context)
                                                 .removeTestFromCart(
-                                                    cartTest.test.id);
+                                                    cartTest.test!.id);
                                           },
                                           child: SvgPicture.asset(
                                               Assets.iconsDeleteIcon,
                                               height: 20))),
                                   Column(children: [
-                                    ...cartTest.patientIds.map((patientId) =>
+                                    ...cartTest.patientIds!.map((patientId) =>
                                         Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 12),
@@ -111,7 +111,7 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                                                                         patientId:
                                                                             patientId,
                                                                         testId: cartTest
-                                                                            .test
+                                                                            .test!
                                                                             .id);
                                                                   },
                                                                   child: SvgPicture
@@ -186,7 +186,7 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                             },
                             child: AddressListTile(
                                 isSelected: address.id ==
-                                    state.cart.selectedAddress?.id,
+                                    state.cart?.selectedAddress?.id,
                                 address: _addresses![index],
                                 onDeleteTap: () async {
                                   try {
@@ -195,7 +195,7 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                                             addressId: address.id!,
                                             desiredStatus: 0);
 
-                                    if (state.cart.selectedAddress?.id ==
+                                    if (state.cart?.selectedAddress?.id ==
                                         address.id) {
                                       BlocProvider.of<CartCubit>(context)
                                           .setSelectedAddressLocal(null);
@@ -223,10 +223,9 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
       SizedBox(height: 16),
       BlocBuilder<CartCubit, CartState>(builder: (context, state) {
         return ElevatedButton(
-            onPressed:
-                state.cart.selectedAddress == null
-                    ? null
-                    : () async => widget.onContinue(state.cart.selectedAddress!),
+            onPressed: state.cart?.selectedAddress == null
+                ? null
+                : () async => widget.onContinue(state.cart!.selectedAddress!),
             style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue),
             child: Text('Continue'));

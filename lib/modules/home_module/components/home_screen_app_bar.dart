@@ -81,8 +81,6 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
               })),
               SizedBox(width: 10),
               InkWell(onTap: () async {
-                BlocProvider.of<CartCubit>(context)
-                    .removeInvalidTestsFromCart();
                 await Navigator.of(context).push(CupertinoPageRoute(
                     builder: (context) =>
                         CartScreen(testPackageModel: null, initialPage: 1)));
@@ -92,10 +90,12 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                     backgroundColor: AppColors.primaryPink,
                     padding: EdgeInsets.zero,
                     label: Text(
-                        state.cart.cartTests
-                            .where((element) => element.patientIds.isNotEmpty)
-                            .length
-                            .toString(),
+                        state.cart?.cartTests
+                                .where(
+                                    (element) => element.patientIds.isNotEmpty)
+                                .length
+                                .toString() ??
+                            '0',
                         style: _textTheme.labelSmall!.copyWith(
                             fontWeight: FontWeight.w700,
                             color: Colors.white,

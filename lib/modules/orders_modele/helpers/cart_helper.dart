@@ -17,11 +17,10 @@ class CartHelper {
     try {
       final context = Get.context!;
       final cartCubit = BlocProvider.of<CartCubit>(context);
-      final fullTest =
-          await TestService.getTestByTestId(id: testPackageModel.id);
+
       if (!context.mounted) return;
-      await cartCubit.removeInvalidTestsFromCart();
-      await cartCubit.addToCart(fullTest);
+
+      await cartCubit.addToCart(testPackageModel);
       await cartCubit.removeAppliedCouponAndCoins();
       if (!context.mounted) return;
 

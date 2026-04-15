@@ -38,7 +38,6 @@ import '../../../orders_modele/models/order_patient/order_patient.dart';
 import '../../../orders_modele/models/order_req_model/order_req_model.dart';
 import '../../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 import '../../components/coupons_bottom_sheet.dart';
-import '../../helpers/bill_summary_cart_helpers.dart';
 
 class BillSummaryTab extends StatefulWidget {
   final List<WellnessAnswer>? wellnessAnswers;
@@ -85,21 +84,16 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
 
           return BlocBuilder<CartCubit, CartState>(builder: (context, state) {
             final cartCubit = BlocProvider.of<CartCubit>(context);
-            final address = state.cart.selectedAddress;
+            final address = state.cart?.selectedAddress;
             final pincode = pincodes.firstWhereOrNull(
                 (element) => element.pincode.toString() == address?.pincode);
 
-            final walletBalanceForUi = state.cartSummary?.availableWalletBalance ??
+            final walletBalanceForUi = state.cart?.availableWalletBalance ??
                 totalWalletAmount.toDouble();
-            final qrisCoinsBalanceForUi = state.cartSummary != null
-                ? state.cartSummary!.availableQrisCoins.toInt()
+            final qrisCoinsBalanceForUi = state.cart != null
+                ? state.cart!.availableQrisCoins?.toInt()
                 : totalQrisCoins;
 
-            syncPincodeIfNeeded(
-              cartCubit: cartCubit,
-              state: state,
-              pincode: pincode,
-            );
             /// Cart test prices (from backend summary)
             final cartTestPrices = cartCubit.getCartTestPrices().toInt();
 
@@ -136,17 +130,19 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                 children: [
                                   FeatureRow(
                                       fontColor: AppColors.black,
-                                      svgPath: Assets.drawerIconsLocationIcon,
+                                      svgPath: Assets.images.icons.drawerIcons
+                                          .locationIcon.path,
                                       title:
                                           '${address?.house}, ${address?.address1} ${address?.address2 != null && address!.address2!.isNotEmpty ? ', ${address.address2}' : ''} ${address?.landmark != null && address!.landmark!.isNotEmpty ? ', ${address.landmark}' : ''} ${address?.pincode != null && address!.pincode!.isNotEmpty ? ', ${address.pincode}' : ''}, ${address?.state ?? ''}'),
                                   SizedBox(height: 4),
                                   FeatureRow(
-                                      svgPath: Assets.iconsClockIcon,
+                                      svgPath:
+                                          Assets.images.icons.clockIcon.path,
                                       fontColor: AppColors.black,
                                       title:
-                                          '${DateFormat().add_yMMMd().format(state.cart.collectionDate!)} (${DateFormat().add_jm().format(state.cart.timeSlot!.startingTime.toDateTime!.toLocal())} - ${DateFormat().add_jm().format(state.cart.timeSlot!.endingTime.toDateTime!.toLocal())})'),
+                                          '${DateFormat().add_yMMMd().format(state.cart!.collectionDate!)} (${DateFormat().add_jm().format(state.cart!.timeSlot!.startingTime.toDateTime!.toLocal())} - ${DateFormat().add_jm().format(state.cart!.timeSlot!.endingTime.toDateTime!.toLocal())})'),
                                   SizedBox(height: 12),
-                                  ...state.cart.cartTests.map((cartTest) {
+                                  ...state.cart!.cartTests.map((cartTest) {
                                     return Column(children: [
                                       PackageListTile(
                                           customDescription: Container(),
@@ -158,10 +154,11 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                                 BlocProvider.of<CartCubit>(
                                                         context)
                                                     .removeTestFromCart(
-                                                        cartTest.test.id);
+                                                        cartTest.test!.id);
                                               },
                                               child: SvgPicture.asset(
-                                                  Assets.iconsDeleteIcon,
+                                                  Assets.images.icons.deleteIcon
+                                                      .path,
                                                   height: 20))),
                                       Column(children: [
                                         ...cartTest.patientIds.map(
@@ -198,12 +195,15 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                                                         patientId:
                                                                             patientId,
                                                                         testId: cartTest
-                                                                            .test
+                                                                            .test!
                                                                             .id);
                                                                   },
                                                                   child: SvgPicture.asset(
                                                                       Assets
-                                                                          .iconsDeleteIcon,
+                                                                          .images
+                                                                          .icons
+                                                                          .deleteIcon
+                                                                          .path,
                                                                       height:
                                                                           20))
                                                             ]);
@@ -216,7 +216,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                         if (baseCartValue > walletBalanceForUi)
                           GestureDetector(
                               onTap: () {
-                                if (state.cart.redeemCoins) {
+                                if (state.cart?.redeemCoins == true) {
                                   AppConstants.showSnackbar(
                                       text:
                                           'Either qris coins or coupon can be applied at once. Please unselect redeem qris coins option to apply coupon',
@@ -255,23 +255,23 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                                         AppColors.borderColor)),
                                             child: Row(children: [
                                               SvgPicture.asset(
-                                                  Assets.iconsCouponIcon,
+                                                  Assets.images.icons.couponIcon
+                                                      .path,
                                                   color: AppColors.green),
                                               SizedBox(width: 8),
                                               Text(
-                                                  state.cart.appliedCoupon !=
+                                                  state.cart?.appliedCoupon !=
                                                           null
-                                                      ? '${state.cart.appliedCoupon!.couponCode} Applied'
+                                                      ? '${state.cart?.appliedCoupon!.couponCode} Applied'
                                                       : 'Apply coupon',
-                                                  style: _textTheme
-                                                      .bodySmall!
+                                                  style: _textTheme.bodySmall!
                                                       .copyWith(
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           color: AppColors
                                                               .lightSubTextColor)),
                                               Spacer(),
-                                              if (state.cart.appliedCoupon !=
+                                              if (state.cart?.appliedCoupon !=
                                                   null)
                                                 InkWell(
                                                     onTap: () {
@@ -296,7 +296,9 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                             onTap: () {
                               BlocProvider.of<CartCubit>(context)
                                   .updateHardCopy(
-                                      !state.cart.shouldGetHardCopy);
+                                      state.cart?.shouldGetHardCopy == true
+                                          ? false
+                                          : true);
                             },
                             child: Container(
                                 padding: EdgeInsets.symmetric(
@@ -317,13 +319,16 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                               width: 16,
                                               child: Checkbox(
                                                   value: state
-                                                      .cart.shouldGetHardCopy,
+                                                      .cart?.shouldGetHardCopy,
                                                   onChanged: (value) {
                                                     BlocProvider.of<CartCubit>(
                                                             context)
-                                                        .updateHardCopy(!state
-                                                            .cart
-                                                            .shouldGetHardCopy);
+                                                        .updateHardCopy(state
+                                                                    .cart
+                                                                    ?.shouldGetHardCopy ==
+                                                                true
+                                                            ? false
+                                                            : true);
                                                   },
                                                   side: BorderSide(
                                                       color: AppColors
@@ -405,11 +410,11 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                       title: 'Package added',
                                       value: '₹$cartTestPrices'),
                                   SizedBox(height: 4),
-                                  if (state.cart.shouldGetHardCopy)
+                                  if (state.cart?.shouldGetHardCopy == true)
                                     SummaryInfoRow(
                                         title: 'Hard copy charges',
                                         value:
-                                            '₹${state.cart.shouldGetHardCopy ? '${pincode?.hardCopyCharge}' : '0'}'),
+                                            '₹${state.cart?.shouldGetHardCopy == true ? '${pincode?.hardCopyCharge}' : '0'}'),
                                   if (!(cartTestPrices >=
                                       (pincode?.minOrder ?? 0)))
                                     Column(
@@ -432,7 +437,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                                       color: AppColors
                                                           .primaryBlue)),
                                         ]),
-                                  if (state.cart.appliedCoupon != null)
+                                  if (state.cart?.appliedCoupon != null)
                                     Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -440,15 +445,15 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                           SizedBox(height: 6),
                                           SummaryInfoRow(
                                               title:
-                                                  '${state.cart.appliedCoupon!.couponCode} applied!',
+                                                  '${state.cart!.appliedCoupon!.couponCode} applied!',
                                               value:
-                                                  '-₹${state.cart.appliedCouponAmount?.toInt() ?? 0}',
+                                                  '-₹${state.cart?.appliedCouponAmount?.toInt() ?? 0}',
                                               color: AppColors.green),
                                           SizedBox(height: 2),
                                           _buildCouponDetailText(
-                                              state.cart.appliedCoupon!),
+                                              state.cart!.appliedCoupon!),
                                         ]),
-                                  if (state.cart.redeemCoins &&
+                                  if (state.cart?.redeemCoins == true &&
                                       _config.qcEnable == '1')
                                     Padding(
                                         padding: const EdgeInsets.only(top: 4),
@@ -456,21 +461,21 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                             title:
                                                 'Qris coins (${_config.qcUsedCoins.toInt()}% of packages amount)',
                                             value:
-                                                '-₹${state.cart.redeemedQrisCoins}')),
+                                                '-₹${state.cart!.redeemedQrisCoins}')),
                                   SizedBox(height: 4),
                                   SummaryInfoRow(
                                       title: 'Wallet amount',
                                       value:
-                                          '-₹${BlocProvider.of<CartCubit>(context).state.cart.walletRedeemedAmount}'),
+                                          '-₹${BlocProvider.of<CartCubit>(context).state.cart?.walletRedeemedAmount}'),
                                   if (BlocProvider.of<CartCubit>(context)
                                           .state
                                           .cart
-                                          .walletRedeemedAmount !=
+                                          ?.walletRedeemedAmount !=
                                       walletBalanceForUi)
                                     Padding(
                                         padding: const EdgeInsets.only(top: 2),
                                         child: Text(
-                                            '(Balance after this transaction ₹${walletBalanceForUi - BlocProvider.of<CartCubit>(context).state.cart.walletRedeemedAmount})',
+                                            '(Balance after this transaction ₹${walletBalanceForUi - BlocProvider.of<CartCubit>(context).state.cart!.walletRedeemedAmount!})',
                                             style: _textTheme.labelSmall!
                                                 .copyWith(
                                                     fontWeight: FontWeight.w300,
@@ -509,8 +514,9 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                                                     height: 16,
                                                     width: 16,
                                                     child: Checkbox(
-                                                        value: state
-                                                            .cart.redeemCoins,
+                                                        value: state.cart
+                                                                ?.redeemCoins ==
+                                                            true,
                                                         onChanged: (value) {
                                                           BlocProvider.of<
                                                                       CartCubit>(
@@ -762,9 +768,9 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
       final cart = cartCubit.state.cart;
       final cartFinalValue = cartCubit.getCartFinalValue();
 
-      if (cart.selectedAddress == null ||
-          cart.collectionDate == null ||
-          cart.timeSlot == null) {
+      if (cart?.selectedAddress == null ||
+          cart?.collectionDate == null ||
+          cart?.timeSlot == null) {
         AppConstants.showSnackbar(
           text: 'Please select address, date and time slot before paying.',
           type: SnackbarType.warning,
@@ -773,7 +779,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
       }
 
       final encodedAddress = AppConstants.encodeStringToBase64(
-        json.encode(cart.selectedAddress!.toJson()),
+        json.encode(cart!.selectedAddress!.toJson()),
       );
       final encodedProductData =
           AppConstants.encodeStringToBase64(_getProductsData());
@@ -803,7 +809,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
           'slotDate': DateFormat('yyyyMMdd').format(cart.collectionDate!),
           'slotTime':
               '${cart.timeSlot!.startingTime}-${cart.timeSlot!.endingTime}',
-          'pincode': cart.pincode!.pincode.toString(),
+          'pincode': cart.selectedAddress?.pincode!.toString(),
           'encodedAddress': encodedAddress,
           'encodedCouponData': encodedCouponData,
           'appliedCouponAmount': cart.appliedCouponAmount ?? 0,
@@ -862,13 +868,13 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
       final cart = cartCubit.state.cart;
 
       final encodedAddress = AppConstants.encodeStringToBase64(
-        json.encode(cart.selectedAddress!.toJson()),
+        json.encode(cart?.selectedAddress!.toJson()),
       );
 
-      final encodedCouponData = cart.appliedCoupon == null
+      final encodedCouponData = cart?.appliedCoupon == null
           ? ''
           : AppConstants.encodeStringToBase64(
-              json.encode(cart.appliedCoupon!.toJson()),
+              json.encode(cart!.appliedCoupon!.toJson()),
             );
 
       final productsData =
@@ -882,13 +888,12 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
         cartFinalValue: cartCubit.getCartFinalValue().round(),
         paymentMode: walletPaid ? PaymentMode.prepaid : _selectedPaymentMode!,
         razorpayPaymentId: razorpayPaymentId,
-        coupon: cart.appliedCoupon,
-        redeemedWalletAmount: cart.walletRedeemedAmount,
-        redeemedQrisCoins: cart.redeemedQrisCoins,
+        coupon: cart?.appliedCoupon,
+        redeemedWalletAmount: cart!.walletRedeemedAmount!,
+        redeemedQrisCoins: cart.redeemedQrisCoins!,
         slotDate: DateFormat('yyyyMMdd').format(cart.collectionDate!),
-        slotTime:
-            '${cart.timeSlot!.startingTime}-${cart.timeSlot!.endingTime}',
-        pincode: cart.pincode!.pincode.toString(),
+        slotTime: '${cart.timeSlot!.startingTime}-${cart.timeSlot!.endingTime}',
+        pincode: cart.selectedAddress!.pincode!.toString(),
         encodedProductData: productsData,
         encodedAddress: encodedAddress,
         encodedCouponData: encodedCouponData,
@@ -896,7 +901,7 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
         paymentResponse: '',
         tubeType: cartCubit.getCollectiveTubeType(),
         sampleType: cartCubit.getCollectiveSampleType(),
-        appliedCouponAmount: cart.appliedCouponAmount ?? 0,
+        appliedCouponAmount: cart.appliedCouponAmount?.toDouble() ?? 0,
         phoneNumber: ApiParams.getInstance()!.phoneNumber!,
         wellnessAnswers: widget.wellnessAnswers
             ?.map((answer) => answer.copyWith.call(
@@ -929,15 +934,13 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
     }
   }
 
-
-
   String _getProductsData() {
     final cart = BlocProvider.of<CartCubit>(context).state.cart;
     final patientsCubit = BlocProvider.of<PatientsCubit>(context);
 
     final productMap = <String, OrderData>{};
 
-    for (var cartTest in cart.cartTests) {
+    for (var cartTest in cart!.cartTests) {
       final patientsMap = {
         for (var patientId in cartTest.patientIds)
           patientId.toString(): OrderPatient(
@@ -960,14 +963,14 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
                   '')
       };
 
-      productMap[cartTest.test.id.toString()] = OrderData(
+      productMap[cartTest.test!.id.toString()] = OrderData(
           product: Product(
-              title: cartTest.test.title ?? '',
-              id: cartTest.test.id.toString(),
-              price: cartTest.test.price?.toString() ?? '0',
+              title: cartTest.test!.title ?? '',
+              id: cartTest.test!.id.toString(),
+              price: cartTest.test!.price?.toString() ?? '0',
               quantity: cartTest.patientIds.length,
-              sampleType: cartTest.test.sampleType ?? '',
-              tubeType: cartTest.test.tubeType ?? ''),
+              sampleType: cartTest.test!.sampleType ?? '',
+              tubeType: cartTest.test!.tubeType ?? ''),
           patients: patientsMap);
     }
 

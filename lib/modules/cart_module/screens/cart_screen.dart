@@ -49,9 +49,9 @@ class _CartScreenState extends State<CartScreen> {
         body: SafeArea(
             child: BlocBuilder<CartCubit, CartState>(
                 buildWhen: (p, c) =>
-                    p.cart.cartTests.length != c.cart.cartTests.length,
+                    p.cart?.cartTests.length != c.cart?.cartTests.length,
                 builder: (context, state) {
-                  if (state.cart.cartTests.isEmpty) {
+                  if (state.cart == null || state.cart!.cartTests.isEmpty) {
                     return Center(
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -86,11 +86,12 @@ class _CartScreenState extends State<CartScreen> {
                                   SelectPatientTab(
                                       testPackageModel: widget.testPackageModel,
                                       onContinue: (selectedPatient) async {
-                                        await BlocProvider.of<CartCubit>(context)
+                                        await BlocProvider.of<CartCubit>(
+                                                context)
                                             .addPatientToTest(
-                                              patientId: selectedPatient.id!,
-                                              testId: widget.testPackageModel!.id,
-                                            );
+                                          patientId: selectedPatient.id!,
+                                          testId: widget.testPackageModel!.id,
+                                        );
                                         _animateToPage(pageIndex: 1);
                                       }),
                                   SelectAddressTab(onContinue: (address) async {
@@ -102,9 +103,9 @@ class _CartScreenState extends State<CartScreen> {
                                     final cartCubit =
                                         BlocProvider.of<CartCubit>(context);
                                     final cart = cartCubit.state.cart;
-                                    if (cart.collectionDate != null) {
+                                    if (cart?.collectionDate != null) {
                                       await cartCubit.updateCollectionDate(
-                                          cart.collectionDate!);
+                                          cart!.collectionDate!);
                                     }
                                     _animateToPage(pageIndex: 3);
                                   }),

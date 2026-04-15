@@ -34,7 +34,7 @@ class CouponListTile extends StatelessWidget {
         BlocBuilder<CartCubit, CartState>(
           builder: (context, state) {
             final isApplied =
-                state.cart.appliedCoupon?.couponCode == coupon.couponCode;
+                state.cart?.appliedCoupon?.couponCode == coupon.couponCode;
 
             return SizedBox(
                 height: 32,

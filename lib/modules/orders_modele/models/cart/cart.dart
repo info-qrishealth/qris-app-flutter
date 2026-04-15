@@ -1,40 +1,53 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
-import 'package:qris_health/modules/health_module/models/wellness_answer/wellness_answer.dart';
+import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
 
 import '../../../address_module/models/address/address.dart';
-import '../../../address_module/models/pincode/pincode.dart';
+import '../../../patients_module/models/patient/patient.dart';
 import '../coupon/coupon.dart';
-import '../time_slot/time_slot.dart';
 
 part 'cart.freezed.dart';
 part 'cart.g.dart';
 
-@freezed
+@Freezed(makeCollectionsUnmodifiable: false)
 class Cart with _$Cart {
-  const factory Cart(
-      {required List<CartTest> cartTests,
-      Address? selectedAddress,
-      TimeSlot? timeSlot,
-      DateTime? collectionDate,
-      Coupon? appliedCoupon,
-      double? appliedCouponAmount,
-      @Default(false) bool shouldGetHardCopy,
-      Pincode? pincode,
-      @Default(0) int walletRedeemedAmount,
-      @Default(0) int redeemedQrisCoins,
-      List<WellnessAnswer>? wellnessAnswers,
-      @Default(false) bool redeemCoins}) = _Cart;
+  const factory Cart({
+    int? userId,
+    @JsonKey(name: 'items') @Default([]) List<CartItem> cartTests,
+    DateTime? collectionDate,
+    @JsonKey(name: 'hardCopy') bool? shouldGetHardCopy,
+    bool? redeemCoins,
+    @JsonKey(name: 'address') Address? selectedAddress,
+    @JsonKey(name: 'slot') TimeSlot? timeSlot,
+    @JsonKey(name: 'coupon') Coupon? appliedCoupon,
+    int? cartTestPrices,
+    int? baseCartValue,
+    int? deliveryCharge,
+    int? hardCopyCharges,
+    int? cartFinalValue,
+    int? walletRedeemedAmount,
+    int? appliedCouponAmount,
+    int? redeemedQrisCoins,
+    String? sampleType,
+    String? tubeType,
+    int? totalCartValue,
+    int? collectionCharge,
+    int? availableWalletBalance,
+    int? availableQrisCoins,
+  }) = _Cart;
 
   factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
 }
 
 @freezed
-class CartTest with _$CartTest {
-  const factory CartTest(
-      {required TestPackageModel test,
-      required List<int> patientIds}) = _CartTest;
+class CartItem with _$CartItem {
+  const factory CartItem({
+    int? testId,
+    @Default([]) List<int> patientIds,
+    TestPackageModel? test,
+    @Default([]) List<Patient> patients,
+  }) = _CartItem;
 
-  factory CartTest.fromJson(Map<String, dynamic> json) =>
-      _$CartTestFromJson(json);
+  factory CartItem.fromJson(Map<String, dynamic> json) =>
+      _$CartItemFromJson(json);
 }

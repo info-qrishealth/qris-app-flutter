@@ -31,7 +31,7 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
     super.initState();
     final cartCubit = BlocProvider.of<CartCubit>(context);
 
-    if (cartCubit.state.cart.collectionDate == null) {
+    if (cartCubit.state.cart?.collectionDate == null) {
       cartCubit.setCollectionDateLocal(DateTime.now());
     }
 
@@ -109,7 +109,7 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
                         final toDateTime = timeSlot.endingTime.toDateTime;
 
                         final isSelected =
-                            state.cart.timeSlot?.id == timeSlot.id;
+                            state.cart?.timeSlot?.id == timeSlot.id;
 
                         return InkWell(
                             onTap: () {
@@ -145,10 +145,10 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
       SizedBox(height: 16),
       BlocBuilder<CartCubit, CartState>(builder: (context, state) {
         return ElevatedButton(
-            onPressed:
-                state.cart.collectionDate == null || state.cart.timeSlot == null
-                    ? null
-                    : () async => widget.onContinue(),
+            onPressed: state.cart?.collectionDate == null ||
+                    state.cart?.timeSlot == null
+                ? null
+                : () async => widget.onContinue(),
             style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue),
             child: Text('Continue'));
@@ -159,7 +159,7 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
 
   Widget _buildDateTile(DateTime dateTime) {
     final isSelected = dateTime.isEqualDayTo(
-        BlocProvider.of<CartCubit>(context).state.cart.collectionDate);
+        BlocProvider.of<CartCubit>(context).state.cart?.collectionDate);
 
     return InkWell(
         onTap: () {
@@ -197,7 +197,7 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
   void _initializeTimeSlotFuture() {
     final cartCubit = BlocProvider.of<CartCubit>(context);
     _timeSlotFuture = OrderService.getValidTimeslots(
-        date: cartCubit.state.cart.collectionDate!);
+        date: cartCubit.state.cart!.collectionDate!);
     setState(() {});
   }
 }
