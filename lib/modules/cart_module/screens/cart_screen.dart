@@ -52,8 +52,6 @@ class _CartScreenState extends State<CartScreen> {
                     p.cart.cartTests.length != c.cart.cartTests.length,
                 builder: (context, state) {
                   if (state.cart.cartTests.isEmpty) {
-                    BlocProvider.of<CartCubit>(context).clearCart();
-
                     return Center(
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -87,19 +85,27 @@ class _CartScreenState extends State<CartScreen> {
                                     children: [
                                   SelectPatientTab(
                                       testPackageModel: widget.testPackageModel,
-                                      onContinue: (selectedPatient) {
-                                        BlocProvider.of<CartCubit>(context)
+                                      onContinue: (selectedPatient) async {
+                                        await BlocProvider.of<CartCubit>(context)
                                             .addPatientToTest(
-                                                patientId: selectedPatient.id!,
-                                                testId: widget
-                                                    .testPackageModel!.id);
-
+                                              patientId: selectedPatient.id!,
+                                              testId: widget.testPackageModel!.id,
+                                            );
                                         _animateToPage(pageIndex: 1);
                                       }),
-                                  SelectAddressTab(onContinue: () {
+                                  SelectAddressTab(onContinue: (address) async {
+                                    await BlocProvider.of<CartCubit>(context)
+                                        .changeAddress(address);
                                     _animateToPage(pageIndex: 2);
                                   }),
-                                  TimeSlotTab(onContinue: () {
+                                  TimeSlotTab(onContinue: () async {
+                                    final cartCubit =
+                                        BlocProvider.of<CartCubit>(context);
+                                    final cart = cartCubit.state.cart;
+                                    if (cart.collectionDate != null) {
+                                      await cartCubit.updateCollectionDate(
+                                          cart.collectionDate!);
+                                    }
                                     _animateToPage(pageIndex: 3);
                                   }),
                                   BillSummaryTab(

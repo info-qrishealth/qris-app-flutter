@@ -21,7 +21,6 @@ import 'package:qris_health/modules/doctor_consultation_module/screens/doctor_co
 import 'package:qris_health/shared/services/token_manager.dart';
 import 'package:qris_health/modules/health_article_module/screens/health_articles_screen.dart';
 import 'package:qris_health/modules/health_module/screens/mental_wellness_screen.dart';
-import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/users_module/cubits/user_cubit.dart';
 import 'package:qris_health/shared/components/underline_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -197,13 +196,6 @@ class _MainDrawerState extends State<MainDrawer> {
 
   Future<void> _logout() async {
     try {
-      // Clear cart from backend and local storage
-      try {
-        await BlocProvider.of<CartCubit>(context).clearCart();
-      } catch (e) {
-        debugPrint('Error clearing cart: $e');
-      }
-
       final prefs = await SharedPreferences.getInstance();
       prefs.clear();
       ApiParams.getInstance()!.userId = null;

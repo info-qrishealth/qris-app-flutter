@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:qris_health/constants/enums/questionnaire_type.dart';
@@ -9,7 +8,6 @@ import 'package:qris_health/modules/all_scans_module/models/test_package_model/t
 import 'package:qris_health/modules/health_module/models/wellness_answer/wellness_answer.dart';
 import 'package:qris_health/modules/health_module/models/wellness_question/wellness_question.dart';
 import 'package:qris_health/modules/health_module/services/wellness_service.dart';
-import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/orders_modele/helpers/cart_helper.dart';
 import 'package:qris_health/shared/components/common_app_bar.dart';
 import 'package:qris_health/shared/components/common_html_text.dart';
@@ -317,9 +315,6 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
 
                                           if (_currentQuestionIndex ==
                                               _questions.length - 1) {
-                                            BlocProvider.of<CartCubit>(context)
-                                                .clearCart();
-
                                             final wellnessAnswers = _answers
                                                 .map((answer) => answer.copyWith
                                                     .call(

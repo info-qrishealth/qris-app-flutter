@@ -1,13 +1,7 @@
-import 'package:flutter/material.dart';
-
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 
-/// Cart-related helpers for the bill summary tab. No business logic or calculations.
-/// Keeps BillSummaryTab build method focused on UI.
 
-/// Updates cart pincode only when the selected pincode value actually changed,
-/// to avoid clearing cart summary on every build.
 void syncPincodeIfNeeded({
   required CartCubit cartCubit,
   required CartState state,
@@ -19,19 +13,3 @@ void syncPincodeIfNeeded({
   }
 }
 
-void scheduleLoadCartSummaryIfNeeded({
-  required BuildContext context,
-  required CartState state,
-  required CartCubit cartCubit,
-  required String? userId,
-  Pincode? pincode,
-}) {
-  if (state.cartSummary != null) return;
-  if (state.cart.cartTests.isEmpty || userId == null) return;
-
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (context.mounted) {
-      cartCubit.loadCartSummary(userId: userId, context: context);
-    }
-  });
-}

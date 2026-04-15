@@ -15,7 +15,7 @@ import 'package:qris_health/styles/app_colors.dart';
 import '../../../orders_modele/models/time_slot/time_slot.dart';
 
 class TimeSlotTab extends StatefulWidget {
-  final Function() onContinue;
+  final Future<void> Function() onContinue;
   const TimeSlotTab({super.key, required this.onContinue});
 
   @override
@@ -32,7 +32,7 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
     final cartCubit = BlocProvider.of<CartCubit>(context);
 
     if (cartCubit.state.cart.collectionDate == null) {
-      cartCubit.updateCollectionDate(DateTime.now());
+      cartCubit.setCollectionDateLocal(DateTime.now());
     }
 
     _initializeTimeSlotFuture();
@@ -114,7 +114,7 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
                         return InkWell(
                             onTap: () {
                               BlocProvider.of<CartCubit>(context)
-                                  .updateTimeSlot(timeSlot);
+                                  .setTimeSlotLocal(timeSlot);
                             },
                             child: Container(
                                 alignment: Alignment.center,
@@ -148,7 +148,7 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
             onPressed:
                 state.cart.collectionDate == null || state.cart.timeSlot == null
                     ? null
-                    : widget.onContinue,
+                    : () async => widget.onContinue(),
             style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue),
             child: Text('Continue'));
@@ -163,8 +163,8 @@ class _TimeSlotTabState extends State<TimeSlotTab> {
 
     return InkWell(
         onTap: () {
-          BlocProvider.of<CartCubit>(context).updateCollectionDate(dateTime);
-          BlocProvider.of<CartCubit>(context).updateTimeSlot(null);
+          BlocProvider.of<CartCubit>(context).setCollectionDateLocal(dateTime);
+          BlocProvider.of<CartCubit>(context).setTimeSlotLocal(null);
           _initializeTimeSlotFuture();
         },
         child: Container(

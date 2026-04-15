@@ -13,7 +13,7 @@ import '../../../orders_modele/cart_cubit/cart_cubit.dart';
 import '../../../patients_module/cubits/patients_cubit/patients_cubit.dart';
 
 class SelectPatientTab extends StatefulWidget {
-  final Function(Patient) onContinue;
+  final Future<void> Function(Patient) onContinue;
   final TestPackageModel? testPackageModel;
   const SelectPatientTab(
       {super.key, required this.onContinue, this.testPackageModel});
@@ -70,7 +70,7 @@ class _SelectPatientTabState extends State<SelectPatientTab> {
           child: ElevatedButton(
               onPressed: _selectedPatient == null
                   ? null
-                  : () => widget.onContinue(_selectedPatient!),
+                  : () async => widget.onContinue(_selectedPatient!),
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryBlue),
               child: Text('Continue'))),

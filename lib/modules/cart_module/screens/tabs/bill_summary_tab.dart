@@ -100,14 +100,6 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
               state: state,
               pincode: pincode,
             );
-            scheduleLoadCartSummaryIfNeeded(
-              context: context,
-              state: state,
-              cartCubit: cartCubit,
-              userId: ApiParams.getInstance()?.userId?.toString(),
-              pincode: pincode,
-            );
-
             /// Cart test prices (from backend summary)
             final cartTestPrices = cartCubit.getCartTestPrices().toInt();
 

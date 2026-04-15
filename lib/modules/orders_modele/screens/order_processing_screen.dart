@@ -14,7 +14,6 @@ import '../../../constants/enums/snackbar_type.dart';
 import '../../home_module/screens/home_screen.dart';
 import '../../refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import '../../refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
-import '../cart_cubit/cart_cubit.dart';
 import '../services/order_service.dart';
 
 class OrderProcessingBottomSheet extends StatefulWidget {
@@ -43,7 +42,6 @@ class _OrderProcessingBottomSheetState
 
   //       BlocProvider.of<QrisCoinsCubit>(context).getQrisCoins();
   //       BlocProvider.of<QrisWalletCubit>(context).getWalletEntries();
-  //       BlocProvider.of<CartCubit>(context).clearCart();
 
   //       Timer.periodic(Duration(seconds: 1), (timer) {
   //         setState(() {
@@ -82,7 +80,6 @@ class _OrderProcessingBottomSheetState
 
         BlocProvider.of<QrisCoinsCubit>(context).getQrisCoins();
         BlocProvider.of<QrisWalletCubit>(context).getWalletEntries();
-        BlocProvider.of<CartCubit>(context).clearCart();
 
         Timer.periodic(Duration(seconds: 1), (timer) {
           setState(() {
