@@ -7,7 +7,6 @@ import 'package:qris_health/modules/orders_modele/models/user_order_report/user_
 import 'package:qris_health/shared/utils/wrappers/wrapper.dart';
 
 import '../models/order_cancellation_model/order_cancellation_model.dart';
-import '../models/order_req_model/order_req_model.dart';
 import '../models/order_status/order_status.dart';
 
 class OrderService {
@@ -57,13 +56,10 @@ class OrderService {
     }
   }
 
-  static Future<Order> createOrder({
-      required OrderReqModel orderReqModel,
-      Map<String, dynamic>? payload}) async {
+  static Future<Order> createOrder({required Map<String, dynamic> payload}) async {
     final url = '${AppConstants.baseUrl}/orders/create';
     try {
-      final body = payload ?? orderReqModel.toJson();
-      final response = await Wrapper.post(url, json.encode(body));
+      final response = await Wrapper.post(url, json.encode(payload));
       return Order.fromJson(json.decode(response)['body']);
     } catch (e) {
       rethrow;
