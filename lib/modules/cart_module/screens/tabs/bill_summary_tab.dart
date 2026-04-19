@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 import 'package:qris_health/constants/app_constants.dart';
 import 'package:qris_health/constants/enums/coupon_discount_type.dart';
 import 'package:qris_health/constants/enums/coupon_type.dart';
@@ -18,6 +15,7 @@ import 'package:qris_health/modules/home_module/components/package_list_tile.dar
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/screens/order_processing_screen.dart';
+import 'package:qris_health/modules/orders_modele/services/order_service.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
@@ -768,30 +766,20 @@ class _BillSummaryTabState extends State<BillSummaryTab> {
         return;
       }
 
-      final response = await http.post(
-        Uri.parse('${AppConstants.baseUrl}/orders/create'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': ApiParams.getInstance()!.authorization ?? '',
-        },
-        body: jsonEncode({
-          'paymentMode': 'online',
-          'referBy': _referController.text.trim(),
-          'wellnessAnswers': widget.wellnessAnswers
-              ?.map((answer) => answer.copyWith.call(
-                    answer: answer.answer.trim(),
-                    ptntId: cart.cartTests.firstOrNull?.patientIds.firstOrNull
-                        .toString(),
-                  ))
-              .toList(),
-        }),
-      );
-
-      final decoded = jsonDecode(response.body);
+      final decoded = await OrderService.createOrderRaw({
+        'paymentMode': PaymentMode.online.name,
+        'referBy': _referController.text.trim(),
+        'wellnessAnswers': widget.wellnessAnswers
+            ?.map((answer) => answer.copyWith.call(
+                  answer: answer.answer.trim(),
+                  ptntId: cart.cartTests.firstOrNull?.patientIds.firstOrNull
+                      .toString(),
+                ))
+            .toList(),
+      });
       final body = decoded['body'] ?? {};
 
-      if (response.statusCode != 200 ||
-          decoded['error'] != null ||
+      if (decoded['error'] != null ||
           body['razorpayOrderId'] == null ||
           body['key'] == null) {
         AppConstants.showSnackbar(

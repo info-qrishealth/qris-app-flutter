@@ -56,14 +56,16 @@ class OrderService {
     }
   }
 
-  static Future<Order> createOrder({required Map<String, dynamic> payload}) async {
+  static Future<Map<String, dynamic>> createOrderRaw(
+      Map<String, dynamic> payload) async {
     final url = '${AppConstants.baseUrl}/orders/create';
-    try {
-      final response = await Wrapper.post(url, json.encode(payload));
-      return Order.fromJson(json.decode(response)['body']);
-    } catch (e) {
-      rethrow;
-    }
+    final response = await Wrapper.post(url, json.encode(payload));
+    return json.decode(response) as Map<String, dynamic>;
+  }
+
+  static Future<Order> createOrder({required Map<String, dynamic> payload}) async {
+    final decoded = await createOrderRaw(payload);
+    return Order.fromJson(decoded['body'] as Map<String, dynamic>);
   }
 
   static Future<void> requestCancellation(
