@@ -22,7 +22,7 @@ import '../../../address_module/models/address/address.dart';
 import '../../components/patient_tile_layout.dart';
 
 class SelectAddressTab extends StatefulWidget {
-  final Function() onContinue;
+  final Future<void> Function(Address) onContinue;
   const SelectAddressTab({super.key, required this.onContinue});
 
   @override
@@ -182,7 +182,7 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                         return InkWell(
                             onTap: () {
                               BlocProvider.of<CartCubit>(context)
-                                  .changeAddress(address);
+                                  .setSelectedAddressLocal(address);
                             },
                             child: AddressListTile(
                                 isSelected: address.id ==
@@ -198,7 +198,7 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
                                     if (state.cart.selectedAddress?.id ==
                                         address.id) {
                                       BlocProvider.of<CartCubit>(context)
-                                          .changeAddress(null);
+                                          .setSelectedAddressLocal(null);
                                     }
 
                                     _addresses![index] = updatedAddress;
@@ -224,7 +224,9 @@ class _SelectAddressTabState extends State<SelectAddressTab> {
       BlocBuilder<CartCubit, CartState>(builder: (context, state) {
         return ElevatedButton(
             onPressed:
-                state.cart.selectedAddress == null ? null : widget.onContinue,
+                state.cart.selectedAddress == null
+                    ? null
+                    : () async => widget.onContinue(state.cart.selectedAddress!),
             style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue),
             child: Text('Continue'));

@@ -1,24 +1,18 @@
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qris_health/constants/enums/coupon_discount_type.dart';
-import 'package:qris_health/constants/enums/coupon_type.dart';
 import 'package:qris_health/modules/address_module/models/pincode/pincode.dart';
 import 'package:qris_health/modules/all_scans_module/models/test_package_model/test_package_model.dart';
-import 'package:qris_health/modules/orders_modele/models/coupon/coupon.dart';
 import 'package:qris_health/modules/orders_modele/models/time_slot/time_slot.dart';
+import 'package:qris_health/modules/orders_modele/services/cart_remote_mapper.dart';
 import 'package:qris_health/modules/orders_modele/services/cart_service.dart';
 import 'package:qris_health/modules/patients_module/cubits/patients_cubit/patients_cubit.dart';
-import 'package:qris_health/modules/patients_module/models/patient/patient.dart';
-import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
-import 'package:qris_health/modules/refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
-import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
 
 import '../../address_module/models/address/address.dart';
 import '../models/cart/cart.dart';
+import '../models/cart/cart_summary.dart';
 
 part 'cart_state.dart';
 
@@ -29,386 +23,262 @@ class CartCubit extends Cubit<CartState> {
 
   double get cartTestValue => getCartTestPrices();
 
-  /// Load cart from backend/local storage
-  Future<void> loadCart({required String userId, BuildContext? context}) async {
-    _currentUserId = userId;
-    
-    try {
-      final cartResponse = await CartService.loadCart(userId: userId);
-      
-      if (cartResponse != null && cartResponse['cart_data'] != null) {
-        final cartDataString = cartResponse['cart_data'] as String;
-        
-        if (cartDataString.isNotEmpty) {
-          final cartJson = json.decode(cartDataString);
-          final cart = Cart.fromJson(cartJson);
-          
-          // Load patients into PatientsCubit if context is provided
-          if (context != null && cartResponse['patients'] != null) {
-            final patientsMap = cartResponse['patients'] as Map<String, dynamic>;
-            final patients = patientsMap.values
-                .map((patientData) => Patient.fromJson(patientData as Map<String, dynamic>))
-                .toList();
-            
-            if (patients.isNotEmpty && context.mounted) {
-              final patientsCubit = BlocProvider.of<PatientsCubit>(context);
-              for (var patient in patients) {
-                // Check if patient already exists, if not add it
-                final existingPatient = patientsCubit.getPatientByPatientId(patientId: patient.id);
-                if (existingPatient == null) {
-                  patientsCubit.addNewPatient(patient);
-                }
-              }
-            }
-          }
-          
-          emit(CartUpdated(cart: cart));
-        }
-      }
-    } catch (e) {
-      debugPrint('Error loading cart: $e');
-    }
-  }
+  String _ymd(DateTime d) =>
+      '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
 
-  /// Save cart to backend and local storage
-  Future<void> _saveCart() async {
-    if (_currentUserId == null) return;
-    
-    try {
-      final cartJson = state.cart.toJson();
-      final cartDataString = json.encode(cartJson);
-      
-      await CartService.saveCart(
-        userId: _currentUserId!,
-        cartData: cartDataString,
-      );
-    } catch (e) {
-      debugPrint('Error saving cart: $e');
-    }
-  }
-
-  void _updateCart({required Cart cart}) {
-    emit(CartUpdated(cart: cart));
-    _saveCart();
-  }
-
-  void addToCart(TestPackageModel testPackageModel) {
-    if (state.cart.cartTests
-        .any((element) => element.test.id == testPackageModel.id)) {
+  Future<void> _emitFromRemoteBody(Map<String, dynamic>? body, [BuildContext? context]) async {
+    if (body == null) {
+      emit(CartInitial(cart: const Cart(cartTests: []), cartSummary: null));
       return;
     }
+    final items = body['items'];
+    if (items == null || items is! List || items.isEmpty) {
+      emit(CartInitial(cart: const Cart(cartTests: []), cartSummary: null));
+      try {
+        await CartService.clearCartLocally();
+      } catch (_) {}
+      return;
+    }
+    final cart = CartRemoteMapper.cartFromServerBody(body);
+    final summary = CartRemoteMapper.summaryFromServerBody(body);
+    if (cart.cartTests.isEmpty) {
+      emit(CartInitial(cart: const Cart(cartTests: []), cartSummary: null));
+      try {
+        await CartService.clearCartLocally();
+      } catch (_) {}
+      return;
+    }
+    emit(CartUpdated(cart: cart, cartSummary: summary));
 
-    removeAppliedCouponAndCoins();
-    _updateCart(
-        cart: state.cart.copyWith.call(cartTests: [
-      ...state.cart.cartTests,
-      CartTest(test: testPackageModel, patientIds: [])
-    ]));
-  }
+    try {
+      await CartService.saveCartLocally(cartData: json.encode(body));
+    } catch (_) {}
 
-  void addPatientToTest({required int patientId, required int testId}) {
-    final cartTestIndex =
-        state.cart.cartTests.indexWhere((element) => element.test.id == testId);
-
-    if (cartTestIndex != -1) {
-      final cartTest = state.cart.cartTests[cartTestIndex];
-      final updatedCartTest = cartTest.copyWith
-          .call(patientIds: [...cartTest.patientIds, patientId]);
-      final tests = [...state.cart.cartTests]..removeAt(cartTestIndex);
-      removeAppliedCouponAndCoins();
-
-      _updateCart(
-          cart: state.cart.copyWith.call(
-              cartTests: [...tests]..insert(cartTestIndex, updatedCartTest)));
+    if (context != null && context.mounted) {
+      final patients = CartRemoteMapper.patientsFromServerBody(body);
+      if (patients.isNotEmpty) {
+        final patientsCubit = BlocProvider.of<PatientsCubit>(context);
+        for (final patient in patients) {
+          final existing = patientsCubit.getPatientByPatientId(patientId: patient.id);
+          if (existing == null) {
+            patientsCubit.addNewPatient(patient);
+          }
+        }
+      }
     }
   }
 
-  bool isPatientAlreadyAddedToThisTest(
-      {required int testId, required int patientId}) {
-    final cartTestIndex =
-        state.cart.cartTests.indexWhere((element) => element.test.id == testId);
-
-    if (cartTestIndex != -1) {
-      final cartTest = state.cart.cartTests[cartTestIndex];
-      return cartTest.patientIds.any((element) => element == patientId);
-    }
-
-    return false;
-  }
-
-  void changeAddress(Address? address) {
-    _updateCart(cart: state.cart.copyWith.call(selectedAddress: address));
-  }
-
-  void removePatientFromTest({required int patientId, required int testId}) {
-    final cartTestIndex =
-        state.cart.cartTests.indexWhere((element) => element.test.id == testId);
-
-    if (cartTestIndex != -1) {
-      final cartTest = state.cart.cartTests[cartTestIndex];
-      final updatedCartTest = cartTest.copyWith
-          .call(patientIds: [...cartTest.patientIds]..removeAt(cartTestIndex));
-      final tests = [...state.cart.cartTests]..removeAt(cartTestIndex);
-      removeAppliedCouponAndCoins();
-
-      _updateCart(
-          cart: state.cart.copyWith.call(
-              cartTests: [...tests]..insert(cartTestIndex, updatedCartTest)));
+  Future<void> refreshCartFromServer({BuildContext? context}) async {
+    if (_currentUserId == null) return;
+    final ctx = context;
+    try {
+      final body = await CartService.fetchFullCart();
+      final safeContext = ctx != null && ctx.mounted ? ctx : null;
+      await _emitFromRemoteBody(body, safeContext);
+    } catch (e) {
+      debugPrint('refreshCartFromServer: $e');
     }
   }
 
-  void removeTestFromCart(int testId) {
-    final index =
-        state.cart.cartTests.indexWhere((element) => element.test.id == testId);
+  Future<void> _applyServerBody(Map<String, dynamic>? body, {BuildContext? context}) async {
+    final safeContext = context != null && context.mounted ? context : null;
+    await _emitFromRemoteBody(body, safeContext);
+  }
 
-    if (index != -1) {
-      removeAppliedCouponAndCoins();
-      _updateCart(
-          cart: state.cart.copyWith
-              .call(cartTests: [...state.cart.cartTests]..removeAt(index)));
+  Future<void> loadCart({required String userId, BuildContext? context}) async {
+    _currentUserId = userId;
+    await refreshCartFromServer(context: context);
+  }
+
+  Future<void> addToCart(TestPackageModel testPackageModel) async {
+    if (_currentUserId == null) return;
+    if (state.cart.cartTests.any((e) => e.test.id == testPackageModel.id)) {
+      return;
+    }
+    final body = await CartService.addCartItem(
+      testId: testPackageModel.id,
+      type: testPackageModel.type?.name,
+    );
+    await _applyServerBody(body);
+  }
+
+  bool isPatientAlreadyAddedToThisTest({required int testId, required int patientId}) {
+    final cartTestIndex = state.cart.cartTests.indexWhere((e) => e.test.id == testId);
+    if (cartTestIndex == -1) return false;
+    return state.cart.cartTests[cartTestIndex].patientIds.contains(patientId);
+  }
+
+  Future<void> addPatientToTest({required int patientId, required int testId}) async {
+    if (_currentUserId == null) return;
+    final body =
+        await CartService.addPatientToCartItem(testId: testId, patientId: patientId);
+    await _applyServerBody(body);
+  }
+
+  Future<void> removePatientFromTest({required int patientId, required int testId}) async {
+    if (_currentUserId == null) return;
+    final body =
+        await CartService.removePatientFromCartItem(testId: testId, patientId: patientId);
+    await _applyServerBody(body);
+  }
+
+  Future<void> changeAddress(Address? address) async {
+    if (_currentUserId == null) return;
+    final id = address?.id;
+    if (id != null) {
+      final body = await CartService.attachAddress(addressId: id);
+      await _applyServerBody(body);
+    } else {
+      final body = await CartService.removeAddress();
+      await _applyServerBody(body);
     }
   }
 
-  /// Clear cart from memory, backend and local storage
-  Future<void> clearCart() async {
-    if (_currentUserId != null) {
-      await CartService.clearCart(userId: _currentUserId!);
-    }
-    emit(CartInitial(cart: Cart(cartTests: [])));
+  void setSelectedAddressLocal(Address? address) {
+    emit(CartUpdated(
+      cart: state.cart.copyWith(selectedAddress: address),
+      cartSummary: state.cartSummary,
+    ));
   }
 
-  /// Set user ID for cart persistence
+  Future<void> removeTestFromCart(int testId) async {
+    if (_currentUserId == null) return;
+    final body = await CartService.removeCartItem(testId: testId);
+    await _applyServerBody(body);
+  }
+
   void setUserId(String userId) {
     _currentUserId = userId;
   }
 
-  void removeInvalidTests() {
+  Future<void> removeInvalidTests() async {
     final tests = [...state.cart.cartTests];
-    final validTests =
-        tests.where((element) => element.patientIds.isNotEmpty).toList();
-    _updateCart(cart: state.cart.copyWith.call(cartTests: validTests));
+    final invalid = tests.where((t) => t.patientIds.isEmpty).map((t) => t.test.id).toList();
+    Map<String, dynamic>? lastBody;
+    for (final testId in invalid) {
+      lastBody = await CartService.removeCartItem(testId: testId);
+    }
+    if (lastBody != null) {
+      await _applyServerBody(lastBody);
+    }
   }
 
-  void updateTimeSlot(TimeSlot? timeSlot) {
-    _updateCart(cart: state.cart.copyWith.call(timeSlot: timeSlot));
+  /// Local-only slot selection. Server sync happens on Continue via updateCollectionDate.
+  Future<void> updateTimeSlot(TimeSlot? timeSlot) async {
+    setTimeSlotLocal(timeSlot);
   }
 
-  void updateCollectionDate(DateTime collectionDate) {
-    _updateCart(cart: state.cart.copyWith.call(collectionDate: collectionDate));
+  void setTimeSlotLocal(TimeSlot? timeSlot) {
+    emit(CartUpdated(
+      cart: state.cart.copyWith(timeSlot: timeSlot),
+      cartSummary: state.cartSummary,
+    ));
   }
 
-  void applyCoupon({required Coupon coupon}) {
-    _updateCart(cart: state.cart.copyWith.call(appliedCoupon: coupon));
-  }
-
-  double getCartTestPrices() {
-    double cartFinalValue = 0;
-
-    for (var cartTest in state.cart.cartTests) {
-      final testPrice = cartTest.test.price ?? 0;
-      cartFinalValue += testPrice * cartTest.patientIds.length;
-    }
-
-    return cartFinalValue;
-  }
-
-  double getCartFinalValue({required BuildContext context}) {
-    double cartFinalValue = getCartTestPrices();
-    final config = BlocProvider.of<QrisConfigCubit>(context).state.config;
-
-    /// For sample collection charges
-    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
-      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
-    }
-
-    /// For hard copy charges
-    if (state.cart.shouldGetHardCopy) {
-      cartFinalValue =
-          cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
-    }
-
-    double discountAmount = 0;
-
-    /// Coupon calculations
-    if (state.cart.appliedCoupon != null) {
-      final appliedCoupon = state.cart.appliedCoupon!;
-
-      /// If coupon type is direct cashback
-      if (appliedCoupon.discountAction == CouponType.dc) {
-        /// If percentage coupon
-        if (appliedCoupon.discountMode == CouponDiscountType.per) {
-          final discountPercentage = appliedCoupon.couponPrice;
-          discountAmount = (getCartTestPrices() * discountPercentage) / 100;
-        }
-
-        /// If fixed discount coupon
-        else if (appliedCoupon.discountMode == CouponDiscountType.fix) {
-          discountAmount = appliedCoupon.couponPrice;
-        }
-      }
-
-      /// If coupon type is cashback
-      else if (appliedCoupon.discountAction == CouponType.cb) {
-        _updateCart(cart: state.cart.copyWith.call(appliedCouponAmount: null));
-      }
-
-      /// If coupon type is combo
-      else if (appliedCoupon.discountAction == CouponType.sc) {
-        /// If percentage coupon
-        if (appliedCoupon.cdDiscountType == CouponDiscountType.per) {
-          final discountPercentage = appliedCoupon.cdCouponAmt;
-          discountAmount = (getCartTestPrices() * discountPercentage) / 100;
-        }
-
-        /// If fixed discount coupon
-        else if (appliedCoupon.cdDiscountType == CouponDiscountType.fix) {
-          discountAmount = appliedCoupon.cdCouponAmt;
-        }
-      }
-    }
-
-    /// Check redeem coins condition
-    if (state.cart.redeemCoins) {
-      final totalQrisCoins =
-          BlocProvider.of<QrisCoinsCubit>(context).getTotalCoins();
-
-      final coinsDiscount = (config!.qcUsedCoins * getCartTestPrices()) / 100;
-
-      if (totalQrisCoins > coinsDiscount) {
-        discountAmount = coinsDiscount;
-      } else {
-        discountAmount = totalQrisCoins.roundToDouble();
-      }
-    }
-
-    /// Wallet money calculations
-    final totalWalletAmount =
-        BlocProvider.of<QrisWalletCubit>(context).getTotalAmount();
-    int walletRedeemAmount = 0;
-    discountAmount = discountAmount.roundToDouble();
-
-    if ((totalWalletAmount + discountAmount) < cartFinalValue) {
-      cartFinalValue = cartFinalValue - discountAmount;
-      walletRedeemAmount = totalWalletAmount;
-      cartFinalValue = cartFinalValue - walletRedeemAmount;
+  Future<void> updateCollectionDate(DateTime collectionDate) async {
+    if (_currentUserId == null) return;
+    final slot = state.cart.timeSlot;
+    if (slot != null) {
+      final body = await CartService.updateSlot(
+        slotId: slot.id,
+        collectionDate: _ymd(collectionDate),
+      );
+      await _applyServerBody(body);
     } else {
-      cartFinalValue = cartFinalValue - discountAmount;
-      walletRedeemAmount = cartFinalValue.round();
-      cartFinalValue = cartFinalValue - walletRedeemAmount.round();
+      emit(CartUpdated(
+        cart: state.cart.copyWith(collectionDate: collectionDate),
+        cartSummary: state.cartSummary,
+      ));
     }
-
-    /// Update state
-    _updateCart(
-        cart: state.cart.copyWith.call(
-            walletRedeemedAmount: walletRedeemAmount,
-            appliedCouponAmount:
-                state.cart.appliedCoupon != null ? discountAmount : null,
-            redeemedQrisCoins:
-                state.cart.redeemCoins ? discountAmount.round() : 0));
-
-    return cartFinalValue;
   }
 
-  double getBaseCartValue() {
-    double cartFinalValue = getCartTestPrices();
-
-    /// For hard copy charges
-    if (state.cart.shouldGetHardCopy) {
-      cartFinalValue =
-          cartFinalValue + (state.cart.pincode?.hardCopyCharge ?? 0);
-    }
-
-    /// For sample collection charges
-    if (cartFinalValue < (state.cart.pincode?.minOrder ?? 0)) {
-      cartFinalValue = cartFinalValue + state.cart.pincode!.deliveryCharge;
-    }
-
-    return cartFinalValue;
+  void setCollectionDateLocal(DateTime collectionDate) {
+    emit(CartUpdated(
+      cart: state.cart.copyWith(collectionDate: collectionDate),
+      cartSummary: state.cartSummary,
+    ));
   }
 
-  void updateHardCopy(bool hardCopy) {
-    removeAppliedCouponAndCoins();
-    _updateCart(cart: state.cart.copyWith.call(shouldGetHardCopy: hardCopy));
+  Future<void> applyCouponByCode({
+    required String couponCode,
+    String? userId,
+    String platform = 'app',
+    BuildContext? context,
+  }) async {
+    final uid = userId ?? _currentUserId;
+    if (uid == null) {
+      throw Exception('Not logged in');
+    }
+    _currentUserId = uid;
+    final body = await CartService.applyCoupon(couponCode: couponCode, platform: platform);
+    await _applyServerBody(body, context: context);
   }
 
-  void removeInvalidTestsFromCart() {
-    final tests = [...state.cart.cartTests];
-    tests.removeWhere((element) => element.patientIds.isEmpty);
+  Future<void> updateHardCopy(bool hardCopy) async {
+    if (_currentUserId == null) return;
+    if (hardCopy) {
+      final body = await CartService.applyHardCopy();
+      await _applyServerBody(body);
+    } else {
+      final body = await CartService.removeHardCopy();
+      await _applyServerBody(body);
+    }
+  }
 
-    _updateCart(cart: state.cart.copyWith.call(cartTests: tests));
+  Future<void> removeInvalidTestsFromCart() async {
+    final ids = state.cart.cartTests.where((t) => t.patientIds.isEmpty).map((t) => t.test.id).toList();
+    Map<String, dynamic>? lastBody;
+    for (final testId in ids) {
+      lastBody = await CartService.removeCartItem(testId: testId);
+    }
+    if (lastBody != null) {
+      await _applyServerBody(lastBody);
+    }
   }
 
   void updateCollectionPincode(Pincode? pincode) {
-    _updateCart(cart: state.cart.copyWith.call(pincode: pincode));
+    emit(CartUpdated(
+      cart: state.cart.copyWith(pincode: pincode),
+      cartSummary: state.cartSummary,
+    ));
   }
 
-  void toggleRedeemCoins() {
-    final shouldRedeemCoins = !state.cart.redeemCoins;
-    _updateCart(
-        cart: state.cart.copyWith.call(
-            redeemCoins: shouldRedeemCoins,
-            appliedCouponAmount:
-                shouldRedeemCoins ? null : state.cart.appliedCouponAmount,
-            appliedCoupon:
-                shouldRedeemCoins ? null : state.cart.appliedCoupon));
-  }
-
-  void removeAppliedCouponAndCoins() {
-    _updateCart(
-        cart: state.cart.copyWith.call(
-            appliedCoupon: null,
-            appliedCouponAmount: null,
-            redeemCoins: false,
-            redeemedQrisCoins: 0));
-  }
-
-  int getDeliveryCharge() {
-    if (state.cart.pincode == null) {
-      return 0;
+  Future<void> toggleRedeemCoins() async {
+    if (_currentUserId == null) return;
+    if (state.cart.redeemCoins) {
+      final body = await CartService.removeRedeemCoins();
+      await _applyServerBody(body);
+    } else {
+      final body = await CartService.applyRedeemCoins();
+      await _applyServerBody(body);
     }
-
-    return getCartTestPrices() >= state.cart.pincode!.minOrder
-        ? 0
-        : state.cart.pincode!.deliveryCharge;
   }
 
-  int getHardCopyCharges() {
-    if (state.cart.pincode == null) return 0;
-
-    if (state.cart.shouldGetHardCopy) {
-      return state.cart.pincode!.hardCopyCharge;
-    }
-
-    return 0;
+  Future<void> removeAppliedCouponAndCoins() async {
+    if (_currentUserId == null) return;
+    // Keep both API calls; apply final server response only once.
+    await CartService.removeCoupon();
+    final body = await CartService.removeRedeemCoins();
+    await _applyServerBody(body);
   }
 
-  String getCollectiveSampleType() {
-    return _getUniqueNames(
-        names: state.cart.cartTests
-            .map((test) => '${test.test.sampleType}')
-            .toList());
+  T _fromSummary<T>(T Function(CartSummary s) getter, T defaultValue) {
+    final s = state.cartSummary;
+    return s != null ? getter(s) : defaultValue;
   }
 
-  String getCollectiveTubeType() {
-    return _getUniqueNames(
-        names: state.cart.cartTests
-            .map((test) => '${test.test.tubeType}')
-            .toList());
-  }
+  double getCartTestPrices() => _fromSummary((s) => s.cartTestPrices, 0.0);
 
-  String _getUniqueNames({required List<String> names}) {
-    Set<String> uniqueNormalizedSet = names.map((item) {
-      List<String> items = item.split(',');
-      items.sort();
-      return items.join(',');
-    }).toSet();
+  double getCartFinalValue({BuildContext? context}) =>
+      _fromSummary((s) => s.cartFinalValue, 0.0);
 
-    String finalResult = uniqueNormalizedSet.firstWhere(
-      (element) => element.contains(','),
-      orElse: () =>
-          uniqueNormalizedSet.isNotEmpty ? uniqueNormalizedSet.first : '',
-    );
+  double getBaseCartValue() => _fromSummary((s) => s.baseCartValue, 0.0);
 
-    return finalResult;
-  }
+  int getDeliveryCharge() => _fromSummary((s) => s.deliveryCharge, 0);
+
+  int getHardCopyCharges() => _fromSummary((s) => s.hardCopyCharges, 0);
+
+  String getCollectiveSampleType() => _fromSummary((s) => s.sampleType, '');
+
+  String getCollectiveTubeType() => _fromSummary((s) => s.tubeType, '');
 }

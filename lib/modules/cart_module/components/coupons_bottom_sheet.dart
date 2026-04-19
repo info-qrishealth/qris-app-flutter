@@ -8,13 +8,9 @@ import 'package:qris_health/constants/enums/snackbar_type.dart';
 import 'package:qris_health/modules/cart_module/components/coupon_applied_dialog.dart';
 import 'package:qris_health/modules/orders_modele/cart_cubit/cart_cubit.dart';
 import 'package:qris_health/modules/orders_modele/services/coupon_service.dart';
-import 'package:qris_health/modules/orders_modele/services/order_service.dart';
 import 'package:qris_health/shared/components/common_bottom_sheet_template.dart';
 import 'package:qris_health/shared/components/common_cross_icon.dart';
 import 'package:qris_health/shared/components/common_listview_shimmer.dart';
-import 'package:qris_health/shared/cubits/qris_config_cubit/qris_config_cubit.dart';
-import 'package:qris_health/shared/models/qris_config/qris_config.dart';
-import 'package:qris_health/shared/services/config_services.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../orders_modele/models/coupon/coupon.dart';
@@ -32,13 +28,11 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
   final _textTheme = Get.textTheme;
   late final Future<List<Coupon>> _couponsFuture;
   List<Coupon>? _coupons;
-  late QrisConfig _config;
 
   @override
   void initState() {
     super.initState();
     _couponsFuture = CouponService.getAllCoupons();
-    _config = BlocProvider.of<QrisConfigCubit>(context).state.config!;
   }
 
   @override
@@ -83,11 +77,15 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
                 padding: const EdgeInsets.symmetric(vertical: 0.5),
                 child: ElevatedButton(
                     onPressed: () async {
-                      final searchedText = _searchController.text.toLowerCase();
-                      final coupon = _coupons?.firstWhereOrNull((coupon) =>
-                          coupon.couponCode.toLowerCase() == searchedText);
-                      final testValue =
-                          BlocProvider.of<CartCubit>(context).cartTestValue;
+                      final searchedText =
+                          _searchController.text.trim().toLowerCase();
+                      if (searchedText.isEmpty) return;
+
+                      final cartCubit = BlocProvider.of<CartCubit>(context);
+                      final testValue = cartCubit.getCartTestPrices();
+
+                      final coupon = _coupons?.firstWhereOrNull((c) =>
+                          c.couponCode.toLowerCase() == searchedText);
 
                       if (coupon != null) {
                         if (testValue >= coupon.cartValue) {
@@ -100,10 +98,17 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
                         }
                       } else {
                         try {
-                          final coupon =
+                          final fetched =
                               await CouponService.getCouponByCouponCode(
-                                  couponCode: _searchController.text);
-                          await _applyCoupon(coupon: coupon);
+                                  couponCode: _searchController.text.trim());
+                          if (testValue < fetched.cartValue) {
+                            AppConstants.showSnackbar(
+                                text:
+                                    'Your cart is ineligible to apply this coupon',
+                                type: SnackbarType.error);
+                            return;
+                          }
+                          await _applyCoupon(coupon: fetched);
                         } catch (e) {
                           AppConstants.showSnackbar(
                               text: e.toString(), type: SnackbarType.error);
@@ -158,58 +163,30 @@ class _CouponsBottomSheetState extends State<CouponsBottomSheet> {
   }
 
   Future<void> _applyCoupon({required Coupon coupon}) async {
+    final cartCubit = BlocProvider.of<CartCubit>(context);
+    final userId = ApiParams.getInstance()!.userId!.toString();
+
+    if (coupon.applicable == CouponApplicableType.web) {
+      AppConstants.showSnackbar(
+          text: 'Sorry! This coupon is applicable for website only',
+          type: SnackbarType.error);
+      return;
+    }
+
     try {
-      final currentDateTime = await ConfigService.getCurrentServerTime();
-
-      if (coupon.applicable == CouponApplicableType.web) {
-        throw 'Sorry! This coupon is applicable for website only';
-      }
-
-      if (coupon.status != 1) {
-        throw 'Sorry! This coupon is not active';
-      }
-
-      if (!(coupon.couponStartDate.isBefore(currentDateTime) &&
-          coupon.couponEndDate.isAfter(currentDateTime))) {
-        throw 'Sorry! This coupon is expired';
-      }
-
-      if (coupon.firstOrder == '1' ||
-          coupon.oneTime == 1 ||
-          coupon.for120days == '1') {
-        final orders = await OrderService.getAllOrdersForUser(
-            userId: ApiParams.getInstance()!.userId!.toString());
-
-        if (orders.isNotEmpty && coupon.firstOrder == '1') {
-          throw 'Sorry! This coupon is valid on first order only';
-        }
-
-        if (coupon.oneTime == 1 &&
-            orders.firstWhereOrNull((order) =>
-                    order.couponCode!.toLowerCase() ==
-                    coupon.couponCode.toLowerCase()) !=
-                null) {
-          throw 'Sorry! You have already used this coupon code before. This coupon is for one time use only';
-        }
-
-        if (coupon.for120days == '1') {
-          orders.sort((a, b) => b.orderDate.compareTo(a.orderDate));
-          final latestOrder = orders.first;
-
-          if (currentDateTime.difference(latestOrder.orderDate).inDays < 120) {
-            throw 'Sorry! This coupon is not applicable for now';
-          }
-        }
-      } else {
-        await Future.delayed(Duration(milliseconds: 100));
-      }
-
+      await cartCubit.applyCouponByCode(
+        couponCode: coupon.couponCode,
+        userId: userId,
+        context: context,
+      );
+      if (!mounted) return;
       Navigator.of(context).pop();
-      BlocProvider.of<CartCubit>(context).applyCoupon(coupon: coupon);
-
-      await showDialog(
-          context: context,
-          builder: (context) => CouponAppliedDialog(appliedCoupon: coupon));
+      final applied = cartCubit.state.cart.appliedCoupon;
+      if (applied != null && mounted) {
+        await showDialog<void>(
+            context: context,
+            builder: (ctx) => CouponAppliedDialog(appliedCoupon: applied));
+      }
     } catch (e) {
       AppConstants.showSnackbar(text: e.toString(), type: SnackbarType.error);
     }

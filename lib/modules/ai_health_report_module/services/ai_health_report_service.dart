@@ -150,12 +150,14 @@ class AiHealthReportResponse {
   final String executiveSummary;
   final List<ConcerningParameter> concerningParameters;
   final List<Recommendation> recommendations;
+  final bool? hasConcerningParameters;
   final bool? cached;
 
   AiHealthReportResponse({
     required this.executiveSummary,
     required this.concerningParameters,
     required this.recommendations,
+    this.hasConcerningParameters,
     this.cached,
   });
 
@@ -235,6 +237,11 @@ class AiHealthReportResponse {
       executiveSummary: json['executiveSummary']?.toString() ?? '',
       concerningParameters: concerningParams,
       recommendations: recommendationsList,
+      hasConcerningParameters: json['hasConcerningParameters'] == null
+          ? null
+          : (json['hasConcerningParameters'] is bool
+              ? json['hasConcerningParameters'] as bool
+              : json['hasConcerningParameters'].toString().toLowerCase() == 'true'),
       cached: json['cached'] as bool?,
     );
   }

@@ -16,12 +16,14 @@ class CartHelper {
       List<WellnessAnswer>? wellnessAnswers}) async {
     try {
       final context = Get.context!;
+      final cartCubit = BlocProvider.of<CartCubit>(context);
       final fullTest =
           await TestService.getTestByTestId(id: testPackageModel.id);
-
-      BlocProvider.of<CartCubit>(context).removeInvalidTestsFromCart();
-      BlocProvider.of<CartCubit>(context).addToCart(fullTest);
-      BlocProvider.of<CartCubit>(context).removeAppliedCouponAndCoins();
+      if (!context.mounted) return;
+      await cartCubit.removeInvalidTestsFromCart();
+      await cartCubit.addToCart(fullTest);
+      await cartCubit.removeAppliedCouponAndCoins();
+      if (!context.mounted) return;
 
       Navigator.of(context).push(CupertinoPageRoute(
           builder: (context) => CartScreen(

@@ -1,0 +1,198 @@
+API Migration - Frontend to Backend
+
+CONFIGURATION & URLS
+================================================================================
+
+2. RAZORPAY KEY
+   File: lib/constants/app_constants.dart
+   Current: razorpayKey hardcoded per environment.
+   Move to: Return from config API.
+   Reason: Enables key rotation or switching keys without an app update and reduces exposure if a key is ever compromised.
+
+3. STATIC URLS AND LINKS
+   File: lib/constants/app_constants.dart
+   Current: imageBaseUrl, invoiceUrl, reportUrl, supportNumber, privacyPolicyUrl, termsAndConditionsUrl, playStoreLink, appStoreLink all hardcoded.
+   Move to: GET /config or extend existing config API to return all these links and support number.
+   Reason: Links and support number change over time; single source of truth and no app release needed for updates.
+
+4. INDIAN STATES LIST
+   File: lib/constants/app_constants.dart
+   Current: stateList is a const List of 36 states/UTs.
+   Move to: GET /address/states
+
+
+
+AUTH & SESSION
+================================================================================
+
+6. AUTH ERROR DETECTION
+   File: lib/shared/utils/auth_helper.dart
+   Current: isAuthError() checks for strings: 'session expired', 'please login again', 'unauthorized', 'token', '401', '403'.
+   Move to: Backend returns structured error code or HTTP 401/403; client only checks status code or single error code.
+   Reason: Error messages change; backend controls when to force re-login; client should not depend on message text.
+
+7. TOKEN EXPIRY CHECK
+   File: lib/shared/services/token_manager.dart
+   Current: JWT decoded on client; hoursUntilExpiry calculated; refresh threshold in frontend.
+   Move to: Backend can return expires_in in login/refresh response; client uses that for refresh logic.
+   Reason: Keeps expiry logic consistent; backend can change token lifetime without app update.
+
+
+BUSINESS DATA 
+================================================================================
+
+13. HEALTH SCORE QUESTIONS AND SCORING
+    File: lib/modules/health_score_module/utils/health_score_questions_util.dart
+    Current: All question options and marks hardcoded (blood pressure, heart rate, sleep, diet, water, exercise, alcohol, smoking).
+    Move to: GET /health-score/questions with options and marks.
+    Reason: Questions and scoring logic may need updates without app release; allows localization or multiple versions.
+
+14. CHRONIC DISEASE PACKAGES
+    File: lib/modules/home_module/screens/chronic_packages_screen.dart
+    Current: _chronicPackages hardcoded list of 10+ packages with titles, idealFor, includes, prices.
+    Move to: GET /packages/chronic.
+    Reason: Packages, prices, and inclusions change frequently; backend can manage inventory and promotions.
+
+15. SCAN/SUBSCAN DATA (MRI, CT, ULTRASOUND, ETC)
+    File: lib/constants/enums/subscan_type.dart
+    Current: Huge enum with SubscanModel per scan - prices, descriptions, FAQs, whyToChoose, asset paths.
+    Move to: GET /tests/scans or GET /tests/{id} with full detail.
+    Reason: Prices and content change often; backend already has test data; avoids duplicate maintenance.
+
+16. SCAN NAME TO TEST ID MAPPING
+    File: lib/modules/all_scans_module/services/test_service.dart
+    Current: getScanTestId() hardcoded map (ECG Test: 368, etc.).
+    Move to: Backend returns testId with scan/category data or GET /tests/by-name?name=...
+    Reason: IDs are backend-specific; mapping is fragile and breaks when backend adds/renames tests.
+
+17. TEST CATEGORIES (HOME SCREEN)
+    File: lib/modules/home_module/enum/test_category.dart
+    Current: TestCategory enum with icons, colors, labels (blood test, MRI, pharmacy, etc.).
+    Move to: GET /config/categories or extend existing categories API.
+    Reason: Categories and their display (order, labels, assets) can be managed from backend.
+
+18. POPULAR PACKAGE TYPES
+    File: lib/constants/enums/popular_package_type.dart
+    Current: PopularPackageType enum with asset paths and formatted names.
+    Move to: GET /packages/popular-types or include in packages API.
+    Reason: Package types and assets can be dynamic; backend can reorder or add new types without release.
+
+
+ORDER & CART
+================================================================================
+
+20. CART FINAL VALUE CALCULATION
+    File: lib/modules/orders_modele/cart_cubit/cart_cubit.dart
+    Current: getCartFinalValue() computes test prices, delivery, hard copy, coupon discount, qris coins, wallet.
+    Move to: POST /cart/calculate or backend computes on order create.
+    Reason: Pricing rules can be complex and may change; single source of truth; reduces risk of client-side tampering or bugs.
+
+21. COUPON VALIDATION RULES
+    File: lib/modules/cart_module/components/coupons_bottom_sheet.dart
+    Current: Frontend validates applicable, status, dates, first order, one time, for120days; fetches all orders.
+    Move to: POST /coupons/validate with cart summary; backend returns valid/invalid + message.
+    Reason: Validation logic belongs on server; reduces client calls and keeps rules consistent and secure.
+
+22. COUPON 120 DAYS RULE
+    File: lib/modules/cart_module/components/coupons_bottom_sheet.dart
+    Current: currentDateTime.difference(latestOrder.orderDate).inDays < 120.
+    Move to: Part of POST /coupons/validate; backend decides eligibility.
+    Reason: Business rule may change (e.g. 90 days); backend should own all coupon eligibility logic.
+
+23. ORDER STATUS DISPLAY AND LEVEL
+    Files: lib/modules/orders_modele/components/order_list_tile.dart, lib/modules/home_module/components/order_status_container.dart
+    Current: statuses list hardcoded; _getCurrentStatusLevel() infers from report status strings ('sample', 'collect', etc.); icon paths by status string.
+    Move to: Backend returns status level (1-4) and display labels; or GET /orders/status-config.
+    Reason: Status flow may change; backend has authoritative state; avoids brittle string matching.
+
+24. ORDER VISIBILITY AFTER REPORT GENERATED
+    File: lib/modules/orders_modele/services/order_visibility_service.dart
+    Current: shouldShowOrder() - hide after 24 hours for 'Report Generated'; status strings hardcoded.
+    Move to: Backend returns visibility (e.g. hideAfterUtc or showForHours); 24 hours and status rules on backend.
+    Reason: Visibility window (24h) may change; status names should not be hardcoded in client.
+
+25. COLLECTIVE SAMPLE TYPE AND TUBE TYPE
+    File: lib/modules/orders_modele/cart_cubit/cart_cubit.dart
+    Current: getCollectiveSampleType(), getCollectiveTubeType() - _getUniqueNames() joins and picks comma-separated.
+    Move to: Backend accepts cart and returns sampleType/tubeType for order; or define rule in API spec.
+    Reason: Lab rules for combining samples/tubes may change; backend should compute what is sent to lab.
+
+
+PATIENT & ELIGIBILITY
+================================================================================
+
+26. PATIENT AGE CALCULATION AND UNDER-AGE FLAG
+    File: lib/modules/patients_module/extensions/patient_extension.dart
+    Current: ageInYears = DateTime.now().difference(dob).inDays / 365.25; isUnderAge = ageInYears < 16.
+    Move to: Backend returns age and isMinor or ageGroup; validate on add-patient/booking; 16 threshold from config if needed.
+    Reason: Age rules (e.g. 16 for some tests) may vary by product or region; backend should enforce and return display values.
+
+27. FREE CONSULTATION ELIGIBILITY AND REPORT STATUS
+    Files: lib/modules/doctor_consultation_module/screens/free_consultation_booking_screen.dart, lib/modules/doctor_consultation_module/components/patient_checkbox_dropdown.dart
+    Current: reportGenerated and reportStatus == 'complete' used to decide eligibility; first eligible patient logic in frontend.
+    Move to: GET /consultations/eligibility or order-status API returns eligible patient IDs and report-generated flags.
+    Reason: Eligibility rules may change; backend should decide who can book free consultation.
+
+28. REPORT STATUS STRING FOR ORDER LEVEL
+    File: lib/modules/orders_modele/components/order_list_tile.dart
+    Current: report.status.toLowerCase().contains('sample') etc. to infer progress level.
+    Move to: Backend returns status level; no string matching on client.
+    Reason: Report status wording may change; backend knows true state; avoids fragile parsing.
+
+
+AI HEALTH REPORT
+================================================================================
+
+29. AI ANALYSIS STATUS STRINGS
+    File: lib/modules/ai_health_report_module/screens/ai_health_report_screen.dart, services
+    Current: status == 'completed', status == 'failed' checked in frontend.
+    Move to: Backend returns enum or code; client maps to UI.
+    Reason: Status values may be extended or renamed; client should depend on stable codes, not free text.
+
+30. AI CATEGORY TO ICON MAPPING
+    File: lib/modules/ai_health_report_module/screens/ai_health_report_screen.dart
+    Current: _getCategoryIcon() - category name contains 'sugar', 'blood', 'urine', 'liver', etc. to pick asset path.
+    Move to: Backend returns icon path or icon key for each category; or GET /config/ai-report-categories.
+    Reason: New categories or icon changes should not require app update; backend controls taxonomy.
+
+31. AI PARAMETER STATUS (HIGH/LOW/ABNORMAL)
+    File: lib/modules/ai_health_report_module/screens/ai_health_report_screen.dart
+    Current: isHigh = status == 'high', isLow = status == 'low', isAbnormal derived from string.
+    Move to: Backend returns isHigh, isLow, isAbnormal in response.
+    Reason: Interpretation of "abnormal" may vary; backend should be source of truth for clinical flags.
+
+
+FILTERING & DISPLAY RULES
+================================================================================
+
+33. PACKAGE FILTERING BY STATUS AND TYPE
+    File: lib/modules/home_module/screens/search_package_screen.dart
+    Current: element.status == '1' && element.disallowed == 0; wellness == '1'; scanType == '0' in frontend filter.
+    Move to: Backend search/filter API accepts status, disallowed, wellness, scanType; return only eligible items.
+    Reason: Filtering on server is more efficient and consistent; business rules stay in one place.
+
+34. ADDRESS AND ARTICLE STATUS FILTER
+    Files: lib/modules/cart_module/screens/tabs/select_address_tab.dart, lib/modules/address_module/screens/address_screen.dart, lib/modules/health_article_module/cubits
+    Current: .where((element) => element.status == 1).
+    Move to: Backend returns only active (status=1) by default; or filter param.
+    Reason: Inactive items should ideally not be sent; reduces client logic and payload.
+
+35. RELATED TESTS / PACKAGES SPLITTING
+    Files: lib/modules/screens/blood_test_detail_screen.dart, lib/modules/home_module/screens/search_package_screen.dart, lib/modules/home_module/screens/popular_package_screen.dart
+    Current: Frontend splits list into packages, subPackages, testsTests, otherTests by type.
+    Move to: Backend returns pre-grouped or tagged structure.
+    Reason: Grouping logic can be consistent and configurable; avoids duplicate logic across screens.
+
+
+CONTENT PARSING & MESSAGES
+================================================================================
+
+37. HTML / ENTITY STRIPPING IN STRINGS
+    File: lib/shared/extensions/string_extension.dart
+    Current: replaceAll for &amp;nbsp;, &lt;b&gt;, etc. in stripHtmlTags or similar
+    Move to: Backend returns plain text or markdown; or provide stripped content in API so client does not parse HTML
+
+38. HEALTH ARTICLE PRDCARD REGEX
+    File: lib/modules/health_article_module/screens/health_article_detail_screen.dart
+    Current: RegExp(r'\[PRDCARD\s+ID\s*=\s*(\d+)\s*\]') to embed product cards
+    Move to: Backend returns structured content blocks (e.g. type: 'product', id: 123) instead of raw regex in body

@@ -6,22 +6,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qris_health/generated/assets.dart';
 import 'package:qris_health/modules/orders_modele/models/order/order.dart';
-import 'package:qris_health/modules/orders_modele/models/order_req_model/order_req_model.dart';
 import 'package:qris_health/styles/app_colors.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../constants/enums/snackbar_type.dart';
 import '../../home_module/screens/home_screen.dart';
+import '../../orders_modele/cart_cubit/cart_cubit.dart';
 import '../../refer_and_earn_module/cubits/qris_coin_cubit/qris_coins_cubit.dart';
 import '../../refer_and_earn_module/cubits/qris_wallet_cubit/qris_wallet_cubit.dart';
-import '../cart_cubit/cart_cubit.dart';
 import '../services/order_service.dart';
 
 class OrderProcessingBottomSheet extends StatefulWidget {
-  final OrderReqModel orderReqModel;
-  final Map<String, dynamic>? payload;
+  final Map<String, dynamic> payload;
 
-  const OrderProcessingBottomSheet({super.key, required this.orderReqModel, this.payload});
+  const OrderProcessingBottomSheet({super.key, required this.payload});
 
   @override
   _OrderProcessingBottomSheetState createState() =>
@@ -32,6 +30,18 @@ class _OrderProcessingBottomSheetState
     extends State<OrderProcessingBottomSheet> {
   Order? _order;
   int _redirectingSeconds = 3;
+  Timer? _redirectTimer;
+
+  Future<void> _syncCartAfterOrder(CartCubit cartCubit) async {
+    // Backend clears cart post-order
+    for (var i = 0; i < 3; i++) {
+      await cartCubit.refreshCartFromServer();
+      if (cartCubit.state.cart.cartTests.isEmpty) {
+        return;
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+    }
+  }
 
   // @override
   // void initState() {
@@ -43,7 +53,6 @@ class _OrderProcessingBottomSheetState
 
   //       BlocProvider.of<QrisCoinsCubit>(context).getQrisCoins();
   //       BlocProvider.of<QrisWalletCubit>(context).getWalletEntries();
-  //       BlocProvider.of<CartCubit>(context).clearCart();
 
   //       Timer.periodic(Duration(seconds: 1), (timer) {
   //         setState(() {
@@ -73,18 +82,22 @@ class _OrderProcessingBottomSheetState
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
+      final qrisCoinsCubit = BlocProvider.of<QrisCoinsCubit>(context);
+      final qrisWalletCubit = BlocProvider.of<QrisWalletCubit>(context);
+      final cartCubit = BlocProvider.of<CartCubit>(context);
       try {
-        final payload = widget.payload ?? widget.orderReqModel.toJson();
-        _order = await OrderService.createOrder(
-          orderReqModel: widget.orderReqModel,
-          payload: payload,
-        );
+        _order = await OrderService.createOrder(payload: widget.payload);
 
-        BlocProvider.of<QrisCoinsCubit>(context).getQrisCoins();
-        BlocProvider.of<QrisWalletCubit>(context).getWalletEntries();
-        BlocProvider.of<CartCubit>(context).clearCart();
+        qrisCoinsCubit.getQrisCoins();
+        qrisWalletCubit.getWalletEntries();
+        await _syncCartAfterOrder(cartCubit);
+        if (!mounted) return;
 
-        Timer.periodic(Duration(seconds: 1), (timer) {
+        _redirectTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+          if (!mounted) {
+            timer.cancel();
+            return;
+          }
           setState(() {
             _redirectingSeconds--;
           });
@@ -97,15 +110,25 @@ class _OrderProcessingBottomSheetState
           }
         });
 
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       } catch (e) {
-        Navigator.of(context).pop();
-        AppConstants.showSnackbar(
-            text:
-                'There is some error while creating order. Please contact Qris support for better guidance',
-            type: SnackbarType.error);
+        if (mounted) {
+          Navigator.of(context).pop();
+          AppConstants.showSnackbar(
+              text:
+                  'There is some error while creating order. Please contact Qris support for better guidance',
+              type: SnackbarType.error);
+        }
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _redirectTimer?.cancel();
+    super.dispose();
   }
 
 
